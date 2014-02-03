@@ -27,9 +27,9 @@
         <a href="{modurl modname='MUNews' type='user' func='view' ot='message' all=1}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
     {/if}
 
-    {include file='user/message/view_quickNav.tpl' all=$all own=$own}{* see template file for available options *}
+   {* {include file='user/message/view_quickNav.tpl' all=$all own=$own}{* see template file for available options *}
 
-    <table class="z-datatable">
+   {* <table class="z-datatable">
         <colgroup>
             <col id="cWorkflowState" />
             <col id="cTitle" />
@@ -93,7 +93,7 @@
         </thead>
         <tbody>
     
-    {foreach item='message' from=$items}
+       {foreach item='message' from=$items}
         <tr class="{cycle values='z-odd, z-even'}">
             <td headers="hWorkflowState" class="z-left z-nowrap">
                 {$message.workflowState|munewsObjectState}
@@ -182,6 +182,36 @@
                 {/if}
             </td>
         </tr>
+    {foreachelse}
+        <tr class="z-datatableempty">
+          <td class="z-left" colspan="14">
+        {gt text='No messages found.'}
+          </td>
+        </tr>
+    {/foreach} *}
+    
+    {foreach item='message' from=$items}
+        <div class="munews-view">
+            <div class="munews-view-title">
+                <h2> {if $showAuthor eq 1}{useravatar uid=$message.createdUserId size=30}{/if}<a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id slug=$message.slug}" title="{gt text='View detail page'}">{$message.title|notifyfilters:'munews.filterhook.messages'}</a></h2>   
+            </div>
+            <div class="munews-view-start">
+                {if $message.imageUpload1 ne ''}
+                  <a href="{$message.imageUpload1FullPathURL}" title="{$message->getTitleFromDisplayPattern()|replace:"\"":""}"{if $message.imageUpload1Meta.isImage} rel="imageviewer[message]"{/if}>
+                  {if $message.imageUpload1Meta.isImage}
+                      {thumb image=$message.imageUpload1FullPath objectid="message-`$message.id`" preset=$messageThumbPresetImageUpload1 tag=true img_alt=$message->getTitleFromDisplayPattern()}
+                  {else}
+                      {gt text='Download'} ({$message.imageUpload1Meta.size|munewsGetFileSize:$message.imageUpload1FullPath:false:false})
+                  {/if}
+                  </a>
+                {else}&nbsp;{/if}  
+                {$message.startText|safehtml|truncate:250} 
+                {if $message.mainText ne ''}<br />
+                    <a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id}">{gt text='Read more'}...</a>
+                {/if}
+            </div>
+        </div>
+    
     {foreachelse}
         <tr class="z-datatableempty">
           <td class="z-left" colspan="14">

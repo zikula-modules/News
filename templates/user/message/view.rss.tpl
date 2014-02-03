@@ -42,7 +42,7 @@
 
         <description>
             <![CDATA[
-            {$message.startText|replace:'<br>':'<br />'}
+            {$message.startText|replace:'<br>':'<br />'|truncate:100}
             ]]>
         </description>
         {if isset($message.createdDate) && $message.createdDate ne null}
