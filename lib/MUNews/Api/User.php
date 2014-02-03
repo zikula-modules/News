@@ -16,5 +16,33 @@
  */
 class MUNews_Api_User extends MUNews_Api_Base_User
 {
-    // feel free to add own api methods here
+    /**
+     * Returns available user panel links.
+     *
+     * @return array Array of user links.
+     */
+    public function getlinks()
+    {
+        $links = array();
+
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'main'),
+                             'text' => $this->__('Backend'),
+                             'title' => $this->__('Switch to administration area.'),
+                             'class' => 'z-icon-es-options');
+        }
+
+        $controllerHelper = new MUNews_Util_Controller($this->serviceManager);
+        $utilArgs = array('api' => 'user', 'action' => 'getlinks');
+        $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
+
+       /* if (in_array('message', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->name . ':Message:', '::', ACCESS_READ)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'message')),
+                             'text' => $this->__('Messages'),
+                             'title' => $this->__('Message list'));
+        } */
+
+        return $links;
+    }
 }
