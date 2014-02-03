@@ -19,8 +19,12 @@
             {* else just show the user name *}
             {assign var='profileLink' value=$cr_uname}
         {/if}
-        <dd>{gt text='Created by %1$s on %2$s' tag1=$profileLink tag2=$obj.createdDate|dateformat html=true}</dd>
-    {/if}
+        {if $showDate eq 1}
+            {gt text='Created by %1$s on %2$s' tag1=$profileLink tag2=$obj.createdDate|dateformat html=true}</dd>
+        {else}
+            {gt text='Created by %1$s' tag1=$profileLink html=true}</dd>
+        {/if}
+  {/if}
     {if isset($obj.updatedUserId) && $obj.updatedUserId}
         <dt>{gt text='Last update'}</dt>
         {usergetvar name='uname' uid=$obj.updatedUserId assign='lu_uname'}
@@ -33,7 +37,12 @@
             {* else just show the user name *}
             {assign var='profileLink' value=$lu_uname}
         {/if}
-        <dd>{gt text='Updated by %1$s on %2$s' tag1=$profileLink tag2=$obj.updatedDate|dateformat html=true}</dd>
+        {if $showDate eq 1}
+            {gt text='Updated by %1$s on %2$s' tag1=$profileLink tag2=$obj.updatedDate|dateformat html=true}</dd>
+        {else}
+            {gt text='Updated by %1$s' tag1=$profileLink html=true}</dd>
+        {/if}
+        <dd>
     {/if}
     </dl>
     {if isset($panel) && $panel eq true}
