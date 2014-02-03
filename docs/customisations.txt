@@ -30,6 +30,8 @@ Implemented Classes
 
 *lib/MUNews/Controller/User.php
 
+*lib/MUNews/Form/Handler/User/Message/Edit.php
+
 *lib/MUNews/Util/Image.php
 
 

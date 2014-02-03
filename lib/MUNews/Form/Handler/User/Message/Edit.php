@@ -17,5 +17,16 @@
  */
 class MUNews_Form_Handler_User_Message_Edit extends MUNews_Form_Handler_User_Message_Base_Edit
 {
-    // feel free to extend the base handler class here
+    /**
+     * Post-initialise hook.
+     *
+     * @return void
+     */
+    public function postInitialize()
+    {
+        $muimageAlbum = $this->getVar('muimageAlbum');
+        $this->view->assign('muimageAlbum', $muimageAlbum);
+        
+        parent::postInitialize();
+    }
 }
