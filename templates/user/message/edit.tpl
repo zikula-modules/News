@@ -65,13 +65,13 @@
             {formlabel for='mainText' __text='Main text' cssClass=''}
             {formtextinput group='message' id='mainText' mandatory=false __title='Enter the main text of the message' textMode='multiline' rows='6' cols='50' cssClass='' }
         </div>
-        
-        <div class="z-formrow">
+      <div class="z-formrow">
+            <span class="z-formnote z-informationmsg">{gt text='This image only will be shown if you enter a main text.'}</span>
             {formlabel for='imageUpload2' __text='Image upload2' cssClass=''}<br />{* break required for Google Chrome *}
             {formuploadinput group='message' id='imageUpload2' mandatory=false readOnly=false cssClass=' validate-upload' }
             <span class="z-formnote"><a id="resetImageUpload2Val" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
-                <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="imageUpload2FileExtensions">gif, jpeg, jpg, png</span></span>
+            <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="imageUpload2FileExtensions">gif, jpeg, jpg, png</span></span>
             <span class="z-formnote">{gt text='Allowed file size:'} {'102400'|munewsGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $message.imageUpload2 ne ''}

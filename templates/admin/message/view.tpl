@@ -116,7 +116,7 @@
                         <a href="{modurl modname='MUNews' type='admin' func='display' ot='message' id=$message.id slug=$message.slug}" title="{gt text='View detail page'}">{$message.title|notifyfilters:'munews.filterhook.messages'}</a>
                     </td>
                     <td headers="hStartText" class="z-left">
-                        {$message.startText}
+                        {$message.startText|safehtml|truncate:100}
                     </td>
                     <td headers="hImageUpload1" class="z-left">
                         {if $message.imageUpload1 ne ''}
@@ -130,7 +130,7 @@
                         {else}&nbsp;{/if}
                     </td>
                     <td headers="hMainText" class="z-left">
-                        {$message.mainText}
+                        {$message.mainText|safehtml|truncate:100}
                     </td>
                     <td headers="hImageUpload2" class="z-left">
                         {if $message.imageUpload2 ne ''}
