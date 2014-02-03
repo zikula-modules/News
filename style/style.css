@@ -69,5 +69,40 @@ div.munews-view form.munews-quicknav fieldset #num {
 
 .munews-view-title img {
 	margin: 0 10px 0 0;
-	}
+	float: left;
 }
+
+#munews-display-starttext {
+	margin: 20px 2%;
+	float: left;
+	clear: both;
+	width: 96%;
+	
+}
+
+#munews-display-starttext img {
+	margin: 0 30px 0 0;
+	float: left;
+}
+
+#munews-display-maintext {
+	margin: 5px 2% 20px;
+	float: left;
+	clear: both;
+	width: 96%;
+}
+
+#munews-display-maintext img {
+	margin: 0 0 0 30px;
+	float: right;
+}
+
+#munews-display-images {
+    width: 96%;
+	margin: 10px 2%;	
+}
+
+.munews-display-image img {
+    margin: 0 30px 0 0;
+}
+
