@@ -205,9 +205,9 @@
                   {/if}
                   </a>
                 {else}&nbsp;{/if}  
-                {$message.startText|safehtml|truncate:250} 
+                {$message.startText|safehtml|truncate:400} 
                 {if $message.mainText ne ''}<br />
-                    <a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id}">{gt text='Read more'}...</a>
+                    <a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id}">{gt text='Read more'}</a>
                 {/if}
             </div>
         </div>
