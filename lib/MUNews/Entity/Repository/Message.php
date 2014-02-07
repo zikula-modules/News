@@ -18,5 +18,8 @@
  */
 class MUNews_Entity_Repository_Message extends MUNews_Entity_Repository_Base_Message
 {
-    // feel free to add your own methods here, like for example reusable DQL queries
+    /**
+     * @var string The default sorting field/expression.
+     */
+    protected $defaultSortingField = 'createdDate';
 }
