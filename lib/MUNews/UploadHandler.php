@@ -16,5 +16,13 @@
  */
 class MUNews_UploadHandler extends MUNews_Base_UploadHandler
 {
-    // feel free to add your upload handler enhancements here
+    /**
+     * Constructor initialising the supported object types.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->allowedFileSizes = array('message' => array('imageUpload1' => ModUtil::getVar('MUNews', 'allowedFileSize', 102400), 'imageUpload2' => ModUtil::getVar('MUNews', 'allowedFileSize', 102400), 'imageUpload3' => ModUtil::getVar('MUNews', 'allowedFileSize', 102400), 'imageUpload4' => ModUtil::getVar('MUNews', 'allowedFileSize', 102400)));
+    }
 }

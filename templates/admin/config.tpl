@@ -31,6 +31,10 @@
                         {formintinput id='newsPerPage' group='config' maxLength=255 __title='Enter the news per page. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
+                    {formlabel for='allowedFileSize' __text='Allowed file size' cssClass=''}
+                        {formintinput id='allowedFileSize' group='config' maxLength=255 __title='Enter the news per page. Only digits are allowed.'}
+                </div>
+                <div class="z-formrow">
                     {formlabel for='muimageAlbum' __text='Muimage album' cssClass=''}
                         {formcheckbox id='muimageAlbum' group='config'}
                 </div>

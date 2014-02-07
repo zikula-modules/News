@@ -48,6 +48,7 @@ class MUNews_Base_Installer extends Zikula_AbstractInstaller
         $this->setVar('showAuthor', false);
         $this->setVar('showDate', false);
         $this->setVar('newsPerPage', 10);
+        $this->setVar('allowedFileSize', 102400);
         $this->setVar('muimageAlbum', false);
     
         $categoryRegistryIdsPerEntity = array();
