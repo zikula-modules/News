@@ -59,6 +59,9 @@ class MUNews_Controller_User extends MUNews_Controller_Base_User
         if ($sdir != 'asc' && $sdir != 'desc') {
             $sdir = 'asc';
         }
+        
+        // we set the sort order to desc by default
+        $sdir = 'desc';
     
         // convenience vars to make code clearer
         $currentUrlArgs = array('ot' => $objectType);
