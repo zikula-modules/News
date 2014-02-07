@@ -16,5 +16,23 @@
  */
 class MUNews_Version extends MUNews_Base_Version
 {
-    // custom enhancements can go here
+    /**
+     * Retrieves meta data information for this application.
+     *
+     * @return array List of meta data.
+     */
+    public function getMetaData()
+    {
+        $meta = parent::getMetaData();
+        
+        // the current module version
+        $meta['version']              = '1.0.0';
+        // the displayed name of the module
+        $meta['displayname']          = $this->__('MUNews');
+        // the module description
+        $meta['description']          = $this->__('MUNews - a small module to create and handle news');
+        
+        return $meta;
+    }
+    
 }
