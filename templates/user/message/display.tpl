@@ -118,6 +118,7 @@
             {/foreach}
         {/if}
         </div>
+        <br style="clear: both;" />
         
     
     {include file='user/include_categories_display.tpl' obj=$message}
