@@ -39,6 +39,8 @@ Additional Files
 
 customisations.txt
 
+*templates/config/usemodules
+
 
 
 
