@@ -39,7 +39,7 @@
             <span class="z-formnote"><a id="resetImageUpload1Val" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
                 <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="imageUpload1FileExtensions">gif, jpeg, jpg, png</span></span>
-            <span class="z-formnote">{gt text='Allowed file size:'} {'102400'|munewsGetFileSize:'':false:false}</span>
+            <span class="z-formnote">{gt text='Allowed file size:'} {modgetvar module='MUNews' name='allowedFileSize' assign='allowedFileSize'}{$allowedFileSize|munewsGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $message.imageUpload1 ne ''}
                     <span class="z-formnote">
@@ -72,7 +72,7 @@
             <span class="z-formnote"><a id="resetImageUpload2Val" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
             <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="imageUpload2FileExtensions">gif, jpeg, jpg, png</span></span>
-            <span class="z-formnote">{gt text='Allowed file size:'} {'102400'|munewsGetFileSize:'':false:false}</span>
+            <span class="z-formnote">{gt text='Allowed file size:'} {modgetvar module='MUNews' name='allowedFileSize' assign='allowedFileSize'}{$allowedFileSize|munewsGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $message.imageUpload2 ne ''}
                     <span class="z-formnote">
@@ -100,7 +100,7 @@
             <span class="z-formnote"><a id="resetImageUpload3Val" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
                 <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="imageUpload3FileExtensions">gif, jpeg, jpg, png</span></span>
-            <span class="z-formnote">{gt text='Allowed file size:'} {'102400'|munewsGetFileSize:'':false:false}</span>
+            <span class="z-formnote">{gt text='Allowed file size:'} {modgetvar module='MUNews' name='allowedFileSize' assign='allowedFileSize'}{$allowedFileSize|munewsGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $message.imageUpload3 ne ''}
                     <span class="z-formnote">
@@ -128,7 +128,7 @@
             <span class="z-formnote"><a id="resetImageUpload4Val" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
                 <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="imageUpload4FileExtensions">gif, jpeg, jpg, png</span></span>
-            <span class="z-formnote">{gt text='Allowed file size:'} {'102400'|munewsGetFileSize:'':false:false}</span>
+            <span class="z-formnote">{gt text='Allowed file size:'} {modgetvar module='MUNews' name='allowedFileSize' assign='allowedFileSize'}{$allowedFileSize|munewsGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $message.imageUpload4 ne ''}
                     <span class="z-formnote">
