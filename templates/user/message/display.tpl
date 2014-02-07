@@ -102,6 +102,7 @@
         <div id="munews-display-muimage-albums">
         {modgetvar module='MUNews' name='muimageAlbum' assign='muimageAlbum'}
         {if $message.muimageAlbum gt 0 && $muimageAlbum eq 1}
+        {checkpermissionblock component='MUImage:Album:' instance="`$message.muimageAlbum`::" level="ACCESS_OVERVIEW"}
             {munewsShowImagesOfMUImageAlbum albumid=$message.muimageAlbum assign=images}
             {foreach item=item from=$images}
                 {if $item.imageUpload ne '' && isset($item.imageUploadFullPathURL)}
@@ -116,6 +117,7 @@
                     </a>
                 {/if}
             {/foreach}
+        {/checkpermissionblock}
         {/if}
         </div>
         <br style="clear: both;" />
