@@ -99,6 +99,25 @@
         <dd>{$message.options}</dd>
         <dt>{gt text='Relation to'}</dt>
         <dd>{$message.relationTo}</dd> *}
+        <div id="munews-display-muimage-albums">
+        {modgetvar module='MUNews' name='muimageAlbum' assign='muimageAlbum'}
+        {if $message.muimageAlbum gt 0 && $muimageAlbum eq 1}
+            {munewsShowImagesOfMUImageAlbum albumid=$message.muimageAlbum assign=images}
+            {foreach item=item from=$images}
+                {if $item.imageUpload ne '' && isset($item.imageUploadFullPathURL)}
+                    <a href="{$item.imageUploadFullPathURL}" title="{$item.title|replace:"\"":""}"{if $item.imageUploadMeta.isImage} rel="imageviewer[item]"{/if}>
+                        {if $item.imageUploadMeta.format eq 'landscape'}
+                            <img src="{$item.imageUpload|muimageImageThumb:$item.imageUploadFullPath:100:70}" width="100" height="70" alt="{$item.title|replace:"\"":""}" />
+                        {/if}
+                        {if $item.imageUploadMeta.format eq 'portrait'}
+                            <img src="{$item.imageUpload|muimageImageThumb:$item.imageUploadFullPath:52:70}" width="52" height="70" alt="{$item.title|replace:"\"":""}" />
+                        {/if} 
+
+                    </a>
+                {/if}
+            {/foreach}
+        {/if}
+        </div>
         
     
     {include file='user/include_categories_display.tpl' obj=$message}
