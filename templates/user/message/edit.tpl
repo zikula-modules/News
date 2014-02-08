@@ -1,5 +1,7 @@
 {* purpose of this template: build the Form to edit an instance of message *}
 {include file='user/header.tpl'}
+{pageaddvar name='javascript' value='jquery'}
+{pageaddvar name='javascript' value='jquery-ui'}
 {pageaddvar name='javascript' value='modules/MUNews/javascript/MUNews_editFunctions.js'}
 {pageaddvar name='javascript' value='modules/MUNews/javascript/MUNews_validation.js'}
 
@@ -180,7 +182,7 @@
             {formcheckbox group='message' id='noEndDate' readOnly=false __title='no end date ?' cssClass='' }
         </div>
         
-        <div class="z-formrow">
+        <div id="row-endDate" class="z-formrow">
             {formlabel for='endDate' __text='End date' cssClass=''}
             {if $mode ne 'create'}
                 {formdateinput group='message' id='endDate' mandatory=false __title='Enter the end date of the message' includeTime=true cssClass='' }
@@ -292,6 +294,20 @@
         munewsInitDateField('startDate');
         munewsInitDateField('endDate');
     });
+
+        var MU = jQuery.noConflict();
+
+        MU(document).ready(function() {    
+        MU(".z-formrow > #noEndDate").click( function() {
+        if(MU(this).is(':checked')) {
+            MU("#row-endDate").slideUp('slow');
+            }
+            else {
+            	MU("#row-endDate").slideDown('slow');
+            }
+
+        });
+        });
 
 /* ]]> */
 </script>
