@@ -30,7 +30,27 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  */
 class MUNews_Entity_Message extends MUNews_Entity_Base_Message
 {
-    // feel free to add your own methods here
+    /**
+     * Set end date.
+     *
+     * @param DateTime $endDate.
+     *
+     * @return void
+     */
+    public function setEndDate($endDate)
+    {
+        if ($endDate != $this->endDate) {
+            if (is_object($endDate) && $endDate instanceOf \DateTime) {
+                $this->endDate = $endDate;
+            } else {
+                if ($endDate == NULL) {
+                    $this->endDate = NULL;
+                } else {
+                $this->endDate = new \DateTime($endDate);
+                }
+            }
+        }
+    }
 
     
     /**
@@ -54,6 +74,10 @@ class MUNews_Entity_Message extends MUNews_Entity_Base_Message
      */
     public function prePersistCallback()
     {
+        $noenddate = $this->getNoEndDate();
+        if ($noenddate == 1) {
+            $this->setEndDate(NULL);
+        }
         $this->performPrePersistCallback();
     }
     
@@ -102,6 +126,10 @@ class MUNews_Entity_Message extends MUNews_Entity_Base_Message
      */
     public function preUpdateCallback()
     {
+        $noenddate = $this->getNoEndDate();
+        if ($noenddate == 1) {
+            $this->setEndDate(NULL);
+        }
         $this->performPreUpdateCallback();
     }
     
