@@ -32,8 +32,9 @@ function smarty_function_munewsShowImagesOfMUImageAlbum($params, $view)
     $picturerespository = $modelhelper->getPictureRepository();
     
     $where = 'tbl.album = \'' . DataUtil::formatForStore($albumid) . '\'';
+    $orderBy = 'createdDate asc';
     
-    $images = $picturerespository->selectWhere($where);
+    $images = $picturerespository->selectWhere($where, $orderBy);
     
 
     if (array_key_exists('assign', $params)) {
