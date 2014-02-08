@@ -621,6 +621,9 @@ class MUNews_Entity_Repository_Base_Message extends EntityRepository
             $qb->andWhere('tbl.workflowState IN (:onlineStates)')
                ->setParameter('onlineStates', $onlineStates);
         }
+        $startDate = FormUtil::getPassedValue('startDate', date('Y-m-d H:i:s'), 'GET');
+        $qb->andWhere('(tbl.startDate <= :startDate OR tbl.startDate IS NULL)')
+           ->setParameter('startDate', $startDate);
         $endDate = FormUtil::getPassedValue('endDate', date('Y-m-d H:i:s'), 'GET');
         $qb->andWhere('(tbl.endDate >= :endDate OR tbl.endDate IS NULL)')
            ->setParameter('endDate', $endDate);
