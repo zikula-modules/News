@@ -297,7 +297,10 @@
 
         var MU = jQuery.noConflict();
 
-        MU(document).ready(function() {    
+        MU(document).ready(function() { 
+        if(MU(".z-formrow > #noEndDate").is(':checked')) {
+        MU("#row-endDate").css({display: 'none'});
+        }    
         MU(".z-formrow > #noEndDate").click( function() {
         if(MU(this).is(':checked')) {
             MU("#row-endDate").slideUp('slow');
