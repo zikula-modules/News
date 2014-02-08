@@ -24,11 +24,9 @@ Changed Files
 
 Implemented Classes
 
-
-
-*lib/MUStatements/Api/User.php
-
 *lib/MUNews/Controller/User.php
+
+*lib/MUNews/Entity/Message.php
 
 *lib/MUNews/Entity/Repository/Message.php
 
