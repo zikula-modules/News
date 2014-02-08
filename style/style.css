@@ -67,6 +67,11 @@ div.munews-view form.munews-quicknav fieldset #num {
     text-align: right;
 }
 
+.munews-view-title {
+	margin: 0 0 10px 0;
+	float: left;
+}
+
 .munews-view-title img {
 	margin: 0 10px 0 0;
 	float: left;
@@ -87,27 +92,27 @@ div.munews-view form.munews-quicknav fieldset #num {
 }
 
 #munews-display-starttext {
-	margin: 20px 2%;
+	margin: 20px 0;
 	float: left;
 	clear: both;
-	width: 96%;
+	width: 100%;
 	
 }
 
 #munews-display-starttext img {
-	margin: 0 30px 0 0;
+	margin: 0 20px 10px 0;
 	float: left;
 }
 
 #munews-display-maintext {
-	margin: 5px 2% 20px;
+	margin: 5px 0 20px;
 	float: left;
 	clear: both;
-	width: 96%;
+	width: 100%;
 }
 
 #munews-display-maintext img {
-	margin: 0 0 0 30px;
+	margin: 0 0 15px 20px;
 	float: right;
 }
 
@@ -118,5 +123,9 @@ div.munews-view form.munews-quicknav fieldset #num {
 
 .munews-display-image img {
     margin: 0 30px 0 0;
+}
+
+#munews-display-muimage-albums {
+    float: left;	
 }
 

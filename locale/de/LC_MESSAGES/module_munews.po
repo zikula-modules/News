@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MUNews\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-07 18:21+0000\n"
-"PO-Revision-Date: 2014-02-07 21:56+0100\n"
+"PO-Revision-Date: 2014-02-08 15:55+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -143,7 +143,7 @@ msgstr "Inhalt zurück stellen für spätere Einreichung."
 #: workflows/function.standard_permissioncheck.php:109
 #: workflows/function.standard_permissioncheck.php:116
 msgid "Update"
-msgstr "Aktualisierung"
+msgstr "Aktualisieren"
 
 #: workflows/function.standard_permissioncheck.php:90
 #: workflows/function.standard_permissioncheck.php:95
@@ -200,7 +200,7 @@ msgstr "Inhalt aktualisieren und für direkte Veröffentlichung freigeben."
 #: Resources/templates/admin/message/view.tpl:217
 #: templates/admin/message/view.tpl:217
 msgid "Unpublish"
-msgstr "Unöffentlich"
+msgstr "Entöffentlichen"
 
 #: workflows/function.standard_permissioncheck.php:103
 #: Resources/templates/admin/message/view.tpl:217
@@ -213,7 +213,7 @@ msgstr "Inhalt vorübergehend ausblenden."
 #: Resources/templates/admin/message/view.tpl:219
 #: templates/admin/message/view.tpl:219
 msgid "Archive"
-msgstr "Archiv"
+msgstr "Archivieren"
 
 #: workflows/function.standard_permissioncheck.php:104
 #: workflows/function.standard_permissioncheck.php:111
@@ -950,7 +950,7 @@ msgstr "Fehler: ungültige Eingabe"
 #: templates/admin/message/view.tpl:13 templates/admin/message/edit.tpl:10
 #: templates/user/message/view.tpl:10 templates/user/message/edit.tpl:9
 msgid "Create message"
-msgstr "Nachrichten erstellen"
+msgstr "Nachricht erstellen"
 
 #: Resources/templates/admin/message/view.tpl:23
 #: Resources/templates/user/message/view.tpl:20
