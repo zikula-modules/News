@@ -62,8 +62,10 @@
         {else}&nbsp;{/if}
         </dd> 
         <dt>{gt text='Image upload3'}</dt> *}
+        {if $message.imageUpload3 ne '' || $message.imageUpload4 ne ''}
         <div id="munews-display-images">
-        <span class="munews-display-image">{if $message.imageUpload3 ne ''}
+        <span class="munews-display-image">
+        {if $message.imageUpload3 ne ''}
           <a href="{$message.imageUpload3FullPathURL}" title="{$message->getTitleFromDisplayPattern()|replace:"\"":""}"{if $message.imageUpload3Meta.isImage} rel="imageviewer[message]"{/if}>
           {if $message.imageUpload3Meta.isImage}
               {thumb image=$message.imageUpload3FullPath objectid="message-`$message.id`" preset=$messageThumbPresetImageUpload3 tag=true img_alt=$message->getTitleFromDisplayPattern()}
@@ -85,6 +87,7 @@
         {else}&nbsp;{/if}
         </span>
         </div>
+        {/if}
        {* <dt>{gt text='Muimage album'}</dt>
         <dd>{$message.muimageAlbum}</dd>
         <dt>{gt text='Weight'}</dt>
@@ -101,22 +104,10 @@
         <dd>{$message.relationTo}</dd> *}
         <div id="munews-display-muimage-albums">
         {modgetvar module='MUNews' name='muimageAlbum' assign='muimageAlbum'}
-        {if $message.muimageAlbum gt 0 && $muimageAlbum eq 1}
+        {if $message.muimageAlbum ne 0 && $muimageAlbum eq 1 && $useMUImage eq true}
         {checkpermissionblock component='MUImage:Album:' instance="`$message.muimageAlbum`::" level="ACCESS_OVERVIEW"}
             {munewsShowImagesOfMUImageAlbum albumid=$message.muimageAlbum assign=images}
-            {foreach item=item from=$images}
-                {if $item.imageUpload ne '' && isset($item.imageUploadFullPathURL)}
-                    <a href="{$item.imageUploadFullPathURL}" title="{$item.title|replace:"\"":""}"{if $item.imageUploadMeta.isImage} rel="imageviewer[item]"{/if}>
-                        {if $item.imageUploadMeta.format eq 'landscape'}
-                            <img src="{$item.imageUpload|muimageImageThumb:$item.imageUploadFullPath:100:70}" width="100" height="70" alt="{$item.title|replace:"\"":""}" />
-                        {/if}
-                        {if $item.imageUploadMeta.format eq 'portrait'}
-                            <img src="{$item.imageUpload|muimageImageThumb:$item.imageUploadFullPath:52:70}" width="52" height="70" alt="{$item.title|replace:"\"":""}" />
-                        {/if} 
-
-                    </a>
-                {/if}
-            {/foreach}
+            {include file='user/message/muimage_album_images.tpl' images=$images}
         {/checkpermissionblock}
         {/if}
         </div>

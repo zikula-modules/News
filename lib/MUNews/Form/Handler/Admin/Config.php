@@ -16,5 +16,23 @@
  */
 class MUNews_Form_Handler_Admin_Config extends MUNews_Form_Handler_Admin_Base_Config
 {
-    // feel free to extend the base handler class here
+    /**
+     * Method stub for own additions in subclasses.
+     */
+    protected function initializeAdditions()
+    {
+        $dom = ZLanguage::getModuleDomain('MUNews');
+        // we check for module MUImage and legacy mode on        
+        $muimage = ModUtil::available('MUImage');
+        $legacy = System::isLegacyMode();
+        
+        if ($muimage == true && $legacy == true) {
+            $useMUImage = true;
+        } else {
+            $useMUImage = false;
+            LogUtil::registerError(__('Sorry! Legacy mode is enabled. If you want to use MUImage albums, you have to enable!', $dom));
+        }
+        
+        $this->view->assign('useMUImage', $useMUImage);
+    }
 }

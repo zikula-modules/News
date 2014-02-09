@@ -192,6 +192,18 @@ class MUNews_Controller_User extends MUNews_Controller_Base_User
         $this->view->assign('showAuthor', $showAuthor)
                    ->assign('showDate', $showDate);
         
+        // we check for module MUImage and legacy mode on
+        $muimage = ModUtil::available('MUImage');
+        $legacy = System::isLegacyMode();
+        
+        if ($muimage == true && $legacy == true) {
+            $useMUImage = true;
+        } else {
+            $useMUImage = false;
+        }
+        
+        $this->view->assign('useMUImage', $useMUImage);
+        
         return parent::display();
     }
 }
