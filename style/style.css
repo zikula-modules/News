@@ -75,10 +75,12 @@ div.munews-view form.munews-quicknav fieldset #num {
 .munews-view-title img {
 	margin: 0 10px 0 0;
 	float: left;
+	width: 30px;
 }
 
 .munews-view {
     float: left;	
+    margin: 10px 0 0 0;
 }
 
 .munews-view-start {
@@ -118,7 +120,8 @@ div.munews-view form.munews-quicknav fieldset #num {
 
 #munews-display-images {
     width: 96%;
-	margin: 10px 2%;	
+	margin: 10px 2%;
+	float: left;	
 }
 
 .munews-display-image img {
