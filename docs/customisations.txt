@@ -12,7 +12,12 @@ Changed Files
 
 *templates/user/footer.tpl
 *templates/user/header.tpl
-*templates/user/header.tpl
+*templates/user/include_standardfields_display.tpl
+
+*templates/admin/config.tpl
+
+*templates/admin/message/edit.tpl
+*templates/admin/message/view.tpl
 
 *templates/user/message/display.tpl
 *templates/user/message/edit.tpl
@@ -30,6 +35,7 @@ Implemented Classes
 
 *lib/MUNews/Entity/Repository/Message.php
 
+*lib/MUNews/Form/Handler/Admin/Config.php
 *lib/MUNews/Form/Handler/User/Message/Edit.php
 
 *lib/MUNews/Util/Image.php
