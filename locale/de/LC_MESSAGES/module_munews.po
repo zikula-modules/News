@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MUNews\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-07 18:21+0000\n"
-"PO-Revision-Date: 2014-02-08 15:55+0100\n"
+"POT-Creation-Date: 2014-02-09 13:07+0000\n"
+"PO-Revision-Date: 2014-02-09 14:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -226,7 +226,7 @@ msgstr "Inhalt ins Archiv verschieben."
 #: Resources/templates/admin/message/view.tpl:218
 #: templates/admin/message/view.tpl:218
 msgid "Publish"
-msgstr "Öffentlich"
+msgstr "Veröffentlichen"
 
 #: workflows/function.standard_permissioncheck.php:110
 #: Resources/templates/admin/message/view.tpl:218
@@ -442,7 +442,7 @@ msgstr "Erledigt! Nachricht gelöscht."
 
 #: lib/MUNews/Form/Handler/Admin/Message/Base/Edit.php:228
 #: lib/MUNews/Form/Handler/User/Message/Base/Edit.php:228
-#: lib/MUNews/Entity/Repository/Base/Message.php:1025
+#: lib/MUNews/Entity/Repository/Base/Message.php:1028
 #: lib/MUNews/Controller/Base/Admin.php:471
 #, php-format
 msgid ""
@@ -451,6 +451,14 @@ msgid ""
 msgstr ""
 "Entschuldigung, aber ein unbekannter Fehler ist während der Aktion %s "
 "aufgetreten. Bitte bestätige die Änderungen erneut!"
+
+#: lib/MUNews/Form/Handler/Admin/Config.php:33
+msgid ""
+"Sorry! Legacy mode is enabled. If you want to use MUImage albums, you have "
+"to enable!"
+msgstr ""
+"Entschuldigung! Der Legacy Modus ist deaktiviert. Wenn Du Alben von MUImage "
+"nutzen möchtest, aktiviere ihn bitte!"
 
 #: lib/MUNews/ContentType/Base/Item.php:52
 msgid "MUNews detail view"
@@ -880,11 +888,11 @@ msgid "A list of three random messages."
 msgstr ""
 "Eine Liste 3 zufälliger Zeigt alle Elemente ausgenommen die abgelehnt wurden."
 
-#: lib/MUNews/Api/Base/User.php:30 lib/MUNews/Api/User.php:30
+#: lib/MUNews/Api/Base/User.php:30
 msgid "Backend"
 msgstr "Backend"
 
-#: lib/MUNews/Api/Base/User.php:31 lib/MUNews/Api/User.php:31
+#: lib/MUNews/Api/Base/User.php:31
 msgid "Switch to administration area."
 msgstr "Wechsel zum Administrationsbereich."
 
@@ -944,11 +952,75 @@ msgstr ""
 msgid "Error: invalid input."
 msgstr "Fehler: ungültige Eingabe"
 
+#: Resources/templates/admin/config.tpl:4
+#: Resources/templates/admin/config.tpl:7
+#: Resources/templates/admin/config.tpl:15 templates/admin/config.tpl:4
+#: templates/admin/config.tpl:7 templates/admin/config.tpl:15
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: Resources/templates/admin/config.tpl:19 templates/admin/config.tpl:19
+msgid "Here you can manage all basic settings for this application."
+msgstr "Hier kannst Du die Grundeinstellungen für dieses Modul verwalten."
+
+#: Resources/templates/admin/config.tpl:22 templates/admin/config.tpl:22
+msgid "Show author"
+msgstr "Zeige Autor"
+
+#: Resources/templates/admin/config.tpl:26 templates/admin/config.tpl:26
+msgid "Show date"
+msgstr "Zeige Datum"
+
+#: Resources/templates/admin/config.tpl:30 templates/admin/config.tpl:30
+msgid "News per page"
+msgstr "Nachrichten pro Seite"
+
+#: Resources/templates/admin/config.tpl:31
+#: Resources/templates/admin/config.tpl:35 templates/admin/config.tpl:31
+#: templates/admin/config.tpl:35
+msgid "Enter the news per page. Only digits are allowed."
+msgstr "Gib ein, wieviele Nachrichten pro Seite angezeigt werden sollen."
+
+#: Resources/templates/admin/config.tpl:34 templates/admin/config.tpl:34
+msgid "Allowed file size"
+msgstr "Erlaubte Dateigröße:"
+
+#: Resources/templates/admin/config.tpl:39
+#: Resources/templates/admin/message/view.tpl:88
+#: Resources/templates/admin/message/edit.tpl:162
+#: Resources/templates/user/message/view.tpl:77
+#: Resources/templates/user/message/edit.tpl:157
+#: templates/external/message/find.tpl:100
+#: templates/external/message/select.tpl:61 templates/admin/config.tpl:39
+#: templates/admin/message/display.tpl:65
+#: templates/admin/message/view_quickNav.tpl:64
+#: templates/admin/message/view.tpl:88 templates/admin/message/edit.tpl:162
+#: templates/admin/message/view.csv.tpl:3
+#: templates/user/message/view_quickNav.tpl:64
+#: templates/user/message/view.tpl:77 templates/user/message/edit.tpl:157
+#: templates/user/message/view.csv.tpl:3
+msgid "Muimage album"
+msgstr "MUImage Album"
+
+#: Resources/templates/admin/config.tpl:46 templates/admin/config.tpl:46
+msgid "Update configuration"
+msgstr "Einstellungen aktualisieren"
+
+#: Resources/templates/admin/config.tpl:47
+#: Resources/templates/admin/message/edit.tpl:246
+#: Resources/templates/user/message/edit.tpl:241
+#: templates/external/message/find.tpl:140 templates/admin/config.tpl:47
+#: templates/admin/message/edit.tpl:246 templates/admin/message/delete.tpl:22
+#: templates/user/message/edit.tpl:241
+msgid "Cancel"
+msgstr "Abbrechen"
+
 #: Resources/templates/admin/message/view.tpl:13
+#: Resources/templates/admin/message/edit.tpl:12
 #: Resources/templates/user/message/view.tpl:10
-#: Resources/templates/user/message/edit.tpl:9
-#: templates/admin/message/view.tpl:13 templates/admin/message/edit.tpl:10
-#: templates/user/message/view.tpl:10 templates/user/message/edit.tpl:9
+#: Resources/templates/user/message/edit.tpl:11
+#: templates/admin/message/view.tpl:13 templates/admin/message/edit.tpl:12
+#: templates/user/message/view.tpl:10 templates/user/message/edit.tpl:11
 msgid "Create message"
 msgstr "Nachricht erstellen"
 
@@ -972,195 +1044,191 @@ msgid "State"
 msgstr "Status"
 
 #: Resources/templates/admin/message/view.tpl:67
+#: Resources/templates/admin/message/edit.tpl:33
 #: Resources/templates/user/message/display.tpl:12
 #: Resources/templates/user/message/view.tpl:56
-#: Resources/templates/user/message/edit.tpl:25
+#: Resources/templates/user/message/edit.tpl:27
 #: templates/external/message/find.tpl:93
 #: templates/external/message/select.tpl:54
 #: templates/admin/message/display.tpl:15
 #: templates/admin/message/view_quickNav.tpl:57
-#: templates/admin/message/view.tpl:67 templates/admin/message/edit.tpl:31
+#: templates/admin/message/view.tpl:67 templates/admin/message/edit.tpl:33
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/display.tpl:12
 #: templates/user/message/view_quickNav.tpl:57
-#: templates/user/message/view.tpl:56 templates/user/message/edit.tpl:25
+#: templates/user/message/view.tpl:56 templates/user/message/edit.tpl:27
 #: templates/user/message/view.csv.tpl:3
 msgid "Title"
 msgstr "Titel"
 
 #: Resources/templates/admin/message/view.tpl:70
+#: Resources/templates/admin/message/edit.tpl:39
 #: Resources/templates/user/message/view.tpl:59
-#: Resources/templates/user/message/edit.tpl:31
+#: Resources/templates/user/message/edit.tpl:33
 #: templates/external/message/find.tpl:94
 #: templates/external/message/select.tpl:55
 #: templates/admin/message/display.tpl:17
 #: templates/admin/message/view_quickNav.tpl:58
-#: templates/admin/message/view.tpl:70 templates/admin/message/edit.tpl:37
+#: templates/admin/message/view.tpl:70 templates/admin/message/edit.tpl:39
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/view_quickNav.tpl:58
-#: templates/user/message/view.tpl:59 templates/user/message/edit.tpl:31
+#: templates/user/message/view.tpl:59 templates/user/message/edit.tpl:33
 #: templates/user/message/view.csv.tpl:3
 msgid "Start text"
 msgstr "Starttext"
 
 #: Resources/templates/admin/message/view.tpl:73
+#: Resources/templates/admin/message/edit.tpl:45
 #: Resources/templates/user/message/view.tpl:62
-#: Resources/templates/user/message/edit.tpl:37
+#: Resources/templates/user/message/edit.tpl:39
 #: templates/external/message/find.tpl:95
 #: templates/external/message/select.tpl:56
 #: templates/admin/message/display.tpl:19
 #: templates/admin/message/view_quickNav.tpl:59
-#: templates/admin/message/view.tpl:73 templates/admin/message/edit.tpl:43
+#: templates/admin/message/view.tpl:73 templates/admin/message/edit.tpl:45
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/view_quickNav.tpl:59
-#: templates/user/message/view.tpl:62 templates/user/message/edit.tpl:37
+#: templates/user/message/view.tpl:62 templates/user/message/edit.tpl:39
 #: templates/user/message/view.csv.tpl:3
 msgid "Image upload1"
 msgstr "Bildupload 1"
 
 #: Resources/templates/admin/message/view.tpl:76
+#: Resources/templates/admin/message/edit.tpl:73
 #: Resources/templates/user/message/view.tpl:65
-#: Resources/templates/user/message/edit.tpl:65
+#: Resources/templates/user/message/edit.tpl:67
 #: templates/external/message/find.tpl:96
 #: templates/external/message/select.tpl:57
 #: templates/admin/message/display.tpl:30
 #: templates/admin/message/view_quickNav.tpl:60
-#: templates/admin/message/view.tpl:76 templates/admin/message/edit.tpl:71
+#: templates/admin/message/view.tpl:76 templates/admin/message/edit.tpl:73
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/view_quickNav.tpl:60
-#: templates/user/message/view.tpl:65 templates/user/message/edit.tpl:65
+#: templates/user/message/view.tpl:65 templates/user/message/edit.tpl:67
 #: templates/user/message/view.csv.tpl:3
 msgid "Main text"
 msgstr "Haupttext"
 
 #: Resources/templates/admin/message/view.tpl:79
+#: Resources/templates/admin/message/edit.tpl:78
 #: Resources/templates/user/message/view.tpl:68
-#: Resources/templates/user/message/edit.tpl:70
+#: Resources/templates/user/message/edit.tpl:72
 #: templates/external/message/find.tpl:97
 #: templates/external/message/select.tpl:58
 #: templates/admin/message/display.tpl:32
 #: templates/admin/message/view_quickNav.tpl:61
-#: templates/admin/message/view.tpl:79 templates/admin/message/edit.tpl:76
+#: templates/admin/message/view.tpl:79 templates/admin/message/edit.tpl:78
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/view_quickNav.tpl:61
-#: templates/user/message/view.tpl:68 templates/user/message/edit.tpl:70
+#: templates/user/message/view.tpl:68 templates/user/message/edit.tpl:72
 #: templates/user/message/view.csv.tpl:3
 msgid "Image upload2"
 msgstr "Bildupload 2"
 
 #: Resources/templates/admin/message/view.tpl:82
+#: Resources/templates/admin/message/edit.tpl:106
 #: Resources/templates/user/message/display.tpl:64
 #: Resources/templates/user/message/view.tpl:71
-#: Resources/templates/user/message/edit.tpl:98
+#: Resources/templates/user/message/edit.tpl:100
 #: templates/external/message/find.tpl:98
 #: templates/external/message/select.tpl:59
 #: templates/admin/message/display.tpl:43
 #: templates/admin/message/view_quickNav.tpl:62
-#: templates/admin/message/view.tpl:82 templates/admin/message/edit.tpl:104
+#: templates/admin/message/view.tpl:82 templates/admin/message/edit.tpl:106
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/display.tpl:64
 #: templates/user/message/view_quickNav.tpl:62
-#: templates/user/message/view.tpl:71 templates/user/message/edit.tpl:98
+#: templates/user/message/view.tpl:71 templates/user/message/edit.tpl:100
 #: templates/user/message/view.csv.tpl:3
 msgid "Image upload3"
 msgstr "Bildupload 3"
 
 #: Resources/templates/admin/message/view.tpl:85
+#: Resources/templates/admin/message/edit.tpl:134
 #: Resources/templates/user/message/view.tpl:74
-#: Resources/templates/user/message/edit.tpl:126
+#: Resources/templates/user/message/edit.tpl:128
 #: templates/external/message/find.tpl:99
 #: templates/external/message/select.tpl:60
 #: templates/admin/message/display.tpl:54
 #: templates/admin/message/view_quickNav.tpl:63
-#: templates/admin/message/view.tpl:85 templates/admin/message/edit.tpl:132
+#: templates/admin/message/view.tpl:85 templates/admin/message/edit.tpl:134
 #: templates/admin/message/view.csv.tpl:3
 #: templates/user/message/view_quickNav.tpl:63
-#: templates/user/message/view.tpl:74 templates/user/message/edit.tpl:126
+#: templates/user/message/view.tpl:74 templates/user/message/edit.tpl:128
 #: templates/user/message/view.csv.tpl:3
 msgid "Image upload4"
 msgstr "Bildupload 4"
 
-#: Resources/templates/admin/message/view.tpl:88
-#: Resources/templates/user/message/view.tpl:77
-#: Resources/templates/user/message/edit.tpl:155
-#: templates/external/message/find.tpl:100
-#: templates/external/message/select.tpl:61 templates/admin/config.tpl:38
-#: templates/admin/message/display.tpl:65
-#: templates/admin/message/view_quickNav.tpl:64
-#: templates/admin/message/view.tpl:88 templates/admin/message/edit.tpl:160
-#: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/view_quickNav.tpl:64
-#: templates/user/message/view.tpl:77 templates/user/message/edit.tpl:155
-#: templates/user/message/view.csv.tpl:3
-msgid "Muimage album"
-msgstr "MUImage Album"
-
 #: Resources/templates/admin/message/view.tpl:91
-#: Resources/templates/user/message/display.tpl:90
+#: Resources/templates/admin/message/edit.tpl:168
+#: Resources/templates/user/message/display.tpl:93
 #: Resources/templates/user/message/view.tpl:80
-#: Resources/templates/user/message/edit.tpl:161
+#: Resources/templates/user/message/edit.tpl:163
 #: templates/external/message/find.tpl:101
 #: templates/external/message/select.tpl:62
 #: templates/admin/message/display.tpl:67
 #: templates/admin/message/view_quickNav.tpl:65
-#: templates/admin/message/view.tpl:91 templates/admin/message/edit.tpl:166
+#: templates/admin/message/view.tpl:91 templates/admin/message/edit.tpl:168
 #: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/display.tpl:90
+#: templates/user/message/display.tpl:93
 #: templates/user/message/view_quickNav.tpl:65
-#: templates/user/message/view.tpl:80 templates/user/message/edit.tpl:161
+#: templates/user/message/view.tpl:80 templates/user/message/edit.tpl:163
 #: templates/user/message/view.csv.tpl:3
 msgid "Weight"
 msgstr "Gewicht"
 
 #: Resources/templates/admin/message/view.tpl:94
-#: Resources/templates/user/message/display.tpl:92
+#: Resources/templates/admin/message/edit.tpl:175
+#: Resources/templates/user/message/display.tpl:95
 #: Resources/templates/user/message/view.tpl:83
-#: Resources/templates/user/message/edit.tpl:168
+#: Resources/templates/user/message/edit.tpl:170
 #: templates/external/message/find.tpl:102
 #: templates/external/message/select.tpl:63
 #: templates/admin/message/display.tpl:69
 #: templates/admin/message/view_quickNav.tpl:66
-#: templates/admin/message/view.tpl:94 templates/admin/message/edit.tpl:173
+#: templates/admin/message/view.tpl:94 templates/admin/message/edit.tpl:175
 #: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/display.tpl:92
+#: templates/user/message/display.tpl:95
 #: templates/user/message/view_quickNav.tpl:66
-#: templates/user/message/view.tpl:83 templates/user/message/edit.tpl:168
+#: templates/user/message/view.tpl:83 templates/user/message/edit.tpl:170
 #: templates/user/message/view.csv.tpl:3
 msgid "Start date"
 msgstr "Startdatum"
 
 #: Resources/templates/admin/message/view.tpl:97
-#: Resources/templates/user/message/display.tpl:94
+#: Resources/templates/admin/message/edit.tpl:186
+#: Resources/templates/user/message/display.tpl:97
 #: Resources/templates/user/message/view.tpl:86
-#: Resources/templates/user/message/edit.tpl:179
+#: Resources/templates/user/message/edit.tpl:181
 #: templates/external/message/find.tpl:103
 #: templates/external/message/select.tpl:64
 #: templates/admin/message/display.tpl:71
 #: templates/admin/message/view_quickNav.tpl:67
 #: templates/admin/message/view_quickNav.tpl:96
-#: templates/admin/message/view.tpl:97 templates/admin/message/edit.tpl:184
+#: templates/admin/message/view.tpl:97 templates/admin/message/edit.tpl:186
 #: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/display.tpl:94
+#: templates/user/message/display.tpl:97
 #: templates/user/message/view_quickNav.tpl:67
 #: templates/user/message/view_quickNav.tpl:96
-#: templates/user/message/view.tpl:86 templates/user/message/edit.tpl:179
+#: templates/user/message/view.tpl:86 templates/user/message/edit.tpl:181
 #: templates/user/message/view.csv.tpl:3
 msgid "No end date"
 msgstr "Kein Enddatum"
 
 #: Resources/templates/admin/message/view.tpl:100
-#: Resources/templates/user/message/display.tpl:96
+#: Resources/templates/admin/message/edit.tpl:191
+#: Resources/templates/user/message/display.tpl:99
 #: Resources/templates/user/message/view.tpl:89
-#: Resources/templates/user/message/edit.tpl:184
+#: Resources/templates/user/message/edit.tpl:186
 #: templates/external/message/find.tpl:104
 #: templates/external/message/select.tpl:65
 #: templates/admin/message/display.tpl:73
 #: templates/admin/message/view_quickNav.tpl:68
-#: templates/admin/message/view.tpl:100 templates/admin/message/edit.tpl:189
+#: templates/admin/message/view.tpl:100 templates/admin/message/edit.tpl:191
 #: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/display.tpl:96
+#: templates/user/message/display.tpl:99
 #: templates/user/message/view_quickNav.tpl:68
-#: templates/user/message/view.tpl:89 templates/user/message/edit.tpl:184
+#: templates/user/message/view.tpl:89 templates/user/message/edit.tpl:186
 #: templates/user/message/view.csv.tpl:3
 msgid "End date"
 msgstr "Enddatum"
@@ -1188,21 +1256,25 @@ msgstr "Detailseite ansehen"
 #: Resources/templates/admin/message/view.tpl:141
 #: Resources/templates/admin/message/view.tpl:152
 #: Resources/templates/admin/message/view.tpl:163
+#: Resources/templates/admin/message/edit.tpl:59
+#: Resources/templates/admin/message/edit.tpl:92
+#: Resources/templates/admin/message/edit.tpl:120
+#: Resources/templates/admin/message/edit.tpl:148
 #: Resources/templates/user/message/display.tpl:20
 #: Resources/templates/user/message/display.tpl:32
 #: Resources/templates/user/message/display.tpl:46
 #: Resources/templates/user/message/display.tpl:59
-#: Resources/templates/user/message/display.tpl:71
-#: Resources/templates/user/message/display.tpl:82
+#: Resources/templates/user/message/display.tpl:73
+#: Resources/templates/user/message/display.tpl:84
 #: Resources/templates/user/message/view.tpl:113
 #: Resources/templates/user/message/view.tpl:127
 #: Resources/templates/user/message/view.tpl:138
 #: Resources/templates/user/message/view.tpl:149
 #: Resources/templates/user/message/view.tpl:203
-#: Resources/templates/user/message/edit.tpl:51
-#: Resources/templates/user/message/edit.tpl:84
-#: Resources/templates/user/message/edit.tpl:112
-#: Resources/templates/user/message/edit.tpl:140
+#: Resources/templates/user/message/edit.tpl:53
+#: Resources/templates/user/message/edit.tpl:86
+#: Resources/templates/user/message/edit.tpl:114
+#: Resources/templates/user/message/edit.tpl:142
 #: templates/external/message/display.tpl:26
 #: templates/external/message/info.tpl:9
 #: templates/admin/message/display.tpl:25
@@ -1210,16 +1282,16 @@ msgstr "Detailseite ansehen"
 #: templates/admin/message/display.tpl:49
 #: templates/admin/message/display.tpl:60 templates/admin/message/view.tpl:127
 #: templates/admin/message/view.tpl:141 templates/admin/message/view.tpl:152
-#: templates/admin/message/view.tpl:163 templates/admin/message/edit.tpl:57
-#: templates/admin/message/edit.tpl:90 templates/admin/message/edit.tpl:118
-#: templates/admin/message/edit.tpl:146 templates/user/message/display.tpl:20
+#: templates/admin/message/view.tpl:163 templates/admin/message/edit.tpl:59
+#: templates/admin/message/edit.tpl:92 templates/admin/message/edit.tpl:120
+#: templates/admin/message/edit.tpl:148 templates/user/message/display.tpl:20
 #: templates/user/message/display.tpl:32 templates/user/message/display.tpl:46
-#: templates/user/message/display.tpl:59 templates/user/message/display.tpl:71
-#: templates/user/message/display.tpl:82 templates/user/message/view.tpl:113
+#: templates/user/message/display.tpl:59 templates/user/message/display.tpl:73
+#: templates/user/message/display.tpl:84 templates/user/message/view.tpl:113
 #: templates/user/message/view.tpl:127 templates/user/message/view.tpl:138
 #: templates/user/message/view.tpl:149 templates/user/message/view.tpl:203
-#: templates/user/message/edit.tpl:51 templates/user/message/edit.tpl:84
-#: templates/user/message/edit.tpl:112 templates/user/message/edit.tpl:140
+#: templates/user/message/edit.tpl:53 templates/user/message/edit.tpl:86
+#: templates/user/message/edit.tpl:114 templates/user/message/edit.tpl:142
 msgid "Download"
 msgstr "Download"
 
@@ -1242,6 +1314,198 @@ msgstr "Mit gewählter Nachricht"
 #: templates/admin/message/view.tpl:215
 msgid "Choose action"
 msgstr "Wähle eine Aktion"
+
+#: Resources/templates/admin/message/edit.tpl:9
+#: Resources/templates/admin/message/edit.tpl:15
+#: Resources/templates/user/message/edit.tpl:9
+#: Resources/templates/user/message/edit.tpl:13
+#: templates/admin/message/edit.tpl:9 templates/admin/message/edit.tpl:15
+#: templates/user/message/edit.tpl:9 templates/user/message/edit.tpl:13
+msgid "Edit message"
+msgstr "Nachricht bearbeiten"
+
+#: Resources/templates/admin/message/edit.tpl:30
+#: Resources/templates/user/message/edit.tpl:24
+#: templates/admin/message/edit.tpl:30 templates/user/message/edit.tpl:24
+msgid "Content"
+msgstr "Inhalt"
+
+#: Resources/templates/admin/message/edit.tpl:34
+#: Resources/templates/user/message/edit.tpl:28
+#: templates/admin/message/edit.tpl:34 templates/user/message/edit.tpl:28
+msgid "Enter the title of the message"
+msgstr "Gib den Nachrichtentitel ein"
+
+#: Resources/templates/admin/message/edit.tpl:40
+#: Resources/templates/user/message/edit.tpl:34
+#: templates/admin/message/edit.tpl:40 templates/user/message/edit.tpl:34
+msgid "Enter the start text of the message"
+msgstr "Gib den Starttext der Nachricht ein"
+
+#: Resources/templates/admin/message/edit.tpl:47
+#: Resources/templates/admin/message/edit.tpl:80
+#: Resources/templates/admin/message/edit.tpl:108
+#: Resources/templates/admin/message/edit.tpl:136
+#: Resources/templates/admin/message/edit.tpl:182
+#: Resources/templates/admin/message/edit.tpl:198
+#: Resources/templates/user/message/edit.tpl:41
+#: Resources/templates/user/message/edit.tpl:74
+#: Resources/templates/user/message/edit.tpl:102
+#: Resources/templates/user/message/edit.tpl:130
+#: Resources/templates/user/message/edit.tpl:177
+#: Resources/templates/user/message/edit.tpl:193
+#: templates/admin/message/edit.tpl:47 templates/admin/message/edit.tpl:80
+#: templates/admin/message/edit.tpl:108 templates/admin/message/edit.tpl:136
+#: templates/admin/message/edit.tpl:182 templates/admin/message/edit.tpl:198
+#: templates/user/message/edit.tpl:41 templates/user/message/edit.tpl:74
+#: templates/user/message/edit.tpl:102 templates/user/message/edit.tpl:130
+#: templates/user/message/edit.tpl:177 templates/user/message/edit.tpl:193
+msgid "Reset to empty value"
+msgstr "Zu leerem Wert zurück setzen"
+
+#: Resources/templates/admin/message/edit.tpl:49
+#: Resources/templates/admin/message/edit.tpl:82
+#: Resources/templates/admin/message/edit.tpl:110
+#: Resources/templates/admin/message/edit.tpl:138
+#: Resources/templates/user/message/edit.tpl:43
+#: Resources/templates/user/message/edit.tpl:76
+#: Resources/templates/user/message/edit.tpl:104
+#: Resources/templates/user/message/edit.tpl:132
+#: templates/admin/message/edit.tpl:49 templates/admin/message/edit.tpl:82
+#: templates/admin/message/edit.tpl:110 templates/admin/message/edit.tpl:138
+#: templates/user/message/edit.tpl:43 templates/user/message/edit.tpl:76
+#: templates/user/message/edit.tpl:104 templates/user/message/edit.tpl:132
+msgid "Allowed file extensions:"
+msgstr "Erlaubte Dateiendungen:"
+
+#: Resources/templates/admin/message/edit.tpl:50
+#: Resources/templates/admin/message/edit.tpl:83
+#: Resources/templates/admin/message/edit.tpl:111
+#: Resources/templates/admin/message/edit.tpl:139
+#: Resources/templates/user/message/edit.tpl:44
+#: Resources/templates/user/message/edit.tpl:77
+#: Resources/templates/user/message/edit.tpl:105
+#: Resources/templates/user/message/edit.tpl:133
+#: templates/admin/message/edit.tpl:50 templates/admin/message/edit.tpl:83
+#: templates/admin/message/edit.tpl:111 templates/admin/message/edit.tpl:139
+#: templates/user/message/edit.tpl:44 templates/user/message/edit.tpl:77
+#: templates/user/message/edit.tpl:105 templates/user/message/edit.tpl:133
+msgid "Allowed file size:"
+msgstr "Erlaubte Dateigröße:"
+
+#: Resources/templates/admin/message/edit.tpl:54
+#: Resources/templates/admin/message/edit.tpl:87
+#: Resources/templates/admin/message/edit.tpl:115
+#: Resources/templates/admin/message/edit.tpl:143
+#: Resources/templates/user/message/edit.tpl:48
+#: Resources/templates/user/message/edit.tpl:81
+#: Resources/templates/user/message/edit.tpl:109
+#: Resources/templates/user/message/edit.tpl:137
+#: templates/admin/message/edit.tpl:54 templates/admin/message/edit.tpl:87
+#: templates/admin/message/edit.tpl:115 templates/admin/message/edit.tpl:143
+#: templates/user/message/edit.tpl:48 templates/user/message/edit.tpl:81
+#: templates/user/message/edit.tpl:109 templates/user/message/edit.tpl:137
+msgid "Current file"
+msgstr "Aktuelle Datei"
+
+#: Resources/templates/admin/message/edit.tpl:64
+#: Resources/templates/user/message/edit.tpl:58
+#: templates/admin/message/edit.tpl:64 templates/user/message/edit.tpl:58
+msgid "Delete image upload1 ?"
+msgstr "Dieses Bild löschen?"
+
+#: Resources/templates/admin/message/edit.tpl:65
+#: Resources/templates/admin/message/edit.tpl:98
+#: Resources/templates/admin/message/edit.tpl:126
+#: Resources/templates/admin/message/edit.tpl:154
+#: Resources/templates/user/message/edit.tpl:59
+#: Resources/templates/user/message/edit.tpl:92
+#: Resources/templates/user/message/edit.tpl:120
+#: Resources/templates/user/message/edit.tpl:148
+#: templates/admin/message/edit.tpl:65 templates/admin/message/edit.tpl:98
+#: templates/admin/message/edit.tpl:126 templates/admin/message/edit.tpl:154
+#: templates/user/message/edit.tpl:59 templates/user/message/edit.tpl:92
+#: templates/user/message/edit.tpl:120 templates/user/message/edit.tpl:148
+msgid "Delete existing file"
+msgstr "Vorhandene Datei löchen"
+
+#: Resources/templates/admin/message/edit.tpl:74
+#: Resources/templates/user/message/edit.tpl:68
+#: templates/admin/message/edit.tpl:74 templates/user/message/edit.tpl:68
+msgid "Enter the main text of the message"
+msgstr "Gib den Haupttext der Nachricht ein"
+
+#: Resources/templates/admin/message/edit.tpl:97
+#: Resources/templates/user/message/edit.tpl:91
+#: templates/admin/message/edit.tpl:97 templates/user/message/edit.tpl:91
+msgid "Delete image upload2 ?"
+msgstr "Bild löschen?"
+
+#: Resources/templates/admin/message/edit.tpl:125
+#: Resources/templates/user/message/edit.tpl:119
+#: templates/admin/message/edit.tpl:125 templates/user/message/edit.tpl:119
+msgid "Delete image upload3 ?"
+msgstr "Bild löschen?"
+
+#: Resources/templates/admin/message/edit.tpl:153
+#: Resources/templates/user/message/edit.tpl:147
+#: templates/admin/message/edit.tpl:153 templates/user/message/edit.tpl:147
+msgid "Delete image upload4 ?"
+msgstr "Bild löschen?"
+
+#: Resources/templates/admin/message/edit.tpl:163
+#: Resources/templates/user/message/edit.tpl:158
+#: templates/admin/message/edit.tpl:163 templates/user/message/edit.tpl:158
+msgid "Enter the muimage album of the message"
+msgstr "Gib das MUImage Album der Nachricht ein"
+
+#: Resources/templates/admin/message/edit.tpl:169
+#: Resources/templates/user/message/edit.tpl:164
+#: templates/admin/message/edit.tpl:169 templates/user/message/edit.tpl:164
+msgid "Enter the weight of the message"
+msgstr "Gib das Gewicht ein"
+
+#: Resources/templates/admin/message/edit.tpl:177
+#: Resources/templates/admin/message/edit.tpl:179
+#: Resources/templates/user/message/edit.tpl:172
+#: Resources/templates/user/message/edit.tpl:174
+#: templates/admin/message/edit.tpl:177 templates/admin/message/edit.tpl:179
+#: templates/user/message/edit.tpl:172 templates/user/message/edit.tpl:174
+msgid "Enter the start date of the message"
+msgstr "Bitte gib das Startdatum der Nachricht ein"
+
+#: Resources/templates/admin/message/edit.tpl:187
+#: Resources/templates/user/message/edit.tpl:182
+#: templates/admin/message/edit.tpl:187 templates/user/message/edit.tpl:182
+msgid "no end date ?"
+msgstr "Kein Enddatum?"
+
+#: Resources/templates/admin/message/edit.tpl:193
+#: Resources/templates/admin/message/edit.tpl:195
+#: Resources/templates/user/message/edit.tpl:188
+#: Resources/templates/user/message/edit.tpl:190
+#: templates/admin/message/edit.tpl:193 templates/admin/message/edit.tpl:195
+#: templates/user/message/edit.tpl:188 templates/user/message/edit.tpl:190
+msgid "Enter the end date of the message"
+msgstr "Bitte gib das Enddatum ein"
+
+#: Resources/templates/admin/message/edit.tpl:225
+#: Resources/templates/user/message/edit.tpl:220
+#: templates/admin/message/edit.tpl:225 templates/user/message/edit.tpl:220
+msgid "Return control"
+msgstr "Weiterleitungkontrolle"
+
+#: Resources/templates/admin/message/edit.tpl:227
+#: Resources/templates/user/message/edit.tpl:222
+#: templates/admin/message/edit.tpl:227 templates/user/message/edit.tpl:222
+msgid "Create another item after save"
+msgstr "Ein weiteres Element nach dem Speichern erstellen"
+
+#: Resources/templates/admin/message/edit.tpl:240
+#: Resources/templates/user/message/edit.tpl:235
+#: templates/admin/message/edit.tpl:240 templates/user/message/edit.tpl:235
+msgid "Really delete this message?"
+msgstr "Diese  Nachricht wirklich löschen?"
 
 #: Resources/templates/user/include_standardfields_display.tpl:4
 #: Resources/templates/user/include_standardfields_display.tpl:7
@@ -1301,25 +1565,25 @@ msgstr "Aktualisiert von %s"
 msgid "Message"
 msgstr "Nachricht"
 
-#: Resources/templates/user/message/display.tpl:98
+#: Resources/templates/user/message/display.tpl:101
 #: templates/external/message/find.tpl:105
 #: templates/external/message/select.tpl:66
 #: templates/admin/message/display.tpl:75
 #: templates/admin/message/view_quickNav.tpl:69
 #: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/display.tpl:98
+#: templates/user/message/display.tpl:101
 #: templates/user/message/view_quickNav.tpl:69
 #: templates/user/message/view.csv.tpl:3
 msgid "Options"
 msgstr "Optionen"
 
-#: Resources/templates/user/message/display.tpl:100
+#: Resources/templates/user/message/display.tpl:103
 #: templates/external/message/find.tpl:106
 #: templates/external/message/select.tpl:67
 #: templates/admin/message/display.tpl:77
 #: templates/admin/message/view_quickNav.tpl:70
 #: templates/admin/message/view.csv.tpl:3
-#: templates/user/message/display.tpl:100
+#: templates/user/message/display.tpl:103
 #: templates/user/message/view_quickNav.tpl:70
 #: templates/user/message/view.csv.tpl:3
 msgid "Relation to"
@@ -1332,167 +1596,10 @@ msgstr "Relation zu"
 msgid "Read more"
 msgstr "Mehr lesen"
 
-#: Resources/templates/user/message/edit.tpl:7
-#: Resources/templates/user/message/edit.tpl:11
-#: templates/admin/message/edit.tpl:7 templates/admin/message/edit.tpl:13
-#: templates/user/message/edit.tpl:7 templates/user/message/edit.tpl:11
-msgid "Edit message"
-msgstr "Nachricht bearbeiten"
-
-#: Resources/templates/user/message/edit.tpl:22
-#: templates/admin/message/edit.tpl:28 templates/user/message/edit.tpl:22
-msgid "Content"
-msgstr "Inhalt"
-
-#: Resources/templates/user/message/edit.tpl:26
-#: templates/admin/message/edit.tpl:32 templates/user/message/edit.tpl:26
-msgid "Enter the title of the message"
-msgstr "Gib den Nachrichtentitel ein"
-
-#: Resources/templates/user/message/edit.tpl:32
-#: templates/admin/message/edit.tpl:38 templates/user/message/edit.tpl:32
-msgid "Enter the start text of the message"
-msgstr "Gib den Starttext der Nachricht ein"
-
-#: Resources/templates/user/message/edit.tpl:39
-#: Resources/templates/user/message/edit.tpl:72
-#: Resources/templates/user/message/edit.tpl:100
-#: Resources/templates/user/message/edit.tpl:128
-#: Resources/templates/user/message/edit.tpl:175
-#: Resources/templates/user/message/edit.tpl:191
-#: templates/admin/message/edit.tpl:45 templates/admin/message/edit.tpl:78
-#: templates/admin/message/edit.tpl:106 templates/admin/message/edit.tpl:134
-#: templates/admin/message/edit.tpl:180 templates/admin/message/edit.tpl:196
-#: templates/user/message/edit.tpl:39 templates/user/message/edit.tpl:72
-#: templates/user/message/edit.tpl:100 templates/user/message/edit.tpl:128
-#: templates/user/message/edit.tpl:175 templates/user/message/edit.tpl:191
-msgid "Reset to empty value"
-msgstr "Zu leerem Wert zurück setzen"
-
-#: Resources/templates/user/message/edit.tpl:41
-#: Resources/templates/user/message/edit.tpl:74
-#: Resources/templates/user/message/edit.tpl:102
-#: Resources/templates/user/message/edit.tpl:130
-#: templates/admin/message/edit.tpl:47 templates/admin/message/edit.tpl:80
-#: templates/admin/message/edit.tpl:108 templates/admin/message/edit.tpl:136
-#: templates/user/message/edit.tpl:41 templates/user/message/edit.tpl:74
-#: templates/user/message/edit.tpl:102 templates/user/message/edit.tpl:130
-msgid "Allowed file extensions:"
-msgstr "Erlaubte Dateiendungen:"
-
-#: Resources/templates/user/message/edit.tpl:42
-#: Resources/templates/user/message/edit.tpl:75
-#: Resources/templates/user/message/edit.tpl:103
-#: Resources/templates/user/message/edit.tpl:131
-#: templates/admin/message/edit.tpl:48 templates/admin/message/edit.tpl:81
-#: templates/admin/message/edit.tpl:109 templates/admin/message/edit.tpl:137
-#: templates/user/message/edit.tpl:42 templates/user/message/edit.tpl:75
-#: templates/user/message/edit.tpl:103 templates/user/message/edit.tpl:131
-msgid "Allowed file size:"
-msgstr "Erlaubte Dateigröße:"
-
-#: Resources/templates/user/message/edit.tpl:46
-#: Resources/templates/user/message/edit.tpl:79
-#: Resources/templates/user/message/edit.tpl:107
-#: Resources/templates/user/message/edit.tpl:135
-#: templates/admin/message/edit.tpl:52 templates/admin/message/edit.tpl:85
-#: templates/admin/message/edit.tpl:113 templates/admin/message/edit.tpl:141
-#: templates/user/message/edit.tpl:46 templates/user/message/edit.tpl:79
-#: templates/user/message/edit.tpl:107 templates/user/message/edit.tpl:135
-msgid "Current file"
-msgstr "Aktuelle Datei"
-
-#: Resources/templates/user/message/edit.tpl:56
-#: templates/admin/message/edit.tpl:62 templates/user/message/edit.tpl:56
-msgid "Delete image upload1 ?"
-msgstr "Dieses Bild löschen?"
-
-#: Resources/templates/user/message/edit.tpl:57
-#: Resources/templates/user/message/edit.tpl:90
-#: Resources/templates/user/message/edit.tpl:118
-#: Resources/templates/user/message/edit.tpl:146
-#: templates/admin/message/edit.tpl:63 templates/admin/message/edit.tpl:96
-#: templates/admin/message/edit.tpl:124 templates/admin/message/edit.tpl:152
-#: templates/user/message/edit.tpl:57 templates/user/message/edit.tpl:90
-#: templates/user/message/edit.tpl:118 templates/user/message/edit.tpl:146
-msgid "Delete existing file"
-msgstr "Vorhandene Datei löchen"
-
-#: Resources/templates/user/message/edit.tpl:66
-#: templates/admin/message/edit.tpl:72 templates/user/message/edit.tpl:66
-msgid "Enter the main text of the message"
-msgstr "Gib den Haupttext der Nachricht ein"
-
-#: Resources/templates/user/message/edit.tpl:69
-#: templates/user/message/edit.tpl:69
+#: Resources/templates/user/message/edit.tpl:71
+#: templates/user/message/edit.tpl:71
 msgid "This image only will be shown if you enter a main text."
 msgstr "Dieses Bild wird nur angezeigt, wenn Du einen Haupttext eingibst."
-
-#: Resources/templates/user/message/edit.tpl:89
-#: templates/admin/message/edit.tpl:95 templates/user/message/edit.tpl:89
-msgid "Delete image upload2 ?"
-msgstr "Bild löschen?"
-
-#: Resources/templates/user/message/edit.tpl:117
-#: templates/admin/message/edit.tpl:123 templates/user/message/edit.tpl:117
-msgid "Delete image upload3 ?"
-msgstr "Bild löschen?"
-
-#: Resources/templates/user/message/edit.tpl:145
-#: templates/admin/message/edit.tpl:151 templates/user/message/edit.tpl:145
-msgid "Delete image upload4 ?"
-msgstr "Bild löschen?"
-
-#: Resources/templates/user/message/edit.tpl:156
-#: templates/admin/message/edit.tpl:161 templates/user/message/edit.tpl:156
-msgid "Enter the muimage album of the message"
-msgstr "Gib das MUImage Album der Nachricht ein"
-
-#: Resources/templates/user/message/edit.tpl:162
-#: templates/admin/message/edit.tpl:167 templates/user/message/edit.tpl:162
-msgid "Enter the weight of the message"
-msgstr "Gib das Gewicht ein"
-
-#: Resources/templates/user/message/edit.tpl:170
-#: Resources/templates/user/message/edit.tpl:172
-#: templates/admin/message/edit.tpl:175 templates/admin/message/edit.tpl:177
-#: templates/user/message/edit.tpl:170 templates/user/message/edit.tpl:172
-msgid "Enter the start date of the message"
-msgstr "Bitte gib das Startdatum der Nachricht ein"
-
-#: Resources/templates/user/message/edit.tpl:180
-#: templates/admin/message/edit.tpl:185 templates/user/message/edit.tpl:180
-msgid "no end date ?"
-msgstr "Kein Enddatum?"
-
-#: Resources/templates/user/message/edit.tpl:186
-#: Resources/templates/user/message/edit.tpl:188
-#: templates/admin/message/edit.tpl:191 templates/admin/message/edit.tpl:193
-#: templates/user/message/edit.tpl:186 templates/user/message/edit.tpl:188
-msgid "Enter the end date of the message"
-msgstr "Bitte gib das Enddatum ein"
-
-#: Resources/templates/user/message/edit.tpl:218
-#: templates/admin/message/edit.tpl:223 templates/user/message/edit.tpl:218
-msgid "Return control"
-msgstr "Weiterleitungkontrolle"
-
-#: Resources/templates/user/message/edit.tpl:220
-#: templates/admin/message/edit.tpl:225 templates/user/message/edit.tpl:220
-msgid "Create another item after save"
-msgstr "Ein weiteres Element nach dem Speichern erstellen"
-
-#: Resources/templates/user/message/edit.tpl:233
-#: templates/admin/message/edit.tpl:238 templates/user/message/edit.tpl:233
-msgid "Really delete this message?"
-msgstr "Diese  Nachricht wirklich löschen?"
-
-#: Resources/templates/user/message/edit.tpl:239
-#: templates/external/message/find.tpl:140 templates/admin/config.tpl:45
-#: templates/admin/message/edit.tpl:244 templates/admin/message/delete.tpl:22
-#: templates/user/message/edit.tpl:239
-msgid "Cancel"
-msgstr "Abbrechen"
 
 #: Resources/templates/user/message/view.rss.tpl:12
 #: templates/admin/message/view.atom.tpl:5
@@ -1699,39 +1806,6 @@ msgstr "Auswahl ändern"
 #: templates/external/message/select.tpl:4
 msgid "Message information"
 msgstr "Nachrichteninformation"
-
-#: templates/admin/config.tpl:4 templates/admin/config.tpl:7
-#: templates/admin/config.tpl:15
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: templates/admin/config.tpl:19
-msgid "Here you can manage all basic settings for this application."
-msgstr "Hier kannst Du die Grundeinstellungen für dieses Modul verwalten."
-
-#: templates/admin/config.tpl:22
-msgid "Show author"
-msgstr "Zeige Autor"
-
-#: templates/admin/config.tpl:26
-msgid "Show date"
-msgstr "Zeige Datum"
-
-#: templates/admin/config.tpl:30
-msgid "News per page"
-msgstr "Nachrichten pro Seite"
-
-#: templates/admin/config.tpl:31 templates/admin/config.tpl:35
-msgid "Enter the news per page. Only digits are allowed."
-msgstr "Gib ein, wieviele Nachrichten pro Seite angezeigt werden sollen."
-
-#: templates/admin/config.tpl:34
-msgid "Allowed file size"
-msgstr "Erlaubte Dateigröße:"
-
-#: templates/admin/config.tpl:44
-msgid "Update configuration"
-msgstr "Einstellungen aktualisieren"
 
 #: templates/admin/include_standardfields_edit.tpl:13
 #: templates/user/include_standardfields_edit.tpl:13
