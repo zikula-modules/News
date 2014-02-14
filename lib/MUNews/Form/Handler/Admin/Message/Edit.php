@@ -17,5 +17,28 @@
  */
 class MUNews_Form_Handler_Admin_Message_Edit extends MUNews_Form_Handler_Admin_Message_Base_Edit
 {
-    // feel free to extend the base handler class here
+    /**
+     * Post-initialise hook.
+     *
+     * @return void
+     */
+    public function postInitialize()
+    {
+        $muimageAlbum = $this->getVar('muimageAlbum');
+        $this->view->assign('muimageAlbum', $muimageAlbum);
+        
+        // we check for module MUImage and legacy mode on
+        $muimage = ModUtil::available('MUImage');
+        $legacy = System::isLegacyMode();
+        
+        if ($muimage == true && $legacy == true) {
+            $useMUImage = true;
+        } else {
+            $useMUImage = false;
+        }
+        
+        $this->view->assign('useMUImage', $useMUImage);
+        
+        parent::postInitialize();
+    }
 }
