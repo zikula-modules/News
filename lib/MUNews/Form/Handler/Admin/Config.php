@@ -30,7 +30,7 @@ class MUNews_Form_Handler_Admin_Config extends MUNews_Form_Handler_Admin_Base_Co
             $useMUImage = true;
         } else {
             $useMUImage = false;
-            LogUtil::registerError(__('Sorry! Legacy mode is enabled. If you want to use MUImage albums, you have to enable!', $dom));
+            LogUtil::registerError(__('Sorry! Legacy mode is disabled. If you want to use MUImage albums, you have to enable!', $dom));
         }
         
         $this->view->assign('useMUImage', $useMUImage);
