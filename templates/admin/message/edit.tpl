@@ -101,7 +101,7 @@
             {/if}
             {munewsValidationError id='imageUpload2' class='validate-upload'}
         </div>
-        
+        {if $muimageAlbum eq 0 && $useMUImage eq false}
         <div class="z-formrow">
             {formlabel for='imageUpload3' __text='Image upload3' cssClass=''}<br />{* break required for Google Chrome *}
             {formuploadinput group='message' id='imageUpload3' mandatory=false readOnly=false cssClass=' validate-upload' }
@@ -157,12 +157,14 @@
             {/if}
             {munewsValidationError id='imageUpload4' class='validate-upload'}
         </div>
-        
+        {/if}
+        {if $muimageAlbum eq 1 && $useMUImage eq true}
         <div class="z-formrow">
             {formlabel for='muimageAlbum' __text='Muimage album' cssClass=''}
             {formintinput group='message' id='muimageAlbum' mandatory=false __title='Enter the muimage album of the message' maxLength=11 cssClass=' validate-digits' }
             {munewsValidationError id='muimageAlbum' class='validate-digits'}
         </div>
+        {/if}
         
         <div class="z-formrow">
             {formlabel for='weight' __text='Weight' mandatorysym='1' cssClass=''}
