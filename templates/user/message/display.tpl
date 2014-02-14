@@ -103,8 +103,8 @@
         <dt>{gt text='Relation to'}</dt>
         <dd>{$message.relationTo}</dd> *}
         <div id="munews-display-muimage-albums">
-        {modgetvar module='MUNews' name='muimageAlbum' assign='muimageAlbum'}
-        {if $message.muimageAlbum ne 0 && $muimageAlbum eq 1 && $useMUImage eq true}
+        {modgetvar module='MUNews' name='muimageAlbum' assign='muimagealbum'}
+        {if $message.muimageAlbum ne 0 && $muimagealbum eq 1 && $useMUImage eq true}
         {checkpermissionblock component='MUImage:Album:' instance="`$message.muimageAlbum`::" level="ACCESS_OVERVIEW"}
             {munewsShowImagesOfMUImageAlbum albumid=$message.muimageAlbum assign=images}
             {include file='user/message/muimage_album_images.tpl' images=$images}
