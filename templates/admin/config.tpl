@@ -1,6 +1,6 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
-{if $leacy eq false}
+{if $legacy eq false}
 <p class="z-warningmsg">{gt text='Legacy mode is disabled. If you want to use MUImage albums, you have to enable!'}</p>
 {/if}
 {if $muimage eq false}
