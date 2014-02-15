@@ -3,7 +3,7 @@
  * MUNews.
  *
  * @copyright Michael Ueberschaer (MU)
- * @license 
+ * @license
  * @package MUNews
  * @author Michael Ueberschaer <kontakt@webdesign-in-bremen.com>.
  * @link http://webdesign-in-bremen.com
@@ -22,17 +22,18 @@ class MUNews_Form_Handler_Admin_Config extends MUNews_Form_Handler_Admin_Base_Co
     protected function initializeAdditions()
     {
         $dom = ZLanguage::getModuleDomain('MUNews');
-        // we check for module MUImage and legacy mode on        
+        // we check for module MUImage and legacy mode on
         $muimage = ModUtil::available('MUImage');
         $legacy = System::isLegacyMode();
-        
+
         if ($muimage == true && $legacy == true) {
             $useMUImage = true;
         } else {
             $useMUImage = false;
-            LogUtil::registerError(__('Sorry! Legacy mode is disabled. If you want to use MUImage albums, you have to enable!', $dom));
         }
-        
-        $this->view->assign('useMUImage', $useMUImage);
+
+        $this->view->assign('useMUImage', $useMUImage)
+                   ->assign('muimage', $muimage)
+                   ->assign('legacy', $legacy);
     }
 }

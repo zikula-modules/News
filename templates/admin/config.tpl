@@ -1,5 +1,11 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
+{if $leacy eq false}
+<p class="z-warningmsg">{gt text='Legacy mode is disabled. If you want to use MUImage albums, you have to enable!'}</p>
+{/if}
+{if $muimage eq false}
+<p class="z-warningmsg">{gt text='The module MUImage is not available. If you want to use MUImage albums, you have to install it and create albums!'}</p>
+{/if}
 <div class="munews-config">
     {gt text='Settings' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
