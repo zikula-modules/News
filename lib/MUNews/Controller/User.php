@@ -19,6 +19,19 @@ use Doctrine\ORM\Id\AssignedGenerator;
 class MUNews_Controller_User extends MUNews_Controller_Base_User
 {
     /**
+     * Post initialise.
+     *
+     * Run after construction.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // Set caching to true by default.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+    }
+    
+    /**
      * This method provides a generic item list overview.
      *
      * @param string  $ot           Treated object type.
