@@ -1,4 +1,5 @@
 {* Purpose of this template: Display one certain message within an external context *}
+{pageaddvar name='javascript' value='zikula.imageviewer'}
 <div id="message{$message.id}" class="munews-external-message">
 {if $displayMode eq 'link'}
     <p class="munews-external-link">
@@ -26,6 +27,8 @@
               {gt text='Download'} ({$message.imageUpload1Meta.size|munewsGetFileSize:$message.imageUpload1FullPath:false:false})
           {/if}
           </a>
+          {$message.startText|safehtml}<br />
+          <a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id}">{gt text='Read more'}</a>
         {else}&nbsp;{/if}
     </div>
 

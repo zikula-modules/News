@@ -132,3 +132,11 @@ div.munews-view form.munews-quicknav fieldset #num {
     float: left;	
 }
 
+.munews-external-snippet {
+	margin: 10px 0 20px;
+}
+
+.munews-external-snippet img {
+	float: left;
+	margin: 0 10px 5px 0;
+}
