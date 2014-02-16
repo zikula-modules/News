@@ -27,9 +27,9 @@
               {gt text='Download'} ({$message.imageUpload1Meta.size|munewsGetFileSize:$message.imageUpload1FullPath:false:false})
           {/if}
           </a>
-          {$message.startText|safehtml}<br />
-          <a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id}">{gt text='Read more'}</a>
         {else}&nbsp;{/if}
+        {$message.startText|safehtml}<br />
+        <a href="{modurl modname='MUNews' type='user' func='display' ot='message' id=$message.id}">{gt text='Read more'}</a>
     </div>
 
     {* you can distinguish the context like this: *}
