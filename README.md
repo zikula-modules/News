@@ -9,7 +9,7 @@ The module gives the standard functions to have a blog or something else on your
 
 Users can submit articles and a moderator or admin can moderate them.
 There are 4 fields to upload pictures and the possiblitiy to include an MUImage album
-with its pictures, of legacy mode is active.
+with its pictures, if legacy mode is active.
 
 For questions and other remarks visit our homepage http://webdesign-in-bremen.com.
 
