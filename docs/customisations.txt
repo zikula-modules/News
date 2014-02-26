@@ -45,7 +45,7 @@ Implemented Classes
 
 Additional Files
 
-customisations.txt
+*customisations.txt
 
 *templates/config/usemodules
 
