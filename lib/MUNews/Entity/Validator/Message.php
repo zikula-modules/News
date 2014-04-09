@@ -18,5 +18,88 @@
  */
 class MUNews_Entity_Validator_Message extends MUNews_Entity_Validator_Base_Message
 {
-    // here you can add custom validation methods or override existing checks
+    /**
+     * Performs all validation rules.
+     *
+     * @return mixed either array with error information or true on success
+     */
+    public function validateAll()
+    {
+        $errorInfo = array('message' => '', 'code' => 0, 'debugArray' => array());
+        $dom = ZLanguage::getModuleDomain('MUNews');
+        if (!$this->isValidInteger('id')) {
+            $errorInfo['message'] = __f('Error! Field value may only contain digits (%s).', array('id'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isNumberNotLongerThan('id', 9)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('id', 9), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotEmpty('workflowState')) {
+            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('workflow state'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('title', 255)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('title', 255), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotEmpty('title')) {
+            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('title'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('startText', 3000)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('start text', 3000), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotEmpty('startText')) {
+            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('start text'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('imageUpload1', 255)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('image upload1', 255), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('mainText', 10000)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('main text', 10000), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('imageUpload2', 255)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('image upload2', 255), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('imageUpload3', 255)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('image upload3', 255), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotLongerThan('imageUpload4', 255)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('image upload4', 255), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isValidInteger('muimageAlbum')) {
+            $errorInfo['message'] = __f('Error! Field value may only contain digits (%s).', array('muimage album'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isNumberNotLongerThan('muimageAlbum', 11)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('muimage album', 11), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isValidInteger('weight')) {
+            $errorInfo['message'] = __f('Error! Field value may only contain digits (%s).', array('weight'), $dom);
+            return $errorInfo;
+        }
+        /* if (!$this->isNumberNotEmpty('weight')) {
+            $errorInfo['message'] = __f('Error! Field value must not be 0 (%s).', array('weight'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isNumberNotLongerThan('weight', 2)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('weight', 2), $dom);
+            return $errorInfo;
+        }*/
+        if (!$this->isValidBoolean('noEndDate')) {
+            $errorInfo['message'] = __f('Error! Field value must be a valid boolean (%s).', array('no end date'), $dom);
+            return $errorInfo;
+        }
+    
+        return true;
+    }
 }
