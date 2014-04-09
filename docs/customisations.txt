@@ -35,6 +35,8 @@ Implemented Classes
 
 *lib/MUNews/Entity/Repository/Message.php
 
+*lib/MUNews/Entity/Validator/Message.php
+
 *lib/MUNews/Form/Handler/Admin/Config.php
 *lib/MUNews/Form/Handler/Admin/Message/Edit.php
 
