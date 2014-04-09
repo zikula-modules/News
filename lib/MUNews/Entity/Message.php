@@ -78,6 +78,7 @@ class MUNews_Entity_Message extends MUNews_Entity_Base_Message
         if ($noenddate == 1) {
             $this->setEndDate(NULL);
         }
+        $this->setWeight(1);
         $this->performPrePersistCallback();
     }
     
