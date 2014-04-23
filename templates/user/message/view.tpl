@@ -228,9 +228,9 @@
     {/if}
 
     
-    {notifydisplayhooks eventname='munews.ui_hooks.messages.display_view' urlobject=$currentUrlObject assign='hooks'}
+   {* {notifydisplayhooks eventname='munews.ui_hooks.messages.display_view' urlobject=$currentUrlObject assign='hooks'}
     {foreach key='providerArea' item='hook' from=$hooks}
         {$hook}
-    {/foreach}
+    {/foreach} *}
 </div>
 {include file='user/footer.tpl'}
