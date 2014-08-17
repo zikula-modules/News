@@ -160,12 +160,12 @@
         </div>
         {/if}
         <div class="z-formrow">
-            {formlabel for='weight' __text='Weight' mandatorysym='1' cssClass=''}
-            {formintinput group='message' id='weight' mandatory=true __title='Enter the weight of the message' maxLength=2 cssClass='required validate-digits' }
-            {munewsValidationError id='weight' class='required'}
+            {formlabel for='weight' __text='Weight' mandatorysym='0' cssClass=''}
+            {formintinput disabled=disabled group='message' id='weight' mandatory=false __title='Enter the weight of the message' maxLength=2 cssClass='required validate-digits' }
+           {* {munewsValidationError id='weight' class='required'} *}
             {munewsValidationError id='weight' class='validate-digits'}
         </div>
-        
+        <p class="z-formnote z-warningmsg">{gt text='The sorting by weight will be implemented in later version.'}</p>       
         <div class="z-formrow">
             {formlabel for='startDate' __text='Start date' cssClass=''}
             {if $mode ne 'create'}
