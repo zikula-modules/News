@@ -67,20 +67,20 @@ div.munews-view form.munews-quicknav fieldset #num {
     text-align: right;
 }
 
+.munews-view {
+    float: left;	
+    margin: 10px 0 0 0;	
+    width: 100%;
+}
+
 .munews-view-title {
 	margin: 0 0 10px 0;
-	float: left;
 }
 
 .munews-view-title img {
 	margin: 0 10px 0 0;
 	float: left;
 	width: 30px;
-}
-
-.munews-view {
-    float: left;	
-    margin: 10px 0 0 0;
 }
 
 .munews-view-start {
