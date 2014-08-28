@@ -6,7 +6,7 @@
     <h2>{$templateTitle}</h2>
 
     {if $canBeCreated}
-        {checkpermissionblock component='MUNews:Message:' instance='::' level='ACCESS_COMMENT'}
+        {checkpermissionblock component='MUNews:Message:' instance='::' level='ACCESS_ADD'}
             {gt text='Create message' assign='createTitle'}
             <a href="{modurl modname='MUNews' type='user' func='edit' ot='message'}" title="{$createTitle}" class="z-icon-es-add">{$createTitle}</a>
         {/checkpermissionblock}
