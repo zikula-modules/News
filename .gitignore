@@ -28,6 +28,12 @@ local.properties
 # PDT-specific
 .buildpath
 
+##############
+## ZIKULA
+#############
+
+Resources/templates/
+
 
 #################
 ## Visual Studio
@@ -208,8 +214,6 @@ pip-log.txt
 .coverage
 .tox
 
-#Translations
-*.mo
 
 #Mr Developer
 .mr.developer.cfg

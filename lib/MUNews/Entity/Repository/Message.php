@@ -3,7 +3,7 @@
  * MUNews.
  *
  * @copyright Michael Ueberschaer (MU)
- * @license 
+ * @license
  * @package MUNews
  * @author Michael Ueberschaer <kontakt@webdesign-in-bremen.com>.
  * @link http://webdesign-in-bremen.com
@@ -22,4 +22,57 @@ class MUNews_Entity_Repository_Message extends MUNews_Entity_Repository_Base_Mes
      * @var string The default sorting field/expression.
      */
     protected $defaultSortingField = 'createdDate';
+
+    /**
+     * Builds a generic Doctrine query supporting WHERE and ORDER BY.
+     *
+     * @param string  $where    The where clause to use when retrieving the collection (optional) (default='').
+     * @param string  $orderBy  The order-by clause to use when retrieving the collection (optional) (default='').
+     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true).
+     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false).
+     *
+     * @return Doctrine\ORM\QueryBuilder query builder instance to be further processed
+     */
+    public function genericBaseQuery($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
+    {
+        // normally we select the whole table
+        $selection = 'tbl';
+
+        if ($slimMode === true) {
+            // but for the slim version we select only the basic fields, and no joins
+
+            $selection = 'tbl.id';
+            $selection .= ', tbl.title';
+            $selection .= ', tbl.slug';
+            $useJoins = false;
+        }
+
+        if ($useJoins === true) {
+            $selection .= $this->addJoinsToSelection();
+        }
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($selection)
+        ->from('MUNews_Entity_Message', 'tbl');
+
+        if ($useJoins === true) {
+            $this->addJoinsToFrom($qb);
+        }
+
+        $request = new Zikula_Request_Http();
+        $type = $request->query->filter('type', 'admin', FILTER_SANITIZE_STRING);
+        $orderBy = '';
+        if ($type == 'user') {
+            $orderBy = 'weight DESC';
+        }
+        
+        $this->genericBaseQueryAddWhere($qb, $where);
+        $this->genericBaseQueryAddOrderBy($qb, $orderBy);
+        if ($orderBy != '') {
+            $orderBy2 = 'createdDate DESC';
+            $this->genericBaseQueryAddOrderBy($qb, $orderBy2);
+        }
+
+        return $qb;
+    }
 }
