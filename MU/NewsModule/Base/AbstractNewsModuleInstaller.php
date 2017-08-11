@@ -56,9 +56,9 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         }
     
         // set up all our vars with initial values
+        $this->setVar('maxSize', '200k');
         $this->setVar('showAuthor', false);
         $this->setVar('showDate', false);
-        $this->setVar('maxSize', '200k');
         $this->setVar('moderationGroupForMessages', '2');
         $this->setVar('messageEntriesPerPage', '10');
         $this->setVar('linkOwnMessagesOnAccountPage', true);

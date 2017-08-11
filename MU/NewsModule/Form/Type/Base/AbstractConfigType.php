@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -111,6 +112,16 @@ abstract class AbstractConfigType extends AbstractType
     public function addSettingsFields(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('maxSize', TextType::class, [
+                'label' => $this->__('Max size') . ':',
+                'required' => false,
+                'data' => isset($this->moduleVars['maxSize']) ? $this->moduleVars['maxSize'] : '',
+                'empty_data' => '200k',
+                'attr' => [
+                    'maxlength' => 255,
+                    'title' => $this->__('Enter the max size.')
+                ],
+            ])
             ->add('showAuthor', CheckboxType::class, [
                 'label' => $this->__('Show author') . ':',
                 'required' => false,
@@ -126,16 +137,6 @@ abstract class AbstractConfigType extends AbstractType
                 'attr' => [
                     'title' => $this->__('The show date option.')
                 ],
-            ])
-            ->add('maxSize', IntegerType::class, [
-                'label' => $this->__('Max size') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['maxSize']) ? intval($this->moduleVars['maxSize']) : intval(200k),
-                'empty_data' => intval('200k'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the max size.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
             ])
         ;
     }

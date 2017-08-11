@@ -60,9 +60,9 @@
                     
                         <p class="alert alert-info">{{ __('Here you can manage all basic settings for this application.') }}</p>
                     
+                        {{ form_row(form.maxSize) }}
                         {{ form_row(form.showAuthor) }}
                         {{ form_row(form.showDate) }}
-                        {{ form_row(form.maxSize) }}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">

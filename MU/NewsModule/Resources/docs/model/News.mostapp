@@ -88,15 +88,15 @@ application "News" {
 			variables {
 				varContainer "Settings" {
 					vars {
+                textVar "maxSize" {
+                    value "200k"
+                },
 						boolVar "showAuthor" {
 							value "1"
 						},
 						boolVar "showDate" {
 							value "1"
-						},
-						intVar "maxSize" {
-                    value "200k"
-                }
+						}
             }
         }
 						}
