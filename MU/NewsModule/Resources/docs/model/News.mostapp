@@ -1,0 +1,103 @@
+application "News" {
+	vendor "MU"
+	author "Michael Ueberschaer"
+	email "info@homepage-mit-zikula.de"
+	url "https://homepages-mit-zikula.de"
+    version "1.1.0"
+	prefix "news"
+	generatorSettings  {
+        settingsContainer "Einstellungen"
+	    targetCoreVersion ZK15
+       generateTagSupport true
+        generateCsvTemplates false
+        generateXmlTemplates false
+        generateJsonTemplates false
+        generateKmlTemplates false
+        generateIcsTemplates false
+        filterHookProvider ENABLED
+        separateAdminTemplates true
+        generatePoweredByBacklinksIntoFooterTemplates false
+    }
+    entities {
+        entity "message" leading categorisable {
+            nameMultiple "messages"
+            displayPattern "#title#"
+					workflow STANDARD
+            formAwareHookProvider ENABLED
+            fields {
+					    string "title" {
+                    sluggablePosition 1
+                },				    
+						text "startText" {
+							length 3000
+						},
+						upload "imageUpload1" {
+							defaultValue ""
+							mandatory false
+							maxSize "200k"
+						},
+						text "mainText" {
+							defaultValue ""
+							mandatory false
+							length 10000
+						},
+						upload "imageUpload2" {
+							defaultValue ""
+							mandatory false
+							maxSize "200k"
+						},
+						upload "imageUpload3" {
+							defaultValue ""
+							mandatory false
+							maxSize "200k"
+						},
+						upload "imageUpload4" {
+							mandatory false
+							maxSize "200k"
+						},
+						integer "weight" {
+							defaultValue "1"
+							displayType NONE
+                    length 2
+						},
+						datetime "startDate" nullable startDate {
+							mandatory false
+						displayType VIEW
+                },
+						boolean "noEndDate" ajaxTogglability {
+                    defaultValue ""
+							mandatory false
+						},
+						datetime "endDate" nullable endDate {
+							defaultValue ""
+							mandatory false
+						displayType VIEW
+                }	
+					}
+					
+					            actions {
+                mainAction "Index",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit",
+                deleteAction "Delete"
+            }
+				}	
+				}
+				
+			variables {
+				varContainer "Settings" {
+					vars {
+						boolVar "showAuthor" {
+							value "1"
+						},
+						boolVar "showDate" {
+							value "1"
+						},
+						intVar "maxSize" {
+                    value "200k"
+                }
+            }
+        }
+						}
+}

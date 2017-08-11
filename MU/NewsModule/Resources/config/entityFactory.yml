@@ -1,0 +1,12 @@
+services:
+    # Entity factory
+    mu_news_module.entity_factory:
+        class: MU\NewsModule\Entity\Factory\EntityFactory
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+            - "@mu_news_module.entity_initialiser"
+            - "@mu_news_module.collection_filter_helper"
+    
+    # Entity initialiser
+    mu_news_module.entity_initialiser:
+        class: MU\NewsModule\Entity\Factory\EntityInitialiser

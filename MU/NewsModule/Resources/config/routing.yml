@@ -1,0 +1,5 @@
+munewsmodule:
+    # define routing support for these controllers
+    resource: "@MUNewsModule/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

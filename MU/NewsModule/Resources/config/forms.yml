@@ -1,0 +1,69 @@
+services:
+    # Form types
+    
+    mu_news_module.form.type.messagequicknav:
+        class: MU\NewsModule\Form\Type\QuickNavigation\MessageQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@mu_news_module.listentries_helper"
+            - "@mu_news_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_news_module.form.handler.message:
+        class: MU\NewsModule\Form\Handler\Message\EditHandler
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.current_user"
+            - "@zikula_groups_module.group_application_repository"
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.controller_helper"
+            - "@mu_news_module.model_helper"
+            - "@mu_news_module.workflow_helper"
+            - "@mu_news_module.hook_helper"
+            - "@mu_news_module.feature_activation_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+        tags:
+            - { name: form.type }
+    
+    mu_news_module.form.type.message:
+        class: MU\NewsModule\Form\Type\MessageType
+        arguments:
+            - "@translator.default"
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.listentries_helper"
+            - "@mu_news_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_news_module.form.type.block.itemlist:
+        class: MU\NewsModule\Block\Form\Type\ItemListBlockType
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: form.type }
+    
+    mu_news_module.form.type.messagefinder:
+        class: MU\NewsModule\Form\Type\Finder\MessageFinderType
+        arguments:
+            - "@translator.default"
+            - "@mu_news_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_news_module.form.type.config:
+        class: MU\NewsModule\Form\Type\ConfigType
+        arguments:
+            - "@translator.default"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUNewsModule')"
+            - "@zikula_groups_module.group_repository"
+        tags:
+            - { name: form.type }

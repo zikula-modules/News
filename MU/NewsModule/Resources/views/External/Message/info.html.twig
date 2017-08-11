@@ -1,0 +1,26 @@
+{# Purpose of this template: Display item information for previewing from other modules #}
+<dl id="message{{ message.getKey() }}">
+<dt>{{ message|munewsmodule_formattedTitle|notifyFilters('news.filter_hooks.messages.filter')|safeHtml }}</dt>
+<dd>{% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+            <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+{% if message.imageUpload1Meta.isImage %}
+    {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+    <img src="{{ message.imageUpload1.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+{% else %}
+    {{ __('Download') }} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
+{% endif %}
+</a>
+{% else %}&nbsp;{% endif %}
+</dd>
+{% if message.startText is not empty %}<dd>{{ message.startText }}</dd>{% endif %}
+{% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+    <dd>
+        <dl class="category-list">
+        {% for propName, catMapping in message.categories %}
+            <dt>{{ propName }}</dt>
+            <dd>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</dd>
+        {% endfor %}
+        </dl>
+    </dd>
+{% endif %}
+</dl>

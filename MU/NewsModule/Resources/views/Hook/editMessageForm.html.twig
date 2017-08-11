@@ -1,0 +1,5 @@
+{# purpose of this template: inner edit form included via form aware hooks #}
+{# should include as little formatting as possible #}
+{% for element in form.munewsmodule_hook_editmessage %}
+    {{ form_row(element) }}
+{% endfor %}

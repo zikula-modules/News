@@ -1,0 +1,12 @@
+services:
+    # Form field types
+    
+    mu_news_module.form.type.field.upload:
+        class: MU\NewsModule\Form\Type\Field\UploadType
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@mu_news_module.image_helper"
+            - "@mu_news_module.upload_helper"
+        tags:
+            - { name: form.type }

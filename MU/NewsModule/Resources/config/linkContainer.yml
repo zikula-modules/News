@@ -1,0 +1,11 @@
+services:
+    mu_news_module.link_container:
+        class: MU\NewsModule\Container\LinkContainer
+        arguments:
+            - "@translator.default"
+            - "@router"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@mu_news_module.controller_helper"
+        tags:
+            - { name: zikula.link_container }
