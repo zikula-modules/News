@@ -80,3 +80,10 @@ div.munewsmodule-view .avatar img {
         padding: 0;
     }
 }
+
+/**********************OWN*********************/
+
+.message-start-photo {
+	float: right;
+	margin: 0 0 0 25px;
+}
