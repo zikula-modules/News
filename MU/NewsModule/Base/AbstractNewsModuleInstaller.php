@@ -418,6 +418,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $classNames = [];
         $classNames[] = 'MU\NewsModule\Entity\MessageEntity';
         $classNames[] = 'MU\NewsModule\Entity\MessageTranslationEntity';
+        $classNames[] = 'MU\NewsModule\Entity\MessageAttributeEntity';
         $classNames[] = 'MU\NewsModule\Entity\MessageCategoryEntity';
     
         return $classNames;
