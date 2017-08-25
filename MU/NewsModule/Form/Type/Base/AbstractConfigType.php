@@ -232,12 +232,12 @@ abstract class AbstractConfigType extends AbstractType
                     'title' => $this->__('The enable more messages in category option.')
                 ],
             ])
-            ->add('displayPdfLinl', CheckboxType::class, [
-                'label' => $this->__('Display pdf linl') . ':',
+            ->add('displayPdfLink', CheckboxType::class, [
+                'label' => $this->__('Display pdf link') . ':',
                 'required' => false,
-                'data' => (bool)(isset($this->moduleVars['displayPdfLinl']) ? $this->moduleVars['displayPdfLinl'] : false),
+                'data' => (bool)(isset($this->moduleVars['displayPdfLink']) ? $this->moduleVars['displayPdfLink'] : false),
                 'attr' => [
-                    'title' => $this->__('The display pdf linl option.')
+                    'title' => $this->__('The display pdf link option.')
                 ],
             ])
             ->add('pdfLinkDisplayAccessLevel', IntegerType::class, [

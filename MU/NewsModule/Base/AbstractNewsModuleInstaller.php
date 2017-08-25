@@ -67,7 +67,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('checkRefererOnPrint', false);
         $this->setVar('enableAjaxEditing', false);
         $this->setVar('enableMoreMessagesInCategory', false);
-        $this->setVar('displayPdfLinl', false);
+        $this->setVar('displayPdfLink', false);
         $this->setVar('pdfLinkDisplayAccessLevel', 0);
         $this->setVar('pdfLinkHeaderLogo', '');
         $this->setVar('pdfLinkHeaderLogoWidth', 0);
