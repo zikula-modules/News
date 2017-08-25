@@ -83,6 +83,9 @@ div.munewsmodule-view .avatar img {
 
 /**********************OWN*********************/
 
+.float-none {
+	margin: 0 0 25px 0;
+}
 
 .float-left {
 	float: left;
