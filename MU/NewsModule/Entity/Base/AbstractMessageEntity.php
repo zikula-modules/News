@@ -322,6 +322,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     protected $locale;
     
     /**
+     * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageAttributeEntity", 
+     *                mappedBy="entity", cascade={"all"}, 
+     *                orphanRemoval=true, indexBy="name")
+     * @var \MU\NewsModule\Entity\MessageAttributeEntity
+     */
+    protected $attributes = null;
+    
+    /**
      * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageCategoryEntity", 
      *                mappedBy="entity", cascade={"all"}, 
      *                orphanRemoval=true)
@@ -339,6 +347,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     public function __construct()
     {
+        $this->attributes = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
     
@@ -1100,6 +1109,37 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     }
     
     /**
+     * Returns the attributes.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+    
+    /**
+     * Set attribute.
+     *
+     * @param string $name  Attribute name
+     * @param string $value Attribute value
+     *
+     * @return void
+     */
+    public function setAttribute($name, $value)
+    {
+        if (isset($this->attributes[$name])) {
+            if (null === $value) {
+                $this->attributes->remove($name);
+            } else {
+                $this->attributes[$name]->setValue($value);
+            }
+        } else {
+            $this->attributes[$name] = new \MU\NewsModule\Entity\MessageAttributeEntity($name, $value, $this);
+        }
+    }
+    
+    /**
      * Returns the categories.
      *
      * @return ArrayCollection[]
@@ -1286,6 +1326,15 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $newCat = clone $c;
             $this->categories->add($newCat);
             $newCat->setEntity($this);
+        }
+    
+        // clone attributes
+        $attributes = $this->attributes;
+        $this->attributes = new ArrayCollection();
+        foreach ($attributes as $a) {
+            $newAttr = clone $a;
+            $this->attributes->add($newAttr);
+            $newAttr->setEntity($this);
         }
     }
 }

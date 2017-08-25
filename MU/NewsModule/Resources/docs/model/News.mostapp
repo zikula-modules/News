@@ -19,10 +19,10 @@ application "News" {
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
     generateTests false
-        markFiles "NewsModuleInstaller.php,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig\r\nResources/views/Message/view.html.twig"
+        markFiles "NewsModuleInstaller.php,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/view.html.twig"
     }
     entities {
-        entity "message" leading categorisable categorisableMultiSelection {
+        entity "message" leading categorisable categorisableMultiSelection attributable {
             nameMultiple "messages"
             displayPattern "#title#"
 					slugUnique false
@@ -69,7 +69,7 @@ application "News" {
                     length 7
                     role LOCALE
                 },
-                boolean "allowComments" {
+                boolean "allowComments" ajaxTogglability {
                     defaultValue "1"
                     mandatory false
                 },
@@ -152,7 +152,7 @@ application "News" {
                 boolVar "checkRefererOnPrint",
                 boolVar "enableAjaxEditing",
                 boolVar "enableMoreMessagesInCategory",
-                boolVar "displayPdfLinl",
+                boolVar "displayPdfLink",
                 intVar "pdfLinkDisplayAccessLevel",
                 filePathVar "pdfLinkHeaderLogo",
                 intVar "pdfLinkHeaderLogoWidth",

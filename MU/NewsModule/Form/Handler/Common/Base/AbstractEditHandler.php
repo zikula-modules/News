@@ -129,6 +129,13 @@ abstract class AbstractEditHandler
     protected $hasPageLockSupport = false;
 
     /**
+     * Whether the entity has attributes or not.
+     *
+     * @var boolean
+     */
+    protected $hasAttributes = false;
+
+    /**
      * Whether the entity has an editable slug or not.
      *
      * @var boolean
@@ -415,6 +422,12 @@ abstract class AbstractEditHandler
         $this->entityRef = $entity;
     
         
+        if (true === $this->hasAttributes) {
+            if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, $this->objectType)) {
+                $this->initAttributesForEditing();
+            }
+        }
+        
         if (true === $this->hasTranslatableFields) {
             $this->initTranslationsForEditing();
         }
@@ -563,6 +576,38 @@ abstract class AbstractEditHandler
             $this->templateParameters[$this->objectTypeLower . $language] = $translationData;
         }
     }
+    
+    /**
+     * Initialise attributes.
+     */
+    protected function initAttributesForEditing()
+    {
+        $entity = $this->entityRef;
+    
+        $entityData = [];
+    
+        // overwrite attributes array entry with a form compatible format
+        $attributes = [];
+        foreach ($this->getAttributeFieldNames() as $fieldName) {
+            $attributes[$fieldName] = $entity->getAttributes()->get($fieldName) ? $entity->getAttributes()->get($fieldName)->getValue() : '';
+        }
+        $entityData['attributes'] = $attributes;
+    
+        $this->templateParameters['attributes'] = $attributes;
+    }
+    
+    /**
+     * Return list of attribute field names.
+     * To be customised in sub classes as needed.
+     *
+     * @return array list of attribute names
+     */
+    protected function getAttributeFieldNames()
+    {
+        return [
+            'field1', 'field2', 'field3'
+        ];
+    }
 
     /**
      * Get list of allowed redirect codes.
@@ -658,6 +703,19 @@ abstract class AbstractEditHandler
         }
     
         return new RedirectResponse($this->getRedirectUrl($args), 302);
+    }
+    
+    /**
+     * Prepare update of attributes.
+     */
+    protected function processAttributesForUpdate()
+    {
+        $entity = $this->entityRef;
+        foreach ($this->getAttributeFieldNames() as $fieldName) {
+            $value = $this->form['attributes' . $fieldName]->getData();
+            $entity->setAttribute($fieldName, $value);
+        }
+        
     }
     
     /**
@@ -767,6 +825,12 @@ abstract class AbstractEditHandler
     
         if (isset($this->form['additionalNotificationRemarks']) && $this->form['additionalNotificationRemarks']->getData() != '') {
             $this->request->getSession()->set('MUNewsModuleAdditionalNotificationRemarks', $this->form['additionalNotificationRemarks']->getData());
+        }
+    
+        if (true === $this->hasAttributes) {
+            if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, $this->objectType)) {
+                $this->processAttributesForUpdate();
+            }
         }
     
         // return remaining form data

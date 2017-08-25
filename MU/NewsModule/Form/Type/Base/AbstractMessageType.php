@@ -123,6 +123,9 @@ abstract class AbstractMessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder, $options);
+        if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, 'message')) {
+            $this->addAttributeFields($builder, $options);
+        }
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, 'message')) {
             $this->addCategoriesField($builder, $options);
         }
@@ -276,6 +279,7 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => '',
                 'title' => $this->__('display on index ?')
             ],
+        	'data' => true,
             'required' => false,
         ]);
         
@@ -298,6 +302,7 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => '',
                 'title' => $this->__('allow comments ?')
             ],
+        	'data' => true,
             'required' => false,
         ]);
         
@@ -339,13 +344,12 @@ abstract class AbstractMessageType extends AbstractType
         
         $builder->add('startDate', DateTimeType::class, [
             'label' => $this->__('Start date') . ':',
-            'empty_data' => '',
             'attr' => [
                 'class' => ' validate-daterange-message',
                 'title' => $this->__('Enter the start date of the message')
             ],
             'required' => false,
-            'empty_data' => null,
+            'empty_data' => '',
             'with_seconds' => true,
             'date_widget' => 'single_text',
             'time_widget' => 'single_text'
@@ -357,18 +361,18 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => '',
                 'title' => $this->__('no end date ?')
             ],
+        	'data' => true,
             'required' => false,
         ]);
         
         $builder->add('endDate', DateTimeType::class, [
             'label' => $this->__('End date') . ':',
-            'empty_data' => '',
             'attr' => [
                 'class' => ' validate-daterange-message',
                 'title' => $this->__('Enter the end date of the message')
             ],
             'required' => false,
-            'empty_data' => null,
+            'empty_data' => '',
             'with_seconds' => true,
             'date_widget' => 'single_text',
             'time_widget' => 'single_text'
@@ -385,6 +389,27 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
             'scale' => 0
         ]);
+    }
+
+    /**
+     * Adds fields for attributes.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addAttributeFields(FormBuilderInterface $builder, array $options)
+    {
+        foreach ($options['attributes'] as $attributeName => $attributeValue) {
+            $builder->add('attributes' . $attributeName, TextType::class, [
+                'mapped' => false,
+                'label' => $this->__($attributeName),
+                'attr' => [
+                    'maxlength' => 255
+                ],
+                'data' => $attributeValue,
+                'required' => false
+            ]);
+        }
     }
 
     /**
@@ -561,6 +586,7 @@ abstract class AbstractMessageType extends AbstractType
                     'isStartDateBeforeEndDate' => 'startDate',
                 ],
                 'mode' => 'create',
+                'attributes' => [],
                 'is_moderator' => false,
                 'is_creator' => false,
                 'actions' => [],
@@ -569,6 +595,7 @@ abstract class AbstractMessageType extends AbstractType
             ])
             ->setRequired(['entity', 'mode', 'actions'])
             ->setAllowedTypes('mode', 'string')
+            ->setAllowedTypes('attributes', 'array')
             ->setAllowedTypes('is_moderator', 'bool')
             ->setAllowedTypes('is_creator', 'bool')
             ->setAllowedTypes('actions', 'array')

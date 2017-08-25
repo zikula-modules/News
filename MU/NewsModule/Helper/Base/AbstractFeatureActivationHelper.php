@@ -23,6 +23,11 @@ abstract class AbstractFeatureActivationHelper
     const CATEGORIES = 'categories';
     
     /**
+     * Attribution feature
+     */
+    const ATTRIBUTES = 'attributes';
+    
+    /**
      * Translation feature
      */
     const TRANSLATIONS = 'translations';
@@ -39,6 +44,14 @@ abstract class AbstractFeatureActivationHelper
     {
         if ($feature == self::CATEGORIES) {
             $method = 'hasCategories';
+            if (method_exists($this, $method)) {
+                return $this->$method($objectType);
+            }
+    
+            return in_array($objectType, ['message']);
+        }
+        if ($feature == self::ATTRIBUTES) {
+            $method = 'hasAttributes';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
