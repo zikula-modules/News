@@ -25,7 +25,7 @@
                         <a id="attributesTab" href="#tabAttributes" title="{{ __('Attributes') }}" role="tab" data-toggle="tab">{{ __('Attributes') }}</a>
                     </li>
                 {% endif %}
-                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') and getModVar('MUNewsModule', 'enableCategorization') == 1 %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
                     <li role="presentation">
                         <a id="categoriesTab" href="#tabCategories" title="{{ __('Categories') }}" role="tab" data-toggle="tab">{{ __('Categories') }}</a>
                     </li>
@@ -127,7 +127,7 @@
                 {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
                     {{ include('@MUNewsModule/Helper/includeAttributesEdit.html.twig', {obj: message, tabs: true}) }}
                 {% endif %}
-                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') and getModVar('MUNewsModule', 'enableCategorization') == 1 %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
                     {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message}) }}
                 {% else %}
                     <div class="hidden">

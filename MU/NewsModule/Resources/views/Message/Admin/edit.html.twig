@@ -100,9 +100,15 @@
                         {{ form_row(form.displayOnIndex) }}
                         {{ form_row(form.messageLanguage) }}
                         {{ form_row(form.allowComments) }}
+                        {% if imageUpload == 0 %}
+                        <div class="hidden">
+                        {% endif %}
                         {{ form_row(form.imageUpload2) }}
                         {{ form_row(form.imageUpload3) }}
                         {{ form_row(form.imageUpload4) }}
+                        {% if imageUpload == 0 %}
+                        </div>
+                        {% endif %}
                         {{ form_row(form.startDate) }}
                         {{ form_row(form.noEndDate) }}
                         <div id="endDateContainer">
