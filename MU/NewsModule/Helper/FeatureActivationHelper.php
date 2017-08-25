@@ -12,6 +12,8 @@
 
 namespace MU\NewsModule\Helper;
 
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+
 use MU\NewsModule\Helper\Base\AbstractFeatureActivationHelper;
 
 /**
@@ -19,5 +21,28 @@ use MU\NewsModule\Helper\Base\AbstractFeatureActivationHelper;
  */
 class FeatureActivationHelper extends AbstractFeatureActivationHelper
 {
-    // feel free to add your own convenience methods here
+	/**
+	 * @var VariableApiInterface
+	 */
+	private $variableApi;
+	
+	public function __construct(VariableApiInterface $variableApi)
+	{
+		$this->variableApi = $variableApi;
+	}
+	
+    public function hasCategories($objectType)
+    {
+    	return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableCategorization') == 1;
+    }
+    
+    public function hasAttributes($objectType)
+    {
+    	return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableAttribution') == 1;
+    }
+    
+    public function hasTranslations($objectType)
+    {
+    	return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableMultiLanguage') == 1;
+    }
 }

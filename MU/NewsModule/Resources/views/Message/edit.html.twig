@@ -128,11 +128,7 @@
                     {{ include('@MUNewsModule/Helper/includeAttributesEdit.html.twig', {obj: message, tabs: true}) }}
                 {% endif %}
                 {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
-                    {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message}) }}
-                {% else %}
-                    <div class="hidden">
-                        {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message}) }}
-                    </div>
+                    {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message, tabs: true}) }}
                 {% endif %}
                 {% if mode != 'create' %}
                     {{ include('@MUNewsModule/Helper/includeStandardFieldsEdit.html.twig', {obj: message, tabs: true}) }}
