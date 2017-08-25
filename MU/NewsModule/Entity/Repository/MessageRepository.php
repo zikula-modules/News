@@ -21,5 +21,8 @@ use MU\NewsModule\Entity\Repository\Base\AbstractMessageRepository;
  */
 class MessageRepository extends AbstractMessageRepository
 {
-    // feel free to add your own methods here, like for example reusable DQL queries
+    /**
+     * @var string The default sorting field/expression
+     */
+    protected $defaultSortingField = 'createdDate';
 }
