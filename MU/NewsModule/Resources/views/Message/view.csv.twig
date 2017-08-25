@@ -1,0 +1,8 @@
+{# purpose of this template: messages view csv view #}
+{% spaceless %}"{{ __('Title') }}";"{{ __('Start text') }}";"{{ __('Image upload 1') }}";"{{ __('Main text') }}";"{{ __('Amount of views') }}";"{{ __('Author') }}";"{{ __('Approver') }}";"{{ __('Notes') }}";"{{ __('Display on index') }}";"{{ __('Message language') }}";"{{ __('Allow comments') }}";"{{ __('Image upload 2') }}";"{{ __('Image upload 3') }}";"{{ __('Image upload 4') }}";"{{ __('Start date') }}";"{{ __('No end date') }}";"{{ __('End date') }}";"{{ __('Weight') }}";"{{ __('Workflow state') }}"
+{% endspaceless %}
+{% for message in items %}
+{% spaceless %}
+    "{{ message.title }}";"{{ message.startText|safeHtml }}";"{{ message.imageUpload1 }}";"{{ message.mainText|safeHtml }}";"{{ message.amountOfViews }}";"{{ message.author }}";"{% if message.approver|default and message.approver.getUid() > 0 %}{{ message.approver.getUname() }}{% endif %}";"{{ message.notes|safeHtml }}";"{% if not message.displayOnIndex %}0{% else %}1{% endif %}";"{{ message.messageLanguage|languageName }}";"{% if not message.allowComments %}0{% else %}1{% endif %}";"{{ message.imageUpload2 }}";"{{ message.imageUpload3 }}";"{{ message.imageUpload4 }}";"{{ message.startDate|localizeddate('medium', 'short') }}";"{% if not message.noEndDate %}0{% else %}1{% endif %}";"{{ message.endDate|localizeddate('medium', 'short') }}";"{{ message.weight }}";"{{ message.workflowState|munewsmodule_objectState(false)|lower }}"
+{% endspaceless %}
+{% endfor %}

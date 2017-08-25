@@ -1,0 +1,15 @@
+{# Purpose of this template: Display messages in html mailings #}
+{#
+<ul>
+{% for message in items %}
+    <li>
+        <a href="{{ url('munewsmodule_message_display', {'id': message.getId(), 'slug': message.slug}) }}
+        ">{{ message|munewsmodule_formattedTitle }}</a>
+    </li>
+{% else %}
+    <li>{{ __('No messages found.') }}</li>
+{% endfor %}
+</ul>
+#}
+
+{{ include('@MUNewsModule/ContentType/itemlist_message_display_description.html.twig') }}
