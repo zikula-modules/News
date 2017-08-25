@@ -36,8 +36,8 @@
 {% endblock %}
 {% block entry_content %}
     <title><![CDATA[{% if message.updatedDate|default %}{{ message.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ message|munewsmodule_formattedTitle|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}]]></title>
-    <link>{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}</link>
-    <guid>{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}</guid>
+    <link>{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}</link>
+    <guid>{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}</guid>
     {% if message.createdBy|default and message.createdBy.getUid() > 0 %}
         {% set creatorAttributes = message.createdBy.getAttributes() %}
         <author>{{ message.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(message.createdBy.getUname()) }})</author>

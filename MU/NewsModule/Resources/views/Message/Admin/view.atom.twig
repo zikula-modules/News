@@ -8,7 +8,7 @@
     </author>
 {% set amountOfItems = items|length %}
 {% if amountOfItems > 0 %}
-{% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({'http://': '', '/': ''}) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': items.first.slug}) }}{% endset %}
+{% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({'http://': '', '/': ''}) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': items.first.getId(), 'slug': items.first.slug}) }}{% endset %}
     <id>{{ uniqueID }}</id>
     <updated>{{ items[0].updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
 {% endif %}
@@ -26,8 +26,8 @@
 {% endblock %}
 {% block entry_content %}
     <title type="html">{{ message|munewsmodule_formattedTitle|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</title>
-    <link rel="alternate" type="text/html" href="{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" />
-    {% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ message.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}{% endset %}
+    <link rel="alternate" type="text/html" href="{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}" />
+    {% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ message.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}{% endset %}
     <id>{{ uniqueID }}</id>
     {% if message.updatedDate|default %}
         <updated>{{ message.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>

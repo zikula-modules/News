@@ -8,6 +8,10 @@
     {%- endif -%}
 {%- endblock -%}
 
+{%- block munewsmodule_field_translation_row -%}
+    {{ block('form_widget_compound') }}
+{%- endblock -%}
+
 {% block munewsmodule_field_upload_label %}{% endblock %}
 {% block munewsmodule_field_upload_row %}
     {% spaceless %}

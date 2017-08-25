@@ -1,46 +1,78 @@
 application "News" {
 	vendor "MU"
 	author "Michael Ueberschaer"
-	email "info@homepage-mit-zikula.de"
+	email "info@homepages-mit-zikula.de"
 	url "https://homepages-mit-zikula.de"
     version "1.1.0"
 	prefix "news"
 	generatorSettings  {
         settingsContainer "Einstellungen"
 	    targetCoreVersion ZK15
-       generateTagSupport true
-        generateCsvTemplates false
-        generateXmlTemplates false
-        generateJsonTemplates false
+       generateMailzApi true
+        generateNewsletterPlugin true
+        generateTagSupport true
+        generateMultiHookNeedles true
         generateKmlTemplates false
-        generateIcsTemplates false
+        generateIcsTemplates true
         filterHookProvider ENABLED
+        versionAllGeneratedFiles false
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
+    generateTests false
+        markFiles "NewsModuleInstaller.php,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig\r\nResources/views/Message/view.html.twig"
     }
     entities {
-        entity "message" leading categorisable {
+        entity "message" leading categorisable categorisableMultiSelection {
             nameMultiple "messages"
             displayPattern "#title#"
-					workflow STANDARD
+					slugUnique false
+            workflow STANDARD
+            hasArchive true
+            hasTray true
             formAwareHookProvider ENABLED
             fields {
-					    string "title" {
+					    string "title" translatable {
                     sluggablePosition 1
                 },				    
-						text "startText" {
-							length 3000
+						text "startText" translatable {
+                    length 10000
 						},
 						upload "imageUpload1" {
 							defaultValue ""
 							mandatory false
 							maxSize "200k"
 						},
-						text "mainText" {
-							defaultValue ""
+						text "mainText" translatable {
+                    defaultValue ""
 							mandatory false
-							length 10000
+							length 20000
 						},
+                integer "amountOfViews" {
+                    defaultValue "0"
+                mandatory false
+                    displayType VIEW_DISPLAY
+                },
+                string "author" {
+                    length 100
+                },
+                user "approver" nullable {
+                    mandatory false
+                },
+                text "notes" {
+                    mandatory false
+                },
+                boolean "displayOnIndex" ajaxTogglability {
+                    defaultValue "1"
+                    mandatory false
+                },
+                string "messageLanguage" {
+                    length 7
+                    role LOCALE
+                },
+                boolean "allowComments" {
+                    defaultValue "1"
+                    mandatory false
+                },
 						upload "imageUpload2" {
 							defaultValue ""
 							mandatory false
@@ -55,17 +87,12 @@ application "News" {
 							mandatory false
 							maxSize "200k"
 						},
-						integer "weight" {
-							defaultValue "1"
-							displayType NONE
-                    length 2
-						},
 						datetime "startDate" nullable startDate {
 							mandatory false
 						displayType VIEW
                 },
 						boolean "noEndDate" ajaxTogglability {
-                    defaultValue ""
+                    defaultValue "1"
 							mandatory false
 						},
 						datetime "endDate" nullable endDate {
@@ -73,9 +100,15 @@ application "News" {
 							mandatory false
 						displayType VIEW
                 }	
-					}
-					
-					            actions {
+					,
+						integer "weight" {
+							defaultValue "1"
+							mandatory false
+                    displayType NONE
+                    length 2
+						}
+            }
+            actions {
                 mainAction "Index",
                 viewAction "View",
                 displayAction "Display",
@@ -86,11 +119,11 @@ application "News" {
 				}
 				
 			variables {
-				varContainer "Settings" {
+				varContainer "GeneralSettings" {
 					vars {
-                textVar "maxSize" {
-                    value "200k"
-                },
+                boolVar "enableAttribution",
+						boolVar "enableMultiLanguage",
+						boolVar "enableEvents",
 						boolVar "showAuthor" {
 							value "1"
 						},
@@ -99,5 +132,55 @@ application "News" {
 						}
             }
         }
-						}
+						,
+        varContainer "CategorySettings" {
+            sortOrder 2
+            vars {
+                boolVar "enableCategorization",
+                boolVar "enableCategoryBasedPermissions"
+            }
+        },
+        varContainer "DisplaySetting" {
+            sortOrder 3
+            vars {
+                listVar "defaultMessageSorting" {
+                    items {
+                        listVarItem "ascending",
+                        listVarItem default "descending"
+                    }
+                },
+                boolVar "checkRefererOnPrint",
+                boolVar "enableAjaxEditing",
+                boolVar "enableMoreMessagesInCategory",
+                boolVar "displayPdfLinl",
+                intVar "pdfLinkDisplayAccessLevel",
+                filePathVar "pdfLinkHeaderLogo",
+                intVar "pdfLinkHeaderLogoWidth",
+                boolVar "pdfLinkEnableCache"
+            }
+        },
+        varContainer "UploadSettings" {
+            sortOrder 4
+            vars {
+                boolVar "enablePictureUpload",
+                listVar "imageFloatOnViewPage" {
+                    items {
+                        listVarItem "none",
+                        listVarItem "left",
+                        listVarItem "right"
+                    }
+                },
+                listVar "imageFloatOnDisplayPage" {
+                    items {
+                        listVarItem "none",
+                        listVarItem "left",
+                        listVarItem "right"
+                    }
+                },
+                textVar "maxSize" {
+                    value "200k"
+                }
+            }
+        }
+    }
 }

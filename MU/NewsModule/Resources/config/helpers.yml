@@ -1,5 +1,16 @@
 services:
     # Helper services
+    mu_news_module.archive_helper:
+        class: MU\NewsModule\Helper\ArchiveHelper
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.workflow_helper"
+            - "@mu_news_module.hook_helper"
+    
     mu_news_module.category_helper:
         class: MU\NewsModule\Helper\CategoryHelper
         arguments:
@@ -17,12 +28,14 @@ services:
             - "@zikula_users_module.current_user"
             - "@mu_news_module.category_helper"
             - "@=service('zikula_extensions_module.api.variable').get('MUNewsModule', 'showOnlyOwnEntries', false)"
+            - "@=service('zikula_extensions_module.api.variable').get('MUNewsModule', 'filterDataByLocale', false)"
     
     mu_news_module.controller_helper:
         class: MU\NewsModule\Helper\ControllerHelper
         arguments:
             - "@translator.default"
             - "@request_stack"
+            - "@mu_news_module.archive_helper"
             - "@logger"
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"
@@ -93,6 +106,15 @@ services:
             - "@mu_news_module.category_helper"
         tags:
             - { name: zikula.searchable_module, bundleName: MUNewsModule }
+    
+    mu_news_module.translatable_helper:
+        class: MU\NewsModule\Helper\TranslatableHelper
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_settings_module.locale_api"
+            - "@mu_news_module.entity_factory"
     
     mu_news_module.upload_helper:
         class: MU\NewsModule\Helper\UploadHelper

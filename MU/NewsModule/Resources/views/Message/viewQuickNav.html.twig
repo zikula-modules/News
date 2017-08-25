@@ -32,6 +32,20 @@
             {% if workflowStateFilter is defined and workflowStateFilter != true %}
                 </div>
             {% endif %}
+            {% if approverFilter is defined and approverFilter != true %}
+                <div class="hidden">
+            {% endif %}
+                {{ form_row(quickNavForm.approver) }}
+            {% if approverFilter is defined and approverFilter != true %}
+                </div>
+            {% endif %}
+            {% if messageLanguageFilter is defined and messageLanguageFilter != true %}
+                <div class="hidden">
+            {% endif %}
+                {{ form_row(quickNavForm.messageLanguage) }}
+            {% if messageLanguageFilter is defined and messageLanguageFilter != true %}
+                </div>
+            {% endif %}
             {% if searchFilter is defined and searchFilter != true %}
                 <div class="hidden">
             {% endif %}
@@ -52,6 +66,20 @@
             {% endif %}
                 {{ form_row(quickNavForm.num) }}
             {% if pageSizeSelector is defined and pageSizeSelector != true %}
+                </div>
+            {% endif %}
+            {% if displayOnIndexFilter is defined and displayOnIndexFilter != true %}
+                <div class="hidden">
+            {% endif %}
+                {{ form_row(quickNavForm.displayOnIndex) }}
+            {% if displayOnIndexFilter is defined and displayOnIndexFilter != true %}
+                </div>
+            {% endif %}
+            {% if allowCommentsFilter is defined and allowCommentsFilter != true %}
+                <div class="hidden">
+            {% endif %}
+                {{ form_row(quickNavForm.allowComments) }}
+            {% if allowCommentsFilter is defined and allowCommentsFilter != true %}
                 </div>
             {% endif %}
             {% if noEndDateFilter is defined and noEndDateFilter != true %}

@@ -1,6 +1,11 @@
 services:
     # Form field types
     
+    mu_news_module.form.type.field.translation:
+        class: MU\NewsModule\Form\Type\Field\TranslationType
+        tags:
+            - { name: form.type }
+    
     mu_news_module.form.type.field.upload:
         class: MU\NewsModule\Form\Type\Field\UploadType
         arguments:

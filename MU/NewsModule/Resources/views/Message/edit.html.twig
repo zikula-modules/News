@@ -16,19 +16,64 @@
         ] %}
         {{ form_start(form, {attr: {id: 'messageEditForm', class: 'munews-edit-form'}}) }}
         {{ form_errors(form) }}
+        {% if translationsEnabled == true %}
+            <div class="zikula-bootstrap-tab-container">
+                <ul class="{{ form.vars.id|lower }}-translation-locales nav nav-tabs">
+                    {% for language in supportedLanguages %}
+                        <li{% if language == app.request.locale %} class="active"{% endif %}>
+                            <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
+                                {% if not form.vars.valid %}
+                                    <span class="label label-danger"><i class="fa fa-warning"></i><span class="sr-only">{{ __('Errors') }}</span></span>
+                                {% endif %}
+                                {% set hasRequiredFields = language in localesWithMandatoryFields %}
+                                {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="{{ form.vars.id|lower }}-translation-fields tab-content">
+                    {% for language in supportedLanguages %}
+                        <div class="{{ form.vars.id|lower }}-translations-fields-{{ language }} tab-pane fade{% if language == app.request.locale %} active in{% endif %}">
+                            <fieldset>
+                                <legend>{{ language|languageName|safeHtml }}</legend>
+                                {% if language == app.request.locale %}
+                                    {{ form_row(form.title) }}
+                                    {{ form_row(form.startText) }}
+                                    {{ form_row(form.mainText) }}
+                                {% else %}
+                                    {{ form_row(attribute(form, 'translations' ~ language)) }}
+                                {% endif %}
+                            </fieldset>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            {% set language = app.request.locale %}
+            <fieldset>
+                <legend>{{ language|languageName|safeHtml }}</legend>
+                {{ form_row(form.title) }}
+                {{ form_row(form.startText) }}
+                {{ form_row(form.mainText) }}
+            </fieldset>
+        {% endif %}
         <fieldset>
-            <legend>{{ __('Content') }}</legend>
-            {{ form_row(form.title) }}
-            {{ form_row(form.startText) }}
+            <legend>{{ __('Further properties') }}</legend>
             {{ form_row(form.imageUpload1) }}
-            {{ form_row(form.mainText) }}
+            {{ form_row(form.amountOfViews) }}
+            {{ form_row(form.author) }}
+            {{ form_row(form.approver) }}
+            {{ form_row(form.notes) }}
+            {{ form_row(form.displayOnIndex) }}
+            {{ form_row(form.messageLanguage) }}
+            {{ form_row(form.allowComments) }}
             {{ form_row(form.imageUpload2) }}
             {{ form_row(form.imageUpload3) }}
             {{ form_row(form.imageUpload4) }}
-            {{ form_row(form.weight) }}
             {{ form_row(form.startDate) }}
             {{ form_row(form.noEndDate) }}
             {{ form_row(form.endDate) }}
+            {{ form_row(form.weight) }}
         </fieldset>
         
         {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
@@ -101,6 +146,7 @@
             ( function($) {
                 $(document).ready(function() {
                     // initialise auto completion for user fields
+                    initUserLiveSearch('munewsmodule_message_approver');
                     {% if form.moderationSpecificCreator is defined %}
                         initUserLiveSearch('munewsmodule_message_moderationSpecificCreator');
                     {% endif %}

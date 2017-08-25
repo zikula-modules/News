@@ -12,6 +12,8 @@ workflow:
                 - initial
                 - waiting
                 - approved
+                - suspended
+                - archived
                 - deleted
             transitions:
                 updatewaiting:
@@ -23,9 +25,24 @@ workflow:
                 approve:
                     from: [initial, waiting]
                     to: approved
+                unpublish:
+                    from: approved
+                    to: suspended
+                publish:
+                    from: suspended
+                    to: approved
                 updateapproved:
                     from: approved
                     to: approved
+                archive:
+                    from: [approved, suspended]
+                    to: archived
+                updatesuspended:
+                    from: suspended
+                    to: suspended
+                updatearchived:
+                    from: archived
+                    to: archived
                 delete:
-                    from: [waiting, approved]
+                    from: [waiting, approved, suspended, archived]
                     to: deleted
