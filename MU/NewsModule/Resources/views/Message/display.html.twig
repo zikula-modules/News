@@ -14,8 +14,96 @@
 {% block content %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div class="munewsmodule-message munewsmodule-display">
-
-    <dl>
+    
+    {% set imageFloatOnDisplay = getModVar('MUNewsModule', 'imageFloatOnDisplayPage') %}
+    {% if imageFloatOnDisplay == 'left' %}
+        {% set imageFloat = 'float-left' %}
+    {% endif %}
+    {% if imageFloatOnDisplay == 'right' %}
+        {% set imageFloat = 'float-right' %}
+    {% endif %}
+    {% if imageFloatOnDisplay == 'none' %}
+        {% set imageFloat = 'float-none' %}
+    {% endif %}
+    
+    {% if message.startText is not empty %}
+        <div id="message-display-start">
+        {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+        <div class="{{ imageFloat }}">
+            <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+            {% if message.imageUpload1Meta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+                <img src="{{ message.imageUpload1.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% endif %}
+            </a>
+            {% else %}&nbsp;{% endif %}
+        </div>
+        {{ message.startText|safeHtml }}
+        </div>
+    {% endif %}
+    {% if message.mainText is not empty %}
+        <div id="message-display-main">
+            {{ message.mainText|safeHtml }}
+        </div>
+    {% endif %}
+    
+    <div id="message-display-pictures" class="col-md-12">
+        <div class="col-md-4">
+        {% if message.imageUpload2 is not empty %}
+            <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
+                        <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
+            {% if message.imageUpload2Meta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload2') %}
+                <img src="{{ message.imageUpload2.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% else %}
+                {{ __('Download') }} ({{ message.imageUpload2Meta.size|munewsmodule_fileSize(message.imageUpload2.getPathname(), false, false) }})
+            {% endif %}
+            </a>
+            {% else %}&nbsp;{% endif %}
+            </dd>
+        {% endif %}    
+        </div>
+        <div class="col-md-4">
+        {% if message.imageUpload3 is not empty %}
+            <dd>{% if message.imageUpload3 is not empty and message.imageUpload3Meta|default %}
+                        <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
+            {% if message.imageUpload3Meta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload3') %}
+                <img src="{{ message.imageUpload3.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% else %}
+                {{ __('Download') }} ({{ message.imageUpload3Meta.size|munewsmodule_fileSize(message.imageUpload3.getPathname(), false, false) }})
+            {% endif %}
+            </a>
+            {% else %}&nbsp;{% endif %}
+            </dd>
+        {% endif %}    
+        </div>
+        <div class="col-md-4">
+        {% if message.imageUpload4 is not empty %}
+            <dd>{% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
+                        <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
+            {% if message.imageUpload4Meta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload4') %}
+                <img src="{{ message.imageUpload4.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% else %}
+                {{ __('Download') }} ({{ message.imageUpload4Meta.size|munewsmodule_fileSize(message.imageUpload4.getPathname(), false, false) }})
+            {% endif %}
+            </a>
+            {% else %}&nbsp;{% endif %}
+            </dd>
+        {% endif %}    
+        </div>
+    </div>
+    
+    {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}
+    <div class="message-display-footer">
+        {% if pdfLink == 1 %}        
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, 'tpl': 'PDF'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+        {% endif %}
+    </div>
+    
+    
+    {#<dl>
         {% if message.workflowState is not empty and routeArea == 'admin' %}
             <dt>{{ __('State') }}</dt>
             <dd>{{ message.workflowState|munewsmodule_listEntry('message', 'workflowState') }}</dd>
@@ -158,7 +246,7 @@
             </dd>
         {% endif %}
         
-    </dl>
+    </dl>#}
 
     {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
         {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
