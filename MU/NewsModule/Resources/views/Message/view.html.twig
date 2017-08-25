@@ -18,8 +18,12 @@
             {% if imageFloatOnView == 'right' %}
             {% set imageFloat = 'float-right' %}
             {% endif %}
+            {% if imageFloatOnView == 'none' %}
+            {% set imageFloat = 'float-none' %}
+            {% endif %}
+            {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
             <div class="{{ imageFloat }}">
-                    {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+                    
                                 <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
                     {% if message.imageUpload1Meta.isImage %}
                         {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
@@ -28,8 +32,9 @@
                         {{ __('Download') }} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
                     {% endif %}
                     </a>
-                    {% else %}&nbsp;{% endif %}           
-            </div>{{ message.startText|striptags|truncate(500) }}
+                               
+            </div>{% else %}&nbsp;{% endif %}
+            {{ message.startText|striptags|truncate(500) }}
             {% if message.mainText != '' %}
                 <br /><br /><a class="btn btn-success btn-sm" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug,'id': message.id}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
             {% endif %}
