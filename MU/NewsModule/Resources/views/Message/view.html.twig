@@ -11,7 +11,14 @@
     {% for message in items %}
         <div class="col-md-12">
             <h3>{{ message.title }}</h3>
-            <div class="message-start-photo">
+            {% set imageFloatOnView = getModVar('MUNewsModule', 'imageFloatOnViewPage') %}
+            {% if imageFloatOnView == 'left' %}
+            {% set imageFloat = 'float-left' %}
+            {% endif %}
+            {% if imageFloatOnView == 'right' %}
+            {% set imageFloat = 'float-right' %}
+            {% endif %}
+            <div class="{{ imageFloat }}">
                     {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
                                 <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
                     {% if message.imageUpload1Meta.isImage %}
@@ -24,7 +31,7 @@
                     {% else %}&nbsp;{% endif %}           
             </div>{{ message.startText|striptags|truncate(500) }}
             {% if message.mainText != '' %}
-                <br /><br /><a class="btn btn-success btn-sm" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
+                <br /><br /><a class="btn btn-success btn-sm" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug,'id': message.id}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
             {% endif %}
         </div>
     
@@ -48,6 +55,13 @@
                 <col id="cStartText" />
                 <col id="cImageUpload1" />
                 <col id="cMainText" />
+                <col id="cAmountOfViews" />
+                <col id="cAuthor" />
+                <col id="cApprover" />
+                <col id="cNotes" />
+                <col id="cDisplayOnIndex" />
+                <col id="cMessageLanguage" />
+                <col id="cAllowComments" />
                 <col id="cImageUpload2" />
                 <col id="cImageUpload3" />
                 <col id="cImageUpload4" />
@@ -79,6 +93,27 @@
                 </th>
                 <th id="hMainText" scope="col" class="text-left">
                     <a href="{{ sort.mainText.url }}" title="{{ __f('Sort by %s', {'%s': 'main text'}) }}" class="{{ sort.mainText.class }}">{{ __('Main text') }}</a>
+                </th>
+                <th id="hAmountOfViews" scope="col" class="text-right z-order-unsorted">
+                    {{ __('Amount of views') }}
+                </th>
+                <th id="hAuthor" scope="col" class="text-left">
+                    <a href="{{ sort.author.url }}" title="{{ __f('Sort by %s', {'%s': 'author'}) }}" class="{{ sort.author.class }}">{{ __('Author') }}</a>
+                </th>
+                <th id="hApprover" scope="col" class="text-left z-order-unsorted">
+                    {{ __('Approver') }}
+                </th>
+                <th id="hNotes" scope="col" class="text-left">
+                    <a href="{{ sort.notes.url }}" title="{{ __f('Sort by %s', {'%s': 'notes'}) }}" class="{{ sort.notes.class }}">{{ __('Notes') }}</a>
+                </th>
+                <th id="hDisplayOnIndex" scope="col" class="text-center">
+                    <a href="{{ sort.displayOnIndex.url }}" title="{{ __f('Sort by %s', {'%s': 'display on index'}) }}" class="{{ sort.displayOnIndex.class }}">{{ __('Display on index') }}</a>
+                </th>
+                <th id="hMessageLanguage" scope="col" class="text-left">
+                    <a href="{{ sort.messageLanguage.url }}" title="{{ __f('Sort by %s', {'%s': 'message language'}) }}" class="{{ sort.messageLanguage.class }}">{{ __('Message language') }}</a>
+                </th>
+                <th id="hAllowComments" scope="col" class="text-center">
+                    <a href="{{ sort.allowComments.url }}" title="{{ __f('Sort by %s', {'%s': 'allow comments'}) }}" class="{{ sort.allowComments.class }}">{{ __('Allow comments') }}</a>
                 </th>
                 <th id="hImageUpload2" scope="col" class="text-left">
                     <a href="{{ sort.imageUpload2.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 2'}) }}" class="{{ sort.imageUpload2.class }}">{{ __('Image upload 2') }}</a>
@@ -120,7 +155,7 @@
                     {{ message.workflowState|munewsmodule_objectState }}
                 </td>
                 {% endif %}<td headers="hTitle" class="text-left">
-                    <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
+                    <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
                 </td>
                 <td headers="hStartText" class="text-left">
                     {{ message.startText|striptags|truncate(50) }}
@@ -139,6 +174,45 @@
                 </td>
                 <td headers="hMainText" class="text-left">
                     {{ message.mainText|striptags|truncate(50) }}
+                </td>
+                <td headers="hAmountOfViews" class="text-right">
+                    {{ message.amountOfViews }}
+                </td>
+                <td headers="hAuthor" class="text-left">
+                    {{ message.author }}
+                </td>
+                <td headers="hApprover" class="text-left">
+                    {% if message.approver|default and message.approver.getUid() > 0 %}
+                        {{ message.approver.getUid()|profileLinkByUserId() }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.getUid()|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}<a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', { '%userName%': message.approver.getUname() }) }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
+                        <span class="avatar">{{ userAvatar(message.approver.getUid(), { rating: 'g' }) }}</span>
+                    {% else %}&nbsp;{% endif %}
+                </td>
+                <td headers="hNotes" class="text-left">
+                    {{ message.notes|striptags|truncate(50) }}
+                </td>
+                <td headers="hDisplayOnIndex" class="text-center">
+                    {% set itemId = message.getKey() %}
+                    <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
+                        <i class="fa fa-check{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
+                        <i class="fa fa-times{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                    </a>
+                    <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
+                        {% if message.displayOnIndex %}
+                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                        {% else %}
+                            <i class="fa fa-times" title="{{ __('No') }}"></i>
+                        {% endif %}
+                    </div></noscript>
+                </td>
+                <td headers="hMessageLanguage" class="text-left">
+                    {{ message.messageLanguage|languageName }}
+                </td>
+                <td headers="hAllowComments" class="text-center">
+                    {% if message.allowComments %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
                 </td>
                 <td headers="hImageUpload2" class="text-left">
                     {% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
@@ -199,7 +273,7 @@
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}13{% else %}12{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}20{% else %}19{% endif %}">
             {{ __('No messages found.') }}
               </td>
             </tr>
@@ -207,7 +281,7 @@
         
             </tbody>
         </table>
-        </div>
+        </div>#}
         
         {% if all != 1 and pager|default %}
             {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'munewsmodule_message_' ~ routeArea ~ 'view'}) }}
@@ -219,6 +293,9 @@
                     <select id="mUNewsModuleAction" name="action" class="form-control input-sm">
                         <option value="">{{ __('Choose action') }}</option>
                         <option value="approve" title="{{ __('Update content and approve for immediate publishing.') }}">{{ __('Approve') }}</option>
+                        <option value="unpublish" title="{{ __('Hide content temporarily.') }}">{{ __('Unpublish') }}</option>
+                        <option value="publish" title="{{ __('Make content available again.') }}">{{ __('Publish') }}</option>
+                        <option value="archive" title="{{ __('Move content into the archive.') }}">{{ __('Archive') }}</option>
                         <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
                     </select>
                 </div>
