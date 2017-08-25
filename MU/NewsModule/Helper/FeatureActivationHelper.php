@@ -22,6 +22,16 @@ use MU\NewsModule\Helper\Base\AbstractFeatureActivationHelper;
 class FeatureActivationHelper extends AbstractFeatureActivationHelper
 {
 	/**
+	 * CREATORS feature
+	 */
+	const CREATORS = 'creators';
+	
+	/**
+	 * CREATEDDATES feature
+	 */
+	const CREATEDDATES = 'createddates';
+	
+	/**
 	 * @var VariableApiInterface
 	 */
 	private $variableApi;
@@ -29,6 +39,62 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
 	public function __construct(VariableApiInterface $variableApi)
 	{
 		$this->variableApi = $variableApi;
+	}
+	
+	/**
+	 * This method checks whether a certain feature is enabled for a given entity type or not.
+	 *
+	 * @param string $feature     Name of requested feature
+	 * @param string $objectType  Currently treated entity type
+	 *
+	 * @return boolean True if the feature is enabled, false otherwise
+	 */
+	public function isEnabled($feature, $objectType)
+	{
+		if ($feature == self::CATEGORIES) {
+			$method = 'hasCategories';
+			if (method_exists($this, $method)) {
+				return $this->$method($objectType);
+			}
+	
+			return in_array($objectType, ['message']);
+		}
+		if ($feature == self::ATTRIBUTES) {
+			$method = 'hasAttributes';
+			if (method_exists($this, $method)) {
+				return $this->$method($objectType);
+			}
+	
+			return in_array($objectType, ['message']);
+		}
+		if ($feature == self::TRANSLATIONS) {
+			$method = 'hasTranslations';
+			if (method_exists($this, $method)) {
+				return $this->$method($objectType);
+			}
+	
+			return in_array($objectType, ['message']);
+		}
+		
+		if ($feature == self::CREATORS) {
+			$method = 'hasCreators';
+			if (method_exists($this, $method)) {
+				return $this->$method($objectType);
+			}
+		
+			return in_array($objectType, ['message']);
+		}
+		
+		if ($feature == self::CREATEDDATES) {
+			$method = 'hasCreatedDates';
+			if (method_exists($this, $method)) {
+				return $this->$method($objectType);
+			}
+		
+			return in_array($objectType, ['message']);
+		}
+	
+		return false;
 	}
 	
     public function hasCategories($objectType)
@@ -44,5 +110,15 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
     public function hasTranslations($objectType)
     {
     	return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableMultiLanguage') == 1;
+    }
+    
+    public function hasCreators($objectType)
+    {
+    	return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'showAuthor') == 1;
+    }
+    
+    public function hasCreatedDates($objectType)
+    {
+    	return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'showDate') == 1;
     }
 }
