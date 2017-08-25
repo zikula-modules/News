@@ -56,6 +56,11 @@ class ControllerHelper extends AbstractControllerHelper
         }
         
         /*****************OWN CODE*********************/
+        if ($sort == '') {
+        	$sort = 'weight';
+        } else {
+        	$sort .= ' weight';
+        }
         $sortdir = $request->query->get('sortdir', '');
         if ($sortdir == '') {
         	$defaultSortDir = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
