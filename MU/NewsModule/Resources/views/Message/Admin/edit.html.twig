@@ -16,104 +16,142 @@
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
         ] %}
         {{ form_start(form, {attr: {id: 'messageEditForm', class: 'munews-edit-form'}}) }}
-        {{ form_errors(form) }}
-        {% if translationsEnabled == true %}
-            <div class="zikula-bootstrap-tab-container">
-                <ul class="{{ form.vars.id|lower }}-translation-locales nav nav-tabs">
-                    {% for language in supportedLanguages %}
-                        <li{% if language == app.request.locale %} class="active"{% endif %}>
-                            <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
-                                {% if not form.vars.valid %}
-                                    <span class="label label-danger"><i class="fa fa-warning"></i><span class="sr-only">{{ __('Errors') }}</span></span>
-                                {% endif %}
-                                {% set hasRequiredFields = language in localesWithMandatoryFields %}
-                                {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div class="{{ form.vars.id|lower }}-translation-fields tab-content">
-                    {% for language in supportedLanguages %}
-                        <div class="{{ form.vars.id|lower }}-translations-fields-{{ language }} tab-pane fade{% if language == app.request.locale %} active in{% endif %}">
-                            <fieldset>
-                                <legend>{{ language|languageName|safeHtml }}</legend>
-                                {% if language == app.request.locale %}
-                                    {{ form_row(form.title) }}
-                                    {{ form_row(form.startText) }}
-                                    {{ form_row(form.mainText) }}
-                                {% else %}
-                                    {{ form_row(attribute(form, 'translations' ~ language)) }}
-                                {% endif %}
-                            </fieldset>
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a id="fieldsTab" href="#tabFields" title="{{ __('Fields') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
+                </li>
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                    <li role="presentation">
+                        <a id="attributesTab" href="#tabAttributes" title="{{ __('Attributes') }}" role="tab" data-toggle="tab">{{ __('Attributes') }}</a>
+                    </li>
+                {% endif %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                    <li role="presentation">
+                        <a id="categoriesTab" href="#tabCategories" title="{{ __('Categories') }}" role="tab" data-toggle="tab">{{ __('Categories') }}</a>
+                    </li>
+                {% endif %}
+                {% if mode != 'create' %}
+                    <li role="presentation">
+                        <a id="standardFieldsTab" href="#tabStandardFields" title="{{ __('Creation and update') }}" role="tab" data-toggle="tab">{{ __('Creation and update') }}</a>
+                    </li>
+                {% endif %}
+                {% if form.moderationSpecificCreator is defined %}
+                    <li role="presentation">
+                        <a id="moderationTab" href="#tabModeration" title="{{ __('Moderation options') }}" role="tab" data-toggle="tab">{{ __('Moderation') }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="tabFields" aria-labelledby="fieldsTab">
+                    <h3>{{ __('Fields') }}</h3>
+                    {% if translationsEnabled == true %}
+                        <div class="zikula-bootstrap-tab-container">
+                            <ul class="{{ form.vars.id|lower }}-translation-locales nav nav-tabs">
+                                {% for language in supportedLanguages %}
+                                    <li{% if language == app.request.locale %} class="active"{% endif %}>
+                                        <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
+                                            {% if not form.vars.valid %}
+                                                <span class="label label-danger"><i class="fa fa-warning"></i><span class="sr-only">{{ __('Errors') }}</span></span>
+                                            {% endif %}
+                                            {% set hasRequiredFields = language in localesWithMandatoryFields %}
+                                            {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="{{ form.vars.id|lower }}-translation-fields tab-content">
+                                {% for language in supportedLanguages %}
+                                    <div class="{{ form.vars.id|lower }}-translations-fields-{{ language }} tab-pane fade{% if language == app.request.locale %} active in{% endif %}">
+                                        <fieldset>
+                                            <legend>{{ language|languageName|safeHtml }}</legend>
+                                            {% if language == app.request.locale %}
+                                                {{ form_row(form.title) }}
+                                                {{ form_row(form.startText) }}
+                                                {{ form_row(form.mainText) }}
+                                            {% else %}
+                                                {{ form_row(attribute(form, 'translations' ~ language)) }}
+                                            {% endif %}
+                                        </fieldset>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                    {% endfor %}
+                    {% else %}
+                        {% set language = app.request.locale %}
+                        <fieldset>
+                            <legend>{{ language|languageName|safeHtml }}</legend>
+                            {{ form_row(form.title) }}
+                            {{ form_row(form.startText) }}
+                            {{ form_row(form.mainText) }}
+                        </fieldset>
+                    {% endif %}
+                    <fieldset>
+                        <legend>{{ __('Further properties') }}</legend>
+                        {{ form_row(form.imageUpload1) }}
+                        <div class="hidden">
+                            {{ form_row(form.amountOfViews) }}
+                        </div>
+                        {{ form_row(form.author) }}
+                        {{ form_row(form.approver) }}
+                        {{ form_row(form.notes) }}
+                        {{ form_row(form.displayOnIndex) }}
+                        {{ form_row(form.messageLanguage) }}
+                        {{ form_row(form.allowComments) }}
+                        {{ form_row(form.imageUpload2) }}
+                        {{ form_row(form.imageUpload3) }}
+                        {{ form_row(form.imageUpload4) }}
+                        {{ form_row(form.startDate) }}
+                        {{ form_row(form.noEndDate) }}
+                        <div id="endDateContainer">
+                        {{ form_row(form.endDate) }}
+                        </div>
+                        {{ form_row(form.weight) }}
+                    </fieldset>
                 </div>
+                
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                    {{ include('@MUNewsModule/Helper/includeAttributesEdit.html.twig', {obj: message, tabs: true}) }}
+                {% endif %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                    {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message, tabs: true}) }}
+                {% endif %}
+                {% if mode != 'create' %}
+                    {{ include('@MUNewsModule/Helper/includeStandardFieldsEdit.html.twig', {obj: message, tabs: true}) }}
+                {% endif %}
+                
+                {% if formHookTemplates|length > 0 %}
+                    <fieldset>
+                        {% for hookTemplate in formHookTemplates %}
+                            {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                        {% endfor %}
+                    </fieldset>
+                {% endif %}
+                
+                <fieldset>
+                    <legend>{{ __('Communication') }}</legend>
+                    {{ form_row(form.additionalNotificationRemarks) }}
+                </fieldset>
+                
+                {% if form.moderationSpecificCreator is defined %}
+                    <div role="tabpanel" class="tab-pane fade" id="tabModeration" aria-labelledby="moderationTab">
+                        <h3>{{ __('Moderation') }}</h3>
+                        {{ form_row(form.moderationSpecificCreator) }}
+                        {{ form_row(form.moderationSpecificCreationDate) }}
+                    </div>
+                {% endif %}
+                
+                {# include return control #}
+                {% if mode == 'create' %}
+                    <fieldset>
+                        <legend>{{ __('Return control') }}</legend>
+                        {{ form_row(form.repeatCreation) }}
+                    </fieldset>
+                {% endif %}
             </div>
-        {% else %}
-            {% set language = app.request.locale %}
-            <fieldset>
-                <legend>{{ language|languageName|safeHtml }}</legend>
-                {{ form_row(form.title) }}
-                {{ form_row(form.startText) }}
-                {{ form_row(form.mainText) }}
-            </fieldset>
-        {% endif %}
-        <fieldset>
-            <legend>{{ __('Further properties') }}</legend>
-            {{ form_row(form.imageUpload1) }}
-            {{ form_row(form.amountOfViews) }}
-            {{ form_row(form.author) }}
-            {{ form_row(form.approver) }}
-            {{ form_row(form.notes) }}
-            {{ form_row(form.displayOnIndex) }}
-            {{ form_row(form.messageLanguage) }}
-            {{ form_row(form.allowComments) }}
-            {{ form_row(form.imageUpload2) }}
-            {{ form_row(form.imageUpload3) }}
-            {{ form_row(form.imageUpload4) }}
-            {{ form_row(form.startDate) }}
-            {{ form_row(form.noEndDate) }}
-            {{ form_row(form.endDate) }}
-            {{ form_row(form.weight) }}
-        </fieldset>
-        
-        {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
-            {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message}) }}
-        {% endif %}
-        {% if mode != 'create' %}
-            {{ include('@MUNewsModule/Helper/includeStandardFieldsEdit.html.twig', {obj: message}) }}
-        {% endif %}
-        
-        {% if formHookTemplates|length > 0 %}
-            <fieldset>
-                {% for hookTemplate in formHookTemplates %}
-                    {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
-                {% endfor %}
-            </fieldset>
-        {% endif %}
-        
-        <fieldset>
-            <legend>{{ __('Communication') }}</legend>
-            {{ form_row(form.additionalNotificationRemarks) }}
-        </fieldset>
-        
-        {% if form.moderationSpecificCreator is defined %}
-            <fieldset id="moderationFieldsSection">
-                <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
-                <div id="moderationFieldsContent">
-                    {{ form_row(form.moderationSpecificCreator) }}
-                    {{ form_row(form.moderationSpecificCreationDate) }}
-                </div>
-            </fieldset>
-        {% endif %}
-        
-        {# include return control #}
-        {% if mode == 'create' %}
-            <fieldset>
-                <legend>{{ __('Return control') }}</legend>
-                {{ form_row(form.repeatCreation) }}
-            </fieldset>
-        {% endif %}
+        </div>
         
         {# include possible submit actions #}
         <div class="form-group form-buttons">
@@ -127,14 +165,7 @@
         </div>
         {{ form_end(form) }}
         {% set hookId = mode != 'create' ? message.id : null %}
-        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId) %}
-        {% if hooks is iterable and hooks|length > 0 %}
-            <h3>{{ __('Hooks') }}</h3>
-            {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-                <h4>{{ providerArea }}</h4>
-                {{ hook }}
-            {% endfor %}
-        {% endif %}
+        {{ notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId) }}
         
     </div>
 {% endblock %}
@@ -164,4 +195,16 @@
         </script>
     {% endset %}
     {{ pageAddAsset('footer', formInitScript) }}
+    <script>
+    var MU = jQuery.noConflict();
+    MU().ready(function() {
+    var enddate = MU('#munewsmodule_message_noEndDate');
+    if(enddate.val() == 1) {
+        MU('#endDateContainer').addClass('hidden');
+    }
+    enddate.click(function() {
+        MU('#endDateContainer').toggleClass('hidden');
+    });
+    });
+    </script>
 {% endblock %}

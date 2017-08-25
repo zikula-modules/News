@@ -180,11 +180,18 @@
                     {{ message.messageLanguage|languageName }}
                 </td>
                 <td headers="hAllowComments" class="text-center">
-                    {% if message.allowComments %}
-                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                    {% else %}
-                        <i class="fa fa-times" title="{{ __('No') }}"></i>
-                    {% endif %}
+                    {% set itemId = message.getKey() %}
+                    <a id="toggleAllowComments{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="allowComments" data-item-id="{{ itemId }}">
+                        <i class="fa fa-check{% if not message.allowComments %} hidden{% endif %}" id="yesAllowComments{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
+                        <i class="fa fa-times{% if message.allowComments %} hidden{% endif %}" id="noAllowComments{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                    </a>
+                    <noscript><div id="noscriptAllowComments{{ itemId }}">
+                        {% if message.allowComments %}
+                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                        {% else %}
+                            <i class="fa fa-times" title="{{ __('No') }}"></i>
+                        {% endif %}
+                    </div></noscript>
                 </td>
                 <td headers="hImageUpload2" class="text-left">
                     {% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
@@ -223,7 +230,9 @@
                     {% else %}&nbsp;{% endif %}
                 </td>
                 <td headers="hStartDate" class="text-left">
-                    {{ message.startDate|localizeddate('medium', 'short') }}
+                    {% if message.startDate is not empty %}
+                        {{ message.startDate|localizeddate('medium', 'short') }}
+                    {% endif %}
                 </td>
                 <td headers="hNoEndDate" class="text-center">
                     {% set itemId = message.getKey() %}
@@ -240,7 +249,9 @@
                     </div></noscript>
                 </td>
                 <td headers="hEndDate" class="text-left">
-                    {{ message.endDate|localizeddate('medium', 'short') }}
+                    {% if message.endDate is not empty %}
+                        {{ message.endDate|localizeddate('medium', 'short') }}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -303,9 +314,6 @@
     
     {# here you can activate calling display hooks for the view page if you need it #}
     {# % if routeArea != 'admin' %}
-        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', urlObject=currentUrlObject) %}
-        {% for providerArea, hook in hooks %}
-            {{ hook }}
-        {% endfor %}
+        {{ notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', urlObject=currentUrlObject) }}
     {% endif % #}
 {% endblock %}

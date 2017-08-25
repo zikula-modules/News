@@ -3,6 +3,10 @@
 {% endspaceless %}
 {% for message in items %}
 {% spaceless %}
-    "{{ message.title }}";"{{ message.startText|safeHtml }}";"{{ message.imageUpload1 }}";"{{ message.mainText|safeHtml }}";"{{ message.amountOfViews }}";"{{ message.author }}";"{% if message.approver|default and message.approver.getUid() > 0 %}{{ message.approver.getUname() }}{% endif %}";"{{ message.notes|safeHtml }}";"{% if not message.displayOnIndex %}0{% else %}1{% endif %}";"{{ message.messageLanguage|languageName }}";"{% if not message.allowComments %}0{% else %}1{% endif %}";"{{ message.imageUpload2 }}";"{{ message.imageUpload3 }}";"{{ message.imageUpload4 }}";"{{ message.startDate|localizeddate('medium', 'short') }}";"{% if not message.noEndDate %}0{% else %}1{% endif %}";"{{ message.endDate|localizeddate('medium', 'short') }}";"{{ message.weight }}";"{{ message.workflowState|munewsmodule_objectState(false)|lower }}"
+    "{{ message.title }}";"{{ message.startText|safeHtml }}";"{{ message.imageUpload1 }}";"{{ message.mainText|safeHtml }}";"{{ message.amountOfViews }}";"{{ message.author }}";"{% if message.approver|default and message.approver.getUid() > 0 %}{{ message.approver.getUname() }}{% endif %}";"{{ message.notes|safeHtml }}";"{% if not message.displayOnIndex %}0{% else %}1{% endif %}";"{{ message.messageLanguage|languageName }}";"{% if not message.allowComments %}0{% else %}1{% endif %}";"{{ message.imageUpload2 }}";"{{ message.imageUpload3 }}";"{{ message.imageUpload4 }}";"{% if message.startDate is not empty %}
+        {{ message.startDate|localizeddate('medium', 'short') }}
+    {% endif %}";"{% if not message.noEndDate %}0{% else %}1{% endif %}";"{% if message.endDate is not empty %}
+        {{ message.endDate|localizeddate('medium', 'short') }}
+    {% endif %}";"{{ message.weight }}";"{{ message.workflowState|munewsmodule_objectState(false)|lower }}"
 {% endspaceless %}
 {% endfor %}
