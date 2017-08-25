@@ -60,7 +60,9 @@
         <fieldset>
             <legend>{{ __('Further properties') }}</legend>
             {{ form_row(form.imageUpload1) }}
+            <div class="hidden">
             {{ form_row(form.amountOfViews) }}
+            </div>
             {{ form_row(form.author) }}
             {{ form_row(form.approver) }}
             {{ form_row(form.notes) }}
