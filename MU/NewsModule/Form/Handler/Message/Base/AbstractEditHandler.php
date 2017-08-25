@@ -42,6 +42,7 @@ abstract class AbstractEditHandler extends EditHandler
         $this->objectTypeLower = 'message';
         
         $this->hasPageLockSupport = true;
+        $this->hasAttributes = true;
         $this->hasSlugUpdatableField = true;
         $this->hasTranslatableFields = true;
     
@@ -79,6 +80,9 @@ abstract class AbstractEditHandler extends EditHandler
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_MODERATE),
         ];
+        if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, $this->objectType)) {
+            $options['attributes'] = $this->templateParameters['attributes'];
+        }
     
         $workflowRoles = $this->prepareWorkflowAdditions(false);
         $options = array_merge($options, $workflowRoles);
