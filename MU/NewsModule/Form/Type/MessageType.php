@@ -14,10 +14,72 @@ namespace MU\NewsModule\Form\Type;
 
 use MU\NewsModule\Form\Type\Base\AbstractMessageType;
 
+use Symfony\Component\Form\FormBuilderInterface;
+use MU\NewsModule\Form\Type\Field\UploadType;
+
 /**
  * Message editing form type implementation class.
  */
 class MessageType extends AbstractMessageType
 {
-    // feel free to extend the message editing form type class here
+	    /**
+     * Adds basic entity fields.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addEntityFields(FormBuilderInterface $builder, array $options)
+    {
+    	parent::addEntityFields($builder, $options);
+    	
+    	$maxSize = $this->variableApi->get('MUNewsModule', 'maxSize');
+    	
+    	$builder->add('imageUpload1', UploadType::class, [
+    			'label' => $this->__('Image upload 1') . ':',
+    			'attr' => [
+    					'class' => ' validate-upload',
+    					'title' => $this->__('Enter the image upload 1 of the message')
+    			],
+    			'required' => false && $options['mode'] == 'create',
+    			'entity' => $options['entity'],
+    			'allowed_extensions' => 'gif, jpeg, jpg, png',
+    			'allowed_size' => $maxSize
+    	]);
+    	
+    	$builder->add('imageUpload2', UploadType::class, [
+    			'label' => $this->__('Image upload 2') . ':',
+    			'attr' => [
+    					'class' => ' validate-upload',
+    					'title' => $this->__('Enter the image upload 2 of the message')
+    			],
+    			'required' => false && $options['mode'] == 'create',
+    			'entity' => $options['entity'],
+    			'allowed_extensions' => 'gif, jpeg, jpg, png',
+    			'allowed_size' => $maxSize
+    	]);
+    	
+    	$builder->add('imageUpload3', UploadType::class, [
+    			'label' => $this->__('Image upload 3') . ':',
+    			'attr' => [
+    					'class' => ' validate-upload',
+    					'title' => $this->__('Enter the image upload 3 of the message')
+    			],
+    			'required' => false && $options['mode'] == 'create',
+    			'entity' => $options['entity'],
+    			'allowed_extensions' => 'gif, jpeg, jpg, png',
+    			'allowed_size' => $maxSize
+    	]);
+    	
+    	$builder->add('imageUpload4', UploadType::class, [
+    			'label' => $this->__('Image upload 4') . ':',
+    			'attr' => [
+    					'class' => ' validate-upload',
+    					'title' => $this->__('Enter the image upload 4 of the message')
+    			],
+    			'required' => false && $options['mode'] == 'create',
+    			'entity' => $options['entity'],
+    			'allowed_extensions' => 'gif, jpeg, jpg, png',
+    			'allowed_size' => $maxSize
+    	]);
+    }
 }
