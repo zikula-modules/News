@@ -18,5 +18,5 @@ Note you can even include custom views in `app/Resources/MUNewsModule/views/` an
 
 For questions and other remarks visit our homepage https://homepages-mit-zikula.de.
 
-Michael Ueberschaer (info@homepage-mit-zikula.de)
+Michael Ueberschaer (info@homepages-mit-zikula.de)
 https://homepages-mit-zikula.de
