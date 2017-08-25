@@ -89,6 +89,7 @@
                         </fieldset>
                     {% endif %}
                     <fieldset>
+                    {% set imageUpload = getModVar('MUNewsModule', 'enablePictureUpload') %}
                         <legend>{{ __('Further properties') }}</legend>
                         {{ form_row(form.imageUpload1) }}
                         <div class="hidden">
