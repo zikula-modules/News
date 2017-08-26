@@ -94,9 +94,6 @@
         {% endif %}    
         </div>
     </div>
-        
-
-
     <div class="col-md-12">
     <div class="col-md-8">
     {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
@@ -113,6 +110,7 @@
     </div>
     </div>
     </div>
+    {{ block('display_hooks') }}
     
     
     {#<dl>
@@ -265,13 +263,9 @@
     {% endif %}
     {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message}) }#}
 
-    {{ block('display_hooks') }}
+
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject) %}
-    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-        <h4>{{ providerArea }}</h4>
-        {{ hook }}
-    {% endfor %}
+    {{ notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject) }}
 {% endblock %}
