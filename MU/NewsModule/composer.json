@@ -34,6 +34,7 @@
             "class": "MU\\NewsModule\\MUNewsModule",
             "displayname": "News",
             "url": "news",
+            "oldnames": ["MUNews"],
             "capabilities": {
                 "user": {"route": "munewsmodule_message_index"},
                 "admin": {"route": "munewsmodule_message_adminindex"},
