@@ -328,6 +328,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('maxSize', TextType::class, [
                 'label' => $this->__('Max size') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('For example: 4000 (bytes), 100k (Kilobyte) and 1M (Megabyte).')
+                ],
+                'help' => $this->__('For example: 4000 (bytes), 100k (Kilobyte) and 1M (Megabyte).'),
                 'required' => false,
                 'data' => isset($this->moduleVars['maxSize']) ? $this->moduleVars['maxSize'] : '',
                 'empty_data' => '200k',

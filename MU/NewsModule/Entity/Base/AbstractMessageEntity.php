@@ -159,11 +159,10 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @Assert\Type(type="bool")
      * @var boolean $displayOnIndex
      */
-    protected $displayOnIndex = false;
+    protected $displayOnIndex = true;
     
     /**
-     * @ORM\Column(length=7)
-     * @Assert\NotBlank()
+     * @ORM\Column(length=7, nullable=true)
      * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
      * @Assert\Length(min="0", max="7")
      * @Assert\Locale()
@@ -177,7 +176,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @Assert\Type(type="bool")
      * @var boolean $allowComments
      */
-    protected $allowComments = false;
+    protected $allowComments = true;
     
     /**
      * Image upload 2 meta data array.
@@ -282,7 +281,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @Assert\Type(type="bool")
      * @var boolean $noEndDate
      */
-    protected $noEndDate = false;
+    protected $noEndDate = true;
     
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -708,7 +707,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setMessageLanguage($messageLanguage)
     {
         if ($this->messageLanguage !== $messageLanguage) {
-            $this->messageLanguage = isset($messageLanguage) ? $messageLanguage : '';
+            $this->messageLanguage = $messageLanguage;
         }
     }
     

@@ -14,12 +14,12 @@ application "News" {
         generateMultiHookNeedles true
         generateKmlTemplates false
         generateIcsTemplates true
-        filterHookProvider ENABLED
+        filterHookProvider DISABLED
         versionAllGeneratedFiles false
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
     generateTests false
-        markFiles "NewsModuleInstaller.php,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/view.html.twig"
+        markFiles "NewsModuleInstaller.php,\r\nEntity/Repository/MessageRepository.php,\r\nController/MessageController.php,\r\nHelper/FeatureActivationHelper.php,\r\nResources/config/helper.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig"
     }
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
@@ -29,7 +29,7 @@ application "News" {
             workflow STANDARD
             hasArchive true
             hasTray true
-            formAwareHookProvider ENABLED
+            formAwareHookProvider DISABLED
             fields {
 					    string "title" translatable {
                     sluggablePosition 1
@@ -51,6 +51,7 @@ application "News" {
                     defaultValue "0"
                 mandatory false
                     displayType VIEW_DISPLAY
+                visible false
                 },
                 string "author" {
                     length 100
@@ -62,15 +63,16 @@ application "News" {
                     mandatory false
                 },
                 boolean "displayOnIndex" ajaxTogglability {
-                    defaultValue "1"
+                    defaultValue "true"
                     mandatory false
                 },
-                string "messageLanguage" {
+                string "messageLanguage" nullable {
+                    mandatory false
                     length 7
                     role LOCALE
                 },
                 boolean "allowComments" ajaxTogglability {
-                    defaultValue "1"
+                    defaultValue "true"
                     mandatory false
                 },
 						upload "imageUpload2" {
@@ -92,7 +94,7 @@ application "News" {
 						displayType VIEW
                 },
 						boolean "noEndDate" ajaxTogglability {
-                    defaultValue "1"
+                    defaultValue "true"
 							mandatory false
 						},
 						datetime "endDate" nullable endDate {
@@ -178,6 +180,7 @@ application "News" {
                     }
                 },
                 textVar "maxSize" {
+                    documentation "For example: 4000 (bytes), 100k (Kilobyte) and 1M (Megabyte)."
                     value "200k"
                 }
             }

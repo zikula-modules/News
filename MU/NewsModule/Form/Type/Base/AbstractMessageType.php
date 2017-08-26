@@ -279,7 +279,6 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => '',
                 'title' => $this->__('display on index ?')
             ],
-        	'data' => true,
             'required' => false,
         ]);
         
@@ -291,7 +290,8 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => ' validate-nospace',
                 'title' => $this->__('Choose the message language of the message')
             ],
-            'required' => true,
+            'required' => false,
+            'placeholder' => $this->__('All'),
             'choices' => $this->localeApi->getSupportedLocaleNames(),
             'choices_as_values' => true
         ]);
@@ -302,7 +302,6 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => '',
                 'title' => $this->__('allow comments ?')
             ],
-        	'data' => true,
             'required' => false,
         ]);
         
@@ -361,7 +360,6 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => '',
                 'title' => $this->__('no end date ?')
             ],
-        	'data' => true,
             'required' => false,
         ]);
         

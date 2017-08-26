@@ -20,19 +20,3 @@ services:
         tags:
             - { name: zikula.hook_subscriber, areaName: 'subscriber.munewsmodule.ui_hooks.messages' }
 
-    mu_news_module.hook_provider.filter_hooks.provider:
-        class: MU\NewsModule\HookProvider\FilterHooksProvider
-        arguments:
-            - "@translator.default"
-        tags:
-            - { name: zikula.hook_provider, areaName: 'provider.munewsmodule.filter_hooks.news' }
-
-    mu_news_module.hook_provider.form_aware_hook.messages:
-        class: MU\NewsModule\HookProvider\MessageFormAwareHookProvider
-        arguments:
-            - "@translator.default"
-            - "@session"
-            - "@form.factory"
-        tags:
-            - { name: zikula.hook_provider, areaName: 'provider.munewsmodule.form_aware_hook.messages' }
-
