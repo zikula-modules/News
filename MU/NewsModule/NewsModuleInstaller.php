@@ -19,5 +19,144 @@ use MU\NewsModule\Base\AbstractNewsModuleInstaller;
  */
 class NewsModuleInstaller extends AbstractNewsModuleInstaller
 {
-    // feel free to extend the installer here
+    /**
+     * Upgrade the MUNewsModule application from an older version.
+     *
+     * If the upgrade fails at some point, it returns the last upgraded version.
+     *
+     * @param integer $oldVersion Version to upgrade from
+     *
+     * @return boolean True on success, false otherwise
+     *
+     * @throws RuntimeException Thrown if database tables can not be updated
+     */
+    public function upgrade($oldVersion)
+    {
+        $logger = $this->container->get('logger');
+    
+        // Upgrade dependent on old version number
+        switch ($oldVersion) {
+            case '1.0.0':
+
+            	// set up all our vars with initial values
+            	$this->setVar('enableAttribution', false);
+            	$this->setVar('enableMultiLanguage', false);
+            	$this->setVar('enableEvents', false);
+            	//$this->setVar('showAuthor', false);
+            	//$this->setVar('showDate', false);
+            	$this->setVar('enableCategorization', false);
+            	$this->setVar('enableCategoryBasedPermissions', false);
+            	$this->setVar('defaultMessageSorting',  'descending' );
+            	$this->setVar('checkRefererOnPrint', false);
+            	$this->setVar('enableAjaxEditing', false);
+            	$this->setVar('enableMoreMessagesInCategory', false);
+            	$this->setVar('displayPdfLink', false);
+            	$this->setVar('pdfLinkDisplayAccessLevel', 0);
+            	$this->setVar('pdfLinkHeaderLogo', '');
+            	$this->setVar('pdfLinkHeaderLogoWidth', 0);
+            	$this->setVar('pdfLinkEnableCache', false);
+            	$this->setVar('enablePictureUpload', false);
+            	$this->setVar('imageFloatOnViewPage', '');
+            	$this->setVar('imageFloatOnDisplayPage', '');
+            	$this->setVar('maxSize', '200k');
+            	$this->setVar('moderationGroupForMessages', '2');
+            	//$this->setVar('messageEntriesPerPage', '10');
+            	$this->setVar('linkOwnMessagesOnAccountPage', true);
+            	$this->setVar('filterDataByLocale', false);
+            	$this->setVar('enableShrinkingForMessageImageUpload1', false);
+            	$this->setVar('shrinkWidthMessageImageUpload1', '800');
+            	$this->setVar('shrinkHeightMessageImageUpload1', '600');
+            	$this->setVar('thumbnailModeMessageImageUpload1',  'inset' );
+            	$this->setVar('thumbnailWidthMessageImageUpload1View', '32');
+            	$this->setVar('thumbnailHeightMessageImageUpload1View', '24');
+            	$this->setVar('thumbnailWidthMessageImageUpload1Display', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload1Display', '180');
+            	$this->setVar('thumbnailWidthMessageImageUpload1Edit', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload1Edit', '180');
+            	$this->setVar('enableShrinkingForMessageImageUpload2', false);
+            	$this->setVar('shrinkWidthMessageImageUpload2', '800');
+            	$this->setVar('shrinkHeightMessageImageUpload2', '600');
+            	$this->setVar('thumbnailModeMessageImageUpload2',  'inset' );
+            	$this->setVar('thumbnailWidthMessageImageUpload2View', '32');
+            	$this->setVar('thumbnailHeightMessageImageUpload2View', '24');
+            	$this->setVar('thumbnailWidthMessageImageUpload2Display', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload2Display', '180');
+            	$this->setVar('thumbnailWidthMessageImageUpload2Edit', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload2Edit', '180');
+            	$this->setVar('enableShrinkingForMessageImageUpload3', false);
+            	$this->setVar('shrinkWidthMessageImageUpload3', '800');
+            	$this->setVar('shrinkHeightMessageImageUpload3', '600');
+            	$this->setVar('thumbnailModeMessageImageUpload3',  'inset' );
+            	$this->setVar('thumbnailWidthMessageImageUpload3View', '32');
+            	$this->setVar('thumbnailHeightMessageImageUpload3View', '24');
+            	$this->setVar('thumbnailWidthMessageImageUpload3Display', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload3Display', '180');
+            	$this->setVar('thumbnailWidthMessageImageUpload3Edit', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload3Edit', '180');
+            	$this->setVar('enableShrinkingForMessageImageUpload4', false);
+            	$this->setVar('shrinkWidthMessageImageUpload4', '800');
+            	$this->setVar('shrinkHeightMessageImageUpload4', '600');
+            	$this->setVar('thumbnailModeMessageImageUpload4',  'inset' );
+            	$this->setVar('thumbnailWidthMessageImageUpload4View', '32');
+            	$this->setVar('thumbnailHeightMessageImageUpload4View', '24');
+            	$this->setVar('thumbnailWidthMessageImageUpload4Display', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload4Display', '180');
+            	$this->setVar('thumbnailWidthMessageImageUpload4Edit', '240');
+            	$this->setVar('thumbnailHeightMessageImageUpload4Edit', '180');
+            	$this->setVar('enabledFinderTypes', [ 'message' ]);
+                // update the database schema
+                try {
+                    $this->schemaTool->update($this->listEntityClasses());
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+                    $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
+    
+                    return false;
+                }
+        }
+    
+        // Note there are several helpers available for making migrating your extension from Zikula 1.3 to 1.4 easier.
+        // The following convenience methods are each responsible for a single aspect of upgrading to Zikula 1.4.x.
+    
+        // here is a possible usage example
+        // of course 1.2.3 should match the number you used for the last stable 1.3.x module version.
+         if ($oldVersion = '1.0.0') {
+            // rename module for all modvars
+            $this->updateModVarsTo14();
+            
+            // update extension information about this app
+            $this->updateExtensionInfoFor14();
+            
+            // rename existing permission rules
+            $this->renamePermissionsFor14();
+            
+            // rename existing category registries
+            $this->renameCategoryRegistriesFor14();
+            
+            // rename all tables
+            $this->renameTablesFor14();
+            
+            // remove event handler definitions from database
+            $this->dropEventHandlersFromDatabase();
+            
+            // update module name in the hook tables
+            $this->updateHookNamesFor14();
+            
+            // update module name in the workflows table
+            $this->updateWorkflowsFor14();
+            
+            $this->setVar('messageEntriesPerPage', $this->getVar('newsPerPage'));
+            $this->delVar('newsPerPage');
+            $this->delVar('allowedFileSize');
+            $this->delVar('muimageAlbum');
+            
+            $this->addFlash('status', $this->__('After the succesful update you have to enter maxiumum size for file uploads!'));
+        }
+    
+        // remove obsolete persisted hooks from the database
+        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+    
+        // update successful
+        return true;
+    }
 }
