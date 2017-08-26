@@ -22,6 +22,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use MU\NewsModule\Entity\MessageEntity;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Component\SortableColumns\Column;
+use Zikula\Component\SortableColumns\SortableColumns;
+use MU\NewsModule\Helper\FeatureActivationHelper;
+
 /**
  * Message controller class providing navigation and interaction functionality.
  */
@@ -287,6 +292,28 @@ class MessageController extends AbstractMessageController
     public function handleSelectedEntriesAction(Request $request)
     {
         return parent::handleSelectedEntriesAction($request);
+    }
+    
+    /**
+     * This method includes the common implementation code for adminView() and view().
+     */
+    protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
+    {    	
+    	// parameter for used sort order
+    	$modSortDir = $this->getVar('defaultMessageSorting');
+    	if ($modSortDir != '') {
+    		if ($modSortDir == 'descending') {
+    			$sortdir = 'DESC';
+    		} else {
+    			$sortdir = 'ASC';
+    		}
+    	} else {
+    		if ($sortdir == '') {
+    			$sortdir = 'DESC';
+    		}
+    	}   
+
+    	return parent::viewInternal($request, $sort, $sortdir, $pos, $num, $isAdmin);
     }
 
     // feel free to add your own controller methods here
