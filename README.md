@@ -1,5 +1,5 @@
 # News 1.1.0
-A small module to handle news
+A module to handle news
 
 This module version is under development. Do not use on production sites.
 
