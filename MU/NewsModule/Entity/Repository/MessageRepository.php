@@ -14,6 +14,9 @@ namespace MU\NewsModule\Entity\Repository;
 
 use MU\NewsModule\Entity\Repository\Base\AbstractMessageRepository;
 
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
@@ -25,4 +28,52 @@ class MessageRepository extends AbstractMessageRepository
      * @var string The default sorting field/expression
      */
     protected $defaultSortingField = 'createdDate';
+    
+    /**
+     * Adds ORDER BY clause to given query builder.
+     *
+     * @param QueryBuilder $qb      Given query builder instance
+     * @param string       $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     *
+     * @return QueryBuilder Query builder instance to be further processed
+     */
+    protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
+    {
+    	if ($orderBy == 'RAND()') {
+    		// random selection
+    		$qb->addSelect('MOD(tbl.id, ' . mt_rand(2, 15) . ') AS HIDDEN randomIdentifiers')
+    		->add('orderBy', 'randomIdentifiers');
+    
+    		return $qb;
+    	}
+    
+    	if (empty($orderBy)) {
+    		$orderBy = $this->defaultSortingField;
+    	}
+    	
+    	$orderBy = 'tbl.weight, tbl.' . $orderBy;
+    
+    	if (empty($orderBy)) {
+    		return $qb;
+    	}
+
+    
+    	// add order by clause
+    	if (false === strpos($orderBy, '.')) {
+    		$orderBy = 'tbl.' . $orderBy;
+    	}
+    	if (false !== strpos($orderBy, 'tbl.createdBy')) {
+    		$qb->addSelect('tblCreator')
+    		->leftJoin('tbl.createdBy', 'tblCreator');
+    		$orderBy = str_replace('tbl.createdBy', 'tblCreator.uname', $orderBy);
+    	}
+    	if (false !== strpos($orderBy, 'tbl.updatedBy')) {
+    		$qb->addSelect('tblUpdater')
+    		->leftJoin('tbl.updatedBy', 'tblUpdater');
+    		$orderBy = str_replace('tbl.updatedBy', 'tblUpdater.uname', $orderBy);
+    	}
+    	$qb->add('orderBy', $orderBy);
+    
+    	return $qb;
+    }
 }
