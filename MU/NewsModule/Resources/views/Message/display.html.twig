@@ -94,12 +94,24 @@
         {% endif %}    
         </div>
     </div>
-    
-    {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}
+        
+
+
+    <div class="col-md-12">
+    <div class="col-md-8">
+    {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+        {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
+    {% endif %}
+        {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: message}) }}
+    </div>
+    <div class="col-md-4">
+    {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}   
     <div class="message-display-footer">
         {% if pdfLink == 1 %}        
             <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, 'tpl': 'PDF'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
         {% endif %}
+    </div>
+    </div>
     </div>
     
     
@@ -248,10 +260,10 @@
         
     </dl>#}
 
-    {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+    {#% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
         {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
     {% endif %}
-    {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message}) }}
+    {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message}) }#}
 
     {{ block('display_hooks') }}
 </div>
