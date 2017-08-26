@@ -97,6 +97,8 @@ div.munewsmodule-view .avatar img {
 	margin: 0 0 0 25px;
 }
 
+/******************Message******************/
+
 #message-display-start {
 	margin: 0 0 25px 0;
 }
@@ -112,4 +114,10 @@ div.munewsmodule-view .avatar img {
 .message-display-footer {
 	margin: 10px 0;
 	text-align: right;
+}
+
+/*************Standardfields**********************/
+
+.message-avatar {
+	width: 40px;
 }
