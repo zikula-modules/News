@@ -19,32 +19,5 @@ use MU\NewsModule\Helper\Base\AbstractViewHelper;
  */
 class ViewHelper extends AbstractViewHelper
 {
-    /**
-     * Get list of available template extensions.
-     *
-     * @param string $type Current controller (name of currently treated entity)
-     * @param string $func Current function (index, view, ...)
-     *
-     * @return array List of allowed template extensions
-     */
-    public function availableExtensions($type, $func)
-    {
-        $extensions = [];
-        $hasAdminAccess = $this->permissionApi->hasPermission('MUNewsModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
-        if ($func == 'view') {
-            if ($hasAdminAccess) {
-                $extensions = ['csv', 'rss', 'atom', 'xml', 'json'];
-            } else {
-                $extensions = ['rss', 'atom'];
-            }
-        } elseif ($func == 'display') {
-            if ($hasAdminAccess) {
-                $extensions = ['xml', 'json', 'ics'];
-            } else {
-                $extensions = ['ics', 'pdf'];
-            }
-        }
-    
-        return $extensions;
-    }
+    // feel free to add your own convenience methods here
 }
