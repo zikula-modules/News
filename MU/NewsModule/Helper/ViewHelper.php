@@ -39,7 +39,7 @@ class ViewHelper extends AbstractViewHelper
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = ['xml', 'json', 'ics'];
+                $extensions = ['xml', 'json', 'ics', 'pdf'];
             } else {
                 $extensions = ['ics', 'pdf'];
             }
