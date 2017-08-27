@@ -131,14 +131,6 @@ abstract class AbstractConfigType extends AbstractType
                     'title' => $this->__('The enable multi language option.')
                 ],
             ])
-            ->add('enableEvents', CheckboxType::class, [
-                'label' => $this->__('Enable events') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableEvents']) ? $this->moduleVars['enableEvents'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable events option.')
-                ],
-            ])
             ->add('showAuthor', CheckboxType::class, [
                 'label' => $this->__('Show author') . ':',
                 'required' => false,
@@ -173,14 +165,6 @@ abstract class AbstractConfigType extends AbstractType
                 'data' => (bool)(isset($this->moduleVars['enableCategorization']) ? $this->moduleVars['enableCategorization'] : false),
                 'attr' => [
                     'title' => $this->__('The enable categorization option.')
-                ],
-            ])
-            ->add('enableCategoryBasedPermissions', CheckboxType::class, [
-                'label' => $this->__('Enable category based permissions') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableCategoryBasedPermissions']) ? $this->moduleVars['enableCategoryBasedPermissions'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable category based permissions option.')
                 ],
             ])
         ;

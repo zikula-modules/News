@@ -41,11 +41,9 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
             	// set up all our vars with initial values
             	$this->setVar('enableAttribution', false);
             	$this->setVar('enableMultiLanguage', false);
-            	$this->setVar('enableEvents', false);
             	//$this->setVar('showAuthor', false);
             	//$this->setVar('showDate', false);
             	$this->setVar('enableCategorization', false);
-            	$this->setVar('enableCategoryBasedPermissions', false);
             	$this->setVar('defaultMessageSorting',  'descending' );
             	$this->setVar('checkRefererOnPrint', false);
             	$this->setVar('enableAjaxEditing', false);
