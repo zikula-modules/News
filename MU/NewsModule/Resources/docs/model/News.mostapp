@@ -19,7 +19,7 @@ application "News" {
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
     generateTests false
-        markFiles "NewsModuleInstaller.php,\r\nEntity/Repository/MessageRepository.php,\r\nController/MessageController.php,\r\nHelper/FeatureActivationHelper.php,\r\nResources/config/helper.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig"
+        markFiles "composer.json,\r\nNewsModuleInstaller.php,\r\nEntity/Repository/MessageRepository.php,\r\nController/MessageController.php,\r\nForm/Type/MessageType.php,\r\nHelper/FeatureActivationHelper.php,\r\nResources/config/helpers.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig"
     }
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
@@ -125,7 +125,6 @@ application "News" {
 					vars {
                 boolVar "enableAttribution",
 						boolVar "enableMultiLanguage",
-						boolVar "enableEvents",
 						boolVar "showAuthor" {
 							value "1"
 						},
@@ -138,8 +137,7 @@ application "News" {
         varContainer "CategorySettings" {
             sortOrder 2
             vars {
-                boolVar "enableCategorization",
-                boolVar "enableCategoryBasedPermissions"
+                boolVar "enableCategorization"
             }
         },
         varContainer "DisplaySetting" {
