@@ -666,17 +666,17 @@ abstract class AbstractEditHandler
             }
         }
     
-        if ($isRegularAction && true === $this->hasTranslatableFields) {
-            if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, $this->objectType)) {
-                $this->processTranslationsForUpdate();
-            }
-        }
-    
         if ($isRegularAction || $action == 'delete') {
             $success = $this->applyAction($args);
             if (!$success) {
                 // the workflow operation failed
                 return false;
+            }
+    
+            if ($isRegularAction && true === $this->hasTranslatableFields) {
+                if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, $this->objectType)) {
+                    $this->processTranslationsForUpdate();
+                }
             }
     
             if ($entity->supportsHookSubscribers()) {

@@ -29,14 +29,15 @@ abstract class AbstractExternalController extends AbstractController
     /**
      * Displays one item of a certain object type using a separate template for external usages.
      *
-     * @param string $objectType  The currently treated object type
-     * @param int    $id          Identifier of the entity to be shown
-     * @param string $source      Source of this call (contentType or scribite)
-     * @param string $displayMode Display mode (link or embed)
+     * @param Request $request     The current request
+     * @param string  $objectType  The currently treated object type
+     * @param int     $id          Identifier of the entity to be shown
+     * @param string  $source      Source of this call (contentType or scribite)
+     * @param string  $displayMode Display mode (link or embed)
      *
      * @return string Desired data output
      */
-    public function displayAction($objectType, $id, $source, $displayMode)
+    public function displayAction(Request $request, $objectType, $id, $source, $displayMode)
     {
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
@@ -58,6 +59,11 @@ abstract class AbstractExternalController extends AbstractController
             return new Response($this->__('No such item.'));
         }
         
+        $template = $request->query->has('template') ? $request->query->get('template', '') : '';
+        if (empty($template)) {
+            $template = 'display.html.twig';
+        }
+        
         $templateParameters = [
             'objectType' => $objectType,
             'source' => $source,
@@ -68,7 +74,7 @@ abstract class AbstractExternalController extends AbstractController
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
         $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
         
-        return $this->render('@MUNewsModule/External/' . ucfirst($objectType) . '/display.html.twig', $templateParameters);
+        return $this->render('@MUNewsModule/External/' . ucfirst($objectType) . '/' . $template, $templateParameters);
     }
     
     /**
