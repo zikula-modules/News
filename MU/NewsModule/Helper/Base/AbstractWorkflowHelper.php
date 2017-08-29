@@ -209,6 +209,9 @@ abstract class AbstractWorkflowHelper
             case 'archive':
                 $title = $this->translator->__('Archive');
                 break;
+            case 'unarchive':
+                $title = $this->translator->__('Unarchive');
+                break;
             case 'delete':
                 $title = $this->translator->__('Delete');
                 break;
@@ -248,6 +251,9 @@ abstract class AbstractWorkflowHelper
                 $buttonClass = '';
                 break;
             case 'archive':
+                $buttonClass = '';
+                break;
+            case 'unarchive':
                 $buttonClass = '';
                 break;
             case 'delete':

@@ -34,6 +34,9 @@ workflow:
                 updateapproved:
                     from: approved
                     to: approved
+                unarchive:
+                    from: archived
+                    to: approved
                 archive:
                     from: [approved, suspended]
                     to: archived
