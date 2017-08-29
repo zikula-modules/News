@@ -122,19 +122,23 @@ application "News" {
 				
 			variables {
 				varContainer "GeneralSettings" {
-					vars {
+					documentation "Here you can change general News settings."
+            vars {
                 boolVar "enableAttribution",
 						boolVar "enableMultiLanguage",
 						boolVar "showAuthor" {
-							value "1"
+							documentation "This setting allows to enable the display of author informations within an article."
+                    value "1"
 						},
 						boolVar "showDate" {
-							value "1"
+							documentation "This setting allows to enable the display of date informations within an article."
+                    value "1"
 						}
             }
         }
 						,
         varContainer "CategorySettings" {
+            documentation "This section allows you to specify category-related options."
             sortOrder 2
             vars {
                 boolVar "enableCategorization"
@@ -144,41 +148,70 @@ application "News" {
             sortOrder 3
             vars {
                 listVar "defaultMessageSorting" {
+                    documentation "You can customise several display-oriented aspects of the articles."
                     items {
-                        listVarItem "ascending",
-                        listVarItem default "descending"
+                        listVarItem "Article ID",
+                        listVarItem default "Article date/time",
+                        listVarItem "Article weight"
                     }
                 },
                 boolVar "checkRefererOnPrint",
-                boolVar "enableAjaxEditing",
+                boolVar "enableAjaxEditing" {
+                    documentation "Note picture/file operations are not supported in \\\'quick edit mode\\\' due to ajax limitations."
+                    value "false"
+                },
                 boolVar "enableMoreMessagesInCategory",
-                boolVar "displayPdfLink",
-                intVar "pdfLinkDisplayAccessLevel",
-                filePathVar "pdfLinkHeaderLogo",
-                intVar "pdfLinkHeaderLogoWidth",
+                intVar "amountOfMoreArticlesInCategory" {
+                    documentation "When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \\\'morearticlesincat\\\'. You need to enable \\\'article attributes\\\' yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database."
+                },
+                boolVar "displayPdfLink" {
+                    documentation "Display a PDF link for the articles in the index page"
+                    value "false"
+                },
+                intVar "pdfLinkDisplayAccessLevel" {
+                    documentation "Permissions to create and display PDF file"
+                    value "0"
+                },
+                filePathVar "pdfLinkHeaderLogo" {
+                    documentation "PDF header logo image"
+                },
+                intVar "pdfLinkHeaderLogoWidth" {
+                    documentation "PDF header logo width in mm"
+                    value "15"
+                },
                 boolVar "pdfLinkEnableCache"
+            {
+                    documentation "Enable caching for pdf files"
+                    value "true"
+                }
             }
         },
         varContainer "UploadSettings" {
+            documentation "Here you can customise the picture upload behaviour."
             sortOrder 4
             vars {
-                boolVar "enablePictureUpload",
+                boolVar "enablePictureUpload" {
+                    documentation "Allow uploading article pictures"
+                    value "false"
+                },
                 listVar "imageFloatOnViewPage" {
+                    documentation "Image float on the view page"
                     items {
                         listVarItem "none",
-                        listVarItem "left",
+                        listVarItem default "left",
                         listVarItem "right"
                     }
                 },
                 listVar "imageFloatOnDisplayPage" {
+                    documentation "Image float on the article display page"
                     items {
                         listVarItem "none",
-                        listVarItem "left",
+                        listVarItem default "left",
                         listVarItem "right"
                     }
                 },
                 textVar "maxSize" {
-                    documentation "For example: 4000 (bytes), 100k (Kilobyte) and 1M (Megabyte)."
+                    documentation "For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte)."
                     value "200k"
                 }
             }

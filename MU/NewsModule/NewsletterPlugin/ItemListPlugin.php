@@ -247,7 +247,7 @@ class ItemListPlugin extends Newsletter_AbstractPlugin implements ContainerAware
             $items[$k]['nl_url_readmore'] = $items[$k]['nl_url_title'];
     
             // A picture to display in Newsletter next to the item
-            $items[$k]['nl_picture'] = $previewFieldName != '' && !empty($item[$previewFieldName) ? $item[$previewFieldName]->getPathname() : '';
+            $items[$k]['nl_picture'] = $previewFieldName != '' && !empty($item[$previewFieldName]) ? $item[$previewFieldName]->getPathname() : '';
         }
     
         return $items;

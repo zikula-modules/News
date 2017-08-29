@@ -36,6 +36,7 @@
             <label for="mUNewsModuleArgs_{$objectType}_filter" class="col-sm-3 control-label">{gt text='Filter (expert option)'}:</label>
             <div class="col-sm-9">
                 <input type="text" id="mUNewsModuleArgs_{$objectType}_filter" name="MUNewsModuleArgs[{$objectType}][filter]" value="{$pageArgs.$objectType.filter|default:''}" size="40" class="form-control" />
+                <span class="help-block">{gt text='Example'}: <em>tbl.age >= 18</em></span>
             </div>
         </div>
     </div>
