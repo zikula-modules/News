@@ -70,7 +70,7 @@
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
                     
-                        <p class="alert alert-info">{{ __('Here you can manage all basic settings for this application.') }}</p>
+                        <p class="alert alert-info">{{ __('Here you can change general News settings.')|nl2br }}</p>
                     
                         {{ form_row(form.enableAttribution) }}
                         {{ form_row(form.enableMultiLanguage) }}
@@ -83,6 +83,7 @@
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
                     
+                        <p class="alert alert-info">{{ __('This section allows you to specify category-related options.')|nl2br }}</p>
                     
                         {{ form_row(form.enableCategorization) }}
                     </fieldset>
@@ -97,6 +98,7 @@
                         {{ form_row(form.checkRefererOnPrint) }}
                         {{ form_row(form.enableAjaxEditing) }}
                         {{ form_row(form.enableMoreMessagesInCategory) }}
+                        {{ form_row(form.amountOfMoreArticlesInCategory) }}
                         {{ form_row(form.displayPdfLink) }}
                         {{ form_row(form.pdfLinkDisplayAccessLevel) }}
                         {{ form_row(form.pdfLinkHeaderLogo) }}
@@ -109,6 +111,7 @@
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
                     
+                        <p class="alert alert-info">{{ __('Here you can customise the picture upload behaviour.')|nl2br }}</p>
                     
                         {{ form_row(form.enablePictureUpload) }}
                         {{ form_row(form.imageFloatOnViewPage) }}

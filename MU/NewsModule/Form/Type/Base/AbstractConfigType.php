@@ -133,6 +133,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('showAuthor', CheckboxType::class, [
                 'label' => $this->__('Show author') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('This setting allows to enable the display of author informations within an article.')
+                ],
+                'help' => $this->__('This setting allows to enable the display of author informations within an article.'),
                 'required' => false,
                 'data' => (bool)(isset($this->moduleVars['showAuthor']) ? $this->moduleVars['showAuthor'] : false),
                 'attr' => [
@@ -141,6 +146,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('showDate', CheckboxType::class, [
                 'label' => $this->__('Show date') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('This setting allows to enable the display of date informations within an article.')
+                ],
+                'help' => $this->__('This setting allows to enable the display of date informations within an article.'),
                 'required' => false,
                 'data' => (bool)(isset($this->moduleVars['showDate']) ? $this->moduleVars['showDate'] : false),
                 'attr' => [
@@ -181,13 +191,19 @@ abstract class AbstractConfigType extends AbstractType
         $builder
             ->add('defaultMessageSorting', ChoiceType::class, [
                 'label' => $this->__('Default message sorting') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('You can customise several display-oriented aspects of the articles.')
+                ],
+                'help' => $this->__('You can customise several display-oriented aspects of the articles.'),
                 'data' => isset($this->moduleVars['defaultMessageSorting']) ? $this->moduleVars['defaultMessageSorting'] : '',
                 'empty_data' => '',
                 'attr' => [
                     'title' => $this->__('Choose the default message sorting.')
                 ],'choices' => [
-                    $this->__('Ascending') => 'ascending',
-                    $this->__('Descending') => 'descending'
+                    $this->__('Article i d') => 'articleID',
+                    $this->__('Articledatetime') => 'articledatetime',
+                    $this->__('Articleweight') => 'articleweight'
                 ],
                 'choices_as_values' => true,
                 'multiple' => false
@@ -202,6 +218,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('enableAjaxEditing', CheckboxType::class, [
                 'label' => $this->__('Enable ajax editing') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Note picture/file operations are not supported in \"quick edit mode\" due to ajax limitations.')
+                ],
+                'help' => $this->__('Note picture/file operations are not supported in \"quick edit mode\" due to ajax limitations.'),
                 'required' => false,
                 'data' => (bool)(isset($this->moduleVars['enableAjaxEditing']) ? $this->moduleVars['enableAjaxEditing'] : false),
                 'attr' => [
@@ -216,8 +237,28 @@ abstract class AbstractConfigType extends AbstractType
                     'title' => $this->__('The enable more messages in category option.')
                 ],
             ])
+            ->add('amountOfMoreArticlesInCategory', IntegerType::class, [
+                'label' => $this->__('Amount of more articles in category') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.')
+                ],
+                'help' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.'),
+                'required' => false,
+                'data' => isset($this->moduleVars['amountOfMoreArticlesInCategory']) ? intval($this->moduleVars['amountOfMoreArticlesInCategory']) : intval(),
+                'empty_data' => intval(''),
+                'attr' => [
+                    'maxlength' => 255,
+                    'title' => $this->__('Enter the amount of more articles in category.') . ' ' . $this->__('Only digits are allowed.')
+                ],'scale' => 0
+            ])
             ->add('displayPdfLink', CheckboxType::class, [
                 'label' => $this->__('Display pdf link') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Display a PDF link for the articles in the index page')
+                ],
+                'help' => $this->__('Display a PDF link for the articles in the index page'),
                 'required' => false,
                 'data' => (bool)(isset($this->moduleVars['displayPdfLink']) ? $this->moduleVars['displayPdfLink'] : false),
                 'attr' => [
@@ -226,9 +267,14 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('pdfLinkDisplayAccessLevel', IntegerType::class, [
                 'label' => $this->__('Pdf link display access level') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Permissions to create and display PDF file')
+                ],
+                'help' => $this->__('Permissions to create and display PDF file'),
                 'required' => false,
-                'data' => isset($this->moduleVars['pdfLinkDisplayAccessLevel']) ? intval($this->moduleVars['pdfLinkDisplayAccessLevel']) : intval(),
-                'empty_data' => intval(''),
+                'data' => isset($this->moduleVars['pdfLinkDisplayAccessLevel']) ? intval($this->moduleVars['pdfLinkDisplayAccessLevel']) : intval(0),
+                'empty_data' => intval('0'),
                 'attr' => [
                     'maxlength' => 255,
                     'title' => $this->__('Enter the pdf link display access level.') . ' ' . $this->__('Only digits are allowed.')
@@ -236,6 +282,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('pdfLinkHeaderLogo', TextType::class, [
                 'label' => $this->__('Pdf link header logo') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('PDF header logo image')
+                ],
+                'help' => $this->__('PDF header logo image'),
                 'required' => false,
                 'data' => isset($this->moduleVars['pdfLinkHeaderLogo']) ? $this->moduleVars['pdfLinkHeaderLogo'] : '',
                 'empty_data' => '',
@@ -246,9 +297,14 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('pdfLinkHeaderLogoWidth', IntegerType::class, [
                 'label' => $this->__('Pdf link header logo width') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('PDF header logo width in mm')
+                ],
+                'help' => $this->__('PDF header logo width in mm'),
                 'required' => false,
-                'data' => isset($this->moduleVars['pdfLinkHeaderLogoWidth']) ? intval($this->moduleVars['pdfLinkHeaderLogoWidth']) : intval(),
-                'empty_data' => intval(''),
+                'data' => isset($this->moduleVars['pdfLinkHeaderLogoWidth']) ? intval($this->moduleVars['pdfLinkHeaderLogoWidth']) : intval(15),
+                'empty_data' => intval('15'),
                 'attr' => [
                     'maxlength' => 255,
                     'title' => $this->__('Enter the pdf link header logo width.') . ' ' . $this->__('Only digits are allowed.')
@@ -256,8 +312,13 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('pdfLinkEnableCache', CheckboxType::class, [
                 'label' => $this->__('Pdf link enable cache') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Enable caching for pdf files')
+                ],
+                'help' => $this->__('Enable caching for pdf files'),
                 'required' => false,
-                'data' => (bool)(isset($this->moduleVars['pdfLinkEnableCache']) ? $this->moduleVars['pdfLinkEnableCache'] : false),
+                'data' => (bool)(isset($this->moduleVars['pdfLinkEnableCache']) ? $this->moduleVars['pdfLinkEnableCache'] : true),
                 'attr' => [
                     'title' => $this->__('The pdf link enable cache option.')
                 ],
@@ -276,6 +337,11 @@ abstract class AbstractConfigType extends AbstractType
         $builder
             ->add('enablePictureUpload', CheckboxType::class, [
                 'label' => $this->__('Enable picture upload') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Allow uploading article pictures')
+                ],
+                'help' => $this->__('Allow uploading article pictures'),
                 'required' => false,
                 'data' => (bool)(isset($this->moduleVars['enablePictureUpload']) ? $this->moduleVars['enablePictureUpload'] : false),
                 'attr' => [
@@ -284,6 +350,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('imageFloatOnViewPage', ChoiceType::class, [
                 'label' => $this->__('Image float on view page') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Image float on the view page')
+                ],
+                'help' => $this->__('Image float on the view page'),
                 'data' => isset($this->moduleVars['imageFloatOnViewPage']) ? $this->moduleVars['imageFloatOnViewPage'] : '',
                 'empty_data' => '',
                 'attr' => [
@@ -298,6 +369,11 @@ abstract class AbstractConfigType extends AbstractType
             ])
             ->add('imageFloatOnDisplayPage', ChoiceType::class, [
                 'label' => $this->__('Image float on display page') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Image float on the article display page')
+                ],
+                'help' => $this->__('Image float on the article display page'),
                 'data' => isset($this->moduleVars['imageFloatOnDisplayPage']) ? $this->moduleVars['imageFloatOnDisplayPage'] : '',
                 'empty_data' => '',
                 'attr' => [
@@ -314,9 +390,9 @@ abstract class AbstractConfigType extends AbstractType
                 'label' => $this->__('Max size') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
-                    'title' => $this->__('For example: 4000 (bytes), 100k (Kilobyte) and 1M (Megabyte).')
+                    'title' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).')
                 ],
-                'help' => $this->__('For example: 4000 (bytes), 100k (Kilobyte) and 1M (Megabyte).'),
+                'help' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).'),
                 'required' => false,
                 'data' => isset($this->moduleVars['maxSize']) ? $this->moduleVars['maxSize'] : '',
                 'empty_data' => '200k',

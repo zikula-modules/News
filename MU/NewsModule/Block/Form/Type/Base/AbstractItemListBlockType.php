@@ -209,8 +209,10 @@ abstract class AbstractItemListBlockType extends AbstractType
             'label' => $this->__('Filter (expert option)') . ':',
             'required' => false,
             'attr' => [
-                'maxlength' => 255
-            ]
+                'maxlength' => 255,
+                'title' => $this->__('Example') . ': tbl.age >= 18'
+            ],
+            'help' => $this->__('Example') . ': tbl.age >= 18'
         ]);
     }
 
