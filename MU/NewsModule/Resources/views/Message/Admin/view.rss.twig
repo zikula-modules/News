@@ -49,6 +49,6 @@
         ]]>
     </description>
     {% if message.createdDate|default %}
-        <pubDate>{{ message.createdDate|date('a, d b Y T +0100') }}</pubDate>
+        <pubDate>{{ message.createdDate|date('r') }}</pubDate>
     {% endif %}
 {% endblock %}
