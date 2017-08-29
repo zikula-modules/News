@@ -210,12 +210,10 @@ abstract class AbstractTranslatableHelper
             }
             $translatedFields = $form['translations' . $language];
             foreach ($translatedFields as $fieldName => $formField) {
-                if (!$formField->getData()) {
-                    // avoid persisting unrequired translations
-                    continue;
-                }
-                $repository->translate($entity, $fieldName, $language, $formField->getData());
+                $entity[$fieldName] = $formField->getData();
             }
+            $entity['locale'] = $language;
+            $entityManager->flush();
         }
     }
 }
