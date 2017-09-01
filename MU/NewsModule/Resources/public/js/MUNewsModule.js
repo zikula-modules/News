@@ -83,7 +83,7 @@ function mUNewsInitAjaxToggles()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function mUNewsSimpleAlert(beforeElem, title, content, alertId, cssClass)
+function mUNewsSimpleAlert(anchorElement, title, content, alertId, cssClass)
 {
     var alertBox;
 
@@ -94,8 +94,8 @@ function mUNewsSimpleAlert(beforeElem, title, content, alertId, cssClass)
           <p>' + content + '</p> \
         </div>';
 
-    // insert alert before the given element
-    beforeElem.before(alertBox);
+    // insert alert before the given anchor element
+    anchorElement.before(alertBox);
 
     jQuery('#' + alertId).delay(200).addClass('in').fadeOut(4000, function () {
         jQuery(this).remove();
