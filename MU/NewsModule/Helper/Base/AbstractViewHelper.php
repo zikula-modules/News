@@ -237,15 +237,15 @@ abstract class AbstractViewHelper
         $hasAdminAccess = $this->permissionApi->hasPermission('MUNewsModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
-                $extensions = ['csv', 'rss', 'atom', 'xml', 'json'];
+                $extensions = ['csv', 'rss', 'atom', 'xml', 'json', 'pdf'];
             } else {
-                $extensions = ['rss', 'atom'];
+                $extensions = ['rss', 'atom', 'pdf'];
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = ['xml', 'json', 'ics'];
+                $extensions = ['xml', 'json', 'ics', 'pdf'];
             } else {
-                $extensions = ['ics'];
+                $extensions = ['ics', 'pdf'];
             }
         }
     
