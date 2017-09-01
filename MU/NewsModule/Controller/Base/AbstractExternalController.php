@@ -59,8 +59,8 @@ abstract class AbstractExternalController extends AbstractController
             return new Response($this->__('No such item.'));
         }
         
-        $template = $request->query->has('template') ? $request->query->get('template', '') : '';
-        if (empty($template)) {
+        $template = $request->query->has('template') ? $request->query->get('template', null) : null;
+        if (null === $template || $template == '') {
             $template = 'display.html.twig';
         }
         
