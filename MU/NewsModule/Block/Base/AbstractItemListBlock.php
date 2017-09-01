@@ -139,7 +139,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     protected function getDisplayTemplate(array $properties)
     {
         $templateFile = $properties['template'];
-        if ($templateFile == 'custom') {
+        if ($templateFile == 'custom' && null !== $properties['customTemplate'] && $properties['customTemplate'] != '') {
             $templateFile = $properties['customTemplate'];
         }
     
@@ -228,11 +228,10 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             'sorting' => 'default',
             'amount' => 5,
             'template' => 'itemlist_display.html.twig',
-            'customTemplate' => '',
+            'customTemplate' => null,
             'filter' => ''
         ];
     }
-    
     
     /**
      * Resolves category filter ids.
