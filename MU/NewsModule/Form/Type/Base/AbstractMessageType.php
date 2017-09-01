@@ -232,7 +232,7 @@ abstract class AbstractMessageType extends AbstractType
             'empty_data' => '0',
             'attr' => [
                 'maxlength' => 11,
-                'class' => ' validate-digits',
+                'class' => '',
                 'title' => $this->__('Enter the amount of views of the message.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => false,
@@ -255,7 +255,7 @@ abstract class AbstractMessageType extends AbstractType
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 11,
-                'class' => ' validate-digits',
+                'class' => '',
                 'title' => $this->__('Enter the approver of the message')
             ],
             'required' => false,
@@ -381,7 +381,7 @@ abstract class AbstractMessageType extends AbstractType
             'empty_data' => '1',
             'attr' => [
                 'maxlength' => 2,
-                'class' => ' validate-digits',
+                'class' => '',
                 'title' => $this->__('Enter the weight of the message.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => false,
@@ -479,7 +479,6 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Creator') . ':',
             'attr' => [
                 'maxlength' => 11,
-                'class' => ' validate-digits',
                 'title' => $this->__('Here you can choose a user which will be set as creator')
             ],
             'empty_data' => 0,
