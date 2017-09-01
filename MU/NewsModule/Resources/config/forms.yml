@@ -59,6 +59,15 @@ services:
         tags:
             - { name: form.type }
     
+    mu_news_module.form.type.block.item:
+        class: MU\NewsModule\Block\Form\Type\ItemBlockType
+        arguments:
+            - "@translator.default"
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.entity_display_helper"
+        tags:
+            - { name: form.type }
+    
     mu_news_module.form.type.messagefinder:
         class: MU\NewsModule\Form\Type\Finder\MessageFinderType
         arguments:
