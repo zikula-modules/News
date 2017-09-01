@@ -14,8 +14,7 @@ application "News" {
         generateMultiHookNeedles true
         generateKmlTemplates false
         generateIcsTemplates true
-        filterHookProvider DISABLED
-        versionAllGeneratedFiles false
+        generatePdfSupport true versionAllGeneratedFiles false
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
     generateTests false

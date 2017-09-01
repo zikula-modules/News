@@ -1,5 +1,6 @@
 # INSTALLATION INSTRUCTIONS
 
+0. If the application's root folder does not contain a `vendor/` folder yet, run `composer install --no-dev` to install dependencies.
 1. Copy MUNewsModule into your `modules` directory. Afterwards you should have a folder named `modules/MU/NewsModule/Resources`.
 2. Initialize and activate MUNewsModule in the extensions administration.
 3. Move or copy the directory `Resources/userdata/MUNewsModule/` to `/userdata/MUNewsModule/`.
