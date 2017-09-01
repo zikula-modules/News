@@ -160,7 +160,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
         $this->sorting = isset($data['sorting']) ? $data['sorting'] : 'default';
         $this->amount = isset($data['amount']) ? $data['amount'] : 1;
         $this->template = isset($data['template']) ? $data['template'] : 'itemlist_' . $this->objectType . '_display.html.twig';
-        $this->customTemplate = isset($data['customTemplate']) ? $data['customTemplate'] : '';
+        $this->customTemplate = isset($data['customTemplate']) ? $data['customTemplate'] : null;
         $this->filter = isset($data['filter']) ? $data['filter'] : '';
         $featureActivationHelper = $this->container->get('mu_news_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $this->objectType)) {
@@ -290,7 +290,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
     protected function getDisplayTemplate()
     {
         $templateFile = $this->template;
-        if ($templateFile == 'custom') {
+        if ($templateFile == 'custom' && null !== $this->customTemplate && $this->customTemplate != '') {
             $templateFile = $this->customTemplate;
         }
     
@@ -334,7 +334,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
             'sorting' => 'default',
             'amount' => 1,
             'template' => 'itemlist_display.html.twig',
-            'customTemplate' => '',
+            'customTemplate' => null,
             'filter' => ''
         ];
     }

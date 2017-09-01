@@ -141,7 +141,7 @@ abstract class AbstractItem extends \Content_AbstractContentType implements Cont
     }
     
     /**
-     * Returns common arguments for display data selection with the external api.
+     * Returns common arguments for displaying the selected object using the external controller.
      *
      * @return array Display arguments
      */
