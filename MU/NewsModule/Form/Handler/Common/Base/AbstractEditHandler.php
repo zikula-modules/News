@@ -392,7 +392,8 @@ abstract class AbstractEditHandler
                 }
             }
         } else {
-            if (!$this->permissionApi->hasPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
+            $permissionLevel = in_array($this->objectType, ['message']) ? ACCESS_COMMENT : ACCESS_EDIT;
+            if (!$this->permissionApi->hasPermission($this->permissionComponent, '::', $permissionLevel)) {
                 throw new AccessDeniedException();
             }
     

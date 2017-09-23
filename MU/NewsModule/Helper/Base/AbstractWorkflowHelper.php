@@ -238,9 +238,6 @@ abstract class AbstractWorkflowHelper
             case 'submit':
                 $buttonClass = 'success';
                 break;
-            case 'update':
-                $buttonClass = 'success';
-                break;
             case 'approve':
                 $buttonClass = '';
                 break;
@@ -260,6 +257,10 @@ abstract class AbstractWorkflowHelper
                 $buttonClass = 'danger';
                 break;
         }
+    
+        if ($buttonClass == '' && substr($actionId, 0, 6) == 'update') {
+            $buttonClass = 'success';
+    	}
     
         if (empty($buttonClass)) {
             $buttonClass = 'default';
