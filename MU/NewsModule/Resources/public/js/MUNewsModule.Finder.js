@@ -14,22 +14,26 @@ function getMUNewsModulePopupAttributes()
     pWidth = screen.width * 0.75;
     pHeight = screen.height * 0.66;
 
-    return 'width=' + pWidth + ',height=' + pHeight + ',scrollbars,resizable';
+    return 'width=' + pWidth + ',height=' + pHeight + ',location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes';
 }
 
 /**
- * Open a popup window with the finder triggered by a CKEditor button.
+ * Open a popup window with the finder triggered by an editor button.
  */
-function MUNewsModuleFinderCKEditor(editor, newsUrl)
+function MUNewsModuleFinderOpenPopup(editor, editorName)
 {
+    var popupUrl;
+
     // Save editor for access in selector window
     currentMUNewsModuleEditor = editor;
 
-    editor.popup(
-        Routing.generate('munewsmodule_external_finder', { objectType: 'message', editor: 'ckeditor' }),
-        /*width*/ '80%', /*height*/ '70%',
-        'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
-    );
+    popupUrl = Routing.generate('munewsmodule_external_finder', { objectType: 'message', editor: editorName });
+
+    if (editorName == 'ckeditor') {
+        editor.popup(popupUrl, /*width*/ '80%', /*height*/ '70%', getMUNewsModulePopupAttributes());
+    } else {
+        window.open(popupUrl, '_blank', getMUNewsModulePopupAttributes());
+    }
 }
 
 
@@ -79,9 +83,13 @@ mUNewsModule.finder.handleCancel = function (event)
 
     event.preventDefault();
     editor = jQuery("[id$='editor']").first().val();
-    if ('tinymce' === editor) {
+    if ('ckeditor' === editor) {
         mUNewsClosePopup();
-    } else if ('ckeditor' === editor) {
+    } else if ('quill' === editor) {
+        mUNewsClosePopup();
+    } else if ('summernote' === editor) {
+        mUNewsClosePopup();
+    } else if ('tinymce' === editor) {
         mUNewsClosePopup();
     } else {
         alert('Close Editor: ' + editor);
@@ -148,17 +156,23 @@ mUNewsModule.finder.selectItem = function (itemId)
 {
     var editor, html;
 
+    html = mUNewsGetPasteSnippet('html', itemId);
     editor = jQuery("[id$='editor']").first().val();
-    if ('tinymce' === editor) {
-        html = mUNewsGetPasteSnippet('html', itemId);
-        tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
-        // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
-    } else if ('ckeditor' === editor) {
+    if ('ckeditor' === editor) {
         if (null !== window.opener.currentMUNewsModuleEditor) {
-            html = mUNewsGetPasteSnippet('html', itemId);
-
             window.opener.currentMUNewsModuleEditor.insertHtml(html);
         }
+    } else if ('quill' === editor) {
+        if (null !== window.opener.currentMUNewsModuleEditor) {
+            window.opener.currentMUNewsModuleEditor.clipboard.dangerouslyPasteHTML(window.opener.currentMUNewsModuleEditor.getLength(), html);
+        }
+    } else if ('summernote' === editor) {
+        if (null !== window.opener.currentMUNewsModuleEditor) {
+            html = jQuery(html).get(0);
+            window.opener.currentMUNewsModuleEditor.invoke('insertNode', html);
+        }
+    } else if ('tinymce' === editor) {
+        window.opener.currentMUNewsModuleEditor.insertContent(html);
     } else {
         alert('Insert into Editor: ' + editor);
     }
