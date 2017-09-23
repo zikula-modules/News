@@ -72,6 +72,8 @@ services:
     mu_news_module.thirdparty_listener:
         class: MU\NewsModule\Listener\ThirdPartyListener
         arguments:
+            - "@filesystem"
+            - "@request_stack"
             - "@mu_news_module.workflow_helper"
         tags:
             - { name: kernel.event_subscriber }
