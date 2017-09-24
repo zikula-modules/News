@@ -20,5 +20,16 @@ use MU\NewsModule\Form\Handler\Common\Base\AbstractEditHandler;
  */
 abstract class EditHandler extends AbstractEditHandler
 {
-    // feel free to extend the base handler class here
+    /**
+     * Return list of attribute field names.
+     * To be customised in sub classes as needed.
+     *
+     * @return array list of attribute names
+     */
+    protected function getAttributeFieldNames()
+    {
+        return [
+            'morearticlesincat', 'field2', 'field3'
+        ];
+    }
 }

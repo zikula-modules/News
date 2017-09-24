@@ -162,7 +162,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     protected $displayOnIndex = true;
     
     /**
-     * @ORM\Column(length=7, nullable=true)
+     * @ORM\Column(length=7)
      * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
      * @Assert\Length(min="0", max="7")
      * @Assert\Locale()
