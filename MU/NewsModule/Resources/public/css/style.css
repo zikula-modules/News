@@ -118,6 +118,21 @@ div.munewsmodule-view .avatar img {
 
 /*************Standardfields**********************/
 
+#message-display-header {
+	float: left;
+	clear: both;
+	width: 100%;
+}
+#message-title {
+	clear: both;
+	float: left;
+}
+#message-author-info {
+	clear: both;
+}
+
 .message-avatar {
 	width: 40px;
+	float: left;
+	margin: 0 15px 0 0;
 }
