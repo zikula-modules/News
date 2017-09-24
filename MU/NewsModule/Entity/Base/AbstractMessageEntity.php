@@ -140,7 +140,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
-     * @ORM\JoinColumn(referencedColumnName="uid")
+     * @ORM\JoinColumn(referencedColumnName="uid", nullable=true)
      * @var UserEntity $approver
      */
     protected $approver = null;
