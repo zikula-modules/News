@@ -36,7 +36,6 @@ services:
             - "@translator.default"
             - "@request_stack"
             - "@mu_news_module.archive_helper"
-            - "@logger"
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"
             - "@mu_news_module.entity_factory"
@@ -122,6 +121,7 @@ services:
         class: MU\NewsModule\Helper\UploadHelper
         arguments:
             - "@translator.default"
+            - "@filesystem"
             - "@session"
             - "@logger"
             - "@zikula_users_module.current_user"
