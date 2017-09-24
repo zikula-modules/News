@@ -209,11 +209,12 @@ abstract class AbstractTranslatableHelper
                 continue;
             }
             $translatedFields = $form['translations' . $language];
-            foreach ($translatedFields as $fieldName => $formField) {
-                $entity[$fieldName] = $formField->getData();
-            }
-            $entity['locale'] = $language;
-            $entityManager->flush();
+            $entityManager->transactional(function($entityManager) use($entity, $translatedFields, $language) {
+                foreach ($translatedFields as $fieldName => $formField) {
+                    $entity[$fieldName] = $formField->getData();
+                }
+                $entity['locale'] = $language;
+            });
         }
     }
 }
