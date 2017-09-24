@@ -58,6 +58,7 @@
                     <option value="imageUpload3"{if $sort eq 'imageUpload3'} selected="selected"{/if}>{gt text='Image upload 3'}</option>
                     <option value="imageUpload4"{if $sort eq 'imageUpload4'} selected="selected"{/if}>{gt text='Image upload 4'}</option>
                     <option value="noEndDate"{if $sort eq 'noEndDate'} selected="selected"{/if}>{gt text='No end date'}</option>
+                    <option value="weight"{if $sort eq 'weight'} selected="selected"{/if}>{gt text='Weight'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdBy"{if $sort eq 'createdBy'} selected="selected"{/if}>{gt text='Creator'}</option>
                     <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

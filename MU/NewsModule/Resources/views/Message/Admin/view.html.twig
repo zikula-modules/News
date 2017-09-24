@@ -40,6 +40,7 @@
                 <col id="cStartDate" />
                 <col id="cNoEndDate" />
                 <col id="cEndDate" />
+                <col id="cWeight" />
             </colgroup>
             <thead>
             <tr>
@@ -104,6 +105,9 @@
                 </th>
                 <th id="hEndDate" scope="col" class="text-left z-order-unsorted">
                     {{ __('End date') }}
+                </th>
+                <th id="hWeight" scope="col" class="text-right">
+                    <a href="{{ sort.weight.url }}" title="{{ __f('Sort by %s', {'%s': 'weight'}) }}" class="{{ sort.weight.class }}">{{ __('Weight') }}</a>
                 </th>
             </tr>
             </thead>
@@ -253,10 +257,13 @@
                         {{ message.endDate|localizeddate('medium', 'short') }}
                     {% endif %}
                 </td>
+                <td headers="hWeight" class="text-right">
+                    {{ message.weight }}
+                </td>
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}20{% else %}19{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}21{% else %}20{% endif %}">
             {{ __('No messages found.') }}
               </td>
             </tr>

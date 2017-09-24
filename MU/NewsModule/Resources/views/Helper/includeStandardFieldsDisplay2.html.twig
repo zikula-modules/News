@@ -38,8 +38,8 @@
                 {% endif %}
             {% endif %}
         </dd>
-    {% endif %}
-    {% if obj.updatedBy|default and obj.updatedBy.getUid() > 0 %}
+    {% endif %}<br />
+    {% if obj.updatedBy|default and obj.updatedBy.getUid() > 0 and obj.updatedBy != obj.createdBy %}
         {% set profileLink = obj.updatedBy.getUid()|profileLinkByUserId() %}
         {% if status == 'both' or status == 'author' %}
         <dd class="message-avatar">{{ userAvatar(obj.updatedBy.getUid(), {rating: 'g'}) }}</dd>
