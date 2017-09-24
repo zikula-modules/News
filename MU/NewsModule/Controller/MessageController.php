@@ -73,7 +73,7 @@ class MessageController extends AbstractMessageController
      *
      * @Route("/admin/messages/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "desc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      * @Theme("admin")
@@ -98,7 +98,7 @@ class MessageController extends AbstractMessageController
      *
      * @Route("/messages/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "desc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      *
@@ -293,28 +293,6 @@ class MessageController extends AbstractMessageController
     {
         return parent::handleSelectedEntriesAction($request);
     }
-    
-    /**
-     * This method includes the common implementation code for adminView() and view().
-     */
-    /*protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
-    {    	
-    	// parameter for used sort order
-    	$modSortDir = $this->getVar('defaultMessageSorting');
-    	if ($modSortDir != '') {
-    		if ($modSortDir == 'descending') {
-    			$sortdir = 'DESC';
-    		} else {
-    			$sortdir = 'ASC';
-    		}
-    	} else {
-    		if ($sortdir == '') {
-    			$sortdir = 'DESC';
-    		}
-    	}   
-
-    	return parent::viewInternal($request, $sort, $sortdir, $pos, $num, $isAdmin);
-    }*/ // Not needed at the moment TODO
 
     // feel free to add your own controller methods here
 }

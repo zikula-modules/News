@@ -40,7 +40,7 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * @var string The default sorting field/expression
      */
-    protected $defaultSortingField = 'title';
+    protected $defaultSortingField = 'createdDate';
 
     /**
      * @var CollectionFilterHelper

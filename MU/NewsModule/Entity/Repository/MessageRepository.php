@@ -14,44 +14,12 @@ namespace MU\NewsModule\Entity\Repository;
 
 use MU\NewsModule\Entity\Repository\Base\AbstractMessageRepository;
 
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
  * This is the concrete repository class for message entities.
  */
 class MessageRepository extends AbstractMessageRepository
-{    
-    /**
-     * Retrieves an array with all fields which can be used for sorting instances.
-     *
-     * @return string[] Sorting fields array
-     */
-    public function getAllowedSortingFields()
-    {
-    	return [
-    			'workflowState',
-    			'title',
-    			'startText',
-    			'imageUpload1',
-    			'mainText',
-    			'author',
-    			'notes',
-    			'displayOnIndex',
-    			'messageLanguage',
-    			'allowComments',
-    			'imageUpload2',
-    			'imageUpload3',
-    			'imageUpload4',
-    			'noEndDate',
-    			'createdBy',
-    			'createdDate',
-    			'updatedBy',
-    			'updatedDate',
-    			'id',
-    			'weight',
-    	];
-    }
+{
+
 }
