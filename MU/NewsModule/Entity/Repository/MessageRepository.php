@@ -23,57 +23,35 @@ use Doctrine\ORM\QueryBuilder;
  * This is the concrete repository class for message entities.
  */
 class MessageRepository extends AbstractMessageRepository
-{
+{    
     /**
-     * @var string The default sorting field/expression
-     */
-    protected $defaultSortingField = 'createdDate';
-    
-    /**
-     * Adds ORDER BY clause to given query builder.
+     * Retrieves an array with all fields which can be used for sorting instances.
      *
-     * @param QueryBuilder $qb      Given query builder instance
-     * @param string       $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
-     *
-     * @return QueryBuilder Query builder instance to be further processed
+     * @return string[] Sorting fields array
      */
-    protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
+    public function getAllowedSortingFields()
     {
-    	if ($orderBy == 'RAND()') {
-    		// random selection
-    		$qb->addSelect('MOD(tbl.id, ' . mt_rand(2, 15) . ') AS HIDDEN randomIdentifiers')
-    		->add('orderBy', 'randomIdentifiers');
-    
-    		return $qb;
-    	}
-    
-    	if (empty($orderBy)) {
-    		$orderBy = $this->defaultSortingField;
-    	}
-    	
-    	$orderBy = 'tbl.weight, tbl.' . $orderBy;
-    
-    	if (empty($orderBy)) {
-    		return $qb;
-    	}
-
-    
-    	// add order by clause
-    	if (false === strpos($orderBy, '.')) {
-    		$orderBy = 'tbl.' . $orderBy;
-    	}
-    	if (false !== strpos($orderBy, 'tbl.createdBy')) {
-    		$qb->addSelect('tblCreator')
-    		->leftJoin('tbl.createdBy', 'tblCreator');
-    		$orderBy = str_replace('tbl.createdBy', 'tblCreator.uname', $orderBy);
-    	}
-    	if (false !== strpos($orderBy, 'tbl.updatedBy')) {
-    		$qb->addSelect('tblUpdater')
-    		->leftJoin('tbl.updatedBy', 'tblUpdater');
-    		$orderBy = str_replace('tbl.updatedBy', 'tblUpdater.uname', $orderBy);
-    	}
-    	$qb->add('orderBy', $orderBy);
-    
-    	return $qb;
+    	return [
+    			'workflowState',
+    			'title',
+    			'startText',
+    			'imageUpload1',
+    			'mainText',
+    			'author',
+    			'notes',
+    			'displayOnIndex',
+    			'messageLanguage',
+    			'allowComments',
+    			'imageUpload2',
+    			'imageUpload3',
+    			'imageUpload4',
+    			'noEndDate',
+    			'createdBy',
+    			'createdDate',
+    			'updatedBy',
+    			'updatedDate',
+    			'id',
+    			'weight',
+    	];
     }
 }

@@ -74,6 +74,7 @@ abstract class AbstractMessageRepository extends EntityRepository
             'imageUpload3',
             'imageUpload4',
             'noEndDate',
+            'weight',
             'createdBy',
             'createdDate',
             'updatedBy',
