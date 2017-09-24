@@ -209,6 +209,7 @@ abstract class AbstractMessageFinderType extends AbstractType
                     $this->__('Image upload 3') => 'imageUpload3',
                     $this->__('Image upload 4') => 'imageUpload4',
                     $this->__('No end date') => 'noEndDate',
+                    $this->__('Weight') => 'weight',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',
