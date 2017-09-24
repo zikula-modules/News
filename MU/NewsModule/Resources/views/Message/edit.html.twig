@@ -154,14 +154,7 @@
                         {{ form_row(form.moderationSpecificCreationDate) }}
                     </div>
                 {% endif %}
-                
-                {# include return control #}
-                {% if mode == 'create' %}
-                    <fieldset>
-                        <legend>{{ __('Return control') }}</legend>
-                        {{ form_row(form.repeatCreation) }}
-                    </fieldset>
-                {% endif %}
+
             </div>
         </div>
         
