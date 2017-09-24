@@ -144,13 +144,18 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
     
         $registry = new CategoryRegistryEntity();
-        $entityManager->transactional(function($entityManager) use($registry, $categoryHelper, $categoryGlobal) {
-            $registry->setModname('MUNewsModule');
-            $registry->setEntityname('MessageEntity');
-            $registry->setProperty($categoryHelper->getPrimaryProperty('Message'));
-            $registry->setCategory($categoryGlobal);
+        $registry->setModname('MUNewsModule');
+        $registry->setEntityname('MessageEntity');
+        $registry->setProperty($categoryHelper->getPrimaryProperty('Message'));
+        $registry->setCategory($categoryGlobal);
+    
+        try {
             $entityManager->persist($registry);
-        });
+            $entityManager->flush();
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'message']));
+            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'user' => $userName, 'entities' => 'messages', 'errorMessage' => $exception->getMessage()]);
+        }
         $categoryRegistryIdsPerEntity['message'] = $registry->getId();
     
         // initialisation successful
@@ -395,13 +400,12 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->delVars();
     
         // remove category registry entries
-        $registries = $this->container->get('zikula_categories_module.category_registry_repository')->findBy(['modname' => 'MUNewsModule']);
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $entityManager->transactional(function($entityManager) use($registries) {
-            foreach ($registries as $registry) {
-                $entityManager->remove($registry);
-            }
-        });
+        $registries = $this->container->get('zikula_categories_module.category_registry_repository')->findBy(['modname' => 'MUNewsModule']);
+        foreach ($registries as $registry) {
+            $entityManager->remove($registry);
+        }
+        $entityManager->flush();
     
         // remind user about upload folders not being deleted
         $uploadPath = $this->container->getParameter('datadir') . '/MUNewsModule/';
