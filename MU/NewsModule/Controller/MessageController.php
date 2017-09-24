@@ -210,7 +210,7 @@ class MessageController extends AbstractMessageController
      * @inheritDoc
      *
      * @Route("/admin/message/{slug}.{id}.{_format}",
-     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html|xml|json|ics"},
+     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html|xml|json|ics|pdf"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -233,7 +233,7 @@ class MessageController extends AbstractMessageController
      * @inheritDoc
      *
      * @Route("/message/{slug}.{id}.{_format}",
-     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html|xml|json|ics"},
+     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html|xml|json|ics|pdf"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -297,7 +297,7 @@ class MessageController extends AbstractMessageController
     /**
      * This method includes the common implementation code for adminView() and view().
      */
-    protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
+    /*protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
     {    	
     	// parameter for used sort order
     	$modSortDir = $this->getVar('defaultMessageSorting');
@@ -314,7 +314,7 @@ class MessageController extends AbstractMessageController
     	}   
 
     	return parent::viewInternal($request, $sort, $sortdir, $pos, $num, $isAdmin);
-    }
+    }*/ // Not needed at the moment TODO
 
     // feel free to add your own controller methods here
 }

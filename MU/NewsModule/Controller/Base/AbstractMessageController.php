@@ -150,6 +150,7 @@ abstract class AbstractMessageController extends AbstractController
             new Column('imageUpload3'),
             new Column('imageUpload4'),
             new Column('noEndDate'),
+            new Column('weight'),
             new Column('createdBy'),
             new Column('createdDate'),
             new Column('updatedBy'),
