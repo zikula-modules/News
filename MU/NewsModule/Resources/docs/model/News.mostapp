@@ -65,7 +65,7 @@ application "News" {
                     defaultValue "true"
                     mandatory false
                 },
-                string "messageLanguage" nullable {
+                string "messageLanguage" {
                     mandatory false
                     length 7
                     role LOCALE
@@ -154,11 +154,6 @@ application "News" {
                         listVarItem "Article weight"
                     }
                 },
-                boolVar "checkRefererOnPrint",
-                boolVar "enableAjaxEditing" {
-                    documentation "Note picture/file operations are not supported in \\\'quick edit mode\\\' due to ajax limitations."
-                    value "false"
-                },
                 boolVar "enableMoreMessagesInCategory",
                 intVar "amountOfMoreArticlesInCategory" {
                     documentation "When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \\\'morearticlesincat\\\'. You need to enable \\\'article attributes\\\' yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database."
@@ -166,22 +161,6 @@ application "News" {
                 boolVar "displayPdfLink" {
                     documentation "Display a PDF link for the articles in the index page"
                     value "false"
-                },
-                intVar "pdfLinkDisplayAccessLevel" {
-                    documentation "Permissions to create and display PDF file"
-                    value "0"
-                },
-                filePathVar "pdfLinkHeaderLogo" {
-                    documentation "PDF header logo image"
-                },
-                intVar "pdfLinkHeaderLogoWidth" {
-                    documentation "PDF header logo width in mm"
-                    value "15"
-                },
-                boolVar "pdfLinkEnableCache"
-            {
-                    documentation "Enable caching for pdf files"
-                    value "true"
                 }
             }
         },

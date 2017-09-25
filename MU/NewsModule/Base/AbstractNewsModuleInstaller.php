@@ -70,15 +70,9 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('showDate', false);
         $this->setVar('enableCategorization', false);
         $this->setVar('defaultMessageSorting',  'articledatetime' );
-        $this->setVar('checkRefererOnPrint', false);
-        $this->setVar('enableAjaxEditing', false);
         $this->setVar('enableMoreMessagesInCategory', false);
         $this->setVar('amountOfMoreArticlesInCategory', 0);
         $this->setVar('displayPdfLink', false);
-        $this->setVar('pdfLinkDisplayAccessLevel', '0');
-        $this->setVar('pdfLinkHeaderLogo', '');
-        $this->setVar('pdfLinkHeaderLogoWidth', '15');
-        $this->setVar('pdfLinkEnableCache', true);
         $this->setVar('enablePictureUpload', false);
         $this->setVar('imageFloatOnViewPage',  'left' );
         $this->setVar('imageFloatOnDisplayPage',  'left' );

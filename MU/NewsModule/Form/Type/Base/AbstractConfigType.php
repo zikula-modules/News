@@ -208,27 +208,6 @@ abstract class AbstractConfigType extends AbstractType
                 'choices_as_values' => true,
                 'multiple' => false
             ])
-            ->add('checkRefererOnPrint', CheckboxType::class, [
-                'label' => $this->__('Check referer on print') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['checkRefererOnPrint']) ? $this->moduleVars['checkRefererOnPrint'] : false),
-                'attr' => [
-                    'title' => $this->__('The check referer on print option.')
-                ],
-            ])
-            ->add('enableAjaxEditing', CheckboxType::class, [
-                'label' => $this->__('Enable ajax editing') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Note picture/file operations are not supported in \"quick edit mode\" due to ajax limitations.')
-                ],
-                'help' => $this->__('Note picture/file operations are not supported in \"quick edit mode\" due to ajax limitations.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableAjaxEditing']) ? $this->moduleVars['enableAjaxEditing'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable ajax editing option.')
-                ],
-            ])
             ->add('enableMoreMessagesInCategory', CheckboxType::class, [
                 'label' => $this->__('Enable more messages in category') . ':',
                 'required' => false,
@@ -263,64 +242,6 @@ abstract class AbstractConfigType extends AbstractType
                 'data' => (bool)(isset($this->moduleVars['displayPdfLink']) ? $this->moduleVars['displayPdfLink'] : false),
                 'attr' => [
                     'title' => $this->__('The display pdf link option.')
-                ],
-            ])
-            ->add('pdfLinkDisplayAccessLevel', IntegerType::class, [
-                'label' => $this->__('Pdf link display access level') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Permissions to create and display PDF file')
-                ],
-                'help' => $this->__('Permissions to create and display PDF file'),
-                'required' => false,
-                'data' => isset($this->moduleVars['pdfLinkDisplayAccessLevel']) ? intval($this->moduleVars['pdfLinkDisplayAccessLevel']) : intval(0),
-                'empty_data' => intval('0'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the pdf link display access level.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('pdfLinkHeaderLogo', TextType::class, [
-                'label' => $this->__('Pdf link header logo') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('PDF header logo image')
-                ],
-                'help' => $this->__('PDF header logo image'),
-                'required' => false,
-                'data' => isset($this->moduleVars['pdfLinkHeaderLogo']) ? $this->moduleVars['pdfLinkHeaderLogo'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the pdf link header logo.')
-                ],
-            ])
-            ->add('pdfLinkHeaderLogoWidth', IntegerType::class, [
-                'label' => $this->__('Pdf link header logo width') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('PDF header logo width in mm')
-                ],
-                'help' => $this->__('PDF header logo width in mm'),
-                'required' => false,
-                'data' => isset($this->moduleVars['pdfLinkHeaderLogoWidth']) ? intval($this->moduleVars['pdfLinkHeaderLogoWidth']) : intval(15),
-                'empty_data' => intval('15'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the pdf link header logo width.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('pdfLinkEnableCache', CheckboxType::class, [
-                'label' => $this->__('Pdf link enable cache') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Enable caching for pdf files')
-                ],
-                'help' => $this->__('Enable caching for pdf files'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['pdfLinkEnableCache']) ? $this->moduleVars['pdfLinkEnableCache'] : true),
-                'attr' => [
-                    'title' => $this->__('The pdf link enable cache option.')
                 ],
             ])
         ;
