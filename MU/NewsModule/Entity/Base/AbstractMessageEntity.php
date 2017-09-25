@@ -163,6 +163,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(length=7)
+     * @Assert\NotNull()
      * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
      * @Assert\Length(min="0", max="7")
      * @Assert\Locale()
@@ -707,7 +708,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setMessageLanguage($messageLanguage)
     {
         if ($this->messageLanguage !== $messageLanguage) {
-            $this->messageLanguage = $messageLanguage;
+            $this->messageLanguage = isset($messageLanguage) ? $messageLanguage : '';
         }
     }
     
