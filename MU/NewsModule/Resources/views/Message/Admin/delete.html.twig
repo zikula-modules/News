@@ -35,5 +35,10 @@
     </div>
 {% endblock %}
 {% block display_hooks %}
-    {{ notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_delete', id=message.getKey()) }}
+    {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_delete', id=message.getKey(), outputAsArray=true) %}
+    {% if hooks is iterable and hooks|length > 0 %}
+        {% for area, hook in hooks %}
+            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook }}</div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

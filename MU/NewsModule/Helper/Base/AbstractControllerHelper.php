@@ -225,7 +225,7 @@ abstract class AbstractControllerHelper
                     $sort = $fieldValue;
                 } elseif ($fieldName == 'sortdir' && !empty($fieldValue)) {
                     $sortdir = $fieldValue;
-                } else {
+                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions')) {
                     // set filter as query argument, fetched inside repository
                     if ($fieldValue instanceof UserEntity) {
                         $fieldValue = $fieldValue->getUid();
@@ -239,9 +239,10 @@ abstract class AbstractControllerHelper
     
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
-            if (false !== stripos($parameterName, 'thumbRuntimeOptions')) {
-                unset($urlParameters[$parameterName]);
+            if (false === stripos($parameterName, 'thumbRuntimeOptions')) {
+                continue;
             }
+            unset($urlParameters[$parameterName]);
         }
     
         $sort = $sortableColumns->getSortColumn()->getName();
