@@ -91,7 +91,13 @@
                     <fieldset>
                     {% set imageUpload = getModVar('MUNewsModule', 'enablePictureUpload') %}
                         <legend>{{ __('Further properties') }}</legend>
+                        {% if imageUpload == 0 %}
+                        <div class="hidden">
+                        {% endif %}
                         {{ form_row(form.imageUpload1) }}
+                        {% if imageUpload == 0 %}
+                        </div>
+                        {% endif %}
                         <div class="hidden">
                             {{ form_row(form.amountOfViews) }}
                         </div>
