@@ -47,8 +47,8 @@
         </div>
     {% endif %}
     {% if message.imageUpload2 is not empty or message.imageUpload3 is not empty or message.imageUpload4 is not empty %}
-    <div id="message-display-pictures" class="col-md-12">
-        <div class="col-md-4">
+    <div id="message-display-pictures" class="col-sm-12">
+        <div class="col-sm-4">
         {% if message.imageUpload2 is not empty %}
             <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
                         <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
@@ -63,7 +63,7 @@
             </dd>
         {% endif %}    
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-4">
         {% if message.imageUpload3 is not empty %}
             <dd>{% if message.imageUpload3 is not empty and message.imageUpload3Meta|default %}
                         <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
@@ -78,7 +78,7 @@
             </dd>
         {% endif %}    
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-4">
         {% if message.imageUpload4 is not empty %}
             <dd>{% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
                         <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
@@ -95,27 +95,38 @@
         </div>
     </div>
     {% endif %}
-    <div class="col-md-12">
-    <div class="col-md-8">
-    {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
-        {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
-    {% endif %}
-    </div>
-    <div class="col-md-4">
-    {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}   
-    <div class="message-display-footer">
-    <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, 'theme': 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
-        {% if pdfLink == 1 %}        
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, '_format': 'pdf'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+    <div class="row">
+    <div class="col-sm-8">
+        {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+            {% set showRelatedArticles = getModVar('MUNewsModule', 'enableMoreMessagesInCategory') %}
+            {% if showRelatedArticles == 1 and message.categories is defined and message.categories|length > 0 %}
+                <h3>{{ __('Related articles') }}</h3>
+                {% set amountOfRelatedArticles = 3 %}{# TODO make configurable #}
+                {% for catMapping in message.categories %}
+                    <h4>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</h4>
+                    {% set categoryArticles = munewsmodule_getRelatedArticles(catMapping, amountOfRelatedArticles) %}
+                    <ul class="related-articles-list">
+                    {% for relatedArticle in categoryArticles %}
+                        <li>{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</li>
+                    {% else %}
+                        <li>{{ __('No other articles found.') }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% else %}
+                {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
+            {% endif %}
         {% endif %}
     </div>
+    <div class="col-sm-4">
+        {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}   
+        <div class="message-display-footer">
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, 'theme': 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
+            {% if pdfLink == 1 %}        
+                <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, '_format': 'pdf'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+            {% endif %}
+        </div>
     </div>
-    {#% set catArticles = getModVar('MUNewsModule', 'enableMoreMessagesInCategory') %}
-    {% if catArticles == 1 %}
-        Hallo<br />{% for article in categoryArticles %}
-            {{ article.title }}
-        {% endfor %}
-    {% endif %#}
     </div>
     {{ block('display_hooks') }}
 

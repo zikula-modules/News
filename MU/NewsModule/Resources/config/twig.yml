@@ -9,6 +9,9 @@ services:
             - "@mu_news_module.entity_display_helper"
             - "@mu_news_module.workflow_helper"
             - "@mu_news_module.listentries_helper"
+        calls:
+            - [setEntityFactory, ["@mu_news_module.entity_factory"]]
+            - [setCategoryHelper, ["@mu_news_module.category_helper"]]
         public: false
         tags:
             - { name: twig.extension }

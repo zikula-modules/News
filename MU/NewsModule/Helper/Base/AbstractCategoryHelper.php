@@ -195,13 +195,23 @@ abstract class AbstractCategoryHelper
             if (!isset($catIds[$propertyName]) || !is_array($catIds[$propertyName]) || !count($catIds[$propertyName])) {
                 continue;
             }
+            $catIdsForProperty = [];
+            foreach ($catIds[$propertyName] as $catId) {
+            	if (!$catId) {
+            		continue;
+            	}
+            	$catIdsForProperty[] = $catId;
+            }
+            if (!count($catIdsForProperty)) {
+            	continue;
+            }
     
             $filtersPerRegistry[] = '(
                 tblCategories.categoryRegistryId = :propId' . $propertyName . '
                 AND tblCategories.category IN (:categories' . $propertyName . ')
             )';
             $filterParameters['registries'][$propertyName] = $propertyId;
-            $filterParameters['values'][$propertyName] = $catIds[$propertyName];
+            $filterParameters['values'][$propertyName] = $catIdsForProperty;
         }
     
         if (count($filtersPerRegistry) > 0) {

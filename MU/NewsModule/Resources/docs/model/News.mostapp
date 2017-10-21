@@ -8,7 +8,7 @@ application "News" {
 	generatorSettings  {
         settingsContainer "Einstellungen"
 	    targetCoreVersion ZK15
-       generateMailzApi true
+        generateMailzApi true
         generateNewsletterPlugin true
         generateTagSupport true
         generateMultiHookNeedles true
@@ -17,8 +17,25 @@ application "News" {
         generatePdfSupport true versionAllGeneratedFiles false
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
-    generateTests false
-        markFiles "composer.json,\r\nNewsModuleInstaller.php,\r\nEntity/Repository/Base/AbstractMessageRepository.php,\r\nController/MessageController.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nResources/config/helpers.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig"
+        generateTests false
+        markFiles "
+            composer.json,
+            Controller/MessageController.php,
+            Entity/Repository/Base/AbstractMessageRepository.php,
+            Form/Handler/Common/EditHandler.php,
+            Form/Type/MessageType.php,
+            Helper/ControllerHelper.php,
+            Helper/FeatureActivationHelper.php,
+            NewsModuleInstaller.php,
+            Resources/config/helpers.yml,
+            Resources/config/twig.yml,
+            Resources/public/css/style.css,
+            Resources/views/Message/display.html.twig,
+            Resources/views/Message/edit.html.twig,
+            Resources/views/Message/Admin/edit.html.twig,
+            Resources/views/Message/view.html.twig,
+            Twig/TwigExtension.php
+        "
     }
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
