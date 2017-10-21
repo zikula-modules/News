@@ -36,8 +36,8 @@
                 <img src="{{ message.imageUpload1.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
             {% endif %}
             </a>
-            {% else %}&nbsp;{% endif %}
         </div>
+        {% else %}&nbsp;{% endif %}
         {{ message.startText|safeHtml }}
         </div>
     {% endif %}
@@ -110,160 +110,14 @@
         {% endif %}
     </div>
     </div>
+    {#% set catArticles = getModVar('MUNewsModule', 'enableMoreMessagesInCategory') %}
+    {% if catArticles == 1 %}
+        Hallo<br />{% for article in categoryArticles %}
+            {{ article.title }}
+        {% endfor %}
+    {% endif %#}
     </div>
     {{ block('display_hooks') }}
-    
-    
-    {#<dl>
-        {% if message.workflowState is not empty and routeArea == 'admin' %}
-            <dt>{{ __('State') }}</dt>
-            <dd>{{ message.workflowState|munewsmodule_listEntry('message', 'workflowState') }}</dd>
-        {% endif %}
-        {% if message.title is not empty %}
-            <dt>{{ __('Title') }}</dt>
-            <dd>{{ message.title }}</dd>
-        {% endif %}
-        {% if message.startText is not empty %}
-            <dt>{{ __('Start text') }}</dt>
-            <dd>{{ message.startText|safeHtml }}</dd>
-        {% endif %}
-        {% if message.imageUpload1 is not empty %}
-            <dt>{{ __('Image upload 1') }}</dt>
-            <dd>{% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
-                        <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
-            {% if message.imageUpload1Meta.isImage %}
-                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
-                <img src="{{ message.imageUpload1.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-            {% else %}
-                {{ __('Download') }} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
-            {% endif %}
-            </a>
-            {% else %}&nbsp;{% endif %}
-            </dd>
-        {% endif %}
-        {% if message.mainText is not empty %}
-            <dt>{{ __('Main text') }}</dt>
-            <dd>{{ message.mainText|safeHtml }}</dd>
-        {% endif %}
-        {% if message.amountOfViews is not empty %}
-            <dt>{{ __('Amount of views') }}</dt>
-            <dd>{{ message.amountOfViews }}</dd>
-        {% endif %}
-        {% if message.author is not empty %}
-            <dt>{{ __('Author') }}</dt>
-            <dd>{{ message.author }}</dd>
-        {% endif %}
-        {% if message.approver is not empty %}
-            <dt>{{ __('Approver') }}</dt>
-            <dd>{% if message.approver|default and message.approver.getUid() > 0 %}
-            {% if not isQuickView %}
-                {{ message.approver.getUid()|profileLinkByUserId() }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.getUid()|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}<a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', { '%userName%': message.approver.getUname() }) }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
-                <span class="avatar">{{ userAvatar(message.approver.getUid(), { rating: 'g' }) }}</span>
-            {% else %}
-                {{ message.approver.getUname() }}
-            {% endif %}
-            {% else %}&nbsp;{% endif %}
-            </dd>
-        {% endif %}
-        {% if message.notes is not empty %}
-            <dt>{{ __('Notes') }}</dt>
-            <dd>{{ message.notes|safeHtml }}</dd>
-        {% endif %}
-        {% if message.displayOnIndex is not empty %}
-            <dt>{{ __('Display on index') }}</dt>
-            <dd>{% set itemId = message.getKey() %}
-            <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
-                <i class="fa fa-check{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                <i class="fa fa-times{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
-            </a>
-            <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
-                {% if message.displayOnIndex %}
-                    <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                {% else %}
-                    <i class="fa fa-times" title="{{ __('No') }}"></i>
-                {% endif %}
-            </div></noscript>
-            </dd>
-        {% endif %}
-        {% if message.messageLanguage is not empty %}
-            <dt>{{ __('Message language') }}</dt>
-            <dd>{{ message.messageLanguage|languageName }}</dd>
-        {% endif %}
-        {% if message.allowComments is not empty %}
-            <dt>{{ __('Allow comments') }}</dt>
-            <dd>{% if message.allowComments %}
-                <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-            {% else %}
-                <i class="fa fa-times" title="{{ __('No') }}"></i>
-            {% endif %}
-            </dd>
-        {% endif %}
-        {% if message.imageUpload2 is not empty %}
-            <dt>{{ __('Image upload 2') }}</dt>
-            <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
-                        <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
-            {% if message.imageUpload2Meta.isImage %}
-                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload2') %}
-                <img src="{{ message.imageUpload2.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-            {% else %}
-                {{ __('Download') }} ({{ message.imageUpload2Meta.size|munewsmodule_fileSize(message.imageUpload2.getPathname(), false, false) }})
-            {% endif %}
-            </a>
-            {% else %}&nbsp;{% endif %}
-            </dd>
-        {% endif %}
-        {% if message.imageUpload3 is not empty %}
-            <dt>{{ __('Image upload 3') }}</dt>
-            <dd>{% if message.imageUpload3 is not empty and message.imageUpload3Meta|default %}
-                        <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
-            {% if message.imageUpload3Meta.isImage %}
-                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload3') %}
-                <img src="{{ message.imageUpload3.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-            {% else %}
-                {{ __('Download') }} ({{ message.imageUpload3Meta.size|munewsmodule_fileSize(message.imageUpload3.getPathname(), false, false) }})
-            {% endif %}
-            </a>
-            {% else %}&nbsp;{% endif %}
-            </dd>
-        {% endif %}
-        {% if message.imageUpload4 is not empty %}
-            <dt>{{ __('Image upload 4') }}</dt>
-            <dd>{% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
-                        <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
-            {% if message.imageUpload4Meta.isImage %}
-                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload4') %}
-                <img src="{{ message.imageUpload4.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-            {% else %}
-                {{ __('Download') }} ({{ message.imageUpload4Meta.size|munewsmodule_fileSize(message.imageUpload4.getPathname(), false, false) }})
-            {% endif %}
-            </a>
-            {% else %}&nbsp;{% endif %}
-            </dd>
-        {% endif %}
-        {% if message.noEndDate is not empty %}
-            <dt>{{ __('No end date') }}</dt>
-            <dd>{% set itemId = message.getKey() %}
-            <a id="toggleNoEndDate{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="noEndDate" data-item-id="{{ itemId }}">
-                <i class="fa fa-check{% if not message.noEndDate %} hidden{% endif %}" id="yesNoEndDate{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                <i class="fa fa-times{% if message.noEndDate %} hidden{% endif %}" id="noNoEndDate{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
-            </a>
-            <noscript><div id="noscriptNoEndDate{{ itemId }}">
-                {% if message.noEndDate %}
-                    <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                {% else %}
-                    <i class="fa fa-times" title="{{ __('No') }}"></i>
-                {% endif %}
-            </div></noscript>
-            </dd>
-        {% endif %}
-        
-    </dl>#}
-
-    {#% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
-        {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
-    {% endif %}
-    {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message}) }#}
-
 
 </div>
 {% endblock %}
