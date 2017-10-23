@@ -78,13 +78,13 @@ class TwigExtension extends AbstractTwigExtension
         $propertyName = '';
         $categoryRegistryId = $catMapping->getCategoryRegistryId();
         foreach ($propertyMapping as $propName => $regId) {
-        	if ($regId == $categoryRegistryId) {
-        		$propertyName = $propName;
-        		break;
-        	}
+            if ($regId == $categoryRegistryId) {
+                $propertyName = $propName;
+                break;
+            }
         }
         if ($propertyName == '') {
-        	return $articles;
+            return $articles;
         }
 
         $repository = $this->entityFactory->getRepository('message');
@@ -96,6 +96,8 @@ class TwigExtension extends AbstractTwigExtension
 
         $qb->andWhere('tbl.id != :excludedIdentifier')
            ->setParameter('excludedIdentifier', $catMapping->getEntity()->getId());
+
+        $qb->orderBy('tbl.createdDate', 'DESC');
 
         $query = $repository->getQueryFromBuilder($qb);
         
