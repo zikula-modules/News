@@ -2,6 +2,7 @@
 <dl>
     {% for message in items %}
         <dt>{{ message|munewsmodule_formattedTitle }}</dt>
+        <span class="message-view-categories">{{ include('@MUNewsModule/Helper/includeCategoriesDisplay2.html.twig', {obj: message}) }}</span>
         {% if message.startText %}
             <dd>{{ message.startText|striptags|truncate(200, true, '&hellip;') }}</dd>
         {% endif %}
