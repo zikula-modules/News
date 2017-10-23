@@ -107,7 +107,7 @@
                     {% set categoryArticles = munewsmodule_getRelatedArticles(catMapping, amountOfRelatedArticles) %}
                     <ul class="related-articles-list">
                     {% for relatedArticle in categoryArticles %}
-                        <li>{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</li>
+                        <li><a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': relatedArticle.getId(), 'slug': relatedArticle.slug}) }}">{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</a></li>
                     {% else %}
                         <li>{{ __('No other articles found.') }}</li>
                     {% endfor %}
