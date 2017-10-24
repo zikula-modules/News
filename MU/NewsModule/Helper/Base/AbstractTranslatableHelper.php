@@ -190,8 +190,6 @@ abstract class AbstractTranslatableHelper
 
     /**
      * Post-editing method persisting translated fields.
-     * This ensures easy compatibility to the Forms plugins where it
-     * it is not possible yet to define sub arrays in the group attribute.
      *
      * @param EntityAccess  $entity        The entity being edited
      * @param FormInterface $form          Form containing translations
@@ -200,9 +198,6 @@ abstract class AbstractTranslatableHelper
     public function processEntityAfterEditing($entity, $form, $entityManager)
     {
         $objectType = $entity->get_objectType();
-        $entityTransClass = '\\MU\\NewsModule\\Entity\\' . ucfirst($objectType) . 'TranslationEntity';
-        $repository = $entityManager->getRepository($entityTransClass);
-    
         $supportedLanguages = $this->getSupportedLanguages($objectType);
         foreach ($supportedLanguages as $language) {
             if (!isset($form['translations' . $language])) {
