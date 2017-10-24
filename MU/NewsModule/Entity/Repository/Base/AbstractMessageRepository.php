@@ -397,6 +397,41 @@ abstract class AbstractMessageRepository extends EntityRepository
     
         return count($results) > 0 ? $results[0] : null;
     }
+
+    /**
+     * Selects an object by slug field.
+     *
+     * @param string  $slugTitle The slug value
+     * @param boolean $useJoins  Whether to include joining related objects (optional) (default=true)
+     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param integer $excludeId Optional id to be excluded (used for unique validation)
+     *
+     * @return messageEntity Retrieved instance of messageEntity
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
+     */
+    public function selectBySlug($slugTitle = '', $useJoins = true, $slimMode = false, $excludeId = 0)
+    {
+        // check input parameter
+        if ($slugTitle == '') {
+            throw new InvalidArgumentException('Invalid slug title received.');
+        }
+
+        $qb = $this->genericBaseQuery('', '', $useJoins, $slimMode);
+
+        $qb->andWhere('tbl.slug = :slug')
+            ->setParameter('slug', $slugTitle);
+
+        if ($excludeId > 0) {
+            $qb = $this->addExclusion($qb, [$excludeId]);
+        }
+
+        $query = $this->getQueryFromBuilder($qb);
+
+        $results = $query->getResult();
+
+        return count($results) > 0 ? $results[0] : null;
+    }
     
     /**
      * Selects a list of objects with an array of ids
