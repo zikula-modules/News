@@ -371,7 +371,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
                 }
     
                 $mainCategory = $categoryRepository->find($registryCid);
-                $queryBuilder = $categoryRepository->getChildrenQueryBuilder($registryCid);
+                $queryBuilder = $categoryRepository->getChildrenQueryBuilder($mainCategory);
                 $cats = $queryBuilder->getQuery()->execute();
                 $catsForDropdown = [
                     [
@@ -380,7 +380,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
                     ]
                 ];
                 foreach ($cats as $category) {
-                    $indent = str_repeat('--', $category->getLvl() - $mainCategory()->getLvl() - 1);
+                    $indent = str_repeat('--', $category->getLvl() - $mainCategory->getLvl() - 1);
                     $categoryName = (!empty($indent) ? '|' : '') . $indent . $category->getName();
                     $catsForDropdown[] = [
                         'value' => $category->getId(),

@@ -197,13 +197,13 @@ abstract class AbstractCategoryHelper
             }
             $catIdsForProperty = [];
             foreach ($catIds[$propertyName] as $catId) {
-            	if (!$catId) {
-            		continue;
-            	}
-            	$catIdsForProperty[] = $catId;
+                if (!$catId) {
+                    continue;
+                }
+                $catIdsForProperty[] = $catId;
             }
             if (!count($catIdsForProperty)) {
-            	continue;
+                continue;
             }
     
             $filtersPerRegistry[] = '(

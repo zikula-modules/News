@@ -140,7 +140,12 @@ abstract class AbstractEditHandler extends EditHandler
     
         if (null !== $this->returnTo) {
             $refererParts = explode('/', $this->returnTo);
-            $isDisplayOrEditPage = $refererParts[count($refererParts)-1] == $this->idValue;
+            $isDisplayOrEditPage = $refererParts[count($refererParts)-2] == 'message';
+            if ($isDisplayOrEditPage) {
+                // update slug for proper redirect to display/edit page
+                $refererParts[count($refererParts)-1] = $this->entityRef->getSlug();
+                $this->returnTo = implode('/', $refererParts);
+            }
             if (!$isDisplayOrEditPage || $objectIsPersisted) {
                 // return to referer
                 return $this->returnTo;

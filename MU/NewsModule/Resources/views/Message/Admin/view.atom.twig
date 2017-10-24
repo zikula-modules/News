@@ -8,7 +8,7 @@
     </author>
 {% set amountOfItems = items|length %}
 {% if amountOfItems > 0 %}
-{% set uniqueID %}tag:{{ app.request.schemeAndHttpHost|replace({'http://': '', '/': ''}) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': items.first.getId(), 'slug': items.first.slug}) }}{% endset %}
+{% set uniqueID %}tag:{{ app.request.schemeAndHttpHost|replace({'http://': '', '/': ''}) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': items.first.slug}) }}{% endset %}
     <id>{{ uniqueID }}</id>
     <updated>{{ items[0].updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
 {% endif %}
@@ -16,41 +16,35 @@
     <link rel="self" type="application/atom+xml" href="{{ app.request.schemeAndHttpHost ~ app.request.basePath }}" />
     <rights>Copyright (c) {{ 'now'|date('Y') }}, {{ app.request.schemeAndHttpHost }}</rights>
 {% for message in items %}
-    {{ block('entry') }}
+    <entry>
+        <title type="html">{{ message|munewsmodule_formattedTitle|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</title>
+        <link rel="alternate" type="text/html" href="{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" />
+        {% set uniqueID %}tag:{{ app.request.schemeAndHttpHost|replace({ 'http://': '', '/': '' }) }},{{ message.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}{% endset %}
+        <id>{{ uniqueID }}</id>
+        {% if message.updatedDate|default %}
+            <updated>{{ message.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
+        {% endif %}
+        {% if message.createdDate|default %}
+            <published>{{ message.createdDate|date('Y-m-dTH:M:SZ') }}</published>
+        {% endif %}
+        {% if message.createdBy|default and message.createdBy.getUid() > 0 %}
+            {% set creatorAttributes = message.createdBy.getAttributes() %}
+            <author>
+               <name>{{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(message.createdBy.getUname()) }}</name>
+               <uri>{{ creatorAttributes.get('_UYOURHOMEPAGE')|default('-') }}</uri>
+               <email>{{ message.createdBy.getEmail() }}</email>
+            </author>
+        {% endif %}
+        <summary type="html">
+            <![CDATA[
+            {{ message.startText|truncate(150, true, '&hellip;')|default('-') }}
+            ]]>
+        </summary>
+        <content type="html">
+            <![CDATA[
+            {{ message.mainText|replace({ '<br>': '<br />' }) }}
+            ]]>
+        </content>
+    </entry>
 {% endfor %}
 </feed>
-{% block entry %}
-    <entry>
-        {{ block('entry_content') }}
-    </entry>
-{% endblock %}
-{% block entry_content %}
-    <title type="html">{{ message|munewsmodule_formattedTitle|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</title>
-    <link rel="alternate" type="text/html" href="{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}" />
-    {% set uniqueID %}tag:{{ app.request.schemeAndHttpHost|replace({ 'http://': '', '/': '' }) }},{{ message.createdDate|date('Y-m-d') }}:{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}{% endset %}
-    <id>{{ uniqueID }}</id>
-    {% if message.updatedDate|default %}
-        <updated>{{ message.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
-    {% endif %}
-    {% if message.createdDate|default %}
-        <published>{{ message.createdDate|date('Y-m-dTH:M:SZ') }}</published>
-    {% endif %}
-    {% if message.createdBy|default and message.createdBy.getUid() > 0 %}
-        {% set creatorAttributes = message.createdBy.getAttributes() %}
-        <author>
-           <name>{{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(message.createdBy.getUname()) }}</name>
-           <uri>{{ creatorAttributes.get('_UYOURHOMEPAGE')|default('-') }}</uri>
-           <email>{{ message.createdBy.getEmail() }}</email>
-        </author>
-    {% endif %}
-    <summary type="html">
-        <![CDATA[
-        {{ message.startText|truncate(150, true, '&hellip;')|default('-') }}
-        ]]>
-    </summary>
-    <content type="html">
-        <![CDATA[
-        {{ message.mainText|replace({ '<br>': '<br />' }) }}
-        ]]>
-    </content>
-{% endblock %}

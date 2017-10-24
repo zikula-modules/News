@@ -18,6 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 use MU\NewsModule\Traits\StandardFieldsTrait;
@@ -304,8 +305,8 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @Gedmo\Translatable
-     * @Gedmo\Slug(fields={"title"}, updatable=true, unique=false, separator="-", style="lower")
-     * @ORM\Column(type="string", length=255, unique=false)
+     * @Gedmo\Slug(fields={"title"}, updatable=true, unique=true, separator="-", style="lower")
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(min="1", max="255")
      * @var string $slug
      */
@@ -1216,7 +1217,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function createUrlArgs()
     {
         return [
-            'id' => $this->getId(),
             'slug' => $this->getSlug()
         ];
     }

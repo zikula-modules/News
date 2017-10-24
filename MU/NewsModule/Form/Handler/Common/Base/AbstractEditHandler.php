@@ -94,11 +94,16 @@ abstract class AbstractEditHandler
     protected $idField = null;
 
     /**
-     * Identifier of treated entity.
+     * Identifier or slug of treated entity.
      *
-     * @var integer
+     * @var integer|string
      */
     protected $idValue = 0;
+
+    /**
+     * List of object types with unique slugs.
+     */
+    protected $entitiesWithUniqueSlugs = ['message'];
 
     /**
      * Code defining the redirect goal after command handling.
@@ -357,11 +362,23 @@ abstract class AbstractEditHandler
     
         $this->permissionComponent = 'MUNewsModule:' . $this->objectTypeCapital . ':';
     
-        $this->idField = $this->entityFactory->getIdField($this->objectType);
+        $this->idField = in_array($this->objectType, $this->entitiesWithUniqueSlugs) ? 'slug' : $this->entityFactory->getIdField($this->objectType);
     
         // retrieve identifier of the object we wish to edit
         $routeParams = $this->request->get('_route_params', []);
+        if ($this->idField == 'slug') {
+            if (array_key_exists($this->idField, $routeParams)) {
+                $this->idValue = !empty($routeParams[$this->idField]) ? $routeParams[$this->idField] : '';
+            }
+            if (empty($this->idValue)) {
+                $this->idValue = $this->request->query->get($this->idField, '');
+            }
+        }
         if (empty($this->idValue)) {
+            if ($this->idField == 'slug') {
+                $this->idField = 'id';
+            }
+    
             if (array_key_exists($this->idField, $routeParams)) {
                 $this->idValue = (int) !empty($routeParams[$this->idField]) ? $routeParams[$this->idField] : 0;
             }
@@ -502,6 +519,10 @@ abstract class AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
+        if (in_array($this->objectType, $this->entitiesWithUniqueSlugs)) {
+            return $this->entityFactory->getRepository($this->objectType)->selectBySlug($this->idValue);
+        }
+    
         return $this->entityFactory->getRepository($this->objectType)->selectById($this->idValue);
     }
     

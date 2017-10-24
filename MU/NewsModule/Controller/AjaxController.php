@@ -45,6 +45,23 @@ class AjaxController extends AbstractAjaxController
     }
     
     /**
+     * Checks whether a field value is a duplicate or not.
+     *
+     * @Route("/checkForDuplicate", options={"expose"=true})
+     * @Method("GET")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return JsonResponse
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function checkForDuplicateAction(Request $request)
+    {
+        return parent::checkForDuplicateAction($request);
+    }
+    
+    /**
      * Changes a given flag (boolean field) by switching between true and false.
      *
      * @Route("/toggleFlag", options={"expose"=true})

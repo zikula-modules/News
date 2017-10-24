@@ -118,6 +118,65 @@ abstract class AbstractAjaxController extends AbstractController
     }
     
     /**
+     * Checks whether a field value is a duplicate or not.
+     *
+     * @param Request $request Current request instance
+     *
+     * @return JsonResponse
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function checkForDuplicateAction(Request $request)
+    {
+        if (!$this->hasPermission('MUNewsModule::Ajax', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+        
+        $objectType = $request->query->getAlnum('ot', 'message');
+        $controllerHelper = $this->get('mu_news_module.controller_helper');
+        $contextArgs = ['controller' => 'ajax', 'action' => 'checkForDuplicate'];
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs))) {
+            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $contextArgs);
+        }
+        
+        $fieldName = $request->query->getAlnum('fn', '');
+        $value = $request->query->get('v', '');
+        
+        if (empty($fieldName) || empty($value)) {
+            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+        }
+        
+        // check if the given field is existing and unique
+        $uniqueFields = [];
+        switch ($objectType) {
+            case 'message':
+                    $uniqueFields = ['slug'];
+                    break;
+        }
+        if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields)) {
+            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+        }
+        
+        $exclude = $request->query->getInt('ex', '');
+        
+        $result = false;
+        switch ($objectType) {
+        case 'message':
+            $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
+            switch ($fieldName) {
+            case 'slug':
+                    $entity = $repository->selectBySlug($value, false, $exclude);
+                    $result = null !== $entity && isset($entity['slug']);
+                    break;
+            }
+            break;
+        }
+        
+        // return response
+        return new JsonResponse(['isDuplicate' => $result]);
+    }
+    
+    /**
      * Changes a given flag (boolean field) by switching between true and false.
      *
      * @param Request $request Current request instance

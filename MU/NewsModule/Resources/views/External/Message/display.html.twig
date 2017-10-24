@@ -5,7 +5,7 @@
 <div id="message{{ message.getKey() }}" class="munewsmodule-external-message">
 {% if displayMode == 'link' %}
     <p class="munewsmodule-external-link">
-    <a href="{{ path('munewsmodule_message_display', {'id': message.getId(), 'slug': message.slug}) }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}">
+    <a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}">
     {{ message|munewsmodule_formattedTitle|notifyFilters('news.filter_hooks.messages.filter')|safeHtml }}
     </a>
     </p>

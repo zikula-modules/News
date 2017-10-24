@@ -21,12 +21,14 @@ application "News" {
         markFiles "
             composer.json,
             Controller/MessageController.php,
+            Entity/MessageEntity.php,
             Entity/Repository/Base/AbstractMessageRepository.php,
             Form/Handler/Common/EditHandler.php,
             Form/Type/MessageType.php,
             Helper/ControllerHelper.php,
             Helper/FeatureActivationHelper.php,
             NewsModuleInstaller.php,
+            Resources/config/formFields.yml,
             Resources/config/helpers.yml,
             Resources/config/twig.yml,
             Resources/public/css/style.css,
@@ -41,7 +43,7 @@ application "News" {
         entity "message" leading categorisable categorisableMultiSelection attributable {
             nameMultiple "messages"
             displayPattern "#title#"
-					slugUnique false
+					slugUnique true
             workflow STANDARD
             hasArchive true
             hasTray true

@@ -3,7 +3,7 @@
 <ul>
 {% for message in items %}
     <li>
-        <a href="{{ url('munewsmodule_message_display', {'id': message.getId(), 'slug': message.slug}) }}
+        <a href="{{ url('munewsmodule_message_display', {'slug': message.slug}) }}
         ">{{ message|munewsmodule_formattedTitle }}</a>
     </li>
 {% else %}

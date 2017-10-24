@@ -50,8 +50,8 @@
                                             {{ message|munewsmodule_formattedTitle }}
                                         {% endif %}
                                     </a>
-                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('munewsmodule_message_display', {'id': message.getId(), 'slug': message.slug}) }}" />
-                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('munewsmodule_message_display', {'id': message.getId(), 'slug': message.slug}) }}" />
+                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" />
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('munewsmodule_message_display', {'slug': message.slug}) }}" />
                                     <input type="hidden" id="title{{ itemId }}" value="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" />
                                     <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if message.startText is not empty %}{{ message.startText }}{% endif %}
                                     {% endset %}{{ description|striptags|e('html_attr') }}" />
