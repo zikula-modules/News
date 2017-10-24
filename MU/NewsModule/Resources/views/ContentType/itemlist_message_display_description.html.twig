@@ -6,7 +6,7 @@
         {% if message.startText %}
             <dd>{{ message.startText|striptags|truncate(200, true, '&hellip;') }}</dd>
         {% endif %}
-        <dd><a href="{{ path('munewsmodule_message_display', {'id': message.getId(), 'slug': message.slug}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
+        <dd><a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
         </dd>
     {% else %}
         <dt>{{ __('No entries found.') }}</dt>

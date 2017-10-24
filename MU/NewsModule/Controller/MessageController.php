@@ -15,17 +15,14 @@ namespace MU\NewsModule\Controller;
 use MU\NewsModule\Controller\Base\AbstractMessageController;
 
 use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use MU\NewsModule\Entity\MessageEntity;
-
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Zikula\Component\SortableColumns\Column;
-use Zikula\Component\SortableColumns\SortableColumns;
-use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
  * Message controller class providing navigation and interaction functionality.
@@ -38,6 +35,7 @@ class MessageController extends AbstractMessageController
      * @Route("/admin/messages",
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+7 days", public=true)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -57,6 +55,7 @@ class MessageController extends AbstractMessageController
      * @Route("/messages",
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -72,10 +71,11 @@ class MessageController extends AbstractMessageController
      * @inheritDoc
      *
      * @Route("/admin/messages/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json"},
-     *        defaults = {"sort" = "", "sortdir" = "desc", "pos" = 1, "num" = 10, "_format" = "html"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json|pdf"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -97,10 +97,11 @@ class MessageController extends AbstractMessageController
      * @inheritDoc
      *
      * @Route("/messages/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json"},
-     *        defaults = {"sort" = "", "sortdir" = "desc", "pos" = 1, "num" = 10, "_format" = "html"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json|pdf"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -124,6 +125,7 @@ class MessageController extends AbstractMessageController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -147,6 +149,7 @@ class MessageController extends AbstractMessageController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
@@ -163,11 +166,13 @@ class MessageController extends AbstractMessageController
     /**
      * @inheritDoc
      *
-     * @Route("/admin/message/delete/{slug}.{id}.{_format}",
-     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html"},
+     * @Route("/admin/message/delete/{slug}.{_format}",
+     *        requirements = {"slug" = "[^/.]+", "_format" = "html"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
+     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -187,11 +192,13 @@ class MessageController extends AbstractMessageController
     /**
      * @inheritDoc
      *
-     * @Route("/message/delete/{slug}.{id}.{_format}",
-     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html"},
+     * @Route("/message/delete/{slug}.{_format}",
+     *        requirements = {"slug" = "[^/.]+", "_format" = "html"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
+     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance
@@ -209,11 +216,13 @@ class MessageController extends AbstractMessageController
     /**
      * @inheritDoc
      *
-     * @Route("/admin/message/{slug}.{id}.{_format}",
-     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html|xml|json|ics|pdf"},
+     * @Route("/admin/message/{slug}.{_format}",
+     *        requirements = {"slug" = "[^/.]+", "_format" = "html|xml|json|ics|pdf"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
+     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -232,11 +241,13 @@ class MessageController extends AbstractMessageController
     /**
      * @inheritDoc
      *
-     * @Route("/message/{slug}.{id}.{_format}",
-     *        requirements = {"slug" = "[^/.]+", "id" = "\d+", "_format" = "html|xml|json|ics|pdf"},
+     * @Route("/message/{slug}.{_format}",
+     *        requirements = {"slug" = "[^/.]+", "_format" = "html|xml|json|ics|pdf"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
+     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance

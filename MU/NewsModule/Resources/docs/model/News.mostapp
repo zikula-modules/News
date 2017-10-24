@@ -18,26 +18,7 @@ application "News" {
         separateAdminTemplates true
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false
-        markFiles "
-            composer.json,
-            Controller/MessageController.php,
-            Entity/MessageEntity.php,
-            Entity/Repository/Base/AbstractMessageRepository.php,
-            Form/Handler/Common/EditHandler.php,
-            Form/Type/MessageType.php,
-            Helper/ControllerHelper.php,
-            Helper/FeatureActivationHelper.php,
-            NewsModuleInstaller.php,
-            Resources/config/formFields.yml,
-            Resources/config/helpers.yml,
-            Resources/config/twig.yml,
-            Resources/public/css/style.css,
-            Resources/views/Message/display.html.twig,
-            Resources/views/Message/edit.html.twig,
-            Resources/views/Message/Admin/edit.html.twig,
-            Resources/views/Message/view.html.twig,
-            Twig/TwigExtension.php
-        "
+        markFiles "composer.json,\r\nEntity/MessageEntity.php,\r\n          Entity/Repository/Base/AbstractMessageRepository.php,\r\n            Form/Handler/Common/EditHandler.php,\r\n            Form/Type/MessageType.php,\r\n            Helper/ControllerHelper.php,\r\n            Helper/FeatureActivationHelper.php,\r\n            NewsModuleInstaller.php,\r\n            Resources/config/formFields.yml,\r\n            Resources/config/helpers.yml,\r\n            Resources/config/twig.yml,\r\n            Resources/public/css/style.css,\r\n            Resources/views/Message/display.html.twig,\r\n            Resources/views/Message/edit.html.twig,\r\n            Resources/views/Message/Admin/edit.html.twig,\r\n            Resources/views/Message/view.html.twig,\r\n            Twig/TwigExtension.php\r\n        "
     }
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
