@@ -1,9 +1,14 @@
 {# purpose of this template: reusable display of entity categories #}
+{% if noLink is not defined %}
+    {% set noLink = false %}
+{% endif %}
 {% if obj.categories is defined %}
     {% for catMapping in obj.categories %}
-        <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view') }}?catId={{ catMapping.category.id}}">{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</a>
-        {% if not loop.last %}
-         | 
+        {% if not noLink %}
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view') }}?catId={{ catMapping.category.id}}">{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</a>
+        {% else %}
+            {{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}
         {% endif %}
+        {% if not loop.last %} | {% endif %}
     {% endfor %}
 {% endif %}
