@@ -22,36 +22,36 @@ use MU\NewsModule\Helper\CategoryHelper;
  */
 class TwigExtension extends AbstractTwigExtension
 {
-	/**
-	 * @var EntityFactory
-	 */
-	private $entityFactory;
-	
-	/**
-	 * @var CategoryHelper
-	 */
-	private $categoryHelper;
+    /**
+     * @var EntityFactory
+     */
+    private $entityFactory;
+    
+    /**
+     * @var CategoryHelper
+     */
+    private $categoryHelper;
 
-	/**
-	 * Sets the entity factory.
-	 *
-	 * @param EntityFactory $entityFactory
-	 */
-	public function setEntityFactory(EntityFactory $entityFactory)
-	{
-		$this->entityFactory = $entityFactory;
-	}
+    /**
+     * Sets the entity factory.
+     *
+     * @param EntityFactory $entityFactory
+     */
+    public function setEntityFactory(EntityFactory $entityFactory)
+    {
+        $this->entityFactory = $entityFactory;
+    }
 
-	/**
-	 * Sets the category helper.
-	 *
-	 * @param CategoryHelper $categoryHelper
-	 */
-	public function setCategoryHelper(CategoryHelper $categoryHelper)
-	{
-		$this->categoryHelper = $categoryHelper;
-	}
-	
+    /**
+     * Sets the category helper.
+     *
+     * @param CategoryHelper $categoryHelper
+     */
+    public function setCategoryHelper(CategoryHelper $categoryHelper)
+    {
+        $this->categoryHelper = $categoryHelper;
+    }
+
     /**
      * Returns a list of custom Twig functions.
      *
@@ -59,12 +59,12 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function getFunctions()
     {
-    	$functions = parent::getFunctions();
+        $functions = parent::getFunctions();
         $functions[] = new \Twig_SimpleFunction('munewsmodule_getRelatedArticles', [$this, 'relatedArticles']);
 
         return $functions;
     }
-    
+
     /**
      * Selects and returns related articles.
      *
@@ -90,8 +90,8 @@ class TwigExtension extends AbstractTwigExtension
         $repository = $this->entityFactory->getRepository('message');
         $qb = $repository->getListQueryBuilder();
 
-        $categoryId = $catMapping->getCategory();
-        $catIds = [$propName => $categoryId];
+        $categoryId = $catMapping->getCategory()->getId();
+        $catIds = [$propName => [$categoryId]];
         $this->categoryHelper->buildFilterClauses($qb, 'message', $catIds);
 
         $qb->andWhere('tbl.id != :excludedIdentifier')

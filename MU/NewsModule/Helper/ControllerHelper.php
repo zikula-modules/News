@@ -47,32 +47,29 @@ class ControllerHelper extends AbstractControllerHelper
         // parameter for used sorting field
         $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
-        	$defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
-        	if ($templateParameters['routeArea'] != 'admin') {
-        	if ($defaultSorting == 'articleID')
-        	{
-        		$sort = 'id';
-        	}
-        	if ($defaultSorting == 'articledatetime')
-        	{
-        		$sort = 'createdDate';
-        	}
-        	if ($defaultSorting == 'articleweight')
-        	{
-        		$sort = 'weight';
-        	}
-        	} else {
-            $sort = $repository->getDefaultSortingField();
-        	}
-        	//die($sort);
+            $defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
+            if ($templateParameters['routeArea'] != 'admin') {
+                if ($defaultSorting == 'articleID') {
+                    $sort = 'id';
+                } elseif ($defaultSorting == 'articledatetime') {
+                    $sort = 'createdDate';
+                } elseif ($defaultSorting == 'articleweight') {
+                    $sort = 'weight';
+                }
+            } else {
+                $sort = $repository->getDefaultSortingField();
+            }
             $request->query->set('sort', $sort);
             // set default sorting in route parameters (e.g. for the pager)
             $routeParams = $request->attributes->get('_route_params');
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
-            }
+        }
         
         $sortdir = $request->query->get('sortdir', 'DESC');
+        if ($templateParameters['routeArea'] != 'admin' && $sort == 'createdDate') {
+            $sortdir = 'desc';
+        }
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = strtolower($sortdir);
     
