@@ -14,8 +14,10 @@ namespace MU\NewsModule\Form\Type;
 
 use MU\NewsModule\Form\Type\Base\AbstractMessageType;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use MU\NewsModule\Form\Type\Field\UploadType;
+use MU\NewsModule\Form\Type\Field\ImagesInArticleType;
 
 /**
  * Message editing form type implementation class.
