@@ -3,8 +3,7 @@
 /**
  * Resets the value of an upload / file input field.
  */
-function mUNewsResetUploadField(fieldName)
-{
+function mUNewsResetUploadField(fieldName) {
     jQuery('#' + fieldName).attr('type', 'input');
     jQuery('#' + fieldName).attr('type', 'file');
 }
@@ -12,8 +11,7 @@ function mUNewsResetUploadField(fieldName)
 /**
  * Initialises the reset button for a certain upload input.
  */
-function mUNewsInitUploadField(fieldName)
-{
+function mUNewsInitUploadField(fieldName) {
     jQuery('#' + fieldName + 'ResetVal').click(function (event) {
         event.preventDefault();
         mUNewsResetUploadField(fieldName);
@@ -23,8 +21,7 @@ function mUNewsInitUploadField(fieldName)
 /**
  * Initialises the reset button for a certain date input.
  */
-function mUNewsInitDateField(fieldName)
-{
+function mUNewsInitDateField(fieldName) {
     jQuery('#' + fieldName + 'ResetVal').click(function (event) {
         event.preventDefault();
         jQuery('#' + fieldName).val('');
@@ -37,8 +34,7 @@ var editForm;
 var formButtons;
 var triggerValidation = true;
 
-function mUNewsTriggerFormValidation()
-{
+function mUNewsTriggerFormValidation() {
     mUNewsExecuteCustomValidationConstraints(editedObjectType, editedEntityId);
 
     if (!editForm.get(0).checkValidity()) {
@@ -68,8 +64,7 @@ function mUNewsHandleFormSubmit (event) {
 /**
  * Initialises an entity edit form.
  */
-function mUNewsInitEditForm(mode, entityId)
-{
+function mUNewsInitEditForm(mode, entityId) {
     if (jQuery('.munews-edit-form').length < 1) {
         return;
     }
@@ -97,11 +92,13 @@ function mUNewsInitEditForm(mode, entityId)
     });
 
     formButtons = editForm.find('.form-buttons input');
-    editForm.find('.btn-danger').first().bind('click keypress', function (event) {
-        if (!window.confirm(Translator.__('Do you really want to delete this entry?'))) {
-            event.preventDefault();
-        }
-    });
+    if (editForm.find('.btn-danger').length > 0) {
+        editForm.find('.btn-danger').first().bind('click keypress', function (event) {
+            if (!window.confirm(Translator.__('Do you really want to delete this entry?'))) {
+                event.preventDefault();
+            }
+        });
+    }
     editForm.find('button[type=submit]').bind('click keypress', function (event) {
         triggerValidation = !jQuery(this).prop('formnovalidate');
     });

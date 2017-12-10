@@ -197,7 +197,7 @@ class ItemListPlugin extends Newsletter_AbstractPlugin implements ContainerAware
         // create query
         $where = isset($args['filter']) ? $args['filter'] : '';
         $orderBy = $this->container->get('mu_news_module.model_helper')->resolveSortParameter($objectType, $args['sorting']);
-        $qb = $repository->genericBaseQuery($where, $orderBy);
+        $qb = $repository->getListQueryBuilder($where, $orderBy);
     
         if ($filterAfterDate) {
             $startDateFieldName = $entityDisplayHelper->getStartDateFieldName($objectType);

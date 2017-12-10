@@ -18,7 +18,7 @@
  *
  * @return string Replaced value for the needle
  */
-function MUNewsModule_needleapi_message_base($args)
+function MUNewsModule_needleapi_message_base(array $args = [])
 {
     // Get arguments from argument array
     $nid = $args['nid'];

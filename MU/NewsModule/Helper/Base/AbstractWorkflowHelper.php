@@ -49,7 +49,7 @@ abstract class AbstractWorkflowHelper
     /**
      * @var CurrentUserApiInterface
      */
-    private $currentUserApi;
+    protected $currentUserApi;
 
     /**
      * @var EntityFactory
@@ -274,9 +274,9 @@ abstract class AbstractWorkflowHelper
      *
      * @param EntityAccess $entity    The given entity instance
      * @param string       $actionId  Name of action to be executed
-     * @param bool         $recursive True if the function called itself
+     * @param boolean      $recursive True if the function called itself
      *
-     * @return bool False on error or true if everything worked well
+     * @return boolean Whether everything worked well or not
      */
     public function executeAction(EntityAccess $entity, $actionId = '', $recursive = false)
     {

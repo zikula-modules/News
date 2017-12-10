@@ -62,7 +62,7 @@ class AbstractItemSelector extends Zikula_Form_Plugin_TextInput implements Conta
      * Create event handler.
      *
      * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
-     * @param array            &$params Parameters passed from the Smarty plugin function
+     * @param array            &$params List of parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      *

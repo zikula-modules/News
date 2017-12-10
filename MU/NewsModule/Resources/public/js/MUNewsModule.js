@@ -1,15 +1,13 @@
 'use strict';
 
-function mUNewsCapitaliseFirstLetter(string)
-{
+function mUNewsCapitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Initialise the quick navigation form in list views.
  */
-function mUNewsInitQuickNavigation()
-{
+function mUNewsInitQuickNavigation() {
     var quickNavForm;
     var objectType;
 
@@ -34,8 +32,7 @@ function mUNewsInitQuickNavigation()
 /**
  * Toggles a certain flag for a given item.
  */
-function mUNewsToggleFlag(objectType, fieldName, itemId)
-{
+function mUNewsToggleFlag(objectType, fieldName, itemId) {
     jQuery.ajax({
         method: 'POST',
         url: Routing.generate('munewsmodule_ajax_toggleflag'),
@@ -44,7 +41,7 @@ function mUNewsToggleFlag(objectType, fieldName, itemId)
             field: fieldName,
             id: itemId
         },
-        success: function(data) {
+        success: function (data) {
             var idSuffix;
             var toggleLink;
 
@@ -64,8 +61,7 @@ function mUNewsToggleFlag(objectType, fieldName, itemId)
 /**
  * Initialise ajax-based toggle for all affected boolean fields on the current page.
  */
-function mUNewsInitAjaxToggles()
-{
+function mUNewsInitAjaxToggles() {
     jQuery('.munews-ajax-toggle').click(function (event) {
         var objectType;
         var fieldName;
@@ -83,8 +79,7 @@ function mUNewsInitAjaxToggles()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function mUNewsSimpleAlert(anchorElement, title, content, alertId, cssClass)
-{
+function mUNewsSimpleAlert(anchorElement, title, content, alertId, cssClass) {
     var alertBox;
 
     alertBox = ' \
@@ -105,98 +100,37 @@ function mUNewsSimpleAlert(anchorElement, title, content, alertId, cssClass)
 /**
  * Initialises the mass toggle functionality for admin view pages.
  */
-function mUNewsInitMassToggle()
-{
+function mUNewsInitMassToggle() {
     if (jQuery('.munews-mass-toggle').length > 0) {
         jQuery('.munews-mass-toggle').unbind('click').click(function (event) {
-            if (jQuery('.table.fixed-columns').length > 0) {
-                jQuery('.munews-toggle-checkbox').prop('checked', false);
-                jQuery('.table.fixed-columns .munews-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            } else {
-                jQuery('.munews-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            }
+            jQuery('.munews-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
         });
     }
 }
 
 /**
- * Initialises fixed table columns.
- */
-function mUNewsInitFixedColumns()
-{
-    jQuery('.table.fixed-columns').remove();
-    jQuery('.table').each(function() {
-        var originalTable, fixedColumnsTable, fixedTableWidth;
-
-        originalTable = jQuery(this);
-        fixedTableWidth = 0;
-        if (originalTable.find('.fixed-column').length > 0) {
-            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns').removeAttr('id');
-            originalTable.find('.dropdown').addClass('hidden');
-            fixedColumnsTable.find('.dropdown').removeClass('hidden');
-            fixedColumnsTable.css('left', originalTable.parent().position().left);
-
-            fixedColumnsTable.find('th, td').not('.fixed-column').remove();
-            fixedColumnsTable.find('th').each(function (i, elem) {
-                jQuery(this).css('width', originalTable.find('th').eq(i).css('width'));
-                fixedTableWidth += originalTable.find('th').eq(i).width();
-            });
-            fixedColumnsTable.css('width', fixedTableWidth + 'px');
-
-            fixedColumnsTable.find('tr').each(function (i, elem) {
-                jQuery(this).height(originalTable.find('tr:eq(' + i + ')').height());
-            });
-        }
-    });
-    mUNewsInitMassToggle();
-}
-
-/**
  * Creates a dropdown menu for the item actions.
  */
-function mUNewsInitItemActions(context)
-{
-    var containerSelector;
-    var containers;
-    var listClasses;
-
-    containerSelector = '';
+function mUNewsInitItemActions(context) {
     if (context == 'view') {
-        containerSelector = '.munewsmodule-view';
-        listClasses = 'list-unstyled dropdown-menu';
-    } else if (context == 'display') {
-        containerSelector = 'h2, h3';
-        listClasses = 'list-unstyled dropdown-menu';
+        jQuery('ul.list-inline > li > a > i.tooltips').tooltip();
     }
-
-    if (containerSelector == '') {
-        return;
+    if (context == 'display') {
+        jQuery('.btn-group-sm.item-actions').each(function (index) {
+            var innerList;
+            innerList = jQuery(this).children('ul.list-inline').first().detach();
+            jQuery(this).append(innerList.find('a.btn'));
+        });
     }
-
-    containers = jQuery(containerSelector);
-    if (containers.length < 1) {
-        return;
-    }
-
-    containers.find('.dropdown > ul').removeClass('list-inline').addClass(listClasses);
-    containers.find('.dropdown > ul a').each(function (index) {
-        var title;
-
-        title = jQuery(this).find('i').first().attr('title');
-        if (title == '') {
-            title = jQuery(this).find('i').first().data('original-title');
-        }
-        jQuery(this).html(jQuery(this).html() + title);
-    });
-    containers.find('.dropdown > ul a i').addClass('fa-fw');
-    containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
 }
 
 /**
  * Initialises image viewing behaviour.
  */
-function mUNewsInitImageViewer()
-{
+function mUNewsInitImageViewer() {
+    if (typeof(magnificPopup) === 'undefined') {
+        return;
+    }
     jQuery('a.image-link').magnificPopup({
         type: 'image',
         closeOnContentClick: true,
@@ -220,7 +154,7 @@ function mUNewsInitImageViewer()
     });
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var isViewPage;
     var isDisplayPage;
 
@@ -232,9 +166,6 @@ jQuery(document).ready(function() {
     if (isViewPage) {
         mUNewsInitQuickNavigation();
         mUNewsInitMassToggle();
-        jQuery(window).resize(mUNewsInitFixedColumns);
-        mUNewsInitFixedColumns();
-        window.setTimeout(mUNewsInitFixedColumns, 1000);
         mUNewsInitItemActions('view');
         mUNewsInitAjaxToggles();
     } else if (isDisplayPage) {

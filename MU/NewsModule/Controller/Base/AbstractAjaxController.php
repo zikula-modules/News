@@ -12,7 +12,6 @@
 
 namespace MU\NewsModule\Controller\Base;
 
-use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

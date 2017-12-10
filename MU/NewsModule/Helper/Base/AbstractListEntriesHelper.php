@@ -137,6 +137,34 @@ abstract class AbstractListEntriesHelper
                         break;
                 }
                 break;
+            case 'appSettings':
+                switch ($fieldName) {
+                    case 'defaultMessageSorting':
+                        $result = false;
+                        break;
+                    case 'imageFloatOnViewPage':
+                        $result = false;
+                        break;
+                    case 'imageFloatOnDisplayPage':
+                        $result = false;
+                        break;
+                    case 'thumbnailModeMessageImageUpload1':
+                        $result = false;
+                        break;
+                    case 'thumbnailModeMessageImageUpload2':
+                        $result = false;
+                        break;
+                    case 'thumbnailModeMessageImageUpload3':
+                        $result = false;
+                        break;
+                    case 'thumbnailModeMessageImageUpload4':
+                        $result = false;
+                        break;
+                    case 'enabledFinderTypes':
+                        $result = true;
+                        break;
+                }
+                break;
         }
     
         return $result;
@@ -163,6 +191,34 @@ abstract class AbstractListEntriesHelper
                 switch ($fieldName) {
                     case 'workflowState':
                         $entries = $this->getWorkflowStateEntriesForMessage();
+                        break;
+                }
+                break;
+            case 'appSettings':
+                switch ($fieldName) {
+                    case 'defaultMessageSorting':
+                        $entries = $this->getDefaultMessageSortingEntriesForAppSettings();
+                        break;
+                    case 'imageFloatOnViewPage':
+                        $entries = $this->getImageFloatOnViewPageEntriesForAppSettings();
+                        break;
+                    case 'imageFloatOnDisplayPage':
+                        $entries = $this->getImageFloatOnDisplayPageEntriesForAppSettings();
+                        break;
+                    case 'thumbnailModeMessageImageUpload1':
+                        $entries = $this->getThumbnailModeMessageImageUpload1EntriesForAppSettings();
+                        break;
+                    case 'thumbnailModeMessageImageUpload2':
+                        $entries = $this->getThumbnailModeMessageImageUpload2EntriesForAppSettings();
+                        break;
+                    case 'thumbnailModeMessageImageUpload3':
+                        $entries = $this->getThumbnailModeMessageImageUpload3EntriesForAppSettings();
+                        break;
+                    case 'thumbnailModeMessageImageUpload4':
+                        $entries = $this->getThumbnailModeMessageImageUpload4EntriesForAppSettings();
+                        break;
+                    case 'enabledFinderTypes':
+                        $entries = $this->getEnabledFinderTypesEntriesForAppSettings();
                         break;
                 }
                 break;
@@ -235,6 +291,228 @@ abstract class AbstractListEntriesHelper
             'title'   => $this->__('Shows all items except these which are archived'),
             'image'   => '',
             'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'default message sorting' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getDefaultMessageSortingEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'articleID',
+            'text'    => $this->__('ArticleID'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'articledatetime',
+            'text'    => $this->__('ArticleDateTime'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'articleweight',
+            'text'    => $this->__('ArticleWeight'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'image float on view page' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getImageFloatOnViewPageEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'none',
+            'text'    => $this->__('None'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'left',
+            'text'    => $this->__('Left'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'right',
+            'text'    => $this->__('Right'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'image float on display page' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getImageFloatOnDisplayPageEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'none',
+            'text'    => $this->__('None'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'left',
+            'text'    => $this->__('Left'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'right',
+            'text'    => $this->__('Right'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'thumbnail mode message image upload 1' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getThumbnailModeMessageImageUpload1EntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'inset',
+            'text'    => $this->__('Inset'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'outbound',
+            'text'    => $this->__('Outbound'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'thumbnail mode message image upload 2' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getThumbnailModeMessageImageUpload2EntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'inset',
+            'text'    => $this->__('Inset'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'outbound',
+            'text'    => $this->__('Outbound'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'thumbnail mode message image upload 3' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getThumbnailModeMessageImageUpload3EntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'inset',
+            'text'    => $this->__('Inset'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'outbound',
+            'text'    => $this->__('Outbound'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'thumbnail mode message image upload 4' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getThumbnailModeMessageImageUpload4EntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'inset',
+            'text'    => $this->__('Inset'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'outbound',
+            'text'    => $this->__('Outbound'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'enabled finder types' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getEnabledFinderTypesEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'message',
+            'text'    => $this->__('Message'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
         ];
     
         return $states;

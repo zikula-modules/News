@@ -1,7 +1,6 @@
 'use strict';
 
-function mUNewsToday(format)
-{
+function mUNewsToday(format) {
     var timestamp, todayDate, month, day, hours, minutes, seconds;
 
     timestamp = new Date();
@@ -40,8 +39,7 @@ function mUNewsToday(format)
 }
 
 // returns YYYY-MM-DD even if date is in DD.MM.YYYY
-function mUNewsReadDate(val, includeTime)
-{
+function mUNewsReadDate(val, includeTime) {
     // look if we have YYYY-MM-DD
     if (val.substr(4, 1) === '-' && val.substr(7, 1) === '-') {
         return val;
@@ -58,16 +56,14 @@ function mUNewsReadDate(val, includeTime)
     }
 }
 
-function mUNewsValidateNoSpace(val)
-{
+function mUNewsValidateNoSpace(val) {
     var valStr;
     valStr = new String(val);
 
     return (valStr.indexOf(' ') === -1);
 }
 
-function mUNewsValidateUploadExtension(val, elem)
-{
+function mUNewsValidateUploadExtension(val, elem) {
     var fileExtension, allowedExtensions;
     if (val === '') {
         return true;
@@ -81,8 +77,7 @@ function mUNewsValidateUploadExtension(val, elem)
     return allowedExtensions.test(val);
 }
 
-function mUNewsValidateDateRangeMessage(val)
-{
+function mUNewsValidateDateRangeMessage(val) {
     var cmpVal, cmpVal2, result;
     cmpVal = mUNewsReadDate(jQuery("[id$='startDate']").val(), true);
     cmpVal2 = mUNewsReadDate(jQuery("[id$='endDate']").val(), true);
@@ -99,23 +94,22 @@ function mUNewsValidateDateRangeMessage(val)
 /**
  * Runs special validation rules.
  */
-function mUNewsExecuteCustomValidationConstraints(objectType, currentEntityId)
-{
-    jQuery('.validate-nospace').each( function() {
+function mUNewsExecuteCustomValidationConstraints(objectType, currentEntityId) {
+    jQuery('.validate-nospace').each(function () {
         if (!mUNewsValidateNoSpace(jQuery(this).val())) {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('This value must not contain spaces.'));
         } else {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
         }
     });
-    jQuery('.validate-upload').each( function() {
+    jQuery('.validate-upload').each(function () {
         if (!mUNewsValidateUploadExtension(jQuery(this).val(), jQuery(this))) {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('Please select a valid file extension.'));
         } else {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
         }
     });
-    jQuery('.validate-daterange-message').each( function() {
+    jQuery('.validate-daterange-message').each(function () {
         if (typeof jQuery(this).attr('id') != 'undefined') {
             if (jQuery(this).prop('tagName') == 'DIV') {
                 if (!mUNewsValidateDateRangeMessage()) {

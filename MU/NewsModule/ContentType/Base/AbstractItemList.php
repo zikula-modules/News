@@ -226,7 +226,7 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
     
         // create query
         $orderBy = $this->container->get('mu_news_module.model_helper')->resolveSortParameter($this->objectType, $this->sorting);
-        $qb = $repository->genericBaseQuery($this->filter, $orderBy);
+        $qb = $repository->getListQueryBuilder($this->filter, $orderBy);
     
         $featureActivationHelper = $this->container->get('mu_news_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $this->objectType)) {

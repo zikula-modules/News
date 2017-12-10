@@ -30,5 +30,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class MessageEntity extends BaseEntity
 {
-    // feel free to add your own methods here
+	protected $articleImages = [];
+
+	public function getArticleImages() {
+		return $this->articleImages;
+	}
+
+	public function setArticleImages(array $articleImages) {
+		$this->articleImages = $articleImages;	
+	}
 }

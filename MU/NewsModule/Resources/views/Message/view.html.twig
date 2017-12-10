@@ -160,7 +160,7 @@
                     {{ message.workflowState|munewsmodule_objectState }}
                 </td>
                 {% endif %}<td headers="hTitle" class="text-left">
-                    <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
+                    <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
                 </td>
                 <td headers="hStartText" class="text-left">
                     {{ message.startText|striptags|truncate(50) }}

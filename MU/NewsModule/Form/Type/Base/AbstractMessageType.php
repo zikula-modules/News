@@ -157,7 +157,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addEntityFields(FormBuilderInterface $builder, array $options)
+    public function addEntityFields(FormBuilderInterface $builder, array $options = [])
     {
         
         $builder->add('title', TextType::class, [
@@ -394,7 +394,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addAttributeFields(FormBuilderInterface $builder, array $options)
+    public function addAttributeFields(FormBuilderInterface $builder, array $options = [])
     {
         foreach ($options['attributes'] as $attributeName => $attributeValue) {
             $builder->add('attributes' . $attributeName, TextType::class, [
@@ -415,7 +415,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addCategoriesField(FormBuilderInterface $builder, array $options)
+    public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Categories') . ':',
@@ -437,7 +437,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addAdditionalNotificationRemarksField(FormBuilderInterface $builder, array $options)
+    public function addAdditionalNotificationRemarksField(FormBuilderInterface $builder, array $options = [])
     {
         $helpText = '';
         if ($options['is_moderator']) {
@@ -467,7 +467,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options)
+    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
     {
         if (!$options['has_moderate_permission']) {
             return;
@@ -506,7 +506,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSubmitButtons(FormBuilderInterface $builder, array $options)
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [

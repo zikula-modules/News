@@ -15,7 +15,7 @@ namespace MU\NewsModule\Controller;
 use MU\NewsModule\Controller\Base\AbstractMessageController;
 
 use RuntimeException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,6 @@ class MessageController extends AbstractMessageController
      * @Route("/admin/messages",
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+7 days", public=true)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -55,7 +54,6 @@ class MessageController extends AbstractMessageController
      * @Route("/messages",
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -75,7 +73,6 @@ class MessageController extends AbstractMessageController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -101,7 +98,6 @@ class MessageController extends AbstractMessageController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -125,7 +121,6 @@ class MessageController extends AbstractMessageController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -149,7 +144,6 @@ class MessageController extends AbstractMessageController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
@@ -172,7 +166,6 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
-     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -198,7 +191,6 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
-     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance
@@ -222,7 +214,6 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
-     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -247,7 +238,6 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
-     * @Cache(lastModified="message.getUpdatedDate()", ETag="'Message' ~ message.getid() ~ message.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance

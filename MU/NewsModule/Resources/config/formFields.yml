@@ -1,6 +1,13 @@
 services:
     # Form field types
     
+    mu_news_module.form.type.field.multilist:
+        class: MU\NewsModule\Form\Type\Field\MultiListType
+        arguments:
+            - "@mu_news_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
     mu_news_module.form.type.field.translation:
         class: MU\NewsModule\Form\Type\Field\TranslationType
         tags:

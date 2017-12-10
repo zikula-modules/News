@@ -1,7 +1,6 @@
 {# Purpose of this template: Display messages within an external context #}
 {% for message in items %}
     <h3>{{ message|munewsmodule_formattedTitle }}</h3>
-    <span class="message-view-categories">{{ include('@MUNewsModule/Helper/includeCategoriesDisplay2.html.twig', {obj: message, routeArea: ''}) }}</span>
     <p><a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
     </p>
 {% endfor %}

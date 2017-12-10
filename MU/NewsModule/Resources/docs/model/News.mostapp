@@ -1,25 +1,23 @@
-application "News" {
-	vendor "MU"
+application "News" targets ZK15 {
+    vendor "MU"
 	author "Michael Ueberschaer"
 	email "info@homepages-mit-zikula.de"
 	url "https://homepages-mit-zikula.de"
     version "1.1.0"
 	prefix "news"
-	generatorSettings  {
-        settingsContainer "Einstellungen"
-	    targetCoreVersion ZK15
-        generateMailzApi true
-        generateNewsletterPlugin true
-        generateTagSupport true
-        generateMultiHookNeedles true
-        generateKmlTemplates false
-        generateIcsTemplates true
-        generatePdfSupport true versionAllGeneratedFiles false
-        separateAdminTemplates true
-        generatePoweredByBacklinksIntoFooterTemplates false
-        generateTests false
-        markFiles "composer.json,\r\nEntity/MessageEntity.php,\r\n          Entity/Repository/Base/AbstractMessageRepository.php,\r\n            Form/Handler/Common/EditHandler.php,\r\n            Form/Type/MessageType.php,\r\n            Helper/ControllerHelper.php,\r\n            Helper/FeatureActivationHelper.php,\r\n            NewsModuleInstaller.php,\r\n            Resources/config/formFields.yml,\r\n            Resources/config/helpers.yml,\r\n            Resources/config/twig.yml,\r\n            Resources/public/css/style.css,\r\n            Resources/views/Message/display.html.twig,\r\n            Resources/views/Message/edit.html.twig,\r\n            Resources/views/Message/Admin/edit.html.twig,\r\n            Resources/views/Message/view.html.twig,\r\n            Twig/TwigExtension.php\r\n        "
-    }
+	generateMailzApi true
+    generateNewsletterPlugin true
+    generateTagSupport true
+    generateMultiHookNeedles true
+    generateKmlTemplates false
+    generatePdfSupport true versionAllGeneratedFiles false
+    separateAdminTemplates true
+    generatePoweredByBacklinksIntoFooterTemplates false
+    generateTests false
+    viewActionsStyle ICON
+    displayActionsPosition BOTH
+    displayActionsStyle BUTTON_GROUP
+    markFiles "composer.json,\r\nEntity/MessageEntity.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nNewsModuleInstaller.php,\r\nResources/config/formFields.yml,\r\nResources/config/helpers.yml,\r\nResources/config/twig.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig,\r\nTwig/TwigExtension.php"
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
             nameMultiple "messages"
@@ -122,75 +120,88 @@ application "News" {
 			variables {
 				varContainer "GeneralSettings" {
 					documentation "Here you can change general News settings."
-            vars {
-                boolVar "enableAttribution",
-						boolVar "enableMultiLanguage",
-						boolVar "showAuthor" {
-							documentation "This setting allows to enable the display of author informations within an article."
-                    value "1"
-						},
-						boolVar "showDate" {
-							documentation "This setting allows to enable the display of date informations within an article."
-                    value "1"
-						}
+            fields {
+                boolean "enableAttribution" {
+                    mandatory false
+                },
+                boolean "enableMultiLanguage" {
+                    mandatory false
+                },
+                boolean "showAuthor" {
+                    documentation "This setting allows to enable the display of author informations within an article."
+                    defaultValue "1"
+                    mandatory false
+                },
+                boolean "showDate" {
+                    documentation "This setting allows to enable the display of date informations within an article."
+                    defaultValue "1"
+                    mandatory false
+                }
             }
         }
 						,
         varContainer "CategorySettings" {
             documentation "This section allows you to specify category-related options."
             sortOrder 2
-            vars {
-                boolVar "enableCategorization"
+            fields {
+                boolean "enableCategorization" {
+                    mandatory false
+                }
             }
         },
         varContainer "DisplaySetting" {
             sortOrder 3
-            vars {
-                listVar "defaultMessageSorting" {
+            fields {
+                list "defaultMessageSorting" {
                     documentation "You can customise several display-oriented aspects of the articles."
                     items {
-                        listVarItem "Article ID",
-                        listVarItem default "Article date/time",
-                        listVarItem "Article weight"
+                        listItem  "articleID" ( "articleID" ),
+                        default listItem "articleDateTime" ( "articledatetime" ),
+                        listItem  "articleWeight" ( "articleweight" )
                     }
                 },
-                boolVar "enableMoreMessagesInCategory",
-                intVar "amountOfMoreArticlesInCategory" {
-                    documentation "When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \\\'morearticlesincat\\\'. You need to enable \\\'article attributes\\\' yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database."
+                boolean "enableMoreMessagesInCategory" {
+                    mandatory false
                 },
-                boolVar "displayPdfLink" {
+                integer "amountOfMoreArticlesInCategory" {
+                    documentation "When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \\\'morearticlesincat\\\'. You need to enable \\\'article attributes\\\' yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database."
+                    mandatory false
+                },
+                boolean "displayPdfLink" {
                     documentation "Display a PDF link for the articles in the index page"
-                    value "false"
+                    defaultValue "false"
+                    mandatory false
                 }
             }
         },
         varContainer "UploadSettings" {
             documentation "Here you can customise the picture upload behaviour."
             sortOrder 4
-            vars {
-                boolVar "enablePictureUpload" {
+            fields {
+                boolean "enablePictureUpload" {
                     documentation "Allow uploading article pictures"
-                    value "false"
+                    defaultValue "false"
+                    mandatory false
                 },
-                listVar "imageFloatOnViewPage" {
+                list "imageFloatOnViewPage" {
                     documentation "Image float on the view page"
                     items {
-                        listVarItem "none",
-                        listVarItem default "left",
-                        listVarItem "right"
+                        listItem "none" ( "none" ),
+                        default listItem "left" ( "left" ),
+                        listItem "right" ( "right" )
                     }
                 },
-                listVar "imageFloatOnDisplayPage" {
+                list "imageFloatOnDisplayPage" {
                     documentation "Image float on the article display page"
                     items {
-                        listVarItem "none",
-                        listVarItem default "left",
-                        listVarItem "right"
+                        listItem "none" ( "none" ),
+                        default listItem "left" ( "left" ),
+                        listItem "right" ( "right" )
                     }
                 },
-                textVar "maxSize" {
+                string "maxSize" {
                     documentation "For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte)."
-                    value "200k"
+                    defaultValue "200k"
                 }
             }
         }

@@ -6,10 +6,9 @@
     {% set templateTitle = message|munewsmodule_formattedTitle|default(__('Message')) %}
     {{ templateTitle|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ message.workflowState|munewsmodule_objectState(false)|lower }})</small>{% endif %}
     {% set itemActions = knp_menu_get('MUNewsModule:ItemActionsMenu:menu', [], {entity: message, area: routeArea, context: 'display'}) %}
-    <div class="dropdown">
-        <a id="itemActions{{ message.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
-    </div>
+            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+                {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+            </div>
 {% endblock %}
 {% block content %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
@@ -107,7 +106,7 @@
                     {% set categoryArticles = munewsmodule_getRelatedArticles(catMapping, amountOfRelatedArticles) %}
                     <ul class="related-articles-list">
                     {% for relatedArticle in categoryArticles %}
-                        <li><a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': relatedArticle.slug}) }}">{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</a></li>
+                        <li><a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': relatedArticle.getId(), 'slug': relatedArticle.slug}) }}">{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</a></li>
                     {% else %}
                         <li>{{ __('No other articles found.') }}</li>
                     {% endfor %}
@@ -121,9 +120,9 @@
     <div class="col-sm-4">
         {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}   
         <div class="message-display-footer">
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug, 'theme': 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, 'theme': 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
             {% if pdfLink == 1 %}        
-                <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug, '_format': 'pdf'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+                <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, '_format': 'pdf'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
             {% endif %}
         </div>
     </div>

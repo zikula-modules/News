@@ -58,6 +58,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * the current workflow state
+     *
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
      * @NewsAssert\ListEntry(entityName="message", propertyName="workflowState", multiple=false)
@@ -973,12 +974,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setStartDate($startDate)
     {
         if ($this->startDate !== $startDate) {
-            if (is_object($startDate) && $startDate instanceOf \DateTime) {
+            if (!(null == $startDate && empty($startDate)) && !(is_object($startDate) && $startDate instanceOf \DateTime)) {
+                $startDate = new \DateTime($startDate);
+            }
+            
+            if ($this->startDate != $startDate) {
                 $this->startDate = $startDate;
-            } elseif (null === $startDate || empty($startDate)) {
-                $this->startDate = null;
-            } else {
-                $this->startDate = new \DateTime($startDate);
             }
         }
     }
@@ -1027,12 +1028,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setEndDate($endDate)
     {
         if ($this->endDate !== $endDate) {
-            if (is_object($endDate) && $endDate instanceOf \DateTime) {
+            if (!(null == $endDate && empty($endDate)) && !(is_object($endDate) && $endDate instanceOf \DateTime)) {
+                $endDate = new \DateTime($endDate);
+            }
+            
+            if ($this->endDate != $endDate) {
                 $this->endDate = $endDate;
-            } elseif (null === $endDate || empty($endDate)) {
-                $this->endDate = null;
-            } else {
-                $this->endDate = new \DateTime($endDate);
             }
         }
     }
@@ -1154,7 +1155,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the categories.
      *
-     * @param ArrayCollection $categories
+     * @param ArrayCollection $categories List of categories
      *
      * @return void
      */
@@ -1175,8 +1176,8 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Checks if a collection contains an element based only on two criteria (categoryRegistryId, category).
      *
-     * @param ArrayCollection $collection
-     * @param \MU\NewsModule\Entity\MessageCategoryEntity $element
+     * @param ArrayCollection $collection Given collection
+     * @param \MU\NewsModule\Entity\MessageCategoryEntity $element Element to search for
      *
      * @return bool|int
      */
@@ -1212,7 +1213,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return array The resulting arguments list
+     * @return array List of resulting arguments
      */
     public function createUrlArgs()
     {
@@ -1254,11 +1255,11 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns an array of all related objects that need to be persisted after clone.
      * 
-     * @param array $objects The objects are added to this array. Default: []
+     * @param array $objects Objects that are added to this array
      * 
-     * @return array of entity objects
+     * @return array List of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = []) 
+    public function getRelatedObjectsToPersist(&$objects = [])
     {
         return [];
     }

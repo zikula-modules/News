@@ -80,7 +80,6 @@ services:
         class: MU\NewsModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
-            - "@=service('zikula_extensions_module.api.variable').getAll('MUNewsModule')"
-            - "@zikula_groups_module.group_repository"
+            - "@mu_news_module.listentries_helper"
         tags:
             - { name: form.type }

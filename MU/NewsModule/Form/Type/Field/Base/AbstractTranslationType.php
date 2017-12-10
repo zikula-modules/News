@@ -26,7 +26,7 @@ abstract class AbstractTranslationType extends AbstractType
     /**
      * @var TranslationListener
      */
-    private $translationListener;
+    protected $translationListener;
 
     /**
      * TranslationsType constructor.

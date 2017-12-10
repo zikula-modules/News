@@ -179,7 +179,7 @@ abstract class AbstractCategoryHelper
      *
      * @return QueryBuilder The enriched query builder instance
      */
-    public function buildFilterClauses(QueryBuilder $queryBuilder, $objectType = '', $catIds = [])
+    public function buildFilterClauses(QueryBuilder $queryBuilder, $objectType = '', array $catIds = [])
     {
         $qb = $queryBuilder;
     
@@ -320,7 +320,7 @@ abstract class AbstractCategoryHelper
     /**
      * Filters a given list of entities to these the current user has permissions for.
      *
-     * @param array $entities The given list of entities
+     * @param array|ArrayCollection $entities The given list of entities
      *
      * @return array The filtered list of entities
      */
@@ -328,9 +328,10 @@ abstract class AbstractCategoryHelper
     {
         $filteredEntities = [];
         foreach ($entities as $entity) {
-            if ($this->hasPermission($entity)) {
-                $filteredEntities[] = $entity;
+            if (!$this->hasPermission($entity)) {
+                continue;
             }
+            $filteredEntities[] = $entity;
         }
     
         return $filteredEntities;

@@ -7,8 +7,7 @@ var currentMUNewsModuleInput = null;
  * Returns the attributes used for the popup window. 
  * @return {String}
  */
-function getMUNewsModulePopupAttributes()
-{
+function getMUNewsModulePopupAttributes() {
     var pWidth, pHeight;
 
     pWidth = screen.width * 0.75;
@@ -20,8 +19,7 @@ function getMUNewsModulePopupAttributes()
 /**
  * Open a popup window with the finder triggered by an editor button.
  */
-function MUNewsModuleFinderOpenPopup(editor, editorName)
-{
+function MUNewsModuleFinderOpenPopup(editor, editorName) {
     var popupUrl;
 
     // Save editor for access in selector window
@@ -41,8 +39,7 @@ var mUNewsModule = {};
 
 mUNewsModule.finder = {};
 
-mUNewsModule.finder.onLoad = function (baseId, selectedId)
-{
+mUNewsModule.finder.onLoad = function (baseId, selectedId) {
     var imageModeEnabled;
 
     if (jQuery('#mUNewsModuleSelectorForm').length < 1) {
@@ -72,13 +69,11 @@ mUNewsModule.finder.onLoad = function (baseId, selectedId)
     });
 };
 
-mUNewsModule.finder.onParamChanged = function ()
-{
+mUNewsModule.finder.onParamChanged = function () {
     jQuery('#mUNewsModuleSelectorForm').submit();
 };
 
-mUNewsModule.finder.handleCancel = function (event)
-{
+mUNewsModule.finder.handleCancel = function (event) {
     var editor;
 
     event.preventDefault();
@@ -97,8 +92,7 @@ mUNewsModule.finder.handleCancel = function (event)
 };
 
 
-function mUNewsGetPasteSnippet(mode, itemId)
-{
+function mUNewsGetPasteSnippet(mode, itemId) {
     var quoteFinder;
     var itemPath;
     var itemUrl;
@@ -152,8 +146,7 @@ function mUNewsGetPasteSnippet(mode, itemId)
 
 
 // User clicks on "select item" button
-mUNewsModule.finder.selectItem = function (itemId)
-{
+mUNewsModule.finder.selectItem = function (itemId) {
     var editor, html;
 
     html = mUNewsGetPasteSnippet('html', itemId);
@@ -179,12 +172,11 @@ mUNewsModule.finder.selectItem = function (itemId)
     mUNewsClosePopup();
 };
 
-function mUNewsClosePopup()
-{
+function mUNewsClosePopup() {
     window.opener.focus();
     window.close();
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     mUNewsModule.finder.onLoad();
 });

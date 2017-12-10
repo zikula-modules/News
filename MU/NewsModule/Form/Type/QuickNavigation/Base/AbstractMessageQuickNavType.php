@@ -115,7 +115,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addCategoriesField(FormBuilderInterface $builder, array $options)
+    public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $objectType = 'message';
     
@@ -141,7 +141,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addListFields(FormBuilderInterface $builder, array $options)
+    public function addListFields(FormBuilderInterface $builder, array $options = [])
     {
         $listEntries = $this->listHelper->getEntries('message', 'workflowState');
         $choices = [];
@@ -171,7 +171,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addUserFields(FormBuilderInterface $builder, array $options)
+    public function addUserFields(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('approver', EntityType::class, [
             'label' => $this->__('Approver'),
@@ -192,7 +192,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addLocaleFields(FormBuilderInterface $builder, array $options)
+    public function addLocaleFields(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('messageLanguage', LocaleType::class, [
             'label' => $this->__('Message language'),
@@ -212,7 +212,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSearchField(FormBuilderInterface $builder, array $options)
+    public function addSearchField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('q', SearchType::class, [
             'label' => $this->__('Search'),
@@ -231,7 +231,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSortingFields(FormBuilderInterface $builder, array $options)
+    public function addSortingFields(FormBuilderInterface $builder, array $options = [])
     {
         $builder
             ->add('sort', ChoiceType::class, [
@@ -287,7 +287,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addAmountField(FormBuilderInterface $builder, array $options)
+    public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('num', ChoiceType::class, [
             'label' => $this->__('Page size'),
@@ -316,7 +316,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addBooleanFields(FormBuilderInterface $builder, array $options)
+    public function addBooleanFields(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('displayOnIndex', ChoiceType::class, [
             'label' => $this->__('Display on index'),

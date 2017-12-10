@@ -12,18 +12,21 @@
 
 namespace MU\NewsModule\Form\Type\Base;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\GroupsModule\Constant as GroupsConstant;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use MU\NewsModule\Form\Type\Field\MultiListType;
+use MU\NewsModule\AppSettings;
+use MU\NewsModule\Helper\ListEntriesHelper;
 
 /**
  * Configuration form type base class.
@@ -33,34 +36,22 @@ abstract class AbstractConfigType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var array
+     * @var ListEntriesHelper
      */
-    protected $moduleVars;
+    protected $listHelper;
 
     /**
      * ConfigType constructor.
      *
-     * @param TranslatorInterface      $translator      Translator service instance
-     * @param object                   $moduleVars      Existing module vars
-     * @param GroupRepositoryInterface $groupRepository GroupRepository service instance
+     * @param TranslatorInterface $translator Translator service instance
+     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
-        $moduleVars,
-        GroupRepositoryInterface $groupRepository
+        ListEntriesHelper $listHelper
     ) {
         $this->setTranslator($translator);
-        $this->moduleVars = $moduleVars;
-
-        // prepare group selector values
-        foreach (['moderationGroupForMessages'] as $groupFieldName) {
-            $groupId = intval($this->moduleVars[$groupFieldName]);
-            if ($groupId < 1) {
-                // fallback to admin group
-                $groupId = GroupsConstant::GROUP_ID_ADMIN;
-            }
-            $this->moduleVars[$groupFieldName] = $groupRepository->find($groupId);
-        }
+        $this->listHelper = $listHelper;
     }
 
     /**
@@ -87,23 +78,7 @@ abstract class AbstractConfigType extends AbstractType
         $this->addImagesFields($builder, $options);
         $this->addIntegrationFields($builder, $options);
 
-        $builder
-            ->add('save', SubmitType::class, [
-                'label' => $this->__('Update configuration'),
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default',
-                    'formnovalidate' => 'formnovalidate'
-                ]
-            ])
-        ;
+        $this->addSubmitButtons($builder, $options);
     }
 
     /**
@@ -112,52 +87,54 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addGeneralSettingsFields(FormBuilderInterface $builder, array $options)
+    public function addGeneralSettingsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enableAttribution', CheckboxType::class, [
-                'label' => $this->__('Enable attribution') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableAttribution']) ? $this->moduleVars['enableAttribution'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable attribution option.')
-                ],
-            ])
-            ->add('enableMultiLanguage', CheckboxType::class, [
-                'label' => $this->__('Enable multi language') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableMultiLanguage']) ? $this->moduleVars['enableMultiLanguage'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable multi language option.')
-                ],
-            ])
-            ->add('showAuthor', CheckboxType::class, [
-                'label' => $this->__('Show author') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('This setting allows to enable the display of author informations within an article.')
-                ],
-                'help' => $this->__('This setting allows to enable the display of author informations within an article.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['showAuthor']) ? $this->moduleVars['showAuthor'] : false),
-                'attr' => [
-                    'title' => $this->__('The show author option.')
-                ],
-            ])
-            ->add('showDate', CheckboxType::class, [
-                'label' => $this->__('Show date') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('This setting allows to enable the display of date informations within an article.')
-                ],
-                'help' => $this->__('This setting allows to enable the display of date informations within an article.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['showDate']) ? $this->moduleVars['showDate'] : false),
-                'attr' => [
-                    'title' => $this->__('The show date option.')
-                ],
-            ])
-        ;
+        
+        $builder->add('enableAttribution', CheckboxType::class, [
+            'label' => $this->__('Enable attribution') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The enable attribution option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('enableMultiLanguage', CheckboxType::class, [
+            'label' => $this->__('Enable multi language') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The enable multi language option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('showAuthor', CheckboxType::class, [
+            'label' => $this->__('Show author') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('This setting allows to enable the display of author informations within an article.')
+            ],
+            'help' => $this->__('This setting allows to enable the display of author informations within an article.'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The show author option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('showDate', CheckboxType::class, [
+            'label' => $this->__('Show date') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('This setting allows to enable the display of date informations within an article.')
+            ],
+            'help' => $this->__('This setting allows to enable the display of date informations within an article.'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The show date option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -166,18 +143,17 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addCategorySettingsFields(FormBuilderInterface $builder, array $options)
+    public function addCategorySettingsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enableCategorization', CheckboxType::class, [
-                'label' => $this->__('Enable categorization') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableCategorization']) ? $this->moduleVars['enableCategorization'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable categorization option.')
-                ],
-            ])
-        ;
+        
+        $builder->add('enableCategorization', CheckboxType::class, [
+            'label' => $this->__('Enable categorization') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The enable categorization option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -186,65 +162,75 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addDisplaySettingFields(FormBuilderInterface $builder, array $options)
+    public function addDisplaySettingFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('defaultMessageSorting', ChoiceType::class, [
-                'label' => $this->__('Default message sorting') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('You can customise several display-oriented aspects of the articles.')
-                ],
-                'help' => $this->__('You can customise several display-oriented aspects of the articles.'),
-                'data' => isset($this->moduleVars['defaultMessageSorting']) ? $this->moduleVars['defaultMessageSorting'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the default message sorting.')
-                ],'choices' => [
-                    $this->__('Article i d') => 'articleID',
-                    $this->__('Articledatetime') => 'articledatetime',
-                    $this->__('Articleweight') => 'articleweight'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('enableMoreMessagesInCategory', CheckboxType::class, [
-                'label' => $this->__('Enable more messages in category') . ':',
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableMoreMessagesInCategory']) ? $this->moduleVars['enableMoreMessagesInCategory'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable more messages in category option.')
-                ],
-            ])
-            ->add('amountOfMoreArticlesInCategory', IntegerType::class, [
-                'label' => $this->__('Amount of more articles in category') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.')
-                ],
-                'help' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['amountOfMoreArticlesInCategory']) ? intval($this->moduleVars['amountOfMoreArticlesInCategory']) : intval(),
-                'empty_data' => intval(''),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the amount of more articles in category.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('displayPdfLink', CheckboxType::class, [
-                'label' => $this->__('Display pdf link') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Display a PDF link for the articles in the index page')
-                ],
-                'help' => $this->__('Display a PDF link for the articles in the index page'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['displayPdfLink']) ? $this->moduleVars['displayPdfLink'] : false),
-                'attr' => [
-                    'title' => $this->__('The display pdf link option.')
-                ],
-            ])
-        ;
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'defaultMessageSorting');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('defaultMessageSorting', ChoiceType::class, [
+            'label' => $this->__('Default message sorting') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('You can customise several display-oriented aspects of the articles.')
+            ],
+            'help' => $this->__('You can customise several display-oriented aspects of the articles.'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the default message sorting.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('enableMoreMessagesInCategory', CheckboxType::class, [
+            'label' => $this->__('Enable more messages in category') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The enable more messages in category option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('amountOfMoreArticlesInCategory', IntegerType::class, [
+            'label' => $this->__('Amount of more articles in category') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.')
+            ],
+            'help' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.'),
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the amount of more articles in category.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => false,
+            'scale' => 0
+        ]);
+        
+        $builder->add('displayPdfLink', CheckboxType::class, [
+            'label' => $this->__('Display pdf link') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Display a PDF link for the articles in the index page')
+            ],
+            'help' => $this->__('Display a PDF link for the articles in the index page'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The display pdf link option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -253,76 +239,92 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addUploadSettingsFields(FormBuilderInterface $builder, array $options)
+    public function addUploadSettingsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enablePictureUpload', CheckboxType::class, [
-                'label' => $this->__('Enable picture upload') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Allow uploading article pictures')
-                ],
-                'help' => $this->__('Allow uploading article pictures'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enablePictureUpload']) ? $this->moduleVars['enablePictureUpload'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable picture upload option.')
-                ],
-            ])
-            ->add('imageFloatOnViewPage', ChoiceType::class, [
-                'label' => $this->__('Image float on view page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Image float on the view page')
-                ],
-                'help' => $this->__('Image float on the view page'),
-                'data' => isset($this->moduleVars['imageFloatOnViewPage']) ? $this->moduleVars['imageFloatOnViewPage'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the image float on view page.')
-                ],'choices' => [
-                    $this->__('None') => 'none',
-                    $this->__('Left') => 'left',
-                    $this->__('Right') => 'right'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('imageFloatOnDisplayPage', ChoiceType::class, [
-                'label' => $this->__('Image float on display page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Image float on the article display page')
-                ],
-                'help' => $this->__('Image float on the article display page'),
-                'data' => isset($this->moduleVars['imageFloatOnDisplayPage']) ? $this->moduleVars['imageFloatOnDisplayPage'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the image float on display page.')
-                ],'choices' => [
-                    $this->__('None') => 'none',
-                    $this->__('Left') => 'left',
-                    $this->__('Right') => 'right'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('maxSize', TextType::class, [
-                'label' => $this->__('Max size') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).')
-                ],
-                'help' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).'),
-                'required' => false,
-                'data' => isset($this->moduleVars['maxSize']) ? $this->moduleVars['maxSize'] : '',
-                'empty_data' => '200k',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the max size.')
-                ],
-            ])
-        ;
+        
+        $builder->add('enablePictureUpload', CheckboxType::class, [
+            'label' => $this->__('Enable picture upload') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Allow uploading article pictures')
+            ],
+            'help' => $this->__('Allow uploading article pictures'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The enable picture upload option')
+            ],
+            'required' => false,
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'imageFloatOnViewPage');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('imageFloatOnViewPage', ChoiceType::class, [
+            'label' => $this->__('Image float on view page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Image float on the view page')
+            ],
+            'help' => $this->__('Image float on the view page'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the image float on view page.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'imageFloatOnDisplayPage');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('imageFloatOnDisplayPage', ChoiceType::class, [
+            'label' => $this->__('Image float on display page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Image float on the article display page')
+            ],
+            'help' => $this->__('Image float on the article display page'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the image float on display page.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('maxSize', TextType::class, [
+            'label' => $this->__('Max size') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).')
+            ],
+            'help' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).'),
+            'empty_data' => '200k',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Enter the max size')
+            ],
+            'required' => true,
+        ]);
     }
 
     /**
@@ -331,26 +333,28 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options)
+    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('moderationGroupForMessages', EntityType::class, [
-                'label' => $this->__('Moderation group for messages') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Used to determine moderator user accounts for sending email notifications.')
-                ],
-                'help' => $this->__('Used to determine moderator user accounts for sending email notifications.'),
-                'data' => isset($this->moduleVars['moderationGroupForMessages']) ? $this->moduleVars['moderationGroupForMessages'] : '',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Choose the moderation group for messages.')
-                ],// Zikula core should provide a form type for this to hide entity details
-                'class' => 'ZikulaGroupsModule:GroupEntity',
-                'choice_label' => 'name',
-                'choice_value' => 'gid'
-            ])
-        ;
+        
+        $builder->add('moderationGroupForMessages', EntityType::class, [
+            'label' => $this->__('Moderation group for messages') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Used to determine moderator user accounts for sending email notifications.')
+            ],
+            'help' => $this->__('Used to determine moderator user accounts for sending email notifications.'),
+            'empty_data' => '2',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Choose the moderation group for messages')
+            ],
+            'required' => true,
+            // Zikula core should provide a form type for this to hide entity details
+            'class' => 'ZikulaGroupsModule:GroupEntity',
+            'choice_label' => 'name',
+            'choice_value' => 'gid'
+        ]);
     }
 
     /**
@@ -359,51 +363,53 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addListViewsFields(FormBuilderInterface $builder, array $options)
+    public function addListViewsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('messageEntriesPerPage', IntegerType::class, [
-                'label' => $this->__('Message entries per page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The amount of messages shown per page')
-                ],
-                'help' => $this->__('The amount of messages shown per page'),
-                'required' => false,
-                'data' => isset($this->moduleVars['messageEntriesPerPage']) ? intval($this->moduleVars['messageEntriesPerPage']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the message entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('linkOwnMessagesOnAccountPage', CheckboxType::class, [
-                'label' => $this->__('Link own messages on account page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to add a link to messages of the current user on his account page')
-                ],
-                'help' => $this->__('Whether to add a link to messages of the current user on his account page'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['linkOwnMessagesOnAccountPage']) ? $this->moduleVars['linkOwnMessagesOnAccountPage'] : true),
-                'attr' => [
-                    'title' => $this->__('The link own messages on account page option.')
-                ],
-            ])
-            ->add('filterDataByLocale', CheckboxType::class, [
-                'label' => $this->__('Filter data by locale') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether automatically filter data in the frontend based on the current locale or not')
-                ],
-                'help' => $this->__('Whether automatically filter data in the frontend based on the current locale or not'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['filterDataByLocale']) ? $this->moduleVars['filterDataByLocale'] : false),
-                'attr' => [
-                    'title' => $this->__('The filter data by locale option.')
-                ],
-            ])
-        ;
+        
+        $builder->add('messageEntriesPerPage', IntegerType::class, [
+            'label' => $this->__('Message entries per page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The amount of messages shown per page')
+            ],
+            'help' => $this->__('The amount of messages shown per page'),
+            'empty_data' => '10',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the message entries per page.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => true,
+            'scale' => 0
+        ]);
+        
+        $builder->add('linkOwnMessagesOnAccountPage', CheckboxType::class, [
+            'label' => $this->__('Link own messages on account page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to add a link to messages of the current user on his account page')
+            ],
+            'help' => $this->__('Whether to add a link to messages of the current user on his account page'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The link own messages on account page option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('filterDataByLocale', CheckboxType::class, [
+            'label' => $this->__('Filter data by locale') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether automatically filter data in the frontend based on the current locale or not')
+            ],
+            'help' => $this->__('Whether automatically filter data in the frontend based on the current locale or not'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The filter data by locale option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -412,658 +418,748 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addImagesFields(FormBuilderInterface $builder, array $options)
+    public function addImagesFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enableShrinkingForMessageImageUpload1', CheckboxType::class, [
-                'label' => $this->__('Enable shrinking') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
-                ],
-                'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableShrinkingForMessageImageUpload1']) ? $this->moduleVars['enableShrinkingForMessageImageUpload1'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable shrinking option.'),
-                    'class' => 'shrink-enabler'
-                ],
-            ])
-            ->add('shrinkWidthMessageImageUpload1', IntegerType::class, [
-                'label' => $this->__('Shrink width') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image width in pixels.')
-                ],
-                'help' => $this->__('The maximum image width in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkWidthMessageImageUpload1']) ? intval($this->moduleVars['shrinkWidthMessageImageUpload1']) : intval(800),
-                'empty_data' => intval('800'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink width.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkwidthmessageimageupload1'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('shrinkHeightMessageImageUpload1', IntegerType::class, [
-                'label' => $this->__('Shrink height') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image height in pixels.')
-                ],
-                'help' => $this->__('The maximum image height in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkHeightMessageImageUpload1']) ? intval($this->moduleVars['shrinkHeightMessageImageUpload1']) : intval(600),
-                'empty_data' => intval('600'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink height.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkheightmessageimageupload1'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailModeMessageImageUpload1', ChoiceType::class, [
-                'label' => $this->__('Thumbnail mode') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail mode (inset or outbound).')
-                ],
-                'help' => $this->__('Thumbnail mode (inset or outbound).'),
-                'data' => isset($this->moduleVars['thumbnailModeMessageImageUpload1']) ? $this->moduleVars['thumbnailModeMessageImageUpload1'] : '',
-                'empty_data' => 'inset',
-                'attr' => [
-                    'title' => $this->__('Choose the thumbnail mode.')
-                ],'choices' => [
-                    $this->__('Inset') => 'inset',
-                    $this->__('Outbound') => 'outbound'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('thumbnailWidthMessageImageUpload1View', IntegerType::class, [
-                'label' => $this->__('Thumbnail width view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload1View']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload1View']) : intval(32),
-                'empty_data' => intval('32'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload1View', IntegerType::class, [
-                'label' => $this->__('Thumbnail height view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload1View']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload1View']) : intval(24),
-                'empty_data' => intval('24'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload1Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail width display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload1Display']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload1Display']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload1Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail height display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload1Display']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload1Display']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload1Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail width edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload1Edit']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload1Edit']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload1Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail height edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload1Edit']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload1Edit']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('enableShrinkingForMessageImageUpload2', CheckboxType::class, [
-                'label' => $this->__('Enable shrinking') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
-                ],
-                'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableShrinkingForMessageImageUpload2']) ? $this->moduleVars['enableShrinkingForMessageImageUpload2'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable shrinking option.'),
-                    'class' => 'shrink-enabler'
-                ],
-            ])
-            ->add('shrinkWidthMessageImageUpload2', IntegerType::class, [
-                'label' => $this->__('Shrink width') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image width in pixels.')
-                ],
-                'help' => $this->__('The maximum image width in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkWidthMessageImageUpload2']) ? intval($this->moduleVars['shrinkWidthMessageImageUpload2']) : intval(800),
-                'empty_data' => intval('800'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink width.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkwidthmessageimageupload2'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('shrinkHeightMessageImageUpload2', IntegerType::class, [
-                'label' => $this->__('Shrink height') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image height in pixels.')
-                ],
-                'help' => $this->__('The maximum image height in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkHeightMessageImageUpload2']) ? intval($this->moduleVars['shrinkHeightMessageImageUpload2']) : intval(600),
-                'empty_data' => intval('600'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink height.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkheightmessageimageupload2'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailModeMessageImageUpload2', ChoiceType::class, [
-                'label' => $this->__('Thumbnail mode') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail mode (inset or outbound).')
-                ],
-                'help' => $this->__('Thumbnail mode (inset or outbound).'),
-                'data' => isset($this->moduleVars['thumbnailModeMessageImageUpload2']) ? $this->moduleVars['thumbnailModeMessageImageUpload2'] : '',
-                'empty_data' => 'inset',
-                'attr' => [
-                    'title' => $this->__('Choose the thumbnail mode.')
-                ],'choices' => [
-                    $this->__('Inset') => 'inset',
-                    $this->__('Outbound') => 'outbound'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('thumbnailWidthMessageImageUpload2View', IntegerType::class, [
-                'label' => $this->__('Thumbnail width view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload2View']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload2View']) : intval(32),
-                'empty_data' => intval('32'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload2View', IntegerType::class, [
-                'label' => $this->__('Thumbnail height view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload2View']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload2View']) : intval(24),
-                'empty_data' => intval('24'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload2Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail width display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload2Display']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload2Display']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload2Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail height display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload2Display']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload2Display']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload2Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail width edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload2Edit']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload2Edit']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload2Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail height edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload2Edit']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload2Edit']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('enableShrinkingForMessageImageUpload3', CheckboxType::class, [
-                'label' => $this->__('Enable shrinking') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
-                ],
-                'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableShrinkingForMessageImageUpload3']) ? $this->moduleVars['enableShrinkingForMessageImageUpload3'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable shrinking option.'),
-                    'class' => 'shrink-enabler'
-                ],
-            ])
-            ->add('shrinkWidthMessageImageUpload3', IntegerType::class, [
-                'label' => $this->__('Shrink width') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image width in pixels.')
-                ],
-                'help' => $this->__('The maximum image width in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkWidthMessageImageUpload3']) ? intval($this->moduleVars['shrinkWidthMessageImageUpload3']) : intval(800),
-                'empty_data' => intval('800'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink width.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkwidthmessageimageupload3'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('shrinkHeightMessageImageUpload3', IntegerType::class, [
-                'label' => $this->__('Shrink height') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image height in pixels.')
-                ],
-                'help' => $this->__('The maximum image height in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkHeightMessageImageUpload3']) ? intval($this->moduleVars['shrinkHeightMessageImageUpload3']) : intval(600),
-                'empty_data' => intval('600'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink height.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkheightmessageimageupload3'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailModeMessageImageUpload3', ChoiceType::class, [
-                'label' => $this->__('Thumbnail mode') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail mode (inset or outbound).')
-                ],
-                'help' => $this->__('Thumbnail mode (inset or outbound).'),
-                'data' => isset($this->moduleVars['thumbnailModeMessageImageUpload3']) ? $this->moduleVars['thumbnailModeMessageImageUpload3'] : '',
-                'empty_data' => 'inset',
-                'attr' => [
-                    'title' => $this->__('Choose the thumbnail mode.')
-                ],'choices' => [
-                    $this->__('Inset') => 'inset',
-                    $this->__('Outbound') => 'outbound'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('thumbnailWidthMessageImageUpload3View', IntegerType::class, [
-                'label' => $this->__('Thumbnail width view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload3View']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload3View']) : intval(32),
-                'empty_data' => intval('32'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload3View', IntegerType::class, [
-                'label' => $this->__('Thumbnail height view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload3View']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload3View']) : intval(24),
-                'empty_data' => intval('24'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload3Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail width display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload3Display']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload3Display']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload3Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail height display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload3Display']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload3Display']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload3Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail width edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload3Edit']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload3Edit']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload3Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail height edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload3Edit']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload3Edit']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('enableShrinkingForMessageImageUpload4', CheckboxType::class, [
-                'label' => $this->__('Enable shrinking') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
-                ],
-                'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableShrinkingForMessageImageUpload4']) ? $this->moduleVars['enableShrinkingForMessageImageUpload4'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable shrinking option.'),
-                    'class' => 'shrink-enabler'
-                ],
-            ])
-            ->add('shrinkWidthMessageImageUpload4', IntegerType::class, [
-                'label' => $this->__('Shrink width') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image width in pixels.')
-                ],
-                'help' => $this->__('The maximum image width in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkWidthMessageImageUpload4']) ? intval($this->moduleVars['shrinkWidthMessageImageUpload4']) : intval(800),
-                'empty_data' => intval('800'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink width.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkwidthmessageimageupload4'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('shrinkHeightMessageImageUpload4', IntegerType::class, [
-                'label' => $this->__('Shrink height') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image height in pixels.')
-                ],
-                'help' => $this->__('The maximum image height in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkHeightMessageImageUpload4']) ? intval($this->moduleVars['shrinkHeightMessageImageUpload4']) : intval(600),
-                'empty_data' => intval('600'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink height.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkheightmessageimageupload4'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailModeMessageImageUpload4', ChoiceType::class, [
-                'label' => $this->__('Thumbnail mode') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail mode (inset or outbound).')
-                ],
-                'help' => $this->__('Thumbnail mode (inset or outbound).'),
-                'data' => isset($this->moduleVars['thumbnailModeMessageImageUpload4']) ? $this->moduleVars['thumbnailModeMessageImageUpload4'] : '',
-                'empty_data' => 'inset',
-                'attr' => [
-                    'title' => $this->__('Choose the thumbnail mode.')
-                ],'choices' => [
-                    $this->__('Inset') => 'inset',
-                    $this->__('Outbound') => 'outbound'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('thumbnailWidthMessageImageUpload4View', IntegerType::class, [
-                'label' => $this->__('Thumbnail width view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload4View']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload4View']) : intval(32),
-                'empty_data' => intval('32'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload4View', IntegerType::class, [
-                'label' => $this->__('Thumbnail height view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload4View']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload4View']) : intval(24),
-                'empty_data' => intval('24'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload4Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail width display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload4Display']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload4Display']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload4Display', IntegerType::class, [
-                'label' => $this->__('Thumbnail height display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload4Display']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload4Display']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMessageImageUpload4Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail width edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMessageImageUpload4Edit']) ? intval($this->moduleVars['thumbnailWidthMessageImageUpload4Edit']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMessageImageUpload4Edit', IntegerType::class, [
-                'label' => $this->__('Thumbnail height edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMessageImageUpload4Edit']) ? intval($this->moduleVars['thumbnailHeightMessageImageUpload4Edit']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-        ;
+        
+        $builder->add('enableShrinkingForMessageImageUpload1', CheckboxType::class, [
+            'label' => $this->__('Enable shrinking for message image upload 1') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
+            ],
+            'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
+            'attr' => [
+                'class' => 'shrink-enabler',
+                'title' => $this->__('The enable shrinking option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('shrinkWidthMessageImageUpload1', IntegerType::class, [
+            'label' => $this->__('Shrink width message image upload 1') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image width in pixels.')
+            ],
+            'help' => $this->__('The maximum image width in pixels.'),
+            'empty_data' => '800',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink width')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('shrinkHeightMessageImageUpload1', IntegerType::class, [
+            'label' => $this->__('Shrink height message image upload 1') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image height in pixels.')
+            ],
+            'help' => $this->__('The maximum image height in pixels.'),
+            'empty_data' => '600',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink height')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'thumbnailModeMessageImageUpload1');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('thumbnailModeMessageImageUpload1', ChoiceType::class, [
+            'label' => $this->__('Thumbnail mode message image upload 1') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail mode (inset or outbound).')
+            ],
+            'help' => $this->__('Thumbnail mode (inset or outbound).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the thumbnail mode.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload1View', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 1 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on view pages in pixels.'),
+            'empty_data' => '32',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload1View', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 1 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on view pages in pixels.'),
+            'empty_data' => '24',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload1Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 1 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on display pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload1Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 1 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on display pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload1Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 1 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on edit pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload1Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 1 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on edit pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('enableShrinkingForMessageImageUpload2', CheckboxType::class, [
+            'label' => $this->__('Enable shrinking for message image upload 2') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
+            ],
+            'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
+            'attr' => [
+                'class' => 'shrink-enabler',
+                'title' => $this->__('The enable shrinking option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('shrinkWidthMessageImageUpload2', IntegerType::class, [
+            'label' => $this->__('Shrink width message image upload 2') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image width in pixels.')
+            ],
+            'help' => $this->__('The maximum image width in pixels.'),
+            'empty_data' => '800',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink width')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('shrinkHeightMessageImageUpload2', IntegerType::class, [
+            'label' => $this->__('Shrink height message image upload 2') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image height in pixels.')
+            ],
+            'help' => $this->__('The maximum image height in pixels.'),
+            'empty_data' => '600',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink height')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'thumbnailModeMessageImageUpload2');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('thumbnailModeMessageImageUpload2', ChoiceType::class, [
+            'label' => $this->__('Thumbnail mode message image upload 2') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail mode (inset or outbound).')
+            ],
+            'help' => $this->__('Thumbnail mode (inset or outbound).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the thumbnail mode.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload2View', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 2 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on view pages in pixels.'),
+            'empty_data' => '32',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload2View', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 2 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on view pages in pixels.'),
+            'empty_data' => '24',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload2Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 2 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on display pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload2Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 2 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on display pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload2Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 2 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on edit pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload2Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 2 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on edit pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('enableShrinkingForMessageImageUpload3', CheckboxType::class, [
+            'label' => $this->__('Enable shrinking for message image upload 3') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
+            ],
+            'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
+            'attr' => [
+                'class' => 'shrink-enabler',
+                'title' => $this->__('The enable shrinking option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('shrinkWidthMessageImageUpload3', IntegerType::class, [
+            'label' => $this->__('Shrink width message image upload 3') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image width in pixels.')
+            ],
+            'help' => $this->__('The maximum image width in pixels.'),
+            'empty_data' => '800',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink width')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('shrinkHeightMessageImageUpload3', IntegerType::class, [
+            'label' => $this->__('Shrink height message image upload 3') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image height in pixels.')
+            ],
+            'help' => $this->__('The maximum image height in pixels.'),
+            'empty_data' => '600',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink height')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'thumbnailModeMessageImageUpload3');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('thumbnailModeMessageImageUpload3', ChoiceType::class, [
+            'label' => $this->__('Thumbnail mode message image upload 3') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail mode (inset or outbound).')
+            ],
+            'help' => $this->__('Thumbnail mode (inset or outbound).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the thumbnail mode.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload3View', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 3 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on view pages in pixels.'),
+            'empty_data' => '32',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload3View', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 3 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on view pages in pixels.'),
+            'empty_data' => '24',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload3Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 3 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on display pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload3Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 3 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on display pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload3Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 3 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on edit pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload3Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 3 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on edit pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('enableShrinkingForMessageImageUpload4', CheckboxType::class, [
+            'label' => $this->__('Enable shrinking for message image upload 4') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
+            ],
+            'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
+            'attr' => [
+                'class' => 'shrink-enabler',
+                'title' => $this->__('The enable shrinking option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('shrinkWidthMessageImageUpload4', IntegerType::class, [
+            'label' => $this->__('Shrink width message image upload 4') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image width in pixels.')
+            ],
+            'help' => $this->__('The maximum image width in pixels.'),
+            'empty_data' => '800',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink width')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('shrinkHeightMessageImageUpload4', IntegerType::class, [
+            'label' => $this->__('Shrink height message image upload 4') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image height in pixels.')
+            ],
+            'help' => $this->__('The maximum image height in pixels.'),
+            'empty_data' => '600',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink height')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'thumbnailModeMessageImageUpload4');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('thumbnailModeMessageImageUpload4', ChoiceType::class, [
+            'label' => $this->__('Thumbnail mode message image upload 4') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail mode (inset or outbound).')
+            ],
+            'help' => $this->__('Thumbnail mode (inset or outbound).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the thumbnail mode.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload4View', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 4 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on view pages in pixels.'),
+            'empty_data' => '32',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload4View', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 4 view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on view pages in pixels.'),
+            'empty_data' => '24',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload4Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 4 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on display pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload4Display', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 4 display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on display pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMessageImageUpload4Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail width message image upload 4 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on edit pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMessageImageUpload4Edit', IntegerType::class, [
+            'label' => $this->__('Thumbnail height message image upload 4 edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on edit pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
     }
 
     /**
@@ -1072,27 +1168,69 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addIntegrationFields(FormBuilderInterface $builder, array $options)
+    public function addIntegrationFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enabledFinderTypes', ChoiceType::class, [
-                'label' => $this->__('Enabled finder types') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
-                ],
-                'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
-                'data' => isset($this->moduleVars['enabledFinderTypes']) ? $this->moduleVars['enabledFinderTypes'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the enabled finder types.')
-                ],'choices' => [
-                    $this->__('Message') => 'message'
-                ],
-                'choices_as_values' => true,
-                'multiple' => true
-            ])
-        ;
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'enabledFinderTypes');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('enabledFinderTypes', MultiListType::class, [
+            'label' => $this->__('Enabled finder types') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
+            ],
+            'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the enabled finder types.')
+            ],
+            'required' => false,
+            'placeholder' => $this->__('Choose an option'),
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => true,
+            'expanded' => false
+        ]);
+    }
+
+    /**
+     * Adds submit buttons.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
+    {
+        $builder->add('save', SubmitType::class, [
+            'label' => $this->__('Update configuration'),
+            'icon' => 'fa-check',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
+        ]);
+        $builder->add('reset', ResetType::class, [
+            'label' => $this->__('Reset'),
+            'icon' => 'fa-refresh',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
+        $builder->add('cancel', SubmitType::class, [
+            'label' => $this->__('Cancel'),
+            'icon' => 'fa-times',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
     }
 
     /**
@@ -1101,5 +1239,17 @@ abstract class AbstractConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'munewsmodule_config';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults([
+                // define class for underlying data
+                'data_class' => AppSettings::class,
+            ]);
     }
 }

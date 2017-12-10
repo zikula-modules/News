@@ -154,7 +154,22 @@
                         {{ form_row(form.moderationSpecificCreationDate) }}
                     </div>
                 {% endif %}
-
+                
+                <div class="row">
+	                {{ form_label(form.articleImages) }}
+	                <div class="col-sm-offset-3 col-sm-9">
+		                {{ form_errors(form.articleImages) }}
+		                <ul id="image-uploads-list" data-prototype="{{ form_widget(form.articleImages.vars.prototype)|e }}" class="list-unstyled">
+		                {% for imageUpload in form.articleImages %}
+		                    <li>
+		                        {{ form_errors(imageUpload) }}
+		                        {{ form_widget(imageUpload) }}
+		                    </li>
+		                {% endfor %}
+		                </ul>
+		                <a href="#" id="add-another-image"><i class="fa fa-plus"></i> {{ __('Add another image') }}</a>
+					</div>
+	            </div>
             </div>
         </div>
         
@@ -184,6 +199,7 @@
         /* <![CDATA[ */
             
             ( function($) {
+                var imageCount = '{{ form.articleImages|length }}';
                 $(document).ready(function() {
                     // initialise auto completion for user fields
                     initUserLiveSearch('munewsmodule_message_approver');
@@ -197,6 +213,23 @@
                     mUNewsInitUploadField('munewsmodule_message_imageUpload4_imageUpload4');
                     mUNewsInitDateField('munewsmodule_message_startDate');
                     mUNewsInitDateField('munewsmodule_message_endDate');
+
+			        $('#add-another-image').click(function (event) {
+			            event.preventDefault();
+			
+			            var imageList = $('#image-uploads-list');
+			
+			            // grab the prototype template
+			            var newWidget = imageList.data('prototype');
+			            // replace the "__name__" used in the id and name of the prototype
+			            // with a unique number
+			            newWidget = newWidget.replace(/__name__/g, imageCount);
+			            imageCount++;
+			
+			            // create a new list element and add it to the list
+			            var newLi = $('<li></li>').html(newWidget);
+			            newLi.appendTo(imageList);
+			        });
                 });
             })(jQuery);
         /* ]]> */

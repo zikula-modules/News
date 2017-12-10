@@ -44,16 +44,16 @@ abstract class AbstractMailzApi extends Zikula_AbstractBase implements Container
     
         $plugins = [];
         $plugins[] = [
-            'pluginid'      => 1,
-            'module'        => 'MUNewsModule',
-            'title'         => $translator->__('3 newest messages'),
-            'description'   => $translator->__('A list of the three newest messages.')
+            'pluginid'    => 1,
+            'module'      => 'MUNewsModule',
+            'title'       => $translator->__('3 newest messages'),
+            'description' => $translator->__('A list of the three newest messages.')
         ];
         $plugins[] = [
-            'pluginid'      => 2,
-            'module'        => 'MUNewsModule',
-            'title'         => $translator->__('3 random messages'),
-            'description'   => $translator->__('A list of three random messages.')
+            'pluginid'    => 2,
+            'module'      => 'MUNewsModule',
+            'title'       => $translator->__('3 random messages'),
+            'description' => $translator->__('A list of three random messages.')
         ];
     
         return $plugins;

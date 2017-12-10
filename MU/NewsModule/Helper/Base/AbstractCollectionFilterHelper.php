@@ -38,7 +38,7 @@ abstract class AbstractCollectionFilterHelper
     /**
      * @var CategoryHelper
      */
-    private $categoryHelper;
+    protected $categoryHelper;
 
     /**
      * @var bool Fallback value to determine whether only own entries should be selected or not
@@ -56,8 +56,8 @@ abstract class AbstractCollectionFilterHelper
      * @param RequestStack   $requestStack        RequestStack service instance
      * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      * @param CategoryHelper $categoryHelper      CategoryHelper service instance
-     * @param bool           $showOnlyOwnEntries  Fallback value to determine whether only own entries should be selected or not
-     * @param bool           $filterDataByLocale  Whether to apply a locale-based filter or not
+     * @param boolean        $showOnlyOwnEntries  Fallback value to determine whether only own entries should be selected or not
+     * @param boolean        $filterDataByLocale  Whether to apply a locale-based filter or not
      */
     public function __construct(
         RequestStack $requestStack,
@@ -82,7 +82,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return array List of template variables to be assigned
      */
-    public function getViewQuickNavParameters($objectType = '', $context = '', $args = [])
+    public function getViewQuickNavParameters($objectType = '', $context = '', array $args = [])
     {
         if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
             $context = 'controllerAction';
@@ -121,7 +121,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    public function applyDefaultFilters($objectType, QueryBuilder $qb, $parameters = [])
+    public function applyDefaultFilters($objectType, QueryBuilder $qb, array $parameters = [])
     {
         if ($objectType == 'message') {
             return $this->applyDefaultFiltersForMessage($qb, $parameters);
@@ -138,7 +138,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return array List of template variables to be assigned
      */
-    protected function getViewQuickNavParametersForMessage($context = '', $args = [])
+    protected function getViewQuickNavParametersForMessage($context = '', array $args = [])
     {
         $parameters = [];
         if (null === $this->request) {
@@ -202,25 +202,28 @@ abstract class AbstractCollectionFilterHelper
                 } elseif ($v == 'yes' || $v == '1') {
                     $qb->andWhere('tbl.' . $k . ' = 1');
                 }
-            } else if (!is_array($v)) {
-                // field filter
-                if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
-                    if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
-                        $qb->andWhere('tbl.' . $k . ' != :' . $k)
-                           ->setParameter($k, substr($v, 1, strlen($v)-1));
-                    } elseif (substr($v, 0, 1) == '%') {
-                        $qb->andWhere('tbl.' . $k . ' LIKE :' . $k)
-                           ->setParameter($k, '%' . $v . '%');
+            }
+            if (is_array($v)) {
+                continue;
+            }
+    
+            // field filter
+            if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
+                if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
+                    $qb->andWhere('tbl.' . $k . ' != :' . $k)
+                       ->setParameter($k, substr($v, 1, strlen($v)-1));
+                } elseif (substr($v, 0, 1) == '%') {
+                    $qb->andWhere('tbl.' . $k . ' LIKE :' . $k)
+                       ->setParameter($k, '%' . substr($v, 1) . '%');
+                } else {
+                    if (in_array($k, ['approver'])) {
+                        $qb->leftJoin('tbl.' . $k, 'tbl' . ucfirst($k))
+                           ->andWhere('tbl' . ucfirst($k) . '.uid = :' . $k)
+                           ->setParameter($k, $v);
                     } else {
-                        if (in_array($k, ['approver'])) {
-                            $qb->leftJoin('tbl.' . $k, 'tbl' . ucfirst($k))
-                               ->andWhere('tbl' . ucfirst($k) . '.uid = :' . $k)
-                               ->setParameter($k, $v);
-                        } else {
-                            $qb->andWhere('tbl.' . $k . ' = :' . $k)
-                               ->setParameter($k, $v);
-                        }
-                   }
+                        $qb->andWhere('tbl.' . $k . ' = :' . $k)
+                           ->setParameter($k, $v);
+                    }
                 }
             }
         }
@@ -238,7 +241,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    protected function applyDefaultFiltersForMessage(QueryBuilder $qb, $parameters = [])
+    protected function applyDefaultFiltersForMessage(QueryBuilder $qb, array $parameters = [])
     {
         if (null === $this->request) {
             return $qb;
@@ -269,13 +272,28 @@ abstract class AbstractCollectionFilterHelper
                    ->setParameter('currentMessageLanguage', $allowedLocales);
             }
         }
-        
+    
+        $qb = $this->applyDateRangeFilterForMessage($qb);
+    
+        return $qb;
+    }
+    
+    /**
+     * Applies start and end date filters for selecting messages.
+     *
+     * @param QueryBuilder $qb    Query builder to be enhanced
+     * @param string       $alias Table alias
+     *
+     * @return QueryBuilder Enriched query builder instance
+     */
+    protected function applyDateRangeFilterForMessage(QueryBuilder $qb, $alias = 'tbl')
+    {
         $startDate = $this->request->query->get('startDate', date('Y-m-d H:i:s'));
-        $qb->andWhere('(tbl.startDate <= :startDate OR tbl.startDate IS NULL)')
+        $qb->andWhere('(' . $alias . '.startDate <= :startDate OR ' . $alias . '.startDate IS NULL)')
            ->setParameter('startDate', $startDate);
-        
+    
         $endDate = $this->request->query->get('endDate', date('Y-m-d H:i:s'));
-        $qb->andWhere('(tbl.endDate >= :endDate OR tbl.endDate IS NULL)')
+        $qb->andWhere('(' . $alias . '.endDate >= :endDate OR ' . $alias . '.endDate IS NULL)')
            ->setParameter('endDate', $endDate);
     
         return $qb;

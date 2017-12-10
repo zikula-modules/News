@@ -7,8 +7,7 @@ mUNewsModule.itemSelector.items = {};
 mUNewsModule.itemSelector.baseId = 0;
 mUNewsModule.itemSelector.selectedId = 0;
 
-mUNewsModule.itemSelector.onLoad = function (baseId, selectedId)
-{
+mUNewsModule.itemSelector.onLoad = function (baseId, selectedId) {
     mUNewsModule.itemSelector.baseId = baseId;
     mUNewsModule.itemSelector.selectedId = selectedId;
 
@@ -26,15 +25,13 @@ mUNewsModule.itemSelector.onLoad = function (baseId, selectedId)
     mUNewsModule.itemSelector.getItemList();
 };
 
-mUNewsModule.itemSelector.onParamChanged = function ()
-{
+mUNewsModule.itemSelector.onParamChanged = function () {
     jQuery('#ajaxIndicator').removeClass('hidden');
 
     mUNewsModule.itemSelector.getItemList();
 };
 
-mUNewsModule.itemSelector.getItemList = function ()
-{
+mUNewsModule.itemSelector.getItemList = function () {
     var baseId;
     var params;
 
@@ -51,7 +48,7 @@ mUNewsModule.itemSelector.getItemList = function ()
         params[catidsMain] = jQuery('#' + baseId + '_catidsMain').val();
     }
 
-    jQuery.getJSON(Routing.generate('munewsmodule_ajax_getitemlistfinder'), params, function( data ) {
+    jQuery.getJSON(Routing.generate('munewsmodule_ajax_getitemlistfinder'), params, function (data) {
         var baseId;
 
         baseId = mUNewsModule.itemSelector.baseId;
@@ -62,8 +59,7 @@ mUNewsModule.itemSelector.getItemList = function ()
     });
 };
 
-mUNewsModule.itemSelector.updateItemDropdownEntries = function ()
-{
+mUNewsModule.itemSelector.updateItemDropdownEntries = function () {
     var baseId, itemSelector, items, i, item;
 
     baseId = mUNewsModule.itemSelector.baseId;
@@ -81,8 +77,7 @@ mUNewsModule.itemSelector.updateItemDropdownEntries = function ()
     }
 };
 
-mUNewsModule.itemSelector.updatePreview = function ()
-{
+mUNewsModule.itemSelector.updatePreview = function () {
     var baseId, items, selectedElement, i;
 
     baseId = mUNewsModule.itemSelector.baseId;
@@ -112,8 +107,7 @@ mUNewsModule.itemSelector.updatePreview = function ()
     }
 };
 
-mUNewsModule.itemSelector.onItemChanged = function ()
-{
+mUNewsModule.itemSelector.onItemChanged = function () {
     var baseId, itemSelector, preview;
 
     baseId = mUNewsModule.itemSelector.baseId;
@@ -125,7 +119,7 @@ mUNewsModule.itemSelector.onItemChanged = function ()
     mUNewsInitImageViewer();
 };
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var infoElem;
 
     infoElem = jQuery('#itemSelectorInfo');

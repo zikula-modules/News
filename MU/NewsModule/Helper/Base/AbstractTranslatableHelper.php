@@ -81,7 +81,7 @@ abstract class AbstractTranslatableHelper
      *
      * @param string $objectType The currently treated object type
      *
-     * @return array list of translatable fields
+     * @return array List of translatable fields
      */
     public function getTranslatableFields($objectType)
     {
@@ -110,7 +110,7 @@ abstract class AbstractTranslatableHelper
      *
      * @param string $objectType The currently treated object type
      *
-     * @return array list of language codes
+     * @return array List of language codes
      */
     public function getSupportedLanguages($objectType)
     {
@@ -127,7 +127,7 @@ abstract class AbstractTranslatableHelper
      *
      * @param string $objectType The currently treated object type
      *
-     * @return array
+     * @return array List of mandatory fields for each language code
      */
     public function getMandatoryFields($objectType)
     {
@@ -144,7 +144,7 @@ abstract class AbstractTranslatableHelper
      *
      * @param EntityAccess $entity The entity being edited
      *
-     * @return array collected translations having the language codes as keys
+     * @return array Collected translations for each language code
      */
     public function prepareEntityForEditing($entity)
     {

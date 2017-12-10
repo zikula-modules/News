@@ -53,7 +53,7 @@ abstract class AbstractEntityDisplayHelper
         $this->translator = $translator;
         $this->listEntriesHelper = $listEntriesHelper;
         $locale = null !== $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getLocale() : null;
-        $this->dateFormatter = new IntlDateFormatter($locale, null, null);
+        $this->dateFormatter = new IntlDateFormatter($locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE);
     }
 
     /**

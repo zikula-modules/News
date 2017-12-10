@@ -5,11 +5,6 @@
 {% block title %}
     {% set templateTitle = message|munewsmodule_formattedTitle|default(__('Message')) %}
     {{ templateTitle|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ message.workflowState|munewsmodule_objectState(false)|lower }})</small>{% endif %}
-    {% set itemActions = knp_menu_get('MUNewsModule:ItemActionsMenu:menu', [], {entity: message, area: routeArea, context: 'display'}) %}
-    <div class="dropdown">
-        <a id="itemActions{{ message.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
-    </div>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
 {% block content %}
@@ -42,6 +37,10 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="tabFields" aria-labelledby="fieldsTab">
+            {% set itemActions = knp_menu_get('MUNewsModule:ItemActionsMenu:menu', [], {entity: message, area: routeArea, context: 'display'}) %}
+            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+                {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+            </div>
             <h3>{{ __('Fields') }}</h3>
             <dl>
                 {% if message.workflowState is not empty and routeArea == 'admin' %}
@@ -206,6 +205,10 @@
     {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message, tabs: true}) }}
 
     {{ block('display_hooks') }}
+    {% set itemActions = knp_menu_get('MUNewsModule:ItemActionsMenu:menu', [], {entity: message, area: routeArea, context: 'display'}) %}
+    <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+    </div>
     </div>
 </div>
 {% endblock %}
@@ -215,7 +218,7 @@
     {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
     {% if hooks is iterable and hooks|length > 0 %}
         {% for area, hook in hooks %}
-            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook }}</div>
+            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
         {% endfor %}
     {% endif %}
     </div>

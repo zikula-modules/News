@@ -69,59 +69,59 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('showAuthor', false);
         $this->setVar('showDate', false);
         $this->setVar('enableCategorization', false);
-        $this->setVar('defaultMessageSorting',  'articledatetime' );
+        $this->setVar('defaultMessageSorting', 'articledatetime');
         $this->setVar('enableMoreMessagesInCategory', false);
         $this->setVar('amountOfMoreArticlesInCategory', 0);
         $this->setVar('displayPdfLink', false);
         $this->setVar('enablePictureUpload', false);
-        $this->setVar('imageFloatOnViewPage',  'left' );
-        $this->setVar('imageFloatOnDisplayPage',  'left' );
+        $this->setVar('imageFloatOnViewPage', 'left');
+        $this->setVar('imageFloatOnDisplayPage', 'left');
         $this->setVar('maxSize', '200k');
-        $this->setVar('moderationGroupForMessages', '2');
-        $this->setVar('messageEntriesPerPage', '10');
+        $this->setVar('moderationGroupForMessages', 2);
+        $this->setVar('messageEntriesPerPage', 10);
         $this->setVar('linkOwnMessagesOnAccountPage', true);
         $this->setVar('filterDataByLocale', false);
         $this->setVar('enableShrinkingForMessageImageUpload1', false);
-        $this->setVar('shrinkWidthMessageImageUpload1', '800');
-        $this->setVar('shrinkHeightMessageImageUpload1', '600');
-        $this->setVar('thumbnailModeMessageImageUpload1',  'inset' );
-        $this->setVar('thumbnailWidthMessageImageUpload1View', '32');
-        $this->setVar('thumbnailHeightMessageImageUpload1View', '24');
-        $this->setVar('thumbnailWidthMessageImageUpload1Display', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload1Display', '180');
-        $this->setVar('thumbnailWidthMessageImageUpload1Edit', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload1Edit', '180');
+        $this->setVar('shrinkWidthMessageImageUpload1', 800);
+        $this->setVar('shrinkHeightMessageImageUpload1', 600);
+        $this->setVar('thumbnailModeMessageImageUpload1', 'inset');
+        $this->setVar('thumbnailWidthMessageImageUpload1View', 32);
+        $this->setVar('thumbnailHeightMessageImageUpload1View', 24);
+        $this->setVar('thumbnailWidthMessageImageUpload1Display', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload1Display', 180);
+        $this->setVar('thumbnailWidthMessageImageUpload1Edit', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload1Edit', 180);
         $this->setVar('enableShrinkingForMessageImageUpload2', false);
-        $this->setVar('shrinkWidthMessageImageUpload2', '800');
-        $this->setVar('shrinkHeightMessageImageUpload2', '600');
-        $this->setVar('thumbnailModeMessageImageUpload2',  'inset' );
-        $this->setVar('thumbnailWidthMessageImageUpload2View', '32');
-        $this->setVar('thumbnailHeightMessageImageUpload2View', '24');
-        $this->setVar('thumbnailWidthMessageImageUpload2Display', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload2Display', '180');
-        $this->setVar('thumbnailWidthMessageImageUpload2Edit', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload2Edit', '180');
+        $this->setVar('shrinkWidthMessageImageUpload2', 800);
+        $this->setVar('shrinkHeightMessageImageUpload2', 600);
+        $this->setVar('thumbnailModeMessageImageUpload2', 'inset');
+        $this->setVar('thumbnailWidthMessageImageUpload2View', 32);
+        $this->setVar('thumbnailHeightMessageImageUpload2View', 24);
+        $this->setVar('thumbnailWidthMessageImageUpload2Display', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload2Display', 180);
+        $this->setVar('thumbnailWidthMessageImageUpload2Edit', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload2Edit', 180);
         $this->setVar('enableShrinkingForMessageImageUpload3', false);
-        $this->setVar('shrinkWidthMessageImageUpload3', '800');
-        $this->setVar('shrinkHeightMessageImageUpload3', '600');
-        $this->setVar('thumbnailModeMessageImageUpload3',  'inset' );
-        $this->setVar('thumbnailWidthMessageImageUpload3View', '32');
-        $this->setVar('thumbnailHeightMessageImageUpload3View', '24');
-        $this->setVar('thumbnailWidthMessageImageUpload3Display', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload3Display', '180');
-        $this->setVar('thumbnailWidthMessageImageUpload3Edit', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload3Edit', '180');
+        $this->setVar('shrinkWidthMessageImageUpload3', 800);
+        $this->setVar('shrinkHeightMessageImageUpload3', 600);
+        $this->setVar('thumbnailModeMessageImageUpload3', 'inset');
+        $this->setVar('thumbnailWidthMessageImageUpload3View', 32);
+        $this->setVar('thumbnailHeightMessageImageUpload3View', 24);
+        $this->setVar('thumbnailWidthMessageImageUpload3Display', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload3Display', 180);
+        $this->setVar('thumbnailWidthMessageImageUpload3Edit', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload3Edit', 180);
         $this->setVar('enableShrinkingForMessageImageUpload4', false);
-        $this->setVar('shrinkWidthMessageImageUpload4', '800');
-        $this->setVar('shrinkHeightMessageImageUpload4', '600');
-        $this->setVar('thumbnailModeMessageImageUpload4',  'inset' );
-        $this->setVar('thumbnailWidthMessageImageUpload4View', '32');
-        $this->setVar('thumbnailHeightMessageImageUpload4View', '24');
-        $this->setVar('thumbnailWidthMessageImageUpload4Display', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload4Display', '180');
-        $this->setVar('thumbnailWidthMessageImageUpload4Edit', '240');
-        $this->setVar('thumbnailHeightMessageImageUpload4Edit', '180');
-        $this->setVar('enabledFinderTypes', [ 'message' ]);
+        $this->setVar('shrinkWidthMessageImageUpload4', 800);
+        $this->setVar('shrinkHeightMessageImageUpload4', 600);
+        $this->setVar('thumbnailModeMessageImageUpload4', 'inset');
+        $this->setVar('thumbnailWidthMessageImageUpload4View', 32);
+        $this->setVar('thumbnailHeightMessageImageUpload4View', 24);
+        $this->setVar('thumbnailWidthMessageImageUpload4Display', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload4Display', 180);
+        $this->setVar('thumbnailWidthMessageImageUpload4Edit', 240);
+        $this->setVar('thumbnailHeightMessageImageUpload4Edit', 180);
+        $this->setVar('enabledFinderTypes', 'message');
     
         $categoryRegistryIdsPerEntity = [];
     
@@ -412,7 +412,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
     /**
      * Build array with all entity classes for MUNewsModule.
      *
-     * @return array list of class names
+     * @return string[] List of class names
      */
     protected function listEntityClasses()
     {

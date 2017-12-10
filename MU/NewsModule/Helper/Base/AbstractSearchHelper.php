@@ -47,22 +47,22 @@ abstract class AbstractSearchHelper implements SearchableInterface
     /**
      * @var SessionInterface
      */
-    private $session;
+    protected $session;
     
     /**
      * @var Request
      */
-    private $request;
+    protected $request;
     
     /**
      * @var EntityFactory
      */
-    private $entityFactory;
+    protected $entityFactory;
     
     /**
      * @var ControllerHelper
      */
-    private $controllerHelper;
+    protected $controllerHelper;
     
     /**
      * @var EntityDisplayHelper
@@ -72,12 +72,12 @@ abstract class AbstractSearchHelper implements SearchableInterface
     /**
      * @var FeatureActivationHelper
      */
-    private $featureActivationHelper;
+    protected $featureActivationHelper;
     
     /**
      * @var CategoryHelper
      */
-    private $categoryHelper;
+    protected $categoryHelper;
     
     /**
      * SearchHelper constructor.
@@ -263,7 +263,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
     /**
      * Returns list of supported search types.
      *
-     * @return array
+     * @return array List of search types
      */
     protected function getSearchTypes()
     {
@@ -298,13 +298,13 @@ abstract class AbstractSearchHelper implements SearchableInterface
      * Construct a QueryBuilder Where orX|andX Expr instance.
      *
      * @param QueryBuilder $qb
-     * @param array $words the words to query for
-     * @param array $fields
+     * @param string[] $words  List of words to query for
+     * @param string[] $fields List of fields to include into query
      * @param string $searchtype AND|OR|EXACT
      *
      * @return null|Composite
      */
-    protected function formatWhere(QueryBuilder $qb, array $words, array $fields, $searchtype = 'AND')
+    protected function formatWhere(QueryBuilder $qb, array $words = [], array $fields = [], $searchtype = 'AND')
     {
         if (empty($words) || empty($fields)) {
             return null;
