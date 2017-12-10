@@ -295,5 +295,16 @@ class MessageController extends AbstractMessageController
         return parent::handleSelectedEntriesAction($request);
     }
 
-    // feel free to add your own controller methods here
+    /**
+     * This method includes the common implementation code for adminDisplay() and display().
+     */
+    protected function displayInternal(Request $request, MessageEntity $message, $isAdmin = false)
+    { 	
+    	if ($isAdmin == false) {
+    	    $entityManager = $this->get('doctrine.entitymanager');
+    	    $message->setAmountOfViews($message->getAmountOfViews() + 1);
+    	    $entityManager->flush();
+    	}
+    	return parent:: displayInternal($request, $message);
+    }
 }
