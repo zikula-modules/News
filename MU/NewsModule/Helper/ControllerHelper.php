@@ -43,36 +43,32 @@ class ControllerHelper extends AbstractControllerHelper
     
         $request = $this->request;
         $repository = $this->entityFactory->getRepository($objectType);
-    
+
         // parameter for used sorting field
+        $sortdir = $request->query->get('sortdir', 'ASC');
         $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
-        	$defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
-        	if ($templateParameters['routeArea'] != 'admin') {
-        	if ($defaultSorting == 'articleID')
-        	{
-        		$sort = 'id';
-        	}
-        	if ($defaultSorting == 'articledatetime')
-        	{
-        		$sort = 'createdDate';
-        	}
-        	if ($defaultSorting == 'articleweight')
-        	{
-        		$sort = 'weight';
-        	}
-        	} else {
-            $sort = $repository->getDefaultSortingField();
-        	}
+            $defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
+            if ($templateParameters['routeArea'] != 'admin') {
+                if ($defaultSorting == 'articleID') {
+                    $sort = 'id';
+                } elseif ($defaultSorting == 'articledatetime') {
+                    $sort = 'createdDate';
+                    $sortdir = 'DESC';
+                } elseif ($defaultSorting == 'articleweight') {
+                    $sort = 'weight';
+                }
+            } else {
+                $sort = $repository->getDefaultSortingField();
+            }
 
             $request->query->set('sort', $sort);
             // set default sorting in route parameters (e.g. for the pager)
             $routeParams = $request->attributes->get('_route_params');
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
-            }
-        
-        $sortdir = $request->query->get('sortdir', 'DESC');
+        }
+
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = strtolower($sortdir);
     
