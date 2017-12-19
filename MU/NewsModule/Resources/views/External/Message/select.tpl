@@ -46,19 +46,8 @@
                 <select id="{$baseID}Sort" name="sort" class="form-control">
                     <option value="workflowState"{if $sort eq 'workflowState'} selected="selected"{/if}>{gt text='Workflow state'}</option>
                     <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
-                    <option value="startText"{if $sort eq 'startText'} selected="selected"{/if}>{gt text='Start text'}</option>
                     <option value="imageUpload1"{if $sort eq 'imageUpload1'} selected="selected"{/if}>{gt text='Image upload 1'}</option>
-                    <option value="mainText"{if $sort eq 'mainText'} selected="selected"{/if}>{gt text='Main text'}</option>
-                    <option value="author"{if $sort eq 'author'} selected="selected"{/if}>{gt text='Author'}</option>
-                    <option value="notes"{if $sort eq 'notes'} selected="selected"{/if}>{gt text='Notes'}</option>
                     <option value="displayOnIndex"{if $sort eq 'displayOnIndex'} selected="selected"{/if}>{gt text='Display on index'}</option>
-                    <option value="messageLanguage"{if $sort eq 'messageLanguage'} selected="selected"{/if}>{gt text='Message language'}</option>
-                    <option value="allowComments"{if $sort eq 'allowComments'} selected="selected"{/if}>{gt text='Allow comments'}</option>
-                    <option value="imageUpload2"{if $sort eq 'imageUpload2'} selected="selected"{/if}>{gt text='Image upload 2'}</option>
-                    <option value="imageUpload3"{if $sort eq 'imageUpload3'} selected="selected"{/if}>{gt text='Image upload 3'}</option>
-                    <option value="imageUpload4"{if $sort eq 'imageUpload4'} selected="selected"{/if}>{gt text='Image upload 4'}</option>
-                    <option value="noEndDate"{if $sort eq 'noEndDate'} selected="selected"{/if}>{gt text='No end date'}</option>
-                    <option value="weight"{if $sort eq 'weight'} selected="selected"{/if}>{gt text='Weight'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdBy"{if $sort eq 'createdBy'} selected="selected"{/if}>{gt text='Creator'}</option>
                     <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

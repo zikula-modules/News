@@ -74,6 +74,16 @@ abstract class AbstractEditHandler extends EditHandler
      */
     protected function createForm()
     {
+        return $this->formFactory->create(MessageType::class, $this->entityRef, $this->getFormOptions());
+    }
+    
+    /**
+     * Returns the form options.
+     *
+     * @return array
+     */
+    protected function getFormOptions()
+    {
         $options = [
             'entity' => $this->entityRef,
             'mode' => $this->templateParameters['mode'],
@@ -92,7 +102,7 @@ abstract class AbstractEditHandler extends EditHandler
             $options['translations'][$language] = isset($this->templateParameters[$this->objectTypeLower . $language]) ? $this->templateParameters[$this->objectTypeLower . $language] : [];
         }
     
-        return $this->formFactory->create(MessageType::class, $this->entityRef, $options);
+        return $options;
     }
 
 

@@ -286,7 +286,7 @@ abstract class AbstractMessageType extends AbstractType
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 7,
-                'class' => ' validate-nospace',
+                'class' => '',
                 'title' => $this->__('Choose the message language of the message')
             ],
             'required' => false,
@@ -427,7 +427,8 @@ abstract class AbstractMessageType extends AbstractType
             'multiple' => true,
             'module' => 'MUNewsModule',
             'entity' => 'MessageEntity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\MessageCategoryEntity'
+            'entityCategoryClass' => 'MU\NewsModule\Entity\MessageCategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 

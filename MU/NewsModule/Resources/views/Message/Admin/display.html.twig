@@ -113,26 +113,6 @@
                     </div></noscript>
                     </dd>
                 {% endif %}
-                {% if message.messageLanguage is not empty %}
-                    <dt>{{ __('Message language') }}</dt>
-                    <dd>{{ message.messageLanguage|languageName }}</dd>
-                {% endif %}
-                {% if message.allowComments is not empty %}
-                    <dt>{{ __('Allow comments') }}</dt>
-                    <dd>{% set itemId = message.getKey() %}
-                    <a id="toggleAllowComments{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="allowComments" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check{% if not message.allowComments %} hidden{% endif %}" id="yesAllowComments{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times{% if message.allowComments %} hidden{% endif %}" id="noAllowComments{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
-                    </a>
-                    <noscript><div id="noscriptAllowComments{{ itemId }}">
-                        {% if message.allowComments %}
-                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                        {% else %}
-                            <i class="fa fa-times" title="{{ __('No') }}"></i>
-                        {% endif %}
-                    </div></noscript>
-                    </dd>
-                {% endif %}
                 {% if message.imageUpload2 is not empty %}
                     <dt>{{ __('Image upload 2') }}</dt>
                     <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
@@ -173,22 +153,6 @@
                     {% endif %}
                     </a>
                     {% else %}&nbsp;{% endif %}
-                    </dd>
-                {% endif %}
-                {% if message.noEndDate is not empty %}
-                    <dt>{{ __('No end date') }}</dt>
-                    <dd>{% set itemId = message.getKey() %}
-                    <a id="toggleNoEndDate{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="noEndDate" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check{% if not message.noEndDate %} hidden{% endif %}" id="yesNoEndDate{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times{% if message.noEndDate %} hidden{% endif %}" id="noNoEndDate{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
-                    </a>
-                    <noscript><div id="noscriptNoEndDate{{ itemId }}">
-                        {% if message.noEndDate %}
-                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                        {% else %}
-                            <i class="fa fa-times" title="{{ __('No') }}"></i>
-                        {% endif %}
-                    </div></noscript>
                     </dd>
                 {% endif %}
                 

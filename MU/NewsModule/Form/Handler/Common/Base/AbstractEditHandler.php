@@ -502,6 +502,17 @@ abstract class AbstractEditHandler
     }
     
     /**
+     * Returns the form options.
+     *
+     * @return array
+     */
+    protected function getFormOptions()
+    {
+        // to be customised in sub classes
+        return [];
+    }
+    
+    /**
      * Returns the template parameters.
      *
      * @return array

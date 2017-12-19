@@ -122,7 +122,8 @@ abstract class AbstractMessageFinderType extends AbstractType
             'multiple' => true,
             'module' => 'MUNewsModule',
             'entity' => ucfirst($options['object_type']) . 'Entity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity'
+            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 
@@ -197,19 +198,8 @@ abstract class AbstractMessageFinderType extends AbstractType
                 'choices' => [
                     $this->__('Workflow state') => 'workflowState',
                     $this->__('Title') => 'title',
-                    $this->__('Start text') => 'startText',
                     $this->__('Image upload 1') => 'imageUpload1',
-                    $this->__('Main text') => 'mainText',
-                    $this->__('Author') => 'author',
-                    $this->__('Notes') => 'notes',
                     $this->__('Display on index') => 'displayOnIndex',
-                    $this->__('Message language') => 'messageLanguage',
-                    $this->__('Allow comments') => 'allowComments',
-                    $this->__('Image upload 2') => 'imageUpload2',
-                    $this->__('Image upload 3') => 'imageUpload3',
-                    $this->__('Image upload 4') => 'imageUpload4',
-                    $this->__('No end date') => 'noEndDate',
-                    $this->__('Weight') => 'weight',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',

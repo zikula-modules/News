@@ -122,7 +122,7 @@ class ItemListPlugin extends Newsletter_AbstractPlugin implements ContainerAware
     /**
      * Returns data for the Newsletter plugin.
      *
-     * @param \DateTime $filterAfterDate Optional date filter (items should be newer), format yyyy-mm-dd hh:mm:ss or null if not set
+     * @param \DateTimeInterface $filterAfterDate Optional date filter (items should be newer), format yyyy-mm-dd hh:mm:ss or null if not set
      *
      * @return array List of affected content items
      */
@@ -151,7 +151,7 @@ class ItemListPlugin extends Newsletter_AbstractPlugin implements ContainerAware
     /**
      * Collects newsletter data for each activated object type.
      *
-     * @param \DateTime $filterAfterDate Optional date filter (items should be newer), format yyyy-mm-dd hh:mm:ss or null if not set
+     * @param \DateTimeInterface $filterAfterDate Optional date filter (items should be newer), format yyyy-mm-dd hh:mm:ss or null if not set
      *
      * @return array Data grouped by object type
      */
@@ -183,8 +183,8 @@ class ItemListPlugin extends Newsletter_AbstractPlugin implements ContainerAware
     /**
      * Performs the internal data selection.
      *
-     * @param array     $args            Arguments array (contains object type)
-     * @param \DateTime $filterAfterDate Optional date filter (items should be newer), format yyyy-mm-dd hh:mm:ss or null if not set
+     * @param array              $args            Arguments array (contains object type)
+     * @param \DateTimeInterface $filterAfterDate Optional date filter (items should be newer), format yyyy-mm-dd hh:mm:ss or null if not set
      *
      * @return array List of selected items
      */

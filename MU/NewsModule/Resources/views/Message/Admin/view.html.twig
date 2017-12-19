@@ -24,23 +24,12 @@
                 <col id="cWorkflowState" />
                 {% endif %}
                 <col id="cTitle" />
-                <col id="cStartText" />
                 <col id="cImageUpload1" />
-                <col id="cMainText" />
                 <col id="cAmountOfViews" />
-                <col id="cAuthor" />
-                <col id="cApprover" />
-                <col id="cNotes" />
                 <col id="cDisplayOnIndex" />
                 <col id="cMessageLanguage" />
-                <col id="cAllowComments" />
-                <col id="cImageUpload2" />
-                <col id="cImageUpload3" />
-                <col id="cImageUpload4" />
-                <col id="cStartDate" />
                 <col id="cNoEndDate" />
                 <col id="cEndDate" />
-                <col id="cWeight" />
             </colgroup>
             <thead>
             <tr>
@@ -58,56 +47,23 @@
                 <th id="hTitle" scope="col" class="text-left">
                     <a href="{{ sort.title.url }}" title="{{ __f('Sort by %s', {'%s': 'title'}) }}" class="{{ sort.title.class }}">{{ __('Title') }}</a>
                 </th>
-                <th id="hStartText" scope="col" class="text-left">
-                    <a href="{{ sort.startText.url }}" title="{{ __f('Sort by %s', {'%s': 'start text'}) }}" class="{{ sort.startText.class }}">{{ __('Start text') }}</a>
-                </th>
                 <th id="hImageUpload1" scope="col" class="text-left">
                     <a href="{{ sort.imageUpload1.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 1'}) }}" class="{{ sort.imageUpload1.class }}">{{ __('Image upload 1') }}</a>
-                </th>
-                <th id="hMainText" scope="col" class="text-left">
-                    <a href="{{ sort.mainText.url }}" title="{{ __f('Sort by %s', {'%s': 'main text'}) }}" class="{{ sort.mainText.class }}">{{ __('Main text') }}</a>
                 </th>
                 <th id="hAmountOfViews" scope="col" class="text-right z-order-unsorted">
                     {{ __('Amount of views') }}
                 </th>
-                <th id="hAuthor" scope="col" class="text-left">
-                    <a href="{{ sort.author.url }}" title="{{ __f('Sort by %s', {'%s': 'author'}) }}" class="{{ sort.author.class }}">{{ __('Author') }}</a>
-                </th>
-                <th id="hApprover" scope="col" class="text-left z-order-unsorted">
-                    {{ __('Approver') }}
-                </th>
-                <th id="hNotes" scope="col" class="text-left">
-                    <a href="{{ sort.notes.url }}" title="{{ __f('Sort by %s', {'%s': 'notes'}) }}" class="{{ sort.notes.class }}">{{ __('Notes') }}</a>
-                </th>
                 <th id="hDisplayOnIndex" scope="col" class="text-center">
                     <a href="{{ sort.displayOnIndex.url }}" title="{{ __f('Sort by %s', {'%s': 'display on index'}) }}" class="{{ sort.displayOnIndex.class }}">{{ __('Display on index') }}</a>
                 </th>
-                <th id="hMessageLanguage" scope="col" class="text-left">
-                    <a href="{{ sort.messageLanguage.url }}" title="{{ __f('Sort by %s', {'%s': 'message language'}) }}" class="{{ sort.messageLanguage.class }}">{{ __('Message language') }}</a>
+                <th id="hMessageLanguage" scope="col" class="text-left z-order-unsorted">
+                    {{ __('Message language') }}
                 </th>
-                <th id="hAllowComments" scope="col" class="text-center">
-                    <a href="{{ sort.allowComments.url }}" title="{{ __f('Sort by %s', {'%s': 'allow comments'}) }}" class="{{ sort.allowComments.class }}">{{ __('Allow comments') }}</a>
-                </th>
-                <th id="hImageUpload2" scope="col" class="text-left">
-                    <a href="{{ sort.imageUpload2.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 2'}) }}" class="{{ sort.imageUpload2.class }}">{{ __('Image upload 2') }}</a>
-                </th>
-                <th id="hImageUpload3" scope="col" class="text-left">
-                    <a href="{{ sort.imageUpload3.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 3'}) }}" class="{{ sort.imageUpload3.class }}">{{ __('Image upload 3') }}</a>
-                </th>
-                <th id="hImageUpload4" scope="col" class="text-left">
-                    <a href="{{ sort.imageUpload4.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 4'}) }}" class="{{ sort.imageUpload4.class }}">{{ __('Image upload 4') }}</a>
-                </th>
-                <th id="hStartDate" scope="col" class="text-left z-order-unsorted">
-                    {{ __('Start date') }}
-                </th>
-                <th id="hNoEndDate" scope="col" class="text-center">
-                    <a href="{{ sort.noEndDate.url }}" title="{{ __f('Sort by %s', {'%s': 'no end date'}) }}" class="{{ sort.noEndDate.class }}">{{ __('No end date') }}</a>
+                <th id="hNoEndDate" scope="col" class="text-center z-order-unsorted">
+                    {{ __('No end date') }}
                 </th>
                 <th id="hEndDate" scope="col" class="text-left z-order-unsorted">
                     {{ __('End date') }}
-                </th>
-                <th id="hWeight" scope="col" class="text-right">
-                    <a href="{{ sort.weight.url }}" title="{{ __f('Sort by %s', {'%s': 'weight'}) }}" class="{{ sort.weight.class }}">{{ __('Weight') }}</a>
                 </th>
             </tr>
             </thead>
@@ -130,9 +86,6 @@
                 {% endif %}<td headers="hTitle" class="text-left">
                     <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
                 </td>
-                <td headers="hStartText" class="text-left">
-                    {{ message.startText|striptags|truncate(50) }}
-                </td>
                 <td headers="hImageUpload1" class="text-left">
                     {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
                                 <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
@@ -145,23 +98,8 @@
                     </a>
                     {% else %}&nbsp;{% endif %}
                 </td>
-                <td headers="hMainText" class="text-left">
-                    {{ message.mainText|striptags|truncate(50) }}
-                </td>
                 <td headers="hAmountOfViews" class="text-right">
                     {{ message.amountOfViews }}
-                </td>
-                <td headers="hAuthor" class="text-left">
-                    {{ message.author }}
-                </td>
-                <td headers="hApprover" class="text-left">
-                    {% if message.approver|default and message.approver.getUid() > 0 %}
-                        {{ message.approver.getUid()|profileLinkByUserId() }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.getUid()|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}<a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', { '%userName%': message.approver.getUname() }) }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
-                        <span class="avatar">{{ userAvatar(message.approver.getUid(), { rating: 'g' }) }}</span>
-                    {% else %}&nbsp;{% endif %}
-                </td>
-                <td headers="hNotes" class="text-left">
-                    {{ message.notes|striptags|truncate(50) }}
                 </td>
                 <td headers="hDisplayOnIndex" class="text-center">
                     {% set itemId = message.getKey() %}
@@ -179,61 +117,6 @@
                 </td>
                 <td headers="hMessageLanguage" class="text-left">
                     {{ message.messageLanguage|languageName }}
-                </td>
-                <td headers="hAllowComments" class="text-center">
-                    {% set itemId = message.getKey() %}
-                    <a id="toggleAllowComments{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="allowComments" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check{% if not message.allowComments %} hidden{% endif %}" id="yesAllowComments{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times{% if message.allowComments %} hidden{% endif %}" id="noAllowComments{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
-                    </a>
-                    <noscript><div id="noscriptAllowComments{{ itemId }}">
-                        {% if message.allowComments %}
-                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                        {% else %}
-                            <i class="fa fa-times" title="{{ __('No') }}"></i>
-                        {% endif %}
-                    </div></noscript>
-                </td>
-                <td headers="hImageUpload2" class="text-left">
-                    {% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
-                                <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
-                    {% if message.imageUpload2Meta.isImage %}
-                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload2') %}
-                        <img src="{{ message.imageUpload2.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-                    {% else %}
-                        {{ __('Download') }} ({{ message.imageUpload2Meta.size|munewsmodule_fileSize(message.imageUpload2.getPathname(), false, false) }})
-                    {% endif %}
-                    </a>
-                    {% else %}&nbsp;{% endif %}
-                </td>
-                <td headers="hImageUpload3" class="text-left">
-                    {% if message.imageUpload3 is not empty and message.imageUpload3Meta|default %}
-                                <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
-                    {% if message.imageUpload3Meta.isImage %}
-                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload3') %}
-                        <img src="{{ message.imageUpload3.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-                    {% else %}
-                        {{ __('Download') }} ({{ message.imageUpload3Meta.size|munewsmodule_fileSize(message.imageUpload3.getPathname(), false, false) }})
-                    {% endif %}
-                    </a>
-                    {% else %}&nbsp;{% endif %}
-                </td>
-                <td headers="hImageUpload4" class="text-left">
-                    {% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
-                                <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
-                    {% if message.imageUpload4Meta.isImage %}
-                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload4') %}
-                        <img src="{{ message.imageUpload4.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
-                    {% else %}
-                        {{ __('Download') }} ({{ message.imageUpload4Meta.size|munewsmodule_fileSize(message.imageUpload4.getPathname(), false, false) }})
-                    {% endif %}
-                    </a>
-                    {% else %}&nbsp;{% endif %}
-                </td>
-                <td headers="hStartDate" class="text-left">
-                    {% if message.startDate is not empty %}
-                        {{ message.startDate|localizeddate('medium', 'short') }}
-                    {% endif %}
                 </td>
                 <td headers="hNoEndDate" class="text-center">
                     {% set itemId = message.getKey() %}
@@ -254,13 +137,10 @@
                         {{ message.endDate|localizeddate('medium', 'short') }}
                     {% endif %}
                 </td>
-                <td headers="hWeight" class="text-right">
-                    {{ message.weight }}
-                </td>
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}21{% else %}20{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}10{% else %}9{% endif %}">
             {{ __('No messages found.') }}
               </td>
             </tr>

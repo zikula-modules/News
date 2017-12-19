@@ -95,13 +95,6 @@ function mUNewsValidateDateRangeMessage(val) {
  * Runs special validation rules.
  */
 function mUNewsExecuteCustomValidationConstraints(objectType, currentEntityId) {
-    jQuery('.validate-nospace').each(function () {
-        if (!mUNewsValidateNoSpace(jQuery(this).val())) {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('This value must not contain spaces.'));
-        } else {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
-        }
-    });
     jQuery('.validate-upload').each(function () {
         if (!mUNewsValidateUploadExtension(jQuery(this).val(), jQuery(this))) {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('Please select a valid file extension.'));

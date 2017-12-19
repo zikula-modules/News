@@ -108,7 +108,8 @@ abstract class AbstractItemListBlockType extends AbstractType
             'multiple' => $hasMultiSelection,
             'module' => 'MUNewsModule',
             'entity' => ucfirst($options['object_type']) . 'Entity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity'
+            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 

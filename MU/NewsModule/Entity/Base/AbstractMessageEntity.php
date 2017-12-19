@@ -166,7 +166,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @ORM\Column(length=7)
      * @Assert\NotNull()
-     * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
      * @Assert\Length(min="0", max="7")
      * @Assert\Locale()
      * @var string $messageLanguage
@@ -974,7 +973,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setStartDate($startDate)
     {
         if ($this->startDate !== $startDate) {
-            if (!(null == $startDate && empty($startDate)) && !(is_object($startDate) && $startDate instanceOf \DateTime)) {
+            if (!(null == $startDate && empty($startDate)) && !(is_object($startDate) && $startDate instanceOf \DateTimeInterface)) {
                 $startDate = new \DateTime($startDate);
             }
             
@@ -1028,7 +1027,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setEndDate($endDate)
     {
         if ($this->endDate !== $endDate) {
-            if (!(null == $endDate && empty($endDate)) && !(is_object($endDate) && $endDate instanceOf \DateTime)) {
+            if (!(null == $endDate && empty($endDate)) && !(is_object($endDate) && $endDate instanceOf \DateTimeInterface)) {
                 $endDate = new \DateTime($endDate);
             }
             

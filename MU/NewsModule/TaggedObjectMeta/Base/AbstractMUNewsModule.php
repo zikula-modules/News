@@ -12,7 +12,7 @@
 
 namespace MU\NewsModule\TaggedObjectMeta\Base;
 
-use DateTime;
+use DateTimeInterface;
 use IntlDateFormatter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -91,13 +91,13 @@ abstract class AbstractMUNewsModule extends AbstractTaggedObjectMeta implements 
     /**
      * Sets the object date.
      *
-     * @param DateTime|string $date
+     * @param DateTimeInterface|string $date
      */
     public function setObjectDate($date)
     {
-        if ($date instanceof DateTime) {
+        if ($date instanceof DateTimeInterface) {
             $locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
-            $formatter = new IntlDateFormatter($locale, null, null);
+            $formatter = new IntlDateFormatter($locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE);
             $this->date = $formatter->format($date->getTimestamp());
     	} else {
             $this->date = $date;
