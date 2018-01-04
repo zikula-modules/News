@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 2.0.3\n"
+
+msgid "Do you really want to delete this entry?"
+msgstr "Diesen Eintrag wirklich löschen?"
+
+msgid "Next (Right arrow key)"
+msgstr "Nächster (Rechte Pfeiltaste)"
+
+msgid "Please select a valid file extension."
+msgstr "Bitte eine gültige Dateiendung wählen."
+
+msgid "Previous (Left arrow key)"
+msgstr "Vorheriger (Linke Pfeiltaste)"
+
+msgid "Success"
+msgstr "Erfolg"
+
+msgid "The start must be before the end."
+msgstr "Der Start muss vor dem Ende liegen."
+
+msgid "of"
+msgstr "von"
