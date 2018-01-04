@@ -148,7 +148,7 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
             $this->delVar('allowedFileSize');
             $this->delVar('muimageAlbum');
             
-            $this->addFlash('status', $this->__('After the succesful update you have to enter maxiumum size for file uploads!'));
+            $this->addFlash('status', $this->__('After the succesful update you have to enter maximum size for file uploads!'));
         }
     
         // remove obsolete persisted hooks from the database
