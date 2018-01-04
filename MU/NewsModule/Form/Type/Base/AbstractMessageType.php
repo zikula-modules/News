@@ -399,7 +399,7 @@ abstract class AbstractMessageType extends AbstractType
         foreach ($options['attributes'] as $attributeName => $attributeValue) {
             $builder->add('attributes' . $attributeName, TextType::class, [
                 'mapped' => false,
-                'label' => $this->__($attributeName),
+/** @Ignore */  'label' => $this->__($attributeName),
                 'attr' => [
                     'maxlength' => 255
                 ],
