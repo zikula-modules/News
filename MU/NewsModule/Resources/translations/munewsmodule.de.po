@@ -137,7 +137,7 @@ msgid "ArticleWeight"
 msgstr "Gewicht des Artikels"
 
 msgid "Ascending"
-msgstr "Abwärts"
+msgstr "Aufwärts"
 
 msgid "Attributes"
 msgstr "Attribute"
@@ -287,7 +287,7 @@ msgid "Deleted"
 msgstr "Gelöscht"
 
 msgid "Descending"
-msgstr "Aufwärts"
+msgstr "Abwärts"
 
 msgid "Details"
 msgstr "Details"
