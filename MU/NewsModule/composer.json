@@ -31,7 +31,7 @@
     },
     "extra": {
         "zikula": {
-            "core-compatibility": ">=1.5.0 <3.0",
+            "core-compatibility": ">=1.5.4 <2.0",
             "class": "MU\\NewsModule\\MUNewsModule",
             "displayname": "News",
             "url": "news",
