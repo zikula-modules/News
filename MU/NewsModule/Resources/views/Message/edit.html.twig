@@ -224,4 +224,16 @@
         </script>
     {% endset %}
     {{ pageAddAsset('footer', formInitScript) }}
+        <script>
+    var MU = jQuery.noConflict();
+    MU().ready(function() {
+    var enddate = MU('#munewsmodule_message_noEndDate');
+    if(enddate.val() == 1) {
+        MU('#endDateContainer').addClass('hidden');
+    }
+    enddate.click(function() {
+        MU('#endDateContainer').toggleClass('hidden');
+    });
+    });
+    </script>
 {% endblock %}

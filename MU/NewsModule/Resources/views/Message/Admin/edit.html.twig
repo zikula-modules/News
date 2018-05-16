@@ -164,6 +164,9 @@
             <div class="col-sm-offset-3 col-sm-9">
                 {% for action in actions %}
                     {{ form_widget(attribute(form, action.id)) }}
+                    {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}
+                        {{ form_widget(attribute(form, 'submitrepeat')) }}
+                    {% endif %}
                 {% endfor %}
                 {{ form_widget(form.reset) }}
                 {{ form_widget(form.cancel) }}
@@ -171,30 +174,36 @@
         </div>
         {{ form_end(form) }}
         {% set hookId = mode != 'create' ? message.id : null %}
-        {{ notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId) }}
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
         
     </div>
 {% endblock %}
 {% block footer %}
-    {{ parent() }}
+ {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
     {% set formInitScript %}
-        <script type="text/javascript">
+        <script>
         /* <![CDATA[ */
             
             ( function($) {
                 $(document).ready(function() {
-                    // initialise auto completion for user fields
-                    initUserLiveSearch('munewsmodule_message_approver');
-                    {% if form.moderationSpecificCreator is defined %}
-                        initUserLiveSearch('munewsmodule_message_moderationSpecificCreator');
-                    {% endif %}
                     mUNewsInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ message.id }}{% endif %}');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload1_imageUpload1');
+                    initUserLiveSearch('munewsmodule_message_approver');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload2_imageUpload2');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload3_imageUpload3');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload4_imageUpload4');
                     mUNewsInitDateField('munewsmodule_message_startDate');
                     mUNewsInitDateField('munewsmodule_message_endDate');
+                    {% if form.moderationSpecificCreator is defined %}
+                        initUserLiveSearch('munewsmodule_message_moderationSpecificCreator');
+                    {% endif %}
                 });
             })(jQuery);
         /* ]]> */
