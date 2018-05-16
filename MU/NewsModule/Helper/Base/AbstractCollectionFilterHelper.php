@@ -178,24 +178,26 @@ abstract class AbstractCollectionFilterHelper
         $parameters = $this->getViewQuickNavParametersForMessage();
         foreach ($parameters as $k => $v) {
             if ($k == 'catId') {
-                // single category filter
-                if ($v > 0) {
+                if (intval($v) > 0) {
+                    // single category filter
                     $qb->andWhere('tblCategories.category = :category')
                        ->setParameter('category', $v);
                 }
-            } elseif ($k == 'catIdList') {
+                continue;
+            }
+            if ($k == 'catIdList') {
                 // multi category filter
-                /* old
-                $qb->andWhere('tblCategories.category IN (:categories)')
-                   ->setParameter('categories', $v);
-                 */
                 $qb = $this->categoryHelper->buildFilterClauses($qb, 'message', $v);
-            } elseif (in_array($k, ['q', 'searchterm'])) {
+                continue;
+            }
+            if (in_array($k, ['q', 'searchterm'])) {
                 // quick search
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter('message', $qb, $v);
                 }
-            } elseif (in_array($k, ['displayOnIndex', 'allowComments', 'noEndDate'])) {
+                continue;
+            }
+            if (in_array($k, ['displayOnIndex', 'allowComments', 'noEndDate'])) {
                 // boolean filter
                 if ($v == 'no') {
                     $qb->andWhere('tbl.' . $k . ' = 0');
@@ -203,6 +205,7 @@ abstract class AbstractCollectionFilterHelper
                     $qb->andWhere('tbl.' . $k . ' = 1');
                 }
             }
+    
             if (is_array($v)) {
                 continue;
             }

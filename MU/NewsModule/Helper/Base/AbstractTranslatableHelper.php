@@ -88,7 +88,7 @@ abstract class AbstractTranslatableHelper
         $fields = [];
         switch ($objectType) {
             case 'message':
-                $fields = ['title', 'startText', 'mainText'];
+                $fields = ['title', 'startText', 'mainText', 'slug'];
                 break;
         }
     

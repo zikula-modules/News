@@ -1,4 +1,4 @@
-workflow:
+framework:
     workflows:
         munewsmodule_standard:
             type: state_machine
@@ -14,14 +14,30 @@ workflow:
                 - approved
                 - suspended
                 - archived
+                - trashed
                 - deleted
             transitions:
-                updatewaiting:
+                update:
                     from: waiting
                     to: waiting
                 submit:
                     from: initial
                     to: waiting
+                update:
+                    from: approved
+                    to: approved
+                archive:
+                    from: [approved, suspended]
+                    to: archived
+                update:
+                    from: suspended
+                    to: suspended
+                trash:
+                    from: suspended
+                    to: trashed
+                delete:
+                    from: [waiting, approved, suspended, archived, trashed]
+                    to: deleted
                 approve:
                     from: [initial, waiting]
                     to: approved
@@ -31,21 +47,18 @@ workflow:
                 publish:
                     from: suspended
                     to: approved
-                updateapproved:
-                    from: approved
-                    to: approved
                 unarchive:
                     from: archived
                     to: approved
-                archive:
-                    from: [approved, suspended]
-                    to: archived
-                updatesuspended:
-                    from: suspended
-                    to: suspended
-                updatearchived:
+                trash:
+                    from: waiting
+                    to: trashed
+                trash:
+                    from: archived
+                    to: trashed
+                update:
                     from: archived
                     to: archived
-                delete:
-                    from: [waiting, approved, suspended, archived]
-                    to: deleted
+                trash:
+                    from: approved
+                    to: trashed

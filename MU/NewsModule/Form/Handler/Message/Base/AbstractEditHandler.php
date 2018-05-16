@@ -43,7 +43,6 @@ abstract class AbstractEditHandler extends EditHandler
         
         $this->hasPageLockSupport = true;
         $this->hasAttributes = true;
-        $this->hasSlugUpdatableField = true;
         $this->hasTranslatableFields = true;
     
         $result = parent::processForm($templateParameters);
@@ -196,9 +195,6 @@ abstract class AbstractEditHandler extends EditHandler
         if ($this->templateParameters['mode'] == 'create' && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
             $args['commandName'] = 'submit';
             $this->repeatCreateAction = true;
-        }
-        if ($this->form->get('cancel')->isClicked()) {
-            $args['commandName'] = 'cancel';
         }
     
         return new RedirectResponse($this->getRedirectUrl($args), 302);

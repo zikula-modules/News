@@ -38,7 +38,7 @@
                         <input type="checkbox" class="munews-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActionsStart" scope="col" class="z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hItemActionsStart" scope="col" class="unsorted z-w02">{{ __('Actions') }}</th>
                 {% if routeArea == 'admin' %}
                 <th id="hWorkflowState" scope="col" class="text-left">
                     <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
@@ -50,19 +50,19 @@
                 <th id="hImageUpload1" scope="col" class="text-left">
                     <a href="{{ sort.imageUpload1.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 1'}) }}" class="{{ sort.imageUpload1.class }}">{{ __('Image upload 1') }}</a>
                 </th>
-                <th id="hAmountOfViews" scope="col" class="text-right z-order-unsorted">
+                <th id="hAmountOfViews" scope="col" class="text-right unsorted">
                     {{ __('Amount of views') }}
                 </th>
                 <th id="hDisplayOnIndex" scope="col" class="text-center">
                     <a href="{{ sort.displayOnIndex.url }}" title="{{ __f('Sort by %s', {'%s': 'display on index'}) }}" class="{{ sort.displayOnIndex.class }}">{{ __('Display on index') }}</a>
                 </th>
-                <th id="hMessageLanguage" scope="col" class="text-left z-order-unsorted">
+                <th id="hMessageLanguage" scope="col" class="text-left unsorted">
                     {{ __('Message language') }}
                 </th>
-                <th id="hNoEndDate" scope="col" class="text-center z-order-unsorted">
+                <th id="hNoEndDate" scope="col" class="text-center unsorted">
                     {{ __('No end date') }}
                 </th>
-                <th id="hEndDate" scope="col" class="text-left z-order-unsorted">
+                <th id="hEndDate" scope="col" class="text-left unsorted">
                     {{ __('End date') }}
                 </th>
             </tr>
@@ -194,6 +194,15 @@
             {% set linkTitle = __('Show all entries') %}
             {% set routeArgs = own ? {all: 1, own: 1} : {all: 1} %}
             <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
+        {% endif %}
+        {% if own == 1 %}
+            {% set linkTitle = __('Show also entries from other users') %}
+            {% set routeArgs = all ? {all: 1} : {} %}
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-users"></i> {{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show only own entries') %}
+            {% set routeArgs = all ? {all: 1, own: 1} : {own: 1} %}
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-user"></i> {{ linkTitle }}</a>
         {% endif %}
     </p>
 {% endblock %}

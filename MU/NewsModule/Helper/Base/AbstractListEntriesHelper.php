@@ -265,6 +265,13 @@ abstract class AbstractListEntriesHelper
             'default' => false
         ];
         $states[] = [
+            'value'   => 'trashed',
+            'text'    => $this->__('Trashed'),
+            'title'   => $this->__('Content has been marked as deleted, but is still persisted in the database.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
             'value'   => '!waiting',
             'text'    => $this->__('All except waiting'),
             'title'   => $this->__('Shows all items except these which are waiting'),
@@ -289,6 +296,13 @@ abstract class AbstractListEntriesHelper
             'value'   => '!archived',
             'text'    => $this->__('All except archived'),
             'title'   => $this->__('Shows all items except these which are archived'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!trashed',
+            'text'    => $this->__('All except trashed'),
+            'title'   => $this->__('Shows all items except these which are trashed'),
             'image'   => '',
             'default' => false
         ];

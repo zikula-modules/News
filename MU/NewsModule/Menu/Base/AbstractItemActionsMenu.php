@@ -62,7 +62,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
         $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
         $entityDisplayHelper = $this->container->get('mu_news_module.entity_display_helper');
-        $menu->setChildrenAttribute('class', 'list-inline');
+        $menu->setChildrenAttribute('class', 'list-inline item-actions');
 
         $currentUserId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof MessageEntity) {
@@ -130,7 +130,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
             }
             if ($context == 'display') {
-                $title = $this->__('Back to overview', 'munewsmodule');
+                $title = $this->__('Messages list', 'munewsmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
                 ]);

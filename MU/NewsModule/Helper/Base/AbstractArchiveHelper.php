@@ -94,11 +94,13 @@ abstract class AbstractArchiveHelper
 
     /**
      * Moves obsolete data into the archive.
+     *
+     * @param integer $probabilityPercent Execution probability
      */
-    public function archiveObsoleteObjects()
+    public function archiveObsoleteObjects($probabilityPercent = 75)
     {
-        $randProbability = mt_rand(1, 1000);
-        if ($randProbability < 750) {
+        $randProbability = mt_rand(1, 100);
+        if ($randProbability < $probabilityPercent) {
             return;
         }
     

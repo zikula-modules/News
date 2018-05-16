@@ -81,7 +81,7 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         // return response
-        return new JsonResponse($slimItems);
+        return $this->json($slimItems);
     }
     
     /**
@@ -142,7 +142,7 @@ abstract class AbstractAjaxController extends AbstractController
         $value = $request->query->get('v', '');
         
         if (empty($fieldName) || empty($value)) {
-            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
         // check if the given field is existing and unique
@@ -153,7 +153,7 @@ abstract class AbstractAjaxController extends AbstractController
                     break;
         }
         if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields)) {
-            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
         $exclude = $request->query->getInt('ex', '');
@@ -172,7 +172,7 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         // return response
-        return new JsonResponse(['isDuplicate' => $result]);
+        return $this->json(['isDuplicate' => $result]);
     }
     
     /**
@@ -198,7 +198,7 @@ abstract class AbstractAjaxController extends AbstractController
             || ($objectType != 'message')
         || ($objectType == 'message' && !in_array($field, ['displayOnIndex', 'allowComments', 'noEndDate']))
         ) {
-            return new JsonResponse($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
         // select data from data source
@@ -206,7 +206,7 @@ abstract class AbstractAjaxController extends AbstractController
         $repository = $entityFactory->getRepository($objectType);
         $entity = $repository->selectById($id, false);
         if (null === $entity) {
-            return new JsonResponse($this->__('No such item.'), JsonResponse::HTTP_NOT_FOUND);
+            return $this->json($this->__('No such item.'), JsonResponse::HTTP_NOT_FOUND);
         }
         
         // toggle the flag
@@ -220,7 +220,7 @@ abstract class AbstractAjaxController extends AbstractController
         $logger->notice('{app}: User {user} toggled the {field} flag the {entity} with id {id}.', $logArgs);
         
         // return response
-        return new JsonResponse([
+        return $this->json([
             'id' => $id,
             'state' => $entity[$field],
             'message' => $this->__('The setting has been successfully changed.')

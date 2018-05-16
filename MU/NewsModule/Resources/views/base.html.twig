@@ -18,7 +18,8 @@
 {% block content %}{% endblock %}
 
 {% block footer %}
-    {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js')) }}
-    {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css')) }}
+    {{ pageAddAsset('stylesheet', zasset('@MUNewsModule:css/custom.css'), 120) }}
+    {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js'), 90) }}
+    {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css'), 90) }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.js')) }}
 {% endblock %}

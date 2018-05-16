@@ -6,7 +6,7 @@ To create a new translation follow the steps below:
 2. Open a console and navigate to the Zikula root directory.
 3. Execute this command replacing `en` by your desired locale code:
 
-`php app/console translation:extract en --bundle=MUNewsModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=TaggedObjectMeta`
+`php -dmemory_limit=2G bin/console translation:extract en --bundle=MUNewsModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=vendor --exclude-dir=NewsletterPlugin --exclude-dir=TaggedObjectMeta`
 
 You can also use multiple locales at once, for example `de fr es`.
 
@@ -14,7 +14,7 @@ You can also use multiple locales at once, for example `de fr es`.
 
 Note you can even include custom views in `app/Resources/MUNewsModule/views/` and JavaScript files in `app/Resources/MUNewsModule/public/js/` like this:
 
-`php app/console translation:extract en --bundle=MUNewsModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=TaggedObjectMeta --dir=./modules/MU/NewsModule --dir=./app/Resources/MUNewsModule`
+`php -dmemory_limit=2G bin/console translation:extract en --bundle=MUNewsModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=vendor --exclude-dir=NewsletterPlugin --exclude-dir=TaggedObjectMeta --dir=./modules/MU/NewsModule --dir=./app/Resources/MUNewsModule`
 
 For questions and other remarks visit our homepage https://homepages-mit-zikula.de.
 

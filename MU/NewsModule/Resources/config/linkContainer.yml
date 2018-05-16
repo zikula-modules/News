@@ -7,5 +7,4 @@ services:
             - "@zikula_permissions_module.api.permission"
             - "@zikula_extensions_module.api.variable"
             - "@mu_news_module.controller_helper"
-        tags:
-            - { name: zikula.link_container }
+        tags: ['zikula.link_container']

@@ -98,6 +98,7 @@ abstract class AbstractExternalController extends AbstractController
         $assetHelper = $this->get('zikula_core.common.theme.asset_helper');
         $cssAssetBag = $this->get('zikula_core.common.theme.assets_css');
         $cssAssetBag->add($assetHelper->resolve('@MUNewsModule:css/style.css'));
+        $cssAssetBag->add([$assetHelper->resolve('@MUNewsModule:css/custom.css') => 120]);
         
         $activatedObjectTypes = $this->getVar('enabledFinderTypes', []);
         if (!in_array($objectType, $activatedObjectTypes)) {

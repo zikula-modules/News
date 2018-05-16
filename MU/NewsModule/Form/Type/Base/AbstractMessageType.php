@@ -194,6 +194,17 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false,
         ]);
+        $builder->add('slug', TextType::class, [
+            'label' => $this->__('Permalink') . ':',
+            'required' => false,
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => 'validate-unique',
+                'title' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically')
+            ],
+            'help' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically')
+        ]);
         
         if ($this->variableApi->getSystemVar('multilingual') && $this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, 'message')) {
             $supportedLanguages = $this->translatableHelper->getSupportedLanguages('message');
@@ -292,7 +303,6 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choices_as_values' => true
         ]);
         
         $builder->add('allowComments', CheckboxType::class, [
@@ -399,7 +409,7 @@ abstract class AbstractMessageType extends AbstractType
         foreach ($options['attributes'] as $attributeName => $attributeValue) {
             $builder->add('attributes' . $attributeName, TextType::class, [
                 'mapped' => false,
-/** @Ignore */  'label' => $this->__($attributeName),
+                'label' => $this->__(/** @Ignore */ $attributeName),
                 'attr' => [
                     'maxlength' => 255
                 ],

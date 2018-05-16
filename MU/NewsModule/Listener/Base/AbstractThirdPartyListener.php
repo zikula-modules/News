@@ -18,9 +18,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Zikula\Collection\Container;
+use Zikula\Common\Collection\Collectible\PendingContentCollectible;
+use Zikula\Common\Collection\Container;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Provider\AggregateItem;
 use MU\NewsModule\Helper\WorkflowHelper;
 use Zikula\ScribiteModule\Event\EditorHelperEvent;
 
@@ -67,7 +67,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     {
         return [
             'get.pending_content'                     => ['pendingContentListener', 5],
-            'module.content.gettypes'                 => ['contentGetTypes', 5],
             'module.scribite.editorhelpers'           => ['getEditorHelpers', 5],
             'moduleplugin.ckeditor.externalplugins'   => ['getCKEditorPlugins', 5],
             'moduleplugin.quill.externalplugins'      => ['getQuillPlugins', 5],
@@ -77,25 +76,8 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     }
     
     /**
-     * Listener for the `get.pending_content` event with registration requests and
-     * other submitted data pending approval.
-     *
-     * When a 'get.pending_content' event is fired, the Users module will respond with the
-     * number of registration requests that are pending administrator approval. The number
-     * pending may not equal the total number of outstanding registration requests, depending
-     * on how the 'moderation_order' module configuration variable is set, and whether e-mail
-     * address verification is required.
-     * If the 'moderation_order' variable is set to require approval after e-mail verification
-     * (and e-mail verification is also required) then the number of pending registration
-     * requests will equal the number of registration requested that have completed the
-     * verification process but have not yet been approved. For other values of
-     * 'moderation_order', the number should equal the number of registration requests that
-     * have not yet been approved, without regard to their current e-mail verification state.
-     * If moderation of registrations is not enabled, then the value will always be 0.
-     * In accordance with the 'get_pending_content' conventions, the count of pending
-     * registrations, along with information necessary to access the detailed list, is
-     * assemped as a {@link Zikula_Provider_AggregateItem} and added to the event
-     * subject's collection.
+     * Listener for the `get.pending_content` event which collects information from modules
+     * about pending content items waiting for approval.
      *
      * You can access general data available in the event.
      *
@@ -119,21 +101,19 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      */
     public function pendingContentListener(GenericEvent $event)
     {
-        $modname = 'MUNewsModule';
-        $useJoins = false;
-        
-        $collection = new Container($modname);
+        $collection = new Container('MUNewsModule');
         $amounts = $this->workflowHelper->collectAmountOfModerationItems();
         if (count($amounts) > 0) {
             foreach ($amounts as $amountInfo) {
                 $aggregateType = $amountInfo['aggregateType'];
                 $description = $amountInfo['description'];
                 $amount = $amountInfo['amount'];
-                $viewArgs = [
+                $route = 'munewsmodule_' . strtolower($amountInfo['objectType']) . '_adminview';
+                $routeArgs = [
                     'workflowState' => $amountInfo['state']
                 ];
-                $aggregateItem = new AggregateItem($aggregateType, $description, $amount, $amountInfo['objectType'], 'adminview', $viewArgs);
-                $collection->add($aggregateItem);
+                $item = new PendingContentCollectible($aggregateType, $description, $amount, $route, $routeArgs);
+                $collection->add($item);
             }
         
             // add collected items for pending content
@@ -141,46 +121,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
                 $event->getSubject()->add($collection);
             }
         }
-    }
-    
-    /**
-     * Listener for the `module.content.gettypes` event.
-     *
-     * This event occurs when the Content module is 'searching' for Content plugins.
-     * The subject is an instance of Content_Types.
-     * You can register custom content types as well as custom layout types.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
-     * If a listener should only be active for the master request,
-     * be sure to check that at the beginning of your method.
-     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-     *         return;
-     *     }`
-     *
-     * The kernel instance handling the current request:
-     *     `$kernel = $event->getKernel();`
-     *
-     * The currently handled request:
-     *     `$request = $event->getRequest();`
-     *
-     * @param \Zikula_Event $event The event instance
-     */
-    public function contentGetTypes(\Zikula_Event $event)
-    {
-        // intended is using the add() method to add a plugin like below
-        $types = $event->getSubject();
-        
-        
-        // plugin for showing a single item
-        $types->add('MUNewsModule_ContentType_Item');
-        
-        // plugin for showing a list of multiple items
-        $types->add('MUNewsModule_ContentType_ItemList');
     }
     
     /**

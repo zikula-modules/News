@@ -111,7 +111,7 @@ abstract class AbstractControllerHelper
         $this->imageHelper = $imageHelper;
         $this->featureActivationHelper = $featureActivationHelper;
 
-        $archiveHelper->archiveObsoleteObjects();
+        $archiveHelper->archiveObsoleteObjects(75);
     }
 
     /**
@@ -193,6 +193,10 @@ abstract class AbstractControllerHelper
             $request->attributes->set('_route_params', $routeParams);
         }
         $sortdir = $request->query->get('sortdir', 'ASC');
+        if (false !== strpos($sort, ' DESC')) {
+            $sort = str_replace(' DESC', '', $sort);
+            $sortdir = 'desc';
+        }
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = strtolower($sortdir);
     
@@ -225,7 +229,7 @@ abstract class AbstractControllerHelper
                     $sort = $fieldValue;
                 } elseif ($fieldName == 'sortdir' && !empty($fieldValue)) {
                     $sortdir = $fieldValue;
-                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions')) {
+                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions') && false === stripos($fieldName, 'featureActivationHelper')) {
                     // set filter as query argument, fetched inside repository
                     if ($fieldValue instanceof UserEntity) {
                         $fieldValue = $fieldValue->getUid();
@@ -240,7 +244,9 @@ abstract class AbstractControllerHelper
     
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
-            if (false === stripos($parameterName, 'thumbRuntimeOptions')) {
+            if (false === stripos($parameterName, 'thumbRuntimeOptions')
+                && false === stripos($parameterName, 'featureActivationHelper')
+            ) {
                 continue;
             }
             unset($urlParameters[$parameterName]);
@@ -282,6 +288,14 @@ abstract class AbstractControllerHelper
         $templateParameters['quickNavForm'] = $quickNavForm->createView();
     
         $templateParameters['canBeCreated'] = $this->modelHelper->canBeCreated($objectType);
+    
+        $request->query->set('sort', $sort);
+        $request->query->set('sortdir', $sortdir);
+        // set current sorting in route parameters (e.g. for the pager)
+        $routeParams = $request->attributes->get('_route_params');
+        $routeParams['sort'] = $sort;
+        $routeParams['sortdir'] = $sortdir;
+        $request->attributes->set('_route_params', $routeParams);
     
         return $templateParameters;
     }

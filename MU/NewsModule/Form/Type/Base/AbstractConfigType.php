@@ -186,7 +186,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -277,7 +276,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -304,7 +302,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -492,7 +489,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -677,7 +673,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -862,7 +857,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -1047,7 +1041,6 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -1193,7 +1186,6 @@ abstract class AbstractConfigType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('Choose an option'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false

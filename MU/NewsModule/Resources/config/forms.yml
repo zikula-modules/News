@@ -8,8 +8,7 @@ services:
             - "@mu_news_module.listentries_helper"
             - "@zikula_settings_module.locale_api"
             - "@mu_news_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_news_module.form.handler.common:
         abstract: true
@@ -49,15 +48,13 @@ services:
             - "@mu_news_module.listentries_helper"
             - "@zikula_settings_module.locale_api"
             - "@mu_news_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_news_module.form.type.block.itemlist:
         class: MU\NewsModule\Block\Form\Type\ItemListBlockType
         arguments:
             - "@translator.default"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_news_module.form.type.block.item:
         class: MU\NewsModule\Block\Form\Type\ItemBlockType
@@ -65,21 +62,18 @@ services:
             - "@translator.default"
             - "@mu_news_module.entity_factory"
             - "@mu_news_module.entity_display_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_news_module.form.type.messagefinder:
         class: MU\NewsModule\Form\Type\Finder\MessageFinderType
         arguments:
             - "@translator.default"
             - "@mu_news_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']
     
     mu_news_module.form.type.config:
         class: MU\NewsModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
             - "@mu_news_module.listentries_helper"
-        tags:
-            - { name: form.type }
+        tags: ['form.type']

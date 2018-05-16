@@ -10,3 +10,6 @@ imports:
   - { resource: 'hooks.yml' }
   - { resource: 'twig.yml' }
   - { resource: 'logger.yml' }
+
+parameters:
+    liip_imagine.cache.signer.class: MU\NewsModule\Imagine\Cache\DummySigner

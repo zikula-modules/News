@@ -1,9 +1,9 @@
-application "News" targets ZK15 {
+application "News" targets ZK20 {
     vendor "MU"
 	author "Michael Ueberschaer"
 	email "info@homepages-mit-zikula.de"
 	url "https://homepages-mit-zikula.de"
-    version "1.1.0"
+    version "1.2.0"
 	prefix "news"
 	generateMailzApi true
     generateNewsletterPlugin true
@@ -17,7 +17,7 @@ application "News" targets ZK15 {
     viewActionsStyle ICON
     displayActionsPosition BOTH
     displayActionsStyle BUTTON_GROUP
-    markFiles "composer.json,\r\nEntity/MessageEntity.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nNewsModuleInstaller.php,\r\nResources/config/formFields.yml,\r\nResources/config/helpers.yml,\r\nResources/config/twig.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig,\r\nTwig/TwigExtension.php"
+    markFiles "composer.json,\r\nController/MessageController.php,\r\nEntity/MessageEntity.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nNewsModuleInstaller.php,\r\nResources/config/formFields.yml,\r\nResources/config/helpers.yml,\r\nResources/config/twig.yml,\r\nResources/public/css/style.css,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig,\r\nTwig/TwigExtension.php"
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
             nameMultiple "messages"

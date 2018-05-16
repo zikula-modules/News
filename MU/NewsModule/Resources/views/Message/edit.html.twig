@@ -178,7 +178,7 @@
             <div class="col-sm-offset-3 col-sm-9">
                 {% for action in actions %}
                     {{ form_widget(attribute(form, action.id)) }}
-                    {% if mode == 'create' and action.id == 'submit' %}
+                    {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}
                         {{ form_widget(attribute(form, 'submitrepeat')) }}
                     {% endif %}
                 {% endfor %}
@@ -188,64 +188,40 @@
         </div>
         {{ form_end(form) }}
         {% set hookId = mode != 'create' ? message.id : null %}
-        {{ notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId) }}
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
         
     </div>
 {% endblock %}
 {% block footer %}
     {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
     {% set formInitScript %}
-        <script type="text/javascript">
+        <script>
         /* <![CDATA[ */
             
             ( function($) {
-                var imageCount = '{{ form.articleImages|length }}';
                 $(document).ready(function() {
-                    // initialise auto completion for user fields
-                    initUserLiveSearch('munewsmodule_message_approver');
-                    {% if form.moderationSpecificCreator is defined %}
-                        initUserLiveSearch('munewsmodule_message_moderationSpecificCreator');
-                    {% endif %}
                     mUNewsInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ message.id }}{% endif %}');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload1_imageUpload1');
+                    initUserLiveSearch('munewsmodule_message_approver');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload2_imageUpload2');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload3_imageUpload3');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload4_imageUpload4');
                     mUNewsInitDateField('munewsmodule_message_startDate');
                     mUNewsInitDateField('munewsmodule_message_endDate');
-
-			        $('#add-another-image').click(function (event) {
-			            event.preventDefault();
-			
-			            var imageList = $('#image-uploads-list');
-			
-			            // grab the prototype template
-			            var newWidget = imageList.data('prototype');
-			            // replace the "__name__" used in the id and name of the prototype
-			            // with a unique number
-			            newWidget = newWidget.replace(/__name__/g, imageCount);
-			            imageCount++;
-			
-			            // create a new list element and add it to the list
-			            var newLi = $('<li></li>').html(newWidget);
-			            newLi.appendTo(imageList);
-			        });
+                    {% if form.moderationSpecificCreator is defined %}
+                        initUserLiveSearch('munewsmodule_message_moderationSpecificCreator');
+                    {% endif %}
                 });
             })(jQuery);
         /* ]]> */
         </script>
     {% endset %}
     {{ pageAddAsset('footer', formInitScript) }}
-    <script>
-    var MU = jQuery.noConflict();
-    MU().ready(function() {
-    var enddate = MU('#munewsmodule_message_noEndDate');
-    if(enddate.val() == 1) {
-        MU('#endDateContainer').addClass('hidden');
-    }
-    enddate.click(function() {
-        MU('#endDateContainer').toggleClass('hidden');
-    });
-    });
-    </script>
 {% endblock %}
