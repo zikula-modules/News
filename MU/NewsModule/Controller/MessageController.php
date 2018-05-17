@@ -300,12 +300,13 @@ class MessageController extends AbstractMessageController
      */
     protected function displayInternal(Request $request, MessageEntity $message, $isAdmin = false)
     {
-    	if ($isAdmin == false) {
-    		$entityManager = $this->get('doctrine.entitymanager');
-    		$message->setAmountOfViews($message->getAmountOfViews() + 1);
-    		$entityManager->flush();
-    	}
-    	return parent:: displayInternal($request, $message, $isAdmin);
+        if (false === $isAdmin) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $message->setAmountOfViews($message->getAmountOfViews() + 1);
+            $entityManager->flush();
+        }
+
+        return parent:: displayInternal($request, $message, $isAdmin);
     }
 
     // feel free to add your own controller methods here
