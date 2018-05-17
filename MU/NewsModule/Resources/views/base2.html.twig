@@ -10,17 +10,19 @@
 {% endblock %}
 
 {% block titleArea %}
-    <div id="message-display-header">
-    <div class="col-md-7">
-        <div id="message-title">
-            <h2>{% block title %}{% endblock %}</h2>
+    <div class="container">
+        <div id="message-display-header" class="row">
+            <div class="col-md-7">
+                <div id="message-title">
+                    <h2>{% block title %}{% endblock %}</h2>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div id="message-author-info">
+                    {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: message}) }}
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-5">
-        <div id="message-author-info">
-        {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: message}) }}
-        </div>
-    </div>
     </div>
 {% endblock %}
 {{ pageSetVar('title', block('pageTitle')|default(block('title'))) }}
