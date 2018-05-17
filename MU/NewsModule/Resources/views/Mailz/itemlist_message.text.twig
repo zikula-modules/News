@@ -1,8 +1,0 @@
-{# Purpose of this template: Display messages in text mailings #}
-{% for message in items %}
-{{ message|munewsmodule_formattedTitle }}
-{{ url('munewsmodule_message_display', {'slug': message.slug}) }}
------
-{% else %}
-{{ __('No messages found.') }}
-{% endfor %}
