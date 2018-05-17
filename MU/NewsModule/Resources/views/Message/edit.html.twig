@@ -154,22 +154,23 @@
                         {{ form_row(form.moderationSpecificCreationDate) }}
                     </div>
                 {% endif %}
-                
+{#
                 <div class="row">
-	                {{ form_label(form.articleImages) }}
-	                <div class="col-sm-offset-3 col-sm-9">
-		                {{ form_errors(form.articleImages) }}
-		                <ul id="image-uploads-list" data-prototype="{{ form_widget(form.articleImages.vars.prototype)|e }}" class="list-unstyled">
-		                {% for imageUpload in form.articleImages %}
-		                    <li>
-		                        {{ form_errors(imageUpload) }}
-		                        {{ form_widget(imageUpload) }}
-		                    </li>
-		                {% endfor %}
-		                </ul>
-		                <a href="#" id="add-another-image"><i class="fa fa-plus"></i> {{ __('Add another image') }}</a>
-					</div>
-	            </div>
+                    {{ form_label(form.articleImages) }}
+                    <div class="col-sm-offset-3 col-sm-9">
+                        {{ form_errors(form.articleImages) }}
+                        <ul id="image-uploads-list" data-prototype="{{ form_widget(form.articleImages.vars.prototype)|e }}" class="list-unstyled">
+                        {% for imageUpload in form.articleImages %}
+                            <li>
+                                {{ form_errors(imageUpload) }}
+                                {{ form_widget(imageUpload) }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        <a href="#" id="add-another-image"><i class="fa fa-plus"></i> {{ __('Add another image') }}</a>
+                    </div>
+                </div>
+#}
             </div>
         </div>
         
