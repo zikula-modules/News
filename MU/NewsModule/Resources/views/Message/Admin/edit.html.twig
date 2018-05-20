@@ -71,6 +71,7 @@
                                                 {{ form_row(form.title) }}
                                                 {{ form_row(form.startText) }}
                                                 {{ form_row(form.mainText) }}
+                                                {{ form_row(form.slug) }}
                                             {% else %}
                                                 {{ form_row(attribute(form, 'translations' ~ language)) }}
                                             {% endif %}
@@ -86,6 +87,7 @@
                             {{ form_row(form.title) }}
                             {{ form_row(form.startText) }}
                             {{ form_row(form.mainText) }}
+                            {{ form_row(form.slug) }}
                         </fieldset>
                     {% endif %}
                     <fieldset>

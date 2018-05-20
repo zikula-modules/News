@@ -306,7 +306,7 @@ class MessageController extends AbstractMessageController
             $entityManager->flush();
         }
 
-        return parent:: displayInternal($request, $message, $isAdmin);
+        return parent::displayInternal($request, $message, $isAdmin);
     }
 
     // feel free to add your own controller methods here
