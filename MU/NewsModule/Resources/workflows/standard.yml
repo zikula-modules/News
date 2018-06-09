@@ -17,48 +17,48 @@ framework:
                 - trashed
                 - deleted
             transitions:
-                update:
-                    from: waiting
-                    to: waiting
-                submit:
-                    from: initial
-                    to: waiting
-                update:
-                    from: approved
-                    to: approved
-                archive:
-                    from: [approved, suspended]
-                    to: archived
-                update:
-                    from: suspended
-                    to: suspended
-                trash:
-                    from: suspended
-                    to: trashed
-                delete:
-                    from: [waiting, approved, suspended, archived, trashed]
-                    to: deleted
-                approve:
-                    from: [initial, waiting]
-                    to: approved
-                unpublish:
-                    from: approved
-                    to: suspended
-                publish:
-                    from: suspended
-                    to: approved
-                unarchive:
-                    from: archived
-                    to: approved
-                trash:
-                    from: waiting
-                    to: trashed
-                trash:
-                    from: archived
-                    to: trashed
-                update:
-                    from: archived
-                    to: archived
-                trash:
-                    from: approved
-                    to: trashed
+                - name: update
+                  from: waiting
+                  to: waiting
+                - name: submit
+                  from: initial
+                  to: waiting
+                - name: update
+                  from: approved
+                  to: approved
+                - name: archive
+                  from: [approved, suspended]
+                  to: archived
+                - name: update
+                  from: suspended
+                  to: suspended
+                - name: trash
+                  from: suspended
+                  to: trashed
+                - name: delete
+                  from: [waiting, approved, suspended, archived, trashed]
+                  to: deleted
+                - name: approve
+                  from: [initial, waiting]
+                  to: approved
+                - name: unpublish
+                  from: approved
+                  to: suspended
+                - name: publish
+                  from: suspended
+                  to: approved
+                - name: unarchive
+                  from: archived
+                  to: approved
+                - name: trash
+                  from: waiting
+                  to: trashed
+                - name: trash
+                  from: archived
+                  to: trashed
+                - name: update
+                  from: archived
+                  to: archived
+                - name: trash
+                  from: approved
+                  to: trashed
