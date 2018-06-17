@@ -145,7 +145,7 @@ abstract class AbstractMessageController extends AbstractController
             new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
-        
+
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
         
         // filter by permissions

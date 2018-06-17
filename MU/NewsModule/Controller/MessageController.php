@@ -23,6 +23,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use MU\NewsModule\Entity\MessageEntity;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 
 /**
  * Message controller class providing navigation and interaction functionality.
@@ -300,11 +302,10 @@ class MessageController extends AbstractMessageController
      */
     protected function displayInternal(Request $request, MessageEntity $message, $isAdmin = false)
     {
-        if (false === $isAdmin) {
-            $entityManager = $this->getDoctrine()->getManager();
+        /*if ($isAdmin == false) {
             $message->setAmountOfViews($message->getAmountOfViews() + 1);
-            $entityManager->flush();
-        }
+            $this->getDoctrine()->getManager()->flush();
+        }*/
 
         return parent::displayInternal($request, $message, $isAdmin);
     }
