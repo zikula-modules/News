@@ -13,20 +13,28 @@
         {% set status = 'author' %}  
     {% endif %}
 {% endif %}
-{% if (obj.createdBy|default and obj.createdBy.getUid() > 0) or (obj.updatedBy|default and obj.updatedBy.getUid() > 0) %}
+{% if (obj.createdBy|default and obj.createdBy.getUid() > 0) and (obj.updatedBy|default and obj.updatedBy.getUid() > 0) %}
 
     <dl class="propertylist">
     {% if obj.createdBy|default and obj.createdBy.getUid() > 0 %}
         {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
-        {% if status == 'both' or status == 'author' %}
+        {% if (status == 'both' or status == 'author') and obj.author == '' %}
         <dd class="message-avatar">{{ userAvatar(obj.createdBy.getUid(), {rating: 'g'}) }}</dd>
         {% endif %}
         <dd>
         {% if status == 'both' %}
+        {% if obj.author == '' %} 
             {{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
+        {% else %}
+            {{ __f('Created by %user on %date', {'%user': obj.author, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}       
         {% endif %}
-        {% if status == 'author' %}   
-            {{ __f('Created by %user', {'%user': profileLink})|raw }}
+        {% endif %}
+        {% if status == 'author' %}
+        {% if obj.author == '' %}   
+            {{ __f('Created by %user', {'%user': profileLink})|raw }}      
+        {% else %}
+            {{ __f('Created by %user', {'%user': obj.author})|raw }} 
+        {% endif %}
         {% endif %}
         {% if status == 'date' %}
             {{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
