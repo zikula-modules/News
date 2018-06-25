@@ -186,17 +186,39 @@ abstract class AbstractControllerHelper
         $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
+            
+            $defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
+             if ($templateParameters['routeArea'] != 'admin') {
+             if ($defaultSorting == 'articleID') {
+             $sort = 'id';
+             } elseif ($defaultSorting == 'articledatetime') {
+             $sort = 'createdDate';
+             $sortdir = 'DESC';
+             } elseif ($defaultSorting == 'articleweight') {
+             $sort = 'weight';
+             $sortdir = 'DESC';
+             } elseif ($defaultSorting == 'articlestartdate') {
+             $sort = 'startDate';
+             $sortdir = 'DESC';
+             }
+             } else {
+                $sort = $repository->getDefaultSortingField();
+            }
+
             $request->query->set('sort', $sort);
             // set default sorting in route parameters (e.g. for the pager)
             $routeParams = $request->attributes->get('_route_params');
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
         }
+        if (!isset($sortdir)) {
         $sortdir = $request->query->get('sortdir', 'ASC');
+        }
         if (false !== strpos($sort, ' DESC')) {
             $sort = str_replace(' DESC', '', $sort);
             $sortdir = 'desc';
         }
+        
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = strtolower($sortdir);
     
