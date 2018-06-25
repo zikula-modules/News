@@ -122,7 +122,7 @@
     <div class="col-sm-4">
         {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}   
         <div class="message-display-footer">
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, 'theme': 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
+            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug, 'theme': 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
             {% if pdfLink == 1 %}        
                 <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': message.getId(), 'slug': message.slug, '_format': 'pdf'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
             {% endif %}
