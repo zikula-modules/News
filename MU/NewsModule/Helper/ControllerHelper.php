@@ -45,8 +45,6 @@ class ControllerHelper extends AbstractControllerHelper
 		if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
 			throw new \Exception($this->__('Error! Invalid object type received.'));
 		}
-
-		die('T');
 	
 		$request = $this->request;
 		$repository = $this->entityFactory->getRepository($objectType);
