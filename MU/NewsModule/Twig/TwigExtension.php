@@ -92,8 +92,9 @@ class TwigExtension extends AbstractTwigExtension
         $repository = $this->entityFactory->getRepository('message');
         $qb = $repository->getListQueryBuilder();
 
-        $categoryId = $catMapping->getCategory();
-        $catIds = [$propName => $categoryId];
+        $categoryId = $catMapping->getCategory()->getId();
+        $catIds = [$propName => [$categoryId]];
+
         $this->categoryHelper->buildFilterClauses($qb, 'message', $catIds);
 
         $qb->andWhere('tbl.id != :excludedIdentifier')
@@ -102,6 +103,8 @@ class TwigExtension extends AbstractTwigExtension
         $qb->orderBy('tbl.createdDate', 'DESC');
 
         $query = $repository->getQueryFromBuilder($qb);
+
+        $query->setMaxResults($amount);
         
         return $repository->retrieveCollectionResult($query, false);
     }

@@ -102,13 +102,13 @@
             {% set showRelatedArticles = getModVar('MUNewsModule', 'enableMoreMessagesInCategory') %}
             {% if showRelatedArticles == 1 and message.categories is defined and message.categories|length > 0 %}
                 <h3>{{ __('Related articles') }}</h3>
-                {% set amountOfRelatedArticles = 3 %}{# TODO make configurable #}
+                {% set amountOfRelatedArticles = getModVar('MUNewsModule', 'amountOfMoreArticlesInCategory') %}
                 {% for catMapping in message.categories %}
                     <h4>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</h4>
                     {% set categoryArticles = munewsmodule_getRelatedArticles(catMapping, amountOfRelatedArticles) %}
                     <ul class="related-articles-list">
                     {% for relatedArticle in categoryArticles %}
-                        <li><a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'id': relatedArticle.getId(), 'slug': relatedArticle.slug}) }}">{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</a></li>
+                        <li><a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {slug: relatedArticle.slug}) }}">{{ relatedArticle|munewsmodule_formattedTitle|default(__('Message')) }}</a></li>
                     {% else %}
                         <li>{{ __('No other articles found.') }}</li>
                     {% endfor %}
