@@ -27,6 +27,17 @@ abstract class AbstractEntityInitialiser
     protected $request;
 
     /**
+     * EntityInitialiser constructor.
+     *
+     * @param RequestStack $requestStack RequestStack service instance
+     */
+    public function __construct(
+        RequestStack $requestStack
+    ) {
+        $this->request = $requestStack->getCurrentRequest();
+    }
+
+    /**
      * Initialises a given message instance.
      *
      * @param MessageEntity $entity The newly created entity instance
@@ -36,6 +47,7 @@ abstract class AbstractEntityInitialiser
     public function initMessage(MessageEntity $entity)
     {
         $entity->setMessageLanguage($this->request->getLocale());
+
         return $entity;
     }
 
