@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f3977b28b754274bcfb53aecfbcd620",
+    "content-hash": "0954d4b843f4ed022188adfe2c5fd783",
     "packages": [
         {
             "name": "dompdf/dompdf",
@@ -107,16 +107,16 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3",
+            "version": "v0.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa"
+                "reference": "ccc46ef6340d4b8a4a68047e68d8501ea961442c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
-                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/ccc46ef6340d4b8a4a68047e68d8501ea961442c",
+                "reference": "ccc46ef6340d4b8a4a68047e68d8501ea961442c",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2017-05-24T10:07:27+00:00"
+            "time": "2018-06-03T10:10:03+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -1694,16 +1694,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.2.3",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27"
+                "reference": "d86873af43b4aa9d1f39a3601cc0cfcf02b25266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4842476c434e375f9d3182ff7b89059583aa8b27",
-                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d86873af43b4aa9d1f39a3601cc0cfcf02b25266",
+                "reference": "d86873af43b4aa9d1f39a3601cc0cfcf02b25266",
                 "shasum": ""
             },
             "require": {
@@ -1741,25 +1741,26 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-02-20T21:35:23+00:00"
+            "time": "2018-06-06T23:58:19+00:00"
         },
         {
             "name": "symfony/config",
-            "version": "v3.4.9",
+            "version": "v3.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "7c2a9d44f4433863e9bca682e7f03609234657f9"
+                "reference": "1fffdeb349ff36a25184e5564c25289b1dbfc402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/7c2a9d44f4433863e9bca682e7f03609234657f9",
-                "reference": "7c2a9d44f4433863e9bca682e7f03609234657f9",
+                "url": "https://api.github.com/repos/symfony/config/zipball/1fffdeb349ff36a25184e5564c25289b1dbfc402",
+                "reference": "1fffdeb349ff36a25184e5564c25289b1dbfc402",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
-                "symfony/filesystem": "~2.8|~3.0|~4.0"
+                "symfony/filesystem": "~2.8|~3.0|~4.0",
+                "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
                 "symfony/dependency-injection": "<3.3",
@@ -1804,20 +1805,20 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-19T22:32:39+00:00"
+            "time": "2018-06-19T14:02:58+00:00"
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.39",
+            "version": "v2.8.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "932d1e4f7f33ee37d3534f5f452474daa66283c2"
+                "reference": "e8e59b74ad1274714dad2748349b55e3e6e630c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/932d1e4f7f33ee37d3534f5f452474daa66283c2",
-                "reference": "932d1e4f7f33ee37d3534f5f452474daa66283c2",
+                "url": "https://api.github.com/repos/symfony/console/zipball/e8e59b74ad1274714dad2748349b55e3e6e630c7",
+                "reference": "e8e59b74ad1274714dad2748349b55e3e6e630c7",
                 "shasum": ""
             },
             "require": {
@@ -1865,7 +1866,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-04-30T01:21:07+00:00"
+            "time": "2018-05-15T21:17:45+00:00"
         },
         {
             "name": "symfony/debug",
@@ -1926,7 +1927,7 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.3.16",
+            "version": "v3.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
@@ -1996,20 +1997,21 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.4.9",
+            "version": "v3.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "253a4490b528597aa14d2bf5aeded6f5e5e4a541"
+                "reference": "8a721a5f2553c6c3482b1c5b22ed60fe94dd63ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/253a4490b528597aa14d2bf5aeded6f5e5e4a541",
-                "reference": "253a4490b528597aa14d2bf5aeded6f5e5e4a541",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/8a721a5f2553c6c3482b1c5b22ed60fe94dd63ed",
+                "reference": "8a721a5f2553c6c3482b1c5b22ed60fe94dd63ed",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": "^5.5.9|>=7.0.8",
+                "symfony/polyfill-ctype": "~1.8"
             },
             "type": "library",
             "extra": {
@@ -2041,20 +2043,20 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-22T10:48:49+00:00"
+            "time": "2018-06-21T11:10:19+00:00"
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.9",
+            "version": "v3.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "bd14efe8b1fabc4de82bf50dce62f05f9a102433"
+                "reference": "3a8c3de91d2b2c68cd2d665cf9d00f7ef9eaa394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/bd14efe8b1fabc4de82bf50dce62f05f9a102433",
-                "reference": "bd14efe8b1fabc4de82bf50dce62f05f9a102433",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/3a8c3de91d2b2c68cd2d665cf9d00f7ef9eaa394",
+                "reference": "3a8c3de91d2b2c68cd2d665cf9d00f7ef9eaa394",
                 "shasum": ""
             },
             "require": {
@@ -2090,7 +2092,62 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-04-04T05:07:11+00:00"
+            "time": "2018-06-19T20:52:10+00:00"
+        },
+        {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2018-04-30T19:57:29+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2153,7 +2210,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.3.16",
+            "version": "v3.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -2335,16 +2392,16 @@
         },
         {
             "name": "theseer/phpdox",
-            "version": "0.11.1",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/phpdox.git",
-                "reference": "28761b23ebe4d5a8f6f6ee04dfb1ffe56bf3b451"
+                "reference": "0e1dbf4bd862ed0cf87797409407973b2c228958"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/phpdox/zipball/28761b23ebe4d5a8f6f6ee04dfb1ffe56bf3b451",
-                "reference": "28761b23ebe4d5a8f6f6ee04dfb1ffe56bf3b451",
+                "url": "https://api.github.com/repos/theseer/phpdox/zipball/0e1dbf4bd862ed0cf87797409407973b2c228958",
+                "reference": "0e1dbf4bd862ed0cf87797409407973b2c228958",
                 "shasum": ""
             },
             "require": {
@@ -2382,7 +2439,7 @@
                 }
             ],
             "description": "A fast Documentation generator for PHP Code using standard technology (SRC, DOCBLOCK, XML and XSLT) with event based processing",
-            "time": "2018-05-06T22:13:04+00:00"
+            "time": "2018-05-22T16:43:30+00:00"
         },
         {
             "name": "webmozart/assert",
