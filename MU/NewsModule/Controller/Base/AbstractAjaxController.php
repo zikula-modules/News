@@ -149,8 +149,8 @@ abstract class AbstractAjaxController extends AbstractController
         $uniqueFields = [];
         switch ($objectType) {
             case 'message':
-                    $uniqueFields = ['slug'];
-                    break;
+                $uniqueFields = ['slug'];
+                break;
         }
         if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields)) {
             return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
@@ -163,8 +163,8 @@ abstract class AbstractAjaxController extends AbstractController
         case 'message':
             $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
             switch ($fieldName) {
-            case 'slug':
-                    $entity = $repository->selectBySlug($value, false, $exclude);
+                case 'slug':
+                    $entity = $repository->selectBySlug($value, false, false, $exclude);
                     $result = null !== $entity && isset($entity['slug']);
                     break;
             }

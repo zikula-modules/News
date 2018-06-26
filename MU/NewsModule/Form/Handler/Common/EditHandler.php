@@ -21,10 +21,7 @@ use MU\NewsModule\Form\Handler\Common\Base\AbstractEditHandler;
 abstract class EditHandler extends AbstractEditHandler
 {
     /**
-     * Return list of attribute field names.
-     * To be customised in sub classes as needed.
-     *
-     * @return array list of attribute names
+     * @inheritDoc
      */
     protected function getAttributeFieldNames()
     {

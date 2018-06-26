@@ -15,6 +15,7 @@ namespace MU\NewsModule\Entity;
 use MU\NewsModule\Entity\Base\AbstractMessageEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -27,6 +28,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         @ORM\Index(name="workflowstateindex", columns={"workflowState"})
  *     }
  * )
+ * @UniqueEntity(fields="slug", ignoreNull="false")
  */
 class MessageEntity extends BaseEntity
 {

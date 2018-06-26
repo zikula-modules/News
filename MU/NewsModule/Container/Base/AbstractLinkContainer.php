@@ -158,7 +158,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
         if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('munewsmodule_config_config'),
-                'text' => $this->__('Configuration', 'munewsmodule'),
+                'text' => $this->__('Settings', 'munewsmodule'),
                 'title' => $this->__('Manage settings for this application', 'munewsmodule'),
                 'icon' => 'wrench'
             ];

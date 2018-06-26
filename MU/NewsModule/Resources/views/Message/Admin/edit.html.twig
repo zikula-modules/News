@@ -2,11 +2,6 @@
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : 'adminBase' %}
 {% extends 'MUNewsModule::' ~ baseTemplate ~ '.html.twig' %}
 
-{% block header %}
-    {{ parent() }}
-    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
-    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
-{% endblock %}
 {% block title mode == 'create' ? __('Create message') : __('Edit message') %}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
@@ -54,7 +49,7 @@
                                     <li{% if language == app.request.locale %} class="active"{% endif %}>
                                         <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
                                             {% if not form.vars.valid %}
-                                                <span class="label label-danger"><i class="fa fa-warning"></i><span class="sr-only">{{ __('Errors') }}</span></span>
+                                                <span class="label label-danger"><i class="fa fa-warning"></i> <span class="sr-only">{{ __('Errors') }}</span></span>
                                             {% endif %}
                                             {% set hasRequiredFields = language in localesWithMandatoryFields %}
                                             {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
@@ -186,7 +181,7 @@
     </div>
 {% endblock %}
 {% block footer %}
- {{ parent() }}
+    {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
     {% set formInitScript %}

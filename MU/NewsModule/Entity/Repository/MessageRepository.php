@@ -21,24 +21,5 @@ use MU\NewsModule\Entity\Repository\Base\AbstractMessageRepository;
  */
 class MessageRepository extends AbstractMessageRepository
 {
-    /**
-     * Retrieves an array with all fields which can be used for sorting instances.
-     *
-     * @return string[] Sorting fields array
-     */
-    public function getAllowedSortingFields()
-    {
-        return [
-            'workflowState',
-            'title',
-            'imageUpload1',
-            'displayOnIndex',
-            'createdBy',
-            'createdDate',
-            'updatedBy',
-            'updatedDate',
-        	'startDate',
-        	'weight',
-        ];
-    }
+    // feel free to add your own methods here, like for example reusable DQL queries
 }

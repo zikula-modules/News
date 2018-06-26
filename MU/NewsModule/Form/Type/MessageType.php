@@ -25,10 +25,7 @@ use MU\NewsModule\Form\Type\Field\ImagesInArticleType;
 class MessageType extends AbstractMessageType
 {
     /**
-     * Adds basic entity fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
+     * @inheritDoc
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options = [])
     {

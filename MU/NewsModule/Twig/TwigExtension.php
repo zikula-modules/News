@@ -22,36 +22,36 @@ use MU\NewsModule\Helper\CategoryHelper;
  */
 class TwigExtension extends AbstractTwigExtension
 {
-	/**
-	 * @var EntityFactory
-	 */
-	private $entityFactory;
-	
-	/**
-	 * @var CategoryHelper
-	 */
-	private $categoryHelper;
+    /**
+     * @var EntityFactory
+     */
+    private $entityFactory;
+    
+    /**
+     * @var CategoryHelper
+     */
+    private $categoryHelper;
 
-	/**
-	 * Sets the entity factory.
-	 *
-	 * @param EntityFactory $entityFactory
-	 */
-	public function setEntityFactory(EntityFactory $entityFactory)
-	{
-		$this->entityFactory = $entityFactory;
-	}
+    /**
+     * Sets the entity factory.
+     *
+     * @param EntityFactory $entityFactory
+     */
+    public function setEntityFactory(EntityFactory $entityFactory)
+    {
+        $this->entityFactory = $entityFactory;
+    }
 
-	/**
-	 * Sets the category helper.
-	 *
-	 * @param CategoryHelper $categoryHelper
-	 */
-	public function setCategoryHelper(CategoryHelper $categoryHelper)
-	{
-		$this->categoryHelper = $categoryHelper;
-	}
-	
+    /**
+     * Sets the category helper.
+     *
+     * @param CategoryHelper $categoryHelper
+     */
+    public function setCategoryHelper(CategoryHelper $categoryHelper)
+    {
+        $this->categoryHelper = $categoryHelper;
+    }
+    
     /**
      * Returns a list of custom Twig functions.
      *
@@ -59,7 +59,7 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function getFunctions()
     {
-    	$functions = parent::getFunctions();
+        $functions = parent::getFunctions();
         $functions[] = new \Twig_SimpleFunction('munewsmodule_getRelatedArticles', [$this, 'relatedArticles']);
 
         return $functions;
@@ -70,6 +70,8 @@ class TwigExtension extends AbstractTwigExtension
      *
      * @param MessageCategoryEntity $catMapping given category mapping
      * @param int $amount The amount of articles to fetch
+     *
+     * @return array
      */
     public function relatedArticles(MessageCategoryEntity $catMapping, $amount = 3) {
         $articles = [];
@@ -83,7 +85,7 @@ class TwigExtension extends AbstractTwigExtension
                 break;
             }
         }
-        if ($propertyName == '') {
+        if ('' == $propertyName) {
             return $articles;
         }
 

@@ -23,14 +23,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use MU\NewsModule\Entity\MessageEntity;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-
-
-use Zikula\Component\SortableColumns\Column;
-use Zikula\Component\SortableColumns\SortableColumns;
-use MU\NewsModule\Helper\FeatureActivationHelper;
-
 
 /**
  * Message controller class providing navigation and interaction functionality.
@@ -73,6 +65,7 @@ class MessageController extends AbstractMessageController
     {
         return parent::indexAction($request);
     }
+    
     /**
      * @inheritDoc
      *
@@ -121,6 +114,7 @@ class MessageController extends AbstractMessageController
     {
         return parent::viewAction($request, $sort, $sortdir, $pos, $num);
     }
+    
     /**
      * @inheritDoc
      *
@@ -165,6 +159,7 @@ class MessageController extends AbstractMessageController
     {
         return parent::editAction($request);
     }
+    
     /**
      * @inheritDoc
      *
@@ -213,6 +208,7 @@ class MessageController extends AbstractMessageController
     {
         return parent::deleteAction($request, $message);
     }
+    
     /**
      * @inheritDoc
      *
@@ -259,7 +255,7 @@ class MessageController extends AbstractMessageController
     {
         return parent::displayAction($request, $message);
     }
-
+    
     /**
      * Process status changes for multiple items.
      *
@@ -303,77 +299,5 @@ class MessageController extends AbstractMessageController
         return parent::handleSelectedEntriesAction($request);
     }
     
-    /**
-     * This method includes the common implementation code for adminView() and view().
-     */
-    protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
-    {
-    	// parameter specifying which type of objects we are treating
-    	$objectType = 'message';
-    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
-    	if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-    		throw new AccessDeniedException();
-    	}
-    	$templateParameters = [
-    			'routeArea' => $isAdmin ? 'admin' : ''
-    	];
-    	$controllerHelper = $this->get('mu_news_module.controller_helper');
-    	$viewHelper = $this->get('mu_news_module.view_helper');
-    
-    	$request->query->set('sort', $sort);
-    	$request->query->set('sortdir', $sortdir);
-    	$request->query->set('pos', $pos);
-    
-    	$sortableColumns = new SortableColumns($this->get('router'), 'munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
-    
-    	$sortableColumns->addColumns([
-    			new Column('id'),
-    			new Column('workflowState'),
-    			new Column('title'),
-    			new Column('imageUpload1'),
-    			new Column('displayOnIndex'),
-    			new Column('createdBy'),
-    			new Column('createdDate'),
-    			new Column('updatedBy'),
-    			new Column('updatedDate'),
-    			new Column('weight'),
-    			new Column('startDate'),
-    	]);
-    
-    	$templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
-    
-    	// filter by permissions
-    	$filteredEntities = [];
-    	foreach ($templateParameters['items'] as $message) {
-    		if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', $message->getKey() . '::', $permLevel)) {
-    			continue;
-    		}
-    		$filteredEntities[] = $message;
-    	}
-    	$templateParameters['items'] = $filteredEntities;
-    
-    	// filter by category permissions
-    	$featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
-    	if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-    		$templateParameters['items'] = $this->get('mu_news_module.category_helper')->filterEntitiesByPermission($templateParameters['items']);
-    	}
-    
-    	// fetch and return the appropriate template
-    	return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminDisplay() and display().
-     */
-    protected function displayInternal(Request $request, MessageEntity $message, $isAdmin = false)
-    {
-        /*if ($isAdmin == false) {
-            $message->setAmountOfViews($message->getAmountOfViews() + 1);
-            $this->getDoctrine()->getManager()->flush();
-        }*/
-
-        return parent::displayInternal($request, $message, $isAdmin);
-    }
-
     // feel free to add your own controller methods here
 }

@@ -48,6 +48,7 @@
             "securityschema": {
                 "MUNewsModule::": "::",
                 "MUNewsModule:ItemListBlock:": "Block title::",
+                "MUNewsModule:ItemBlock:": "Block title::",
                 "MUNewsModule:ModerationBlock:": "Block title::",
                 "MUNewsModule:Message:": "Message ID::",
                 "MUNewsModule::Ajax": "::"

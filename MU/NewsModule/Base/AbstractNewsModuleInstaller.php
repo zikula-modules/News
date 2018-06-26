@@ -123,8 +123,6 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('thumbnailHeightMessageImageUpload4Edit', 180);
         $this->setVar('enabledFinderTypes', 'message');
     
-        $categoryRegistryIdsPerEntity = [];
-    
         // add default entry for category registry (property named Main)
         $categoryHelper = new \MU\NewsModule\Helper\CategoryHelper(
             $this->container->get('translator.default'),
@@ -135,22 +133,25 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
             $this->container->get('zikula_categories_module.api.category_permission')
         );
         $categoryGlobal = $this->container->get('zikula_categories_module.category_repository')->findOneBy(['name' => 'Global']);
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        if ($categoryGlobal) {
+            $categoryRegistryIdsPerEntity = [];
+            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
     
-        $registry = new CategoryRegistryEntity();
-        $registry->setModname('MUNewsModule');
-        $registry->setEntityname('MessageEntity');
-        $registry->setProperty($categoryHelper->getPrimaryProperty('Message'));
-        $registry->setCategory($categoryGlobal);
+            $registry = new CategoryRegistryEntity();
+            $registry->setModname('MUNewsModule');
+            $registry->setEntityname('MessageEntity');
+            $registry->setProperty($categoryHelper->getPrimaryProperty('Message'));
+            $registry->setCategory($categoryGlobal);
     
-        try {
-            $entityManager->persist($registry);
-            $entityManager->flush();
-        } catch (\Exception $exception) {
-            $this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'message']));
-            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'user' => $userName, 'entities' => 'messages', 'errorMessage' => $exception->getMessage()]);
+            try {
+                $entityManager->persist($registry);
+                $entityManager->flush();
+            } catch (\Exception $exception) {
+                $this->addFlash('warning', $this->__f('Error! Could not create a category registry for the %entity% entity. If you want to use categorisation, register at least one registry in the Categories administration.', ['%entity%' => 'message']));
+                $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'user' => $userName, 'entities' => 'messages', 'errorMessage' => $exception->getMessage()]);
+            }
+            $categoryRegistryIdsPerEntity['message'] = $registry->getId();
         }
-        $categoryRegistryIdsPerEntity['message'] = $registry->getId();
     
         // initialisation successful
         return true;

@@ -11,3 +11,5 @@ services:
     # Entity initialiser
     mu_news_module.entity_initialiser:
         class: MU\NewsModule\Entity\Factory\EntityInitialiser
+        arguments:
+        - "@request_stack"

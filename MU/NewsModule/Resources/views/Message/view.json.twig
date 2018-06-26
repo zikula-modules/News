@@ -2,6 +2,6 @@
 [
 {% for message in items %}
     {% if not loop.first %},{% endif %}
-    {{ message.toArray()|json_encode() }}
+    {{ message.toArray()|json_encode()|raw }}
 {% endfor %}
 ]

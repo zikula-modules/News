@@ -12,6 +12,8 @@
 
 namespace MU\NewsModule\Entity\Factory\Base;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use MU\NewsModule\Entity\MessageEntity;
 
 /**
@@ -19,6 +21,11 @@ use MU\NewsModule\Entity\MessageEntity;
  */
 abstract class AbstractEntityInitialiser
 {
+    /**
+     * @var Request
+     */
+    protected $request;
+
     /**
      * Initialises a given message instance.
      *
@@ -28,7 +35,7 @@ abstract class AbstractEntityInitialiser
      */
     public function initMessage(MessageEntity $entity)
     {
-
+        $entity->setMessageLanguage($this->request->getLocale());
         return $entity;
     }
 

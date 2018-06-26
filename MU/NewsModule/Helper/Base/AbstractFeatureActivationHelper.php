@@ -42,7 +42,7 @@ abstract class AbstractFeatureActivationHelper
      */
     public function isEnabled($feature, $objectType)
     {
-        if ($feature == self::CATEGORIES) {
+        if (self::CATEGORIES == $feature) {
             $method = 'hasCategories';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
@@ -50,7 +50,7 @@ abstract class AbstractFeatureActivationHelper
     
             return in_array($objectType, ['message']);
         }
-        if ($feature == self::ATTRIBUTES) {
+        if (self::ATTRIBUTES == $feature) {
             $method = 'hasAttributes';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
@@ -58,7 +58,7 @@ abstract class AbstractFeatureActivationHelper
     
             return in_array($objectType, ['message']);
         }
-        if ($feature == self::TRANSLATIONS) {
+        if (self::TRANSLATIONS == $feature) {
             $method = 'hasTranslations';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);

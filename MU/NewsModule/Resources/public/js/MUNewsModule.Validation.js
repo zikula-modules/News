@@ -79,8 +79,9 @@ function mUNewsValidateUploadExtension(val, elem) {
 
 function mUNewsValidateDateRangeMessage(val) {
     var cmpVal, cmpVal2, result;
-    cmpVal = mUNewsReadDate(jQuery("[id$='startDate']").val(), true);
-    cmpVal2 = mUNewsReadDate(jQuery("[id$='endDate']").val(), true);
+
+    cmpVal = jQuery("[id$='startDate_date']").val() + ' ' + jQuery("[id$='startDate_time']").val();
+    cmpVal2 = jQuery("[id$='endDate_date']").val() + ' ' + jQuery("[id$='endDate_time']").val();
 
     if (typeof cmpVal == 'undefined' && typeof cmpVal2 == 'undefined') {
         result = true;
@@ -118,7 +119,7 @@ function mUNewsExecuteCustomValidationConstraints(objectType, currentEntityId) {
                 } else {
                     document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
                 }
-    		}
+            }
         }
     });
 }

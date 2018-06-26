@@ -1,2 +1,2 @@
 {# purpose of this template: messages display json view #}
-{{ message.toArray()|json_encode() }}
+{{ message.toArray()|json_encode()|raw }}

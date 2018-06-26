@@ -76,6 +76,7 @@ abstract class AbstractMessageController extends AbstractController
         
         return $this->redirectToRoute('munewsmodule_message_' . $templateParameters['routeArea'] . 'view');
     }
+    
     /**
      * This action provides an item list overview in the admin area.
      *
@@ -145,7 +146,7 @@ abstract class AbstractMessageController extends AbstractController
             new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
-
+        
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
         
         // filter by permissions
@@ -167,6 +168,7 @@ abstract class AbstractMessageController extends AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
+    
     /**
      * This action provides a item detail view in the admin area.
      *
@@ -250,6 +252,7 @@ abstract class AbstractMessageController extends AbstractController
         
         return $response;
     }
+    
     /**
      * This action provides a handling of edit requests in the admin area.
      *
@@ -312,6 +315,7 @@ abstract class AbstractMessageController extends AbstractController
         // fetch and return the appropriate template
         return $this->get('mu_news_module.view_helper')->processTemplate($objectType, 'edit', $templateParameters);
     }
+    
     /**
      * This action provides a handling of simple delete requests in the admin area.
      *
@@ -439,7 +443,7 @@ abstract class AbstractMessageController extends AbstractController
         // fetch and return the appropriate template
         return $this->get('mu_news_module.view_helper')->processTemplate($objectType, 'delete', $templateParameters);
     }
-
+    
     /**
      * Process status changes for multiple items.
      *
@@ -556,4 +560,5 @@ abstract class AbstractMessageController extends AbstractController
         
         return $this->redirectToRoute('munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'index');
     }
+    
 }
