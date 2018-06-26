@@ -36,7 +36,7 @@
             </div>{% else %}&nbsp;{% endif %}
             {{ message.startText|striptags|truncate(500) }}
             {% if message.mainText != '' %}
-                <br /><br /><a class="btn btn-success btn-sm" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug,'id': message.id}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
+                <br /><br /><a class="btn btn-success btn-sm more-link" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug,'id': message.id}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
             {% endif %}
         </div>
     
