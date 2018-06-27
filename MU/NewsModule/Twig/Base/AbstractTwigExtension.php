@@ -266,7 +266,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     public function formatIcalText($string)
     {
         $result = preg_replace('/<a href="(.*)">.*<\/a>/i', "$1", $string);
-        $result = str_replace('â‚¬', 'Euro', $result);
+        $result = str_replace('€', 'Euro', $result);
         $result = ereg_replace("(\r\n|\n|\r)", '=0D=0A', $result);
     
         return ';LANGUAGE=' . $this->request->getLocale() . ';ENCODING=QUOTED-PRINTABLE:' . $result . "\r\n";

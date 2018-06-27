@@ -1,73 +1,57 @@
-application "News" {
+application "News" targets ZK20 {
     vendor "MU"
-    author "Michael Ueberschaer"
-    email "info@homepages-mit-zikula.de"
-    url "https://homepages-mit-zikula.de"
+	author "Michael Ueberschaer"
+	email "info@homepages-mit-zikula.de"
+	url "https://homepages-mit-zikula.de"
     version "1.2.0"
-    prefix "news"
-    generateMailzApi true
+	prefix "news"
+	generateMailzApi true
     generateNewsletterPlugin true
     generateTagSupport true
     generateMultiHookNeedles true
     generateKmlTemplates false
-    generatePdfSupport true
-    versionAllGeneratedFiles false
+    generatePdfSupport true versionAllGeneratedFiles false
     separateAdminTemplates true
     generatePoweredByBacklinksIntoFooterTemplates false
     generateTests false
     viewActionsStyle ICON
     displayActionsPosition BOTH
     displayActionsStyle BUTTON_GROUP
-    skipFiles "
-        Entity/MessageEntity.php,
-        Form/Handler/Common/EditHandler.php,
-        Form/Type/MessageType.php,
-        Helper/ControllerHelper.php,
-        Helper/FeatureActivationHelper.php,
-        NewsModuleInstaller.php,
-        Resources/public/css/custom.css,
-        Twig/TwigExtension.php
-    "
-    markFiles "
-        composer.json,
-        Resources/config/helpers.yml,
-        Resources/config/twig.yml,
-        Resources/views/Message/display.html.twig,
-        Resources/views/Message/edit.html.twig,
-        Resources/views/Message/Admin/edit.html.twig,
-        Resources/views/Message/view.html.twig
-    "
+    skipFiles "composer.json,\r\nController/MessageController.php,\r\nEntity/MessageEntity.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nHelper/ListEntriesHelper.php,\r\nNewsModuleInstaller.php,\r\nResources/public/css/custom.css,\r\nTwig/TwigExtension.php"
+    markFiles "Resources/config/formFields.yml,\r\nResources/config/helpers.yml,\r\nResources/config/twig.yml,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig,"
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
             nameMultiple "messages"
             displayPattern "#title#"
+					slugUnique true
             workflow STANDARD
             hasArchive true
             hasTray true
+            formAwareHookProvider DISABLED
             fields {
-                string "title" translatable {
+					    string "title" translatable {
                     sluggablePosition 1
-                },                    
-                text "startText" translatable {
+                },				    
+						text "startText" translatable {
                     displayType DISPLAY
                     length 10000
-                },
-                upload "imageUpload1" {
+						},
+						upload "imageUpload1" {
+							defaultValue ""
+							mandatory false
+							maxSize "200k"
+						},
+						text "mainText" translatable {
                     defaultValue ""
-                    mandatory false
-                    maxSize "200k"
-                },
-                text "mainText" translatable {
-                    defaultValue ""
-                    mandatory false
-                    displayType DISPLAY
+							mandatory false
+							displayType DISPLAY
                     length 20000
-                },
+						},
                 integer "amountOfViews" {
                     defaultValue "0"
-                    mandatory false
+                mandatory false
                     displayType VIEW_DISPLAY
-                    visible false
+                visible false
                 },
                 string "author" {
                     displayType DISPLAY
@@ -75,11 +59,11 @@ application "News" {
                 },
                 user "approver" nullable {
                     mandatory false
-                    displayType DISPLAY
+                displayType DISPLAY
                 },
                 text "notes" {
                     mandatory false
-                    displayType DISPLAY
+                displayType DISPLAY
                 },
                 boolean "displayOnIndex" ajaxTogglability {
                     defaultValue "true"
@@ -94,45 +78,46 @@ application "News" {
                 boolean "allowComments" ajaxTogglability {
                     defaultValue "true"
                     mandatory false
-                    displayType NONE
+                displayType NONE
                 },
-                upload "imageUpload2" {
-                    defaultValue ""
-                    mandatory false
-                    displayType DISPLAY
+						upload "imageUpload2" {
+							defaultValue ""
+							mandatory false
+							displayType DISPLAY
                     maxSize "200k"
-                },
-                upload "imageUpload3" {
-                    defaultValue ""
-                    mandatory false
-                    displayType DISPLAY
+						},
+						upload "imageUpload3" {
+							defaultValue ""
+							mandatory false
+							displayType DISPLAY
                     maxSize "200k"
-                },
-                upload "imageUpload4" {
-                    mandatory false
-                    displayType DISPLAY
+						},
+						upload "imageUpload4" {
+							mandatory false
+							displayType DISPLAY
                     maxSize "200k"
+						},
+						datetime "startDate" nullable startDate {
+							mandatory false
+						displayType NONE
                 },
-                datetime "startDate" nullable startDate {
-                    mandatory false
-                    displayType NONE
-                },
-                boolean "noEndDate" ajaxTogglability {
+						boolean "noEndDate" ajaxTogglability {
                     defaultValue "true"
-                    mandatory false
-                    displayType VIEW
+							mandatory false
+						displayType VIEW
                 },
-                datetime "endDate" nullable endDate {
-                    defaultValue ""
-                    mandatory false
-                    displayType VIEW
-                },
-                integer "weight" {
-                    defaultValue "1"
-                    mandatory false
+						datetime "endDate" nullable endDate {
+							defaultValue ""
+							mandatory false
+						displayType VIEW
+                }	
+					,
+						integer "weight" {
+							defaultValue "1"
+							mandatory false
                     displayType NONE
                     length 2
-                }
+						}
             }
             actions {
                 mainAction "Index",
@@ -141,11 +126,12 @@ application "News" {
                 editAction "Edit",
                 deleteAction "Delete"
             }
-        }    
-    }
-    variables {
-        varContainer "GeneralSettings" {
-            documentation "Here you can change general News settings."
+				}	
+				}
+				
+			variables {
+				varContainer "GeneralSettings" {
+					documentation "Here you can change general News settings."
             fields {
                 boolean "enableAttribution" {
                     mandatory false
@@ -164,7 +150,8 @@ application "News" {
                     mandatory false
                 }
             }
-        },
+        }
+						,
         varContainer "CategorySettings" {
             documentation "This section allows you to specify category-related options."
             sortOrder 2
@@ -180,9 +167,10 @@ application "News" {
                 list "defaultMessageSorting" {
                     documentation "You can customise several display-oriented aspects of the articles."
                     items {
-                        listItem  "articleID" ( "articleID" ),
+                        listItem   "articleID" ( "articleID" ),
                         default listItem "articleDateTime" ( "articledatetime" ),
-                        listItem  "articleWeight" ( "articleweight" )
+                        listItem   "articleStartDate" ( "articlestartdate" ),
+                        listItem "articleWeight" ( "articleweight" )
                     }
                 },
                 boolean "enableMoreMessagesInCategory" {

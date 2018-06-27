@@ -333,6 +333,13 @@ abstract class AbstractListEntriesHelper
             'default' => true
         ];
         $states[] = [
+            'value'   => 'articlestartdate',
+            'text'    => $this->__('ArticleStartDate'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
             'value'   => 'articleweight',
             'text'    => $this->__('ArticleWeight'),
             'title'   => '',

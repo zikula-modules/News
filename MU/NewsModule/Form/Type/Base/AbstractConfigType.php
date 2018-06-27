@@ -318,7 +318,7 @@ abstract class AbstractConfigType extends AbstractType
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the max size')
+                'title' => $this->__('Enter the max size.')
             ],
             'required' => true,
         ]);

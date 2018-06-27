@@ -166,7 +166,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the title of the message')
+                'title' => $this->__('Enter the title of the message.')
             ],
             'required' => true,
         ]);
@@ -178,7 +178,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 10000,
                 'class' => '',
-                'title' => $this->__('Enter the start text of the message')
+                'title' => $this->__('Enter the start text of the message.')
             ],
             'required' => true,
         ]);
@@ -190,7 +190,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 20000,
                 'class' => '',
-                'title' => $this->__('Enter the main text of the message')
+                'title' => $this->__('Enter the main text of the message.')
             ],
             'required' => false,
         ]);
@@ -201,9 +201,9 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 255,
                 'class' => 'validate-unique',
-                'title' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically')
+                'title' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically.')
             ],
-            'help' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically')
+            'help' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically.')
         ]);
         
         if ($this->variableApi->getSystemVar('multilingual') && $this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, 'message')) {
@@ -229,7 +229,7 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Image upload 1') . ':',
             'attr' => [
                 'class' => ' validate-upload',
-                'title' => $this->__('Enter the image upload 1 of the message')
+                'title' => $this->__('Enter the image upload 1 of the message.')
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
@@ -255,7 +255,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 100,
                 'class' => '',
-                'title' => $this->__('Enter the author of the message')
+                'title' => $this->__('Enter the author of the message.')
             ],
             'required' => true,
         ]);
@@ -266,7 +266,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
-                'title' => $this->__('Enter the approver of the message')
+                'title' => $this->__('Enter the approver of the message.')
             ],
             'required' => false,
         ]);
@@ -278,7 +278,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 2000,
                 'class' => '',
-                'title' => $this->__('Enter the notes of the message')
+                'title' => $this->__('Enter the notes of the message.')
             ],
             'required' => false,
         ]);
@@ -298,7 +298,7 @@ abstract class AbstractMessageType extends AbstractType
             'attr' => [
                 'maxlength' => 7,
                 'class' => '',
-                'title' => $this->__('Choose the message language of the message')
+                'title' => $this->__('Choose the message language of the message.')
             ],
             'required' => false,
             'placeholder' => $this->__('All'),
@@ -318,7 +318,7 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Image upload 2') . ':',
             'attr' => [
                 'class' => ' validate-upload',
-                'title' => $this->__('Enter the image upload 2 of the message')
+                'title' => $this->__('Enter the image upload 2 of the message.')
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
@@ -330,7 +330,7 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Image upload 3') . ':',
             'attr' => [
                 'class' => ' validate-upload',
-                'title' => $this->__('Enter the image upload 3 of the message')
+                'title' => $this->__('Enter the image upload 3 of the message.')
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
@@ -342,7 +342,7 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Image upload 4') . ':',
             'attr' => [
                 'class' => ' validate-upload',
-                'title' => $this->__('Enter the image upload 4 of the message')
+                'title' => $this->__('Enter the image upload 4 of the message.')
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
@@ -354,7 +354,7 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Start date') . ':',
             'attr' => [
                 'class' => ' validate-daterange-message',
-                'title' => $this->__('Enter the start date of the message')
+                'title' => $this->__('Enter the start date of the message.')
             ],
             'required' => false,
             'empty_data' => '',
@@ -376,7 +376,7 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('End date') . ':',
             'attr' => [
                 'class' => ' validate-daterange-message',
-                'title' => $this->__('Enter the end date of the message')
+                'title' => $this->__('Enter the end date of the message.')
             ],
             'required' => false,
             'empty_data' => '',
@@ -489,25 +489,25 @@ abstract class AbstractMessageType extends AbstractType
             'label' => $this->__('Creator') . ':',
             'attr' => [
                 'maxlength' => 11,
-                'title' => $this->__('Here you can choose a user which will be set as creator')
+                'title' => $this->__('Here you can choose a user which will be set as creator.')
             ],
             'empty_data' => 0,
             'required' => false,
-            'help' => $this->__('Here you can choose a user which will be set as creator')
+            'help' => $this->__('Here you can choose a user which will be set as creator.')
         ]);
         $builder->add('moderationSpecificCreationDate', DateTimeType::class, [
             'mapped' => false,
             'label' => $this->__('Creation date') . ':',
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Here you can choose a custom creation date')
+                'title' => $this->__('Here you can choose a custom creation date.')
             ],
             'empty_data' => '',
             'required' => false,
             'with_seconds' => true,
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
-            'help' => $this->__('Here you can choose a custom creation date')
+            'help' => $this->__('Here you can choose a custom creation date.')
         ]);
     }
 
