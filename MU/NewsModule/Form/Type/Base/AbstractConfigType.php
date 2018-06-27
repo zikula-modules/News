@@ -191,6 +191,27 @@ abstract class AbstractConfigType extends AbstractType
             'expanded' => false
         ]);
         
+        $listEntries = $this->listHelper->getEntries('appSettings', 'sortingDirection');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('sortingDirection', ChoiceType::class, [
+            'label' => $this->__('Sorting direction') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the sorting direction.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
         $builder->add('enableMoreMessagesInCategory', CheckboxType::class, [
             'label' => $this->__('Enable more messages in category') . ':',
             'attr' => [

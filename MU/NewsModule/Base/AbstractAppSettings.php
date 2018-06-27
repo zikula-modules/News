@@ -82,6 +82,13 @@ abstract class AbstractAppSettings
     protected $defaultMessageSorting = 'articledatetime';
     
     /**
+     * @Assert\NotBlank()
+     * @NewsAssert\ListEntry(entityName="appSettings", propertyName="sortingDirection", multiple=false)
+     * @var string $sortingDirection
+     */
+    protected $sortingDirection = 'descending';
+    
+    /**
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
      * @var boolean $enableMoreMessagesInCategory
@@ -771,6 +778,30 @@ abstract class AbstractAppSettings
     {
         if ($this->defaultMessageSorting !== $defaultMessageSorting) {
             $this->defaultMessageSorting = isset($defaultMessageSorting) ? $defaultMessageSorting : '';
+        }
+    }
+    
+    /**
+     * Returns the sorting direction.
+     *
+     * @return string
+     */
+    public function getSortingDirection()
+    {
+        return $this->sortingDirection;
+    }
+    
+    /**
+     * Sets the sorting direction.
+     *
+     * @param string $sortingDirection
+     *
+     * @return void
+     */
+    public function setSortingDirection($sortingDirection)
+    {
+        if ($this->sortingDirection !== $sortingDirection) {
+            $this->sortingDirection = isset($sortingDirection) ? $sortingDirection : '';
         }
     }
     
@@ -2048,6 +2079,9 @@ abstract class AbstractAppSettings
         if (isset($moduleVars['defaultMessageSorting'])) {
             $this->setDefaultMessageSorting($moduleVars['defaultMessageSorting']);
         }
+        if (isset($moduleVars['sortingDirection'])) {
+            $this->setSortingDirection($moduleVars['sortingDirection']);
+        }
         if (isset($moduleVars['enableMoreMessagesInCategory'])) {
             $this->setEnableMoreMessagesInCategory($moduleVars['enableMoreMessagesInCategory']);
         }
@@ -2231,6 +2265,7 @@ abstract class AbstractAppSettings
         $this->variableApi->set('MUNewsModule', 'showDate', $this->getShowDate());
         $this->variableApi->set('MUNewsModule', 'enableCategorization', $this->getEnableCategorization());
         $this->variableApi->set('MUNewsModule', 'defaultMessageSorting', $this->getDefaultMessageSorting());
+        $this->variableApi->set('MUNewsModule', 'sortingDirection', $this->getSortingDirection());
         $this->variableApi->set('MUNewsModule', 'enableMoreMessagesInCategory', $this->getEnableMoreMessagesInCategory());
         $this->variableApi->set('MUNewsModule', 'amountOfMoreArticlesInCategory', $this->getAmountOfMoreArticlesInCategory());
         $this->variableApi->set('MUNewsModule', 'displayPdfLink', $this->getDisplayPdfLink());

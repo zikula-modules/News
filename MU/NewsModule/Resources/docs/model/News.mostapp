@@ -17,7 +17,7 @@ application "News" targets ZK20 {
     viewActionsStyle ICON
     displayActionsPosition BOTH
     displayActionsStyle BUTTON_GROUP
-    skipFiles "composer.json,\r\nController/MessageController.php,\r\nEntity/MessageEntity.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nHelper/ListEntriesHelper.php,\r\nNewsModuleInstaller.php,\r\nResources/public/css/custom.css,\r\nTwig/TwigExtension.php"
+    skipFiles "composer.json,\r\nController/MessageController.php,\r\nEntity/MessageEntity.php,\r\nEntity/Repository/MessageRepository.php,\r\nForm/Handler/Common/EditHandler.php,\r\nForm/Type/MessageType.php,\r\nHelper/ControllerHelper.php,\r\nHelper/FeatureActivationHelper.php,\r\nHelper/ListEntriesHelper.php,\r\nNewsModuleInstaller.php,\r\nResources/public/css/custom.css,\r\nTwig/TwigExtension.php"
     markFiles "Resources/config/formFields.yml,\r\nResources/config/helpers.yml,\r\nResources/config/twig.yml,\r\nResources/views/Message/display.html.twig,\r\nResources/views/Message/edit.html.twig,\r\nResources/views/Message/Admin/edit.html.twig,\r\nResources/views/Message/view.html.twig,"
     entities {
         entity "message" leading categorisable categorisableMultiSelection attributable {
@@ -171,6 +171,12 @@ application "News" targets ZK20 {
                         default listItem "articleDateTime" ( "articledatetime" ),
                         listItem   "articleStartDate" ( "articlestartdate" ),
                         listItem "articleWeight" ( "articleweight" )
+                    }
+                },
+                list "sortingDirection" {
+                    items {
+                        default listItem "descending",
+                        listItem "ascending"
                     }
                 },
                 boolean "enableMoreMessagesInCategory" {

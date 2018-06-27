@@ -142,6 +142,9 @@ abstract class AbstractListEntriesHelper
                     case 'defaultMessageSorting':
                         $result = false;
                         break;
+                    case 'sortingDirection':
+                        $result = false;
+                        break;
                     case 'imageFloatOnViewPage':
                         $result = false;
                         break;
@@ -198,6 +201,9 @@ abstract class AbstractListEntriesHelper
                 switch ($fieldName) {
                     case 'defaultMessageSorting':
                         $entries = $this->getDefaultMessageSortingEntriesForAppSettings();
+                        break;
+                    case 'sortingDirection':
+                        $entries = $this->getSortingDirectionEntriesForAppSettings();
                         break;
                     case 'imageFloatOnViewPage':
                         $entries = $this->getImageFloatOnViewPageEntriesForAppSettings();
@@ -342,6 +348,32 @@ abstract class AbstractListEntriesHelper
         $states[] = [
             'value'   => 'articleweight',
             'text'    => $this->__('ArticleWeight'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'sorting direction' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getSortingDirectionEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'descending',
+            'text'    => $this->__('Descending'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'ascending',
+            'text'    => $this->__('Ascending'),
             'title'   => '',
             'image'   => '',
             'default' => false

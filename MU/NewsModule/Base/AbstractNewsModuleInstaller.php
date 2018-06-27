@@ -70,6 +70,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('showDate', false);
         $this->setVar('enableCategorization', false);
         $this->setVar('defaultMessageSorting', 'articledatetime');
+        $this->setVar('sortingDirection', 'descending');
         $this->setVar('enableMoreMessagesInCategory', false);
         $this->setVar('amountOfMoreArticlesInCategory', 0);
         $this->setVar('displayPdfLink', false);
