@@ -28,20 +28,21 @@ class ControllerHelper extends AbstractControllerHelper
         $repository = $this->entityFactory->getRepository($objectType);
     
         $sort = $request->query->get('sort', '');
+        $sortdir = '';
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
 
-            $defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting');
+            $defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting', 'articledatetime');
+            $defaultSortingDirection = $this->variableApi->get('MUNewsModule', 'sortingDirection', 'descending');
+            $sortdir = str_replace('ending', '', $defaultSortingDirection);
             if ($defaultSorting == 'articleID') {
                 $sort = 'id';
             } elseif ($defaultSorting == 'articledatetime') {
                 $sort = 'createdDate';
-                $sortdir = 'DESC';
             } elseif ($defaultSorting == 'articleweight') {
                 $sort = 'weight';
             } elseif ($defaultSorting == 'articlestartdate') {
                 $sort = 'startDate';
-                $sortdir = 'DESC';
             }
 
             $request->query->set('sort', $sort);
@@ -50,12 +51,14 @@ class ControllerHelper extends AbstractControllerHelper
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
         }
-        $sortdir = $request->query->get('sortdir', 'ASC');
-        if (false !== strpos($sort, ' DESC')) {
-            $sort = str_replace(' DESC', '', $sort);
-            $sortdir = 'desc';
+        if ('' === $sortdir) {
+            $sortdir = $request->query->get('sortdir', 'ASC');
+            if (false !== strpos($sort, ' DESC')) {
+                $sort = str_replace(' DESC', '', $sort);
+                $sortdir = 'desc';
+            }
         }
-    
+
         return [$sort, $sortdir];
     }
 }
