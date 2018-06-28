@@ -61,6 +61,7 @@ class TwigExtension extends AbstractTwigExtension
     {
         $functions = parent::getFunctions();
         $functions[] = new \Twig_SimpleFunction('munewsmodule_getRelatedArticles', [$this, 'relatedArticles']);
+        $functions[] = new \Twig_SimpleFunction('munewsmodule_setAmount', [$this, 'setAmount']);
 
         return $functions;
     }
@@ -107,5 +108,18 @@ class TwigExtension extends AbstractTwigExtension
         $query->setMaxResults($amount);
         
         return $repository->retrieveCollectionResult($query, false);
+    }
+    
+    /**
+     * set amount of view one higher
+     * 
+     * @param object $message entity in the template
+     * @param string $routeArea backend or not
+     */
+    public function setAmount($message, $routeArea) {
+    	if ($routeArea != 'admin') {
+    	 $message->setAmountOfViews($message->getAmountOfViews() + 1);
+    	 $this->workflowHelper->executeAction($message, 'update');
+    	 }
     }
 }

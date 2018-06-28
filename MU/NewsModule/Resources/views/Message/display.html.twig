@@ -140,4 +140,5 @@
             <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
         {% endfor %}
     {% endif %}
+    {{ munewsmodule_setAmount(message, routeArea) }}
 {% endblock %}
