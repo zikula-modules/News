@@ -13,4 +13,4 @@
     <p>{{ __('Edit the message:') }} <a href="{{ mailData.editUrl|e('html_attr') }}" title="{{ __('Edit') }}">{{ mailData.editUrl }}</a></p>
 {% endif %}
 
-<p>{{ __f('This mail has been sent automatically by %siteName%.', {'%siteName%': getModVar('ZConfig', 'sitename')}) }}</p>
+<p>{{ __f('This mail has been sent automatically by %siteName%.', {'%siteName%': getSystemVar('sitename')}) }}</p>

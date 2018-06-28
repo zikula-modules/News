@@ -238,8 +238,9 @@ abstract class AbstractControllerHelper
             }
             unset($urlParameters[$parameterName]);
         }
+    
         $sortableColumns->setAdditionalUrlParameters($urlParameters);
-
+    
         $where = '';
         if ($templateParameters['all'] == 1) {
             // retrieve item list without pagination

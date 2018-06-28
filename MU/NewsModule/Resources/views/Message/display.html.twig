@@ -55,7 +55,7 @@
                         <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
             {% if message.imageUpload2Meta.isImage %}
                 {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload2') %}
-                <img src="{{ message.imageUpload2.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload2.getPathname() }}{% else %}{{ message.imageUpload2.getPathname()|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
             {% else %}
                 {{ __('Download') }} ({{ message.imageUpload2Meta.size|munewsmodule_fileSize(message.imageUpload2.getPathname(), false, false) }})
             {% endif %}
@@ -70,7 +70,7 @@
                         <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
             {% if message.imageUpload3Meta.isImage %}
                 {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload3') %}
-                <img src="{{ message.imageUpload3.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload3.getPathname() }}{% else %}{{ message.imageUpload3.getPathname()|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
             {% else %}
                 {{ __('Download') }} ({{ message.imageUpload3Meta.size|munewsmodule_fileSize(message.imageUpload3.getPathname(), false, false) }})
             {% endif %}
@@ -84,8 +84,7 @@
             <dd>{% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
                         <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
             {% if message.imageUpload4Meta.isImage %}
-                {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload4') %}
-                <img src="{{ message.imageUpload4.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload4.getPathname() }}{% else %}{{ message.imageUpload4.getPathname()|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
             {% else %}
                 {{ __('Download') }} ({{ message.imageUpload4Meta.size|munewsmodule_fileSize(message.imageUpload4.getPathname(), false, false) }})
             {% endif %}
