@@ -263,7 +263,10 @@ msgid "Default"
 msgstr "Standard"
 
 msgid "Default message sorting"
-msgstr "Standard der Nachrichtensortierung"
+msgstr "Standardfeld der Nachrichtensortierung"
+
+msgid "Sorting direction"
+msgstr "Sortierrichtung"
 
 msgid "Delete"
 msgstr "Delete"
