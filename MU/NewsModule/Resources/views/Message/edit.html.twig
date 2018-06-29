@@ -216,22 +216,22 @@
                     {% if form.moderationSpecificCreator is defined %}
                         initUserLiveSearch('munewsmodule_message_moderationSpecificCreator');
                     {% endif %}
+
+                    var endDate = $('#munewsmodule_message_noEndDate');
+                    $('#endDateContainer').toggleClass('hidden', endDate.prop('checked'));
+                    endDate.click(function (event) {
+                        var noEndDate;
+
+                        noEndDate = $('#munewsmodule_message_noEndDate').prop('checked');
+                        $('#endDateContainer').toggleClass('hidden', noEndDate);
+                        if (noEndDate) {
+                            $('#munewsmodule_message_endDate input').val('');
+                        }
+                    });
                 });
             })(jQuery);
         /* ]]> */
         </script>
     {% endset %}
     {{ pageAddAsset('footer', formInitScript) }}
-        <script>
-    var MU = jQuery.noConflict();
-    MU().ready(function() {
-    var enddate = MU('#munewsmodule_message_noEndDate');
-    if(enddate.val() == 1) {
-        MU('#endDateContainer').addClass('hidden');
-    }
-    enddate.click(function() {
-        MU('#endDateContainer').toggleClass('hidden');
-    });
-    });
-    </script>
 {% endblock %}

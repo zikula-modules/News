@@ -288,7 +288,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
-     * @Assert\Expression("!value or value > this.getStartDate()")
+     * @Assert\Expression("!value or value > this.getStartDate()", message="The start must be before the end.")
      * @var DateTime $endDate
      */
     protected $endDate;
