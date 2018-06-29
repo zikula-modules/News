@@ -33,6 +33,7 @@ local.properties
 #############
 
 Resources/templates/
+vendor/
 
 
 #################
