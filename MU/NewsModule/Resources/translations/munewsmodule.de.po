@@ -662,7 +662,7 @@ msgid "Invalid user identifier received."
 msgstr "Fehler! Ungültiger Benutzer Bezeichner aufgerufen."
 
 msgid "It's new state is: %state%"
-msgstr "Sein neuer Status ist: %state%"
+msgstr "Ihr neuer Status ist: %state%"
 
 msgid "KB"
 msgstr "KB"
