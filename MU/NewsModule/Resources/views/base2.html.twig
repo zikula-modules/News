@@ -1,5 +1,6 @@
 {# purpose of this template: general base layout #}
 {% block header %}
+    {{ pageAddAsset('stylesheet', zasset('@MUNewsModule:css/custom.css'), 120) }}
     {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js')) }}
     {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css')) }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.js')) }}
