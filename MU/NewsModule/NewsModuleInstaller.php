@@ -49,6 +49,9 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
                     return false;
                 }
                 */
+            case '1.2.0':
+            	// nothing to
+            	
         }
 
         // update successful
