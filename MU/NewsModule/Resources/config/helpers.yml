@@ -6,8 +6,8 @@ services:
             - "@translator.default"
             - "@request_stack"
             - "@logger"
-            - "@zikula_permissions_module.api.permission"
             - "@mu_news_module.entity_factory"
+            - "@mu_news_module.permission_helper"
             - "@mu_news_module.workflow_helper"
             - "@mu_news_module.hook_helper"
     
@@ -25,6 +25,7 @@ services:
         class: MU\NewsModule\Helper\CollectionFilterHelper
         arguments:
             - "@request_stack"
+            - "@mu_news_module.permission_helper"
             - "@zikula_users_module.current_user"
             - "@mu_news_module.category_helper"
             - "@=service('zikula_extensions_module.api.variable').get('MUNewsModule', 'showOnlyOwnEntries', false)"
@@ -92,6 +93,15 @@ services:
             - "@zikula_groups_module.group_repository"
             - "@mu_news_module.entity_display_helper"
             - "@mu_news_module.workflow_helper"
+            
+    mu_news_module.permission_helper:
+        class: MU\NewsModule\Helper\PermissionHelper
+        arguments:
+            - "@service_container"
+            - "@request_stack"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@zikula_users_module.user_repository"
     
     mu_news_module.search_helper:
         class: MU\NewsModule\Helper\SearchHelper
@@ -134,10 +144,10 @@ services:
             - "@twig"
             - "@twig.loader"
             - "@request_stack"
-            - "@zikula_permissions_module.api.permission"
             - "@zikula_extensions_module.api.variable"
             - "@zikula_core.common.theme.pagevars"
             - "@mu_news_module.controller_helper"
+            - "@mu_news_module.permission_helper"
     
     mu_news_module.workflow_helper:
         class: MU\NewsModule\Helper\WorkflowHelper
@@ -145,7 +155,7 @@ services:
             - "@translator.default"
             - "@workflow.registry"
             - "@logger"
-            - "@zikula_permissions_module.api.permission"
             - "@zikula_users_module.current_user"
             - "@mu_news_module.entity_factory"
             - "@mu_news_module.listentries_helper"
+            - "@mu_news_module.permission_helper"
