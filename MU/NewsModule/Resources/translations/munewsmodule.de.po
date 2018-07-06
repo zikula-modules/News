@@ -269,7 +269,7 @@ msgid "Sorting direction"
 msgstr "Sortierrichtung"
 
 msgid "Delete"
-msgstr "Delete"
+msgstr "Löschen"
 
 msgid "Delete content permanently."
 msgstr "Inhalt dauerhaft löschen."
