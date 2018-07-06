@@ -133,6 +133,9 @@ msgstr "Datum und Zeit des Artikels"
 msgid "ArticleID"
 msgstr "ID des Artikels"
 
+msgid "ArticleStartDate"
+msgstr "Startdatum des Artikels"
+
 msgid "ArticleWeight"
 msgstr "Gewicht des Artikels"
 
