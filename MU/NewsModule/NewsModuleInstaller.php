@@ -50,7 +50,7 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
                 }
                 */
             case '1.2.0':
-            	// nothing to
+            	// nothing to do
             	
         }
 
