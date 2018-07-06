@@ -112,7 +112,7 @@ class UploadHelper extends AbstractUploadHelper
         if ($sizeType == 'byte') {
         	if ($fileSize > $maxSize) {
         		$flashBag->add('error', $this->__('Error! This file is too big.'));
-        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ' . $maxSize . ' ' .  'byte!'));
+        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'byte');
         		return false;
         	}
         }
@@ -123,7 +123,7 @@ class UploadHelper extends AbstractUploadHelper
         	$maxSize = $maxSize * 1024;
         	if ($fileSize > $maxSize) {
         		$flashBag->add('error', $this->__('Error! This file is too big.'));
-        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ' . $setMaxSize . ' ' . 'kilobyte!'));
+        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'kilobyte!');
         		return false;
         	}
         }
@@ -134,7 +134,7 @@ class UploadHelper extends AbstractUploadHelper
         	$maxSize = $maxSize * 1024 * 1024;
         	if ($fileSize > $maxSize) {
         		$flashBag->add('error', $this->__('Error! This file is too big.'));
-        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ' . $setMaxSize . ' ' . 'megabyte!'));
+        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'megabyte!');
         		return false;
         	}
         }
