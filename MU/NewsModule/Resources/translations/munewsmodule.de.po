@@ -508,6 +508,9 @@ msgstr "Fehler! Ungültigen Objekttyp erhalten."
 msgid "Error! It is not allowed to delete this message."
 msgstr "Fehler! Es ist nicht erlaubt diese Nachricht zu löschen."
 
+msgid "Error! This file is too big."
+msgstr "Fehler! Diese Datei ist zu gross."
+
 msgid "Error! This file type is not allowed. Please choose another file format."
 msgstr "Fehler! Dieser Dateityp ist nicht erlaubt. Bitte wähle ein anderes Dateiformat."
 
@@ -1209,6 +1212,9 @@ msgstr "Thumbnail Breite in der Seitenübersicht in Pixel."
 
 msgid "Title"
 msgstr "Titel"
+
+msgid "Try another image or make the file size smaller than "
+msgstr "Versuche ein anderes Bild oder mache die Datei kleiner als "
 
 msgid "Unarchive"
 msgstr "Unarchivieren"

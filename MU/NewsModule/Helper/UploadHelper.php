@@ -92,9 +92,14 @@ class UploadHelper extends AbstractUploadHelper
         }
         
         // validate size
+        // get file size of uploaded image
         $fileSize = filesize($destinationFilePath);
 
+        // get setting - mod var
         $maxSize = $this->moduleVars['maxSize'];
+        
+        // if not empty, validate
+        if ($maxSize != '') {
 
         if (strpos($maxSize, 'k') !== false) {
         	$sizeType = 'kilo';
@@ -132,6 +137,7 @@ class UploadHelper extends AbstractUploadHelper
         		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ' . $setMaxSize . ' ' . 'megabyte!'));
         		return false;
         	}
+        }
         }
     
         // collect data to return
