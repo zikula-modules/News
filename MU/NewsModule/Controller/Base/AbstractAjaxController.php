@@ -71,12 +71,12 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         $slimItems = [];
-        $component = 'MUNewsModule:' . ucfirst($objectType) . ':';
+        $permissionHelper = $this->get('mu_news_module.permission_helper');
         foreach ($entities as $item) {
-            $itemId = $item->getKey();
-            if (!$this->hasPermission($component, $itemId . '::', ACCESS_READ)) {
+            if (!$permissionHelper->mayRead($item)) {
                 continue;
             }
+            $itemId = $item->getKey();
             $slimItems[] = $this->prepareSlimItem($repository, $objectType, $item, $itemId, $descriptionFieldName);
         }
         

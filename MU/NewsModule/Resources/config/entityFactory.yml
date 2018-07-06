@@ -13,3 +13,4 @@ services:
         class: MU\NewsModule\Entity\Factory\EntityInitialiser
         arguments:
             - "@request_stack"
+            - "@mu_news_module.permission_helper"

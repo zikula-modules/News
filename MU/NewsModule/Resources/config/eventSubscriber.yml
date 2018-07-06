@@ -68,7 +68,8 @@ services:
     mu_news_module.workflow_events_listener:
         class: MU\NewsModule\Listener\WorkflowEventsListener
         arguments:
-            - "@zikula_permissions_module.api.permission"
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.permission_helper"
             - "@mu_news_module.notification_helper"
         tags: ['kernel.event_subscriber']
     

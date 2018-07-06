@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Notification helper implementation class.
  */
-class NotificationHelper extends AbstractNotificationHelper {
-	
+class NotificationHelper extends AbstractNotificationHelper
+{
 	/**
 	 * Sends a mail to either an item's creator or a group of moderators.
 	 *

@@ -109,11 +109,11 @@ function mUNewsExecuteCustomValidationConstraints(objectType, currentEntityId) {
         if ('undefined' != typeof jQuery(this).attr('id')) {
             if ('DIV' == jQuery(this).prop('tagName')) {
                 if (!mUNewsValidateDateRangeMessage()) {
-                    jQuery('#' + jQuery(this).attr('id') + '_date').get(0).setCustomValidity(Translator.__('The start must be before the end.'));
-                    jQuery('#' + jQuery(this).attr('id') + '_time').get(0).setCustomValidity(Translator.__('The start must be before the end.'));
+                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity(Translator.__('The start must be before the end.'));
+                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity(Translator.__('The start must be before the end.'));
                 } else {
-                    jQuery('#' + jQuery(this).attr('id') + '_date').get(0).setCustomValidity('');
-                    jQuery('#' + jQuery(this).attr('id') + '_time').get(0).setCustomValidity('');
+                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity('');
+                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity('');
                 }
             } else {
                 if (!mUNewsValidateDateRangeMessage()) {

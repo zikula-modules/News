@@ -12,15 +12,14 @@
 
 namespace MU\NewsModule\Helper\Base;
 
-use Doctrine\ORM\QueryBuilder;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\RouteUrl;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use MU\NewsModule\Entity\Factory\EntityFactory;
 use MU\NewsModule\Helper\HookHelper;
+use MU\NewsModule\Helper\PermissionHelper;
 use MU\NewsModule\Helper\WorkflowHelper;
 
 /**
@@ -44,14 +43,14 @@ abstract class AbstractArchiveHelper
     protected $logger;
 
     /**
-     * @var PermissionApiInterface
-     */
-    protected $permissionApi;
-
-    /**
      * @var EntityFactory
      */
     protected $entityFactory;
+
+    /**
+     * @var PermissionHelper
+     */
+    protected $permissionHelper;
 
     /**
      * @var WorkflowHelper
@@ -66,28 +65,28 @@ abstract class AbstractArchiveHelper
     /**
      * ArchiveHelper constructor.
      *
-     * @param TranslatorInterface    $translator     Translator service instance
-     * @param RequestStack           $requestStack   RequestStack service instance
-     * @param LoggerInterface        $logger         Logger service instance
-     * @param PermissionApiInterface $permissionApi  PermissionApi service instance
-     * @param EntityFactory          $entityFactory  EntityFactory service instance
-     * @param WorkflowHelper         $workflowHelper WorkflowHelper service instance
-     * @param HookHelper             $hookHelper     HookHelper service instance
+     * @param TranslatorInterface $translator       Translator service instance
+     * @param RequestStack        $requestStack     RequestStack service instance
+     * @param LoggerInterface     $logger           Logger service instance
+     * @param EntityFactory       $entityFactory    EntityFactory service instance
+     * @param PermissionHelper    $permissionHelper PermissionHelper service instance
+     * @param WorkflowHelper      $workflowHelper   WorkflowHelper service instance
+     * @param HookHelper          $hookHelper     HookHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
         LoggerInterface $logger,
-        PermissionApiInterface $permissionApi,
         EntityFactory $entityFactory,
+        PermissionHelper $permissionHelper,
         WorkflowHelper $workflowHelper,
         HookHelper $hookHelper
     ) {
         $this->translator = $translator;
         $this->requestStack = $requestStack;
         $this->logger = $logger;
-        $this->permissionApi = $permissionApi;
         $this->entityFactory = $entityFactory;
+        $this->permissionHelper = $permissionHelper;
         $this->workflowHelper = $workflowHelper;
         $this->hookHelper = $hookHelper;
     }
@@ -104,7 +103,7 @@ abstract class AbstractArchiveHelper
             return;
         }
     
-        if (!$this->permissionApi->hasPermission('MUNewsModule', '.*', ACCESS_EDIT)) {
+        if (!$this->permissionHelper->hasPermission(ACCESS_EDIT)) {
             // abort if current user has no permission for executing the archive workflow action
             return;
         }

@@ -64,12 +64,14 @@ abstract class AbstractMessageController extends AbstractController
      */
     protected function indexInternal(Request $request, $isAdmin = false)
     {
-        // parameter specifying which type of objects we are treating
         $objectType = 'message';
+        // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permissionHelper = $this->get('mu_news_module.permission_helper');
+        if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
         }
+        
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
@@ -118,12 +120,14 @@ abstract class AbstractMessageController extends AbstractController
      */
     protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
     {
-        // parameter specifying which type of objects we are treating
         $objectType = 'message';
+        // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
-        if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permissionHelper = $this->get('mu_news_module.permission_helper');
+        if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
         }
+        
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
@@ -152,7 +156,7 @@ abstract class AbstractMessageController extends AbstractController
         // filter by permissions
         $filteredEntities = [];
         foreach ($templateParameters['items'] as $message) {
-            if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', $message->getKey() . '::', $permLevel)) {
+            if (!$permissionHelper->hasEntityPermission($message, $permLevel)) {
                 continue;
             }
             $filteredEntities[] = $message;
@@ -206,19 +210,15 @@ abstract class AbstractMessageController extends AbstractController
      */
     protected function displayInternal(Request $request, MessageEntity $message, $isAdmin = false)
     {
-        // parameter specifying which type of objects we are treating
         $objectType = 'message';
+        // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
-        if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        // create identifier for permission check
-        $instanceId = $message->getKey();
-        if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
+        $permissionHelper = $this->get('mu_news_module.permission_helper');
+        if (!$permissionHelper->hasEntityPermission($message, $permLevel)) {
             throw new AccessDeniedException();
         }
         
-        if ($message->getWorkflowState() != 'approved' && !$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', $instanceId . '::', ACCESS_ADMIN)) {
+        if ($message->getWorkflowState() != 'approved' && !$permissionHelper->hasEntityPermission($message, ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
         
@@ -290,12 +290,14 @@ abstract class AbstractMessageController extends AbstractController
      */
     protected function editInternal(Request $request, $isAdmin = false)
     {
-        // parameter specifying which type of objects we are treating
         $objectType = 'message';
+        // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
-        if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permissionHelper = $this->get('mu_news_module.permission_helper');
+        if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
         }
+        
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
@@ -355,12 +357,14 @@ abstract class AbstractMessageController extends AbstractController
      */
     protected function deleteInternal(Request $request, MessageEntity $message, $isAdmin = false)
     {
-        // parameter specifying which type of objects we are treating
         $objectType = 'message';
+        // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_DELETE;
-        if (!$this->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        $permissionHelper = $this->get('mu_news_module.permission_helper');
+        if (!$permissionHelper->hasEntityPermission($message, $permLevel)) {
             throw new AccessDeniedException();
         }
+        
         $logger = $this->get('logger');
         $logArgs = ['app' => 'MUNewsModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'message', 'id' => $message->getKey()];
         

@@ -15,6 +15,7 @@ namespace MU\NewsModule\Entity\Factory\Base;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Helper\PermissionHelper;
 
 /**
  * Entity initialiser class used to dynamically apply default values to newly created entities.
@@ -27,14 +28,22 @@ abstract class AbstractEntityInitialiser
     protected $request;
 
     /**
+     * @var PermissionHelper
+     */
+    protected $permissionHelper;
+
+    /**
      * EntityInitialiser constructor.
      *
      * @param RequestStack $requestStack RequestStack service instance
+     * @param PermissionHelper $permissionHelper PermissionHelper service instance
      */
     public function __construct(
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        PermissionHelper $permissionHelper
     ) {
         $this->request = $requestStack->getCurrentRequest();
+        $this->permissionHelper = $permissionHelper;
     }
 
     /**

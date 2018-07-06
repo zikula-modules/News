@@ -24,6 +24,7 @@ use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ListEntriesHelper;
 
@@ -181,7 +182,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             // Zikula core should provide a form type for this to hide entity details
-            'class' => 'Zikula\UsersModule\Entity\UserEntity',
+            'class' => UserEntity::class,
             'choice_label' => 'uname'
         ]);
     }

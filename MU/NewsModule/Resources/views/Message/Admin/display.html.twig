@@ -85,10 +85,10 @@
                     <dt>{{ __('Approver') }}</dt>
                     <dd>{% if message.approver|default and message.approver.getUid() > 0 %}
                     {% if not isQuickView %}
-                        {{ message.approver.getUid()|profileLinkByUserId() }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.getUid()|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}<a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', { '%userName%': message.approver.getUname() }) }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
-                        <span class="avatar">{{ userAvatar(message.approver.getUid(), { rating: 'g' }) }}</span>
+                        {{ message.approver.uid|profileLinkByUserId }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.uid|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}<a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', {'%userName%': message.approver.uname}) }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
+                        <span class="avatar">{{ userAvatar(message.approver.uid, {rating: 'g'}) }}</span>
                     {% else %}
-                        {{ message.approver.getUname() }}
+                        {{ message.approver.uname }}
                     {% endif %}
                     {% else %}&nbsp;{% endif %}
                     </dd>

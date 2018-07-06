@@ -87,7 +87,7 @@ abstract class AbstractEditHandler extends EditHandler
             'entity' => $this->entityRef,
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
-            'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADMIN),
+            'has_moderate_permission' => $this->permissionHelper->hasEntityPermission($this->entityRef, ACCESS_ADMIN),
         ];
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, $this->objectType)) {
             $options['attributes'] = $this->templateParameters['attributes'];

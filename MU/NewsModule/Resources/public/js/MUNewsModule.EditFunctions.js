@@ -44,7 +44,7 @@ function mUNewsTriggerFormValidation() {
     }
 }
 
-function mUNewsHandleFormSubmit (event) {
+function mUNewsHandleFormSubmit(event) {
     if (triggerValidation) {
         mUNewsTriggerFormValidation();
         if (!editForm.get(0).checkValidity()) {
