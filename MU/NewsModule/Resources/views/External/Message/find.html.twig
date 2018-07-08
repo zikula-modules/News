@@ -6,7 +6,6 @@
     <div class="container">
         <div class="zikula-bootstrap-tab-container">
             <ul class="nav nav-tabs">
-            {% set activatedObjectTypes = getModVar('MUNewsModule', 'enabledFinderTypes', []) %}
             {% if 'message' in activatedObjectTypes %}
                 <li{{ objectType == 'message' ? ' class="active"' : '' }}><a href="{{ path('munewsmodule_external_finder', {objectType: 'message', editor: editorName}) }}" title="{{ __('Search and select message') }}">{{ __('Messages') }}</a></li>
             {% endif %}

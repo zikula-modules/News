@@ -12,7 +12,6 @@
 
 namespace MU\NewsModule\Controller\Base;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,7 +98,8 @@ abstract class AbstractExternalController extends AbstractController
         $cssAssetBag->add($assetHelper->resolve('@MUNewsModule:css/style.css'));
         $cssAssetBag->add([$assetHelper->resolve('@MUNewsModule:css/custom.css') => 120]);
         
-        $activatedObjectTypes = $this->getVar('enabledFinderTypes', []);
+        $listEntriesHelper = $this->get('mu_news_module.listentries_helper');
+        $activatedObjectTypes = $listEntriesHelper->extractMultiList($this->getVar('enabledFinderTypes', ''));
         if (!in_array($objectType, $activatedObjectTypes)) {
             if (!count($activatedObjectTypes)) {
                 throw new AccessDeniedException();
@@ -204,7 +204,8 @@ abstract class AbstractExternalController extends AbstractController
         
         $templateParameters['pager'] = [
             'numitems' => $objectCount,
-            'itemsperpage' => $resultsPerPage
+            'itemsperpage' => $resultsPerPage,
+            'activatedObjectTypes' => $activatedObjectTypes
         ];
         
         $output = $this->renderView('@MUNewsModule/External/' . ucfirst($objectType) . '/find.html.twig', $templateParameters);

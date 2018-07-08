@@ -107,12 +107,12 @@ services:
         class: MU\NewsModule\Helper\SearchHelper
         arguments:
             - "@translator.default"
-            - "@zikula_permissions_module.api.permission"
             - "@session"
             - "@request_stack"
             - "@mu_news_module.entity_factory"
             - "@mu_news_module.controller_helper"
             - "@mu_news_module.entity_display_helper"
+            - "@mu_news_module.permission_helper"
             - "@mu_news_module.feature_activation_helper"
             - "@mu_news_module.category_helper"
         tags:
