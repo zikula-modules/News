@@ -202,10 +202,11 @@ abstract class AbstractExternalController extends AbstractController
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
         $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
         
+        $templateParameters['activatedObjectTypes'] = $activatedObjectTypes;
+        
         $templateParameters['pager'] = [
             'numitems' => $objectCount,
-            'itemsperpage' => $resultsPerPage,
-            'activatedObjectTypes' => $activatedObjectTypes
+            'itemsperpage' => $resultsPerPage
         ];
         
         $output = $this->renderView('@MUNewsModule/External/' . ucfirst($objectType) . '/find.html.twig', $templateParameters);
