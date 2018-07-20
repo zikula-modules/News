@@ -791,7 +791,7 @@ msgid "Newest"
 msgstr "Aktuellste"
 
 msgid "News Backend"
-msgstr "Backend"
+msgstr "News Backend"
 
 msgid "No"
 msgstr "Nein"
