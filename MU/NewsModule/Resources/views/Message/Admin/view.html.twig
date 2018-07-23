@@ -104,14 +104,14 @@
                 <td headers="hDisplayOnIndex" class="text-center">
                     {% set itemId = message.getKey() %}
                     <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                        <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
+                        <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
                     </a>
                     <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
                         {% if message.displayOnIndex %}
-                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
                         {% else %}
-                            <i class="fa fa-times" title="{{ __('No') }}"></i>
+                            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
                         {% endif %}
                     </div></noscript>
                 </td>
@@ -121,14 +121,14 @@
                 <td headers="hNoEndDate" class="text-center">
                     {% set itemId = message.getKey() %}
                     <a id="toggleNoEndDate{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="noEndDate" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check{% if not message.noEndDate %} hidden{% endif %}" id="yesNoEndDate{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times{% if message.noEndDate %} hidden{% endif %}" id="noNoEndDate{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                        <i class="fa fa-check text-success{% if not message.noEndDate %} hidden{% endif %}" id="yesNoEndDate{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
+                        <i class="fa fa-times text-danger{% if message.noEndDate %} hidden{% endif %}" id="noNoEndDate{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
                     </a>
                     <noscript><div id="noscriptNoEndDate{{ itemId }}">
                         {% if message.noEndDate %}
-                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
                         {% else %}
-                            <i class="fa fa-times" title="{{ __('No') }}"></i>
+                            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
                         {% endif %}
                     </div></noscript>
                 </td>

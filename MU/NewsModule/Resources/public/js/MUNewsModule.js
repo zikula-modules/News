@@ -48,9 +48,9 @@ function mUNewsToggleFlag(objectType, fieldName, itemId) {
             idSuffix = mUNewsCapitaliseFirstLetter(fieldName) + itemId;
             toggleLink = jQuery('#toggle' + idSuffix);
 
-            if (data.message) {
+            /*if (data.message) {
                 mUNewsSimpleAlert(toggleLink, Translator.__('Success'), data.message, 'toggle' + idSuffix + 'DoneAlert', 'success');
-            }
+            }*/
 
             toggleLink.find('.fa-check').toggleClass('hidden', true !== data.state);
             toggleLink.find('.fa-times').toggleClass('hidden', true === data.state);

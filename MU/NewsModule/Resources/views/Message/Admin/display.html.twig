@@ -97,22 +97,20 @@
                     <dt>{{ __('Notes') }}</dt>
                     <dd>{{ message.notes|safeHtml }}</dd>
                 {% endif %}
-                {% if message.displayOnIndex is not empty %}
-                    <dt>{{ __('Display on index') }}</dt>
-                    <dd>{% set itemId = message.getKey() %}
-                    <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
-                    </a>
-                    <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
-                        {% if message.displayOnIndex %}
-                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-                        {% else %}
-                            <i class="fa fa-times" title="{{ __('No') }}"></i>
-                        {% endif %}
-                    </div></noscript>
-                    </dd>
-                {% endif %}
+                <dt>{{ __('Display on index') }}</dt>
+                <dd>{% set itemId = message.getKey() %}
+                <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
+                    <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
+                    <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                </a>
+                <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
+                    {% if message.displayOnIndex %}
+                        <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                    {% endif %}
+                </div></noscript>
+                </dd>
                 {% if message.imageUpload2 is not empty %}
                     <dt>{{ __('Image upload 2') }}</dt>
                     <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
