@@ -12,11 +12,11 @@
         <title>{{ __('Latest messages') }}</title>
         <link>{{ app.request.schemeAndHttpHost ~ app.request.basePath }}</link>
         <atom:link href="{{ app.request.schemeAndHttpHost ~ app.request.basePath ~ app.request.pathInfo }}" rel="self" type="application/rss+xml" />
-        <description>{{ __('A direct feed showing the list of messages') }} - {{ getSystemVar('slogan') }}</description>
+        <description>{{ __('A direct feed showing the list of messages') }} - {{ getModVar('ZConfig', 'slogan') }}</description>
         <language>{{ app.request.locale }}</language>
         {# commented out as imagepath is not defined and we can't know whether this logo exists or not
         <image>
-            <title>{{ getSystemVar('sitename') }}</title>
+            <title>{{ getModVar('ZConfig', 'sitename') }}</title>
             <url>{{ app.request.schemeAndHttpHost ~ app.request.basePath }}{{ imagepath }}/logo.jpg</url>
             <link>{{ app.request.schemeAndHttpHost ~ app.request.basePath }}</link>
         </image>
@@ -26,7 +26,7 @@
         <webMaster>{{ pageGetVar('adminmail') }}</webMaster>
 {% for message in items %}
     <item>
-        <title><![CDATA[{% if message.updatedDate|default %}{{ message.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ message|munewsmodule_formattedTitle|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}]]></title>
+        <title><![CDATA[{{ message|munewsmodule_formattedTitle|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}]]></title>
         <link>{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}</link>
         <guid>{{ url('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}</guid>
         {% if message.createdBy|default and message.createdBy.getUid() > 0 %}
