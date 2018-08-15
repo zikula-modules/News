@@ -54,6 +54,7 @@ services:
         class: MU\NewsModule\Block\Form\Type\ItemListBlockType
         arguments:
             - "@translator.default"
+            - "@zikula_categories_module.category_repository"
         tags: ['form.type']
     
     mu_news_module.form.type.block.item:

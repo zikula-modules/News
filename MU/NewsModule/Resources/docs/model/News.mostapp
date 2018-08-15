@@ -167,10 +167,18 @@ application "News" targets ZK20 {
                 list "defaultMessageSorting" {
                     documentation "You can customise several display-oriented aspects of the articles."
                     items {
-                        listItem   "articleID" ( "articleID" ),
+                        listItem    "articleID" ( "articleID" ),
                         default listItem "articleDateTime" ( "articledatetime" ),
-                        listItem   "articleStartDate" ( "articlestartdate" ),
-                        listItem "articleWeight" ( "articleweight" )
+                        listItem    "articleStartDate" ( "articlestartdate" ),
+                        listItem  "articleWeight" ( "articleweight" )
+                    }
+                },
+                list "defaultMessageSortingBackend" {
+                    items {
+                        listItem    "articleID" ( "articleID" ),
+                        default listItem "articleDateTime" ( "articledatetime" ),
+                        listItem    "articleStartDate" ( "articlestartdate" ),
+                        listItem  "articleWeight" ( "articleweight" )
                     }
                 },
                 list "sortingDirection" {

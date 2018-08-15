@@ -27,7 +27,7 @@ class NotificationHelper extends AbstractNotificationHelper
 	 */
 	public function process($args)
 	{
-		$zkFunc = $this->request->attributes->get( '_zkFunc' );
+		$zkFunc = $this->request->query->get('_zkFunc');
 		
 		if ($zkFunc != 'display') {
 			$result = parent::process($args);

@@ -29,6 +29,9 @@ framework:
                 - name: archive
                   from: [approved, suspended]
                   to: archived
+                - name: recover
+                  from: trashed
+                  to: waiting
                 - name: update
                   from: suspended
                   to: suspended

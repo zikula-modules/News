@@ -2,24 +2,10 @@
 div#z-maincontent.z-module-news table tbody tr td {
     vertical-align: top;
 }
-.table-responsive > .fixed-columns {
-    position: absolute;
-    display: inline-block;
-    width: auto;
-    border-right: 1px solid #ddd;
-    background-color: #fff;
-}
 
 /* display pages */
-.munewsmodule-display div.col-sm-3 h3 {
-    color: #333;
-    font-weight: 400;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 8px;
-}
-
-.munewsmodule-display div.col-sm-3 p.managelink {
-    margin-left: 18px;
+.munewsmodule-display p.managelink {
+    margin: 18px 0 0 18px;
 }
 
 
