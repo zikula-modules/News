@@ -388,8 +388,6 @@ abstract class AbstractNotificationHelper
         $session = $this->requestStack->getCurrentRequest()->getSession();
         $remarks = $session->get($this->name . 'AdditionalNotificationRemarks', '');
     
-        //$urlArgs = $this->entity->createUrlArgs();
-    
         $hasDisplayAction = in_array($objectType, ['message']);
         $hasEditAction = in_array($objectType, ['message']);
         $routeArea = in_array($this->recipientType, ['moderator', 'superModerator']) ? 'admin' : '';
