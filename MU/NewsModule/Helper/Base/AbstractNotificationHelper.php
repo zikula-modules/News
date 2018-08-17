@@ -388,15 +388,16 @@ abstract class AbstractNotificationHelper
         $session = $this->requestStack->getCurrentRequest()->getSession();
         $remarks = $session->get($this->name . 'AdditionalNotificationRemarks', '');
     
-        $urlArgs = $this->entity->createUrlArgs();
+        //$urlArgs = $this->entity->createUrlArgs();
     
         $hasDisplayAction = in_array($objectType, ['message']);
         $hasEditAction = in_array($objectType, ['message']);
         $routeArea = in_array($this->recipientType, ['moderator', 'superModerator']) ? 'admin' : '';
         $routePrefix = 'munewsmodule_' . strtolower($objectType) . '_' . $routeArea;
-    
-        $displayUrl = $hasDisplayAction ? $this->router->generate($routePrefix . 'display', $urlArgs, true) : '';
-        $editUrl = $hasEditAction ? $this->router->generate($routePrefix . 'edit', $urlArgs, true) : '';
+        
+        $displayUrl = $hasDisplayAction ? $this->router->generate($routePrefix . 'display', $this->entity->createUrlArgs(), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL) : '';
+        
+        $editUrl = $hasEditAction ? $this->router->generate($routePrefix . 'edit', $this->entity->createurlArgs(true), \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL) : '';
     
         return [
             'name' => $this->entityDisplayHelper->getFormattedTitle($this->entity),
