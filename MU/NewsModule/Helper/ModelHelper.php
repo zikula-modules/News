@@ -29,33 +29,12 @@ class ModelHelper extends AbstractModelHelper
      */
     public function resolveSortParameter($objectType = '', $sorting = 'default')
     {
-        if ($sorting == 'random') {
-            return 'RAND()';
+        if ($sorting == 'startedlast') {
+            return 'startDate DESC';
         }
         
-        $hasStandardFields = in_array($objectType, ['message']);
+        return parent::resolveSortParameter($objectType, $sorting);
         
-        $sortParam = '';
-        if ($sorting == 'newest') {
-            if (true === $hasStandardFields) {
-                $sortParam = 'createdDate DESC';
-            } else {
-                $sortParam = $this->entityFactory->getIdField($objectType) . ' DESC';
-            }
-        } elseif ($sorting == 'updated') {
-            if (true === $hasStandardFields) {
-                $sortParam = 'updatedDate DESC';
-            } else {
-                $sortParam = $this->entityFactory->getIdField($objectType) . ' DESC';
-            }
-        } elseif ($sorting == 'default') {
-            $repository = $this->entityFactory->getRepository($objectType);
-            $sortParam = $repository->getDefaultSortingField();
-        } elseif ($sorting == 'startedlast') {
-            $sortParam = 'startDate DESC';
-        }
-        
-        return $sortParam;
     }
     // feel free to add your own convenience methods here
 }
