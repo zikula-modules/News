@@ -50,7 +50,10 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
                 }
                 */
             case '1.2.0':
-            	// nothing to do
+                $this->setVar('defaultMessageSortingBackend', 'articledatetime');
+                
+            case '1.2.1':
+                // for later updates
             	
         }
 
