@@ -13,7 +13,6 @@
 namespace MU\NewsModule\Helper;
 
 use MU\NewsModule\Helper\Base\AbstractNotificationHelper;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Notification helper implementation class.
@@ -27,7 +26,9 @@ class NotificationHelper extends AbstractNotificationHelper
 	 */
 	public function process($args)
 	{
-		$zkFunc = $this->request->query->get('_zkFunc');
+	    $request = $this->requestStack->getCurrentRequest();
+		$attributes = $request->attributes;
+		$zkFunc = $attributes->get('_zkFunc');	
 		
 		if ($zkFunc != 'display') {
 			$result = parent::process($args);
