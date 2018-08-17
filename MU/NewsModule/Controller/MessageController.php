@@ -13,14 +13,24 @@
 namespace MU\NewsModule\Controller;
 
 use MU\NewsModule\Controller\Base\AbstractMessageController;
+
 use RuntimeException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
+use Zikula\Bundle\HookBundle\Category\FormAwareCategory;
+use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
+use Zikula\Component\SortableColumns\Column;
+use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\RouteUrl;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
  * Message controller class providing navigation and interaction functionality.
@@ -34,12 +44,6 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminIndexAction(Request $request)
     {
@@ -53,11 +57,6 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
@@ -79,10 +78,6 @@ class MessageController extends AbstractMessageController
      * @param string $sortdir      Sorting direction
      * @param int    $pos          Current pager position
      * @param int    $num          Amount of entries to display
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -103,10 +98,6 @@ class MessageController extends AbstractMessageController
      * @param string $sortdir      Sorting direction
      * @param int    $pos          Current pager position
      * @param int    $num          Amount of entries to display
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -123,9 +114,6 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by form handler if message to be edited isn't found
@@ -144,10 +132,6 @@ class MessageController extends AbstractMessageController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by form handler if message to be edited isn't found
@@ -172,15 +156,14 @@ class MessageController extends AbstractMessageController
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance
      *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if message to be deleted isn't found
      * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function adminDeleteAction(Request $request, MessageEntity $message)
+    public function adminDeleteAction(Request $request, $slug)
     {
-        return parent::adminDeleteAction($request, $message);
+        return parent::adminDeleteAction($request, $slug);
     }
     
     /**
@@ -196,15 +179,14 @@ class MessageController extends AbstractMessageController
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance
      *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if message to be deleted isn't found
      * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function deleteAction(Request $request, MessageEntity $message)
+    public function deleteAction(Request $request, $slug)
     {
-        return parent::deleteAction($request, $message);
+        return parent::deleteAction($request, $slug);
     }
     
     /**
@@ -221,14 +203,13 @@ class MessageController extends AbstractMessageController
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance
      *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if message to be displayed isn't found
      */
-    public function adminDisplayAction(Request $request, MessageEntity $message)
+    public function adminDisplayAction(Request $request, $slug)
     {
-        return parent::adminDisplayAction($request, $message);
+        return parent::adminDisplayAction($request, $slug);
     }
     
     /**
@@ -244,14 +225,13 @@ class MessageController extends AbstractMessageController
      * @param Request $request Current request instance
      * @param MessageEntity $message Treated message instance
      *
-     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if message to be displayed isn't found
      */
-    public function displayAction(Request $request, MessageEntity $message)
+    public function displayAction(Request $request, $slug)
     {
-        return parent::displayAction($request, $message);
+        return parent::displayAction($request, $slug);
     }
     
     /**
@@ -267,7 +247,6 @@ class MessageController extends AbstractMessageController
      *
      * @param Request $request Current request instance
      *
-     * @return RedirectResponse
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -288,7 +267,6 @@ class MessageController extends AbstractMessageController
      *
      * @param Request $request Current request instance
      *
-     * @return RedirectResponse
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
