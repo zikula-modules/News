@@ -24,7 +24,7 @@ class ControllerHelper extends AbstractControllerHelper
      */
     protected function determineDefaultViewSorting($objectType)
     {
-        $request = $this->request;
+        $request = $this->requestStack->getCurrentRequest();
         $repository = $this->entityFactory->getRepository($objectType);
     
         $sort = $request->query->get('sort', '');
