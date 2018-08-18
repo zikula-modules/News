@@ -25,6 +25,8 @@ class ControllerHelper extends AbstractControllerHelper
     protected function determineDefaultViewSorting($objectType)
     {
         $request = $this->requestStack->getCurrentRequest();
+        $attributes = $request->attributes;
+        $route = $attributes->get('_route', '');
         $repository = $this->entityFactory->getRepository($objectType);
     
         $sort = $request->query->get('sort', '');
@@ -32,7 +34,12 @@ class ControllerHelper extends AbstractControllerHelper
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
 
-            $defaultSorting = $this->variableApi->get('MUNewsModule', 'defaultMessageSorting', 'articledatetime');
+            if($route == 'munewsmodule_message_view') {
+                $sorting = 'defaultMessageSorting';
+            } else {
+                $sorting = 'defaultMessageSortingBackend';
+            }
+            $defaultSorting = $this->variableApi->get('MUNewsModule', $sorting, 'articledatetime');
             $defaultSortingDirection = $this->variableApi->get('MUNewsModule', 'sortingDirection', 'descending');
             $sortdir = str_replace('ending', '', $defaultSortingDirection);
             if ($defaultSorting == 'articleID') {
