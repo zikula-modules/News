@@ -1,0 +1,25 @@
+{# purpose of this template: general base layout #}
+{% block header %}
+{% endblock %}
+
+{% block appTitle %}
+    {{ moduleHeader('user', '', '', false, true, false, true) }}
+{% endblock %}
+
+{% block titleArea %}
+    <h2>{% block title %}{% endblock %}</h2>
+{% endblock %}
+{{ pageSetVar('title', block('pageTitle')|default(block('title'))) }}
+
+{{ include('@MUNewsModule/Helper/includeModerationPanel.html.twig') }}
+
+{{ showflashes() }}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+    {{ pageAddAsset('stylesheet', zasset('@MUNewsModule:css/custom.css'), 120) }}
+    {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js'), 90) }}
+    {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css'), 90) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.js')) }}
+{% endblock %}

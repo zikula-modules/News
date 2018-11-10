@@ -1,0 +1,9 @@
+{# purpose of this template: messages view xml view #}
+<?xml version="1.0" encoding="{{ pageGetVar('meta.charset') }}" ?>
+<messages>
+{% for message in items %}
+    {{ include('@MUNewsModule/Message/include.xml.twig') }}
+{% else %}
+    <noMessage />
+{% endfor %}
+</messages>

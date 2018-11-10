@@ -1,0 +1,51 @@
+body {
+    background-color: #ddd;
+    margin: 10px;
+    text-align: left;
+}
+
+#munewsmoduleItemContainer {
+    background-color: #eee;
+    height: 300px;
+    overflow: auto;
+    padding: 5px;
+}
+
+#munewsmoduleItemContainer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#munewsmoduleItemContainer a {
+    color: #000;
+    margin: 0.1em 0.2em;
+    text-decoration: underline;
+}
+#munewsmoduleItemContainer a:hover,
+#munewsmoduleItemContainer a:focus,
+#munewsmoduleItemContainer a:active {
+    color: #900;
+    text-decoration: none;
+}
+
+#munewsmoduleItemContainer a img {
+    border: none;
+}
+
+#munewsmoduleItemContainer a img {
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    padding: 0.5em;
+}
+#munewsmoduleItemContainer a:hover img,
+#munewsmoduleItemContainer a:focus img,
+#munewsmoduleItemContainer a:active img {
+    background-color: #fff;
+}
+
+.munewsmodule-finderform fieldset,
+.munewsmodule-finderform fieldset legend {
+    background-color: #fff;
+    border: none;
+}

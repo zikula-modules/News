@@ -1,0 +1,22 @@
+services:
+    mu_news_module.hook_subscriber.filter_hooks.messages:
+        class: MU\NewsModule\HookSubscriber\MessageFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.munewsmodule.filter_hooks.messages' }
+
+    mu_news_module.hook_subscriber.form_aware_hook.messages:
+        class: MU\NewsModule\HookSubscriber\MessageFormAwareHookSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.munewsmodule.form_aware_hook.messages' }
+
+    mu_news_module.hook_subscriber.ui_hooks.messages:
+        class: MU\NewsModule\HookSubscriber\MessageUiHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.munewsmodule.ui_hooks.messages' }
+

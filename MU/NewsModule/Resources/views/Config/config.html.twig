@@ -1,0 +1,268 @@
+{# purpose of this template: module configuration page #}
+{% extends 'MUNewsModule::adminBase.html.twig' %}
+{% block title __('Settings') %}
+{% block admin_page_icon 'wrench' %}
+{% block content %}
+    <div class="munewsmodule-config">
+        {% form_theme form with [
+            '@MUNewsModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form) }}
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+                {% set tabTitle = __('General settings') %}
+                <li role="presentation" class="active">
+                    <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Category settings') %}
+                <li role="presentation">
+                    <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Display setting') %}
+                <li role="presentation">
+                    <a id="vars3Tab" href="#tab3" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Upload settings') %}
+                <li role="presentation">
+                    <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Moderation') %}
+                <li role="presentation">
+                    <a id="vars5Tab" href="#tab5" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('List views') %}
+                <li role="presentation">
+                    <a id="vars6Tab" href="#tab6" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Images') %}
+                <li role="presentation" class=" dropdown">
+                    <a id="imagesTabDrop" class="dropdown-toggle" href="#" data-toggle="dropdown" aria-controls="imagesTabDropSections" aria-expanded="false" title="{{ tabTitle|e('html_attr') }}">{{ tabTitle }}<span class="caret"></span></a>
+                    <ul id="imagesTabDropSections" class="dropdown-menu" aria-labelledby="imagesTabDrop">
+                    <li>
+                        <a id="imagesMessageImageUpload1Tab" href="#tabImagesMessageImageUpload1" role="tab" data-toggle="tab" aria-controls="tabImagesMessageImageUpload1">{{ __('Messages image upload 1') }}</a>
+                    </li>
+                    <li>
+                        <a id="imagesMessageImageUpload2Tab" href="#tabImagesMessageImageUpload2" role="tab" data-toggle="tab" aria-controls="tabImagesMessageImageUpload2">{{ __('Messages image upload 2') }}</a>
+                    </li>
+                    <li>
+                        <a id="imagesMessageImageUpload3Tab" href="#tabImagesMessageImageUpload3" role="tab" data-toggle="tab" aria-controls="tabImagesMessageImageUpload3">{{ __('Messages image upload 3') }}</a>
+                    </li>
+                    <li>
+                        <a id="imagesMessageImageUpload4Tab" href="#tabImagesMessageImageUpload4" role="tab" data-toggle="tab" aria-controls="tabImagesMessageImageUpload4">{{ __('Messages image upload 4') }}</a>
+                    </li>
+                    </ul>
+                </li>
+                {% set tabTitle = __('Integration') %}
+                <li role="presentation">
+                    <a id="vars8Tab" href="#tab8" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Workflows') %}
+                <li role="presentation">
+                    <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+            </ul>
+
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="tab1" aria-labelledby="vars1Tab">
+                    {% set tabTitle = __('General settings') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can change general News settings.')|nl2br }}</p>
+                    
+                        {{ form_row(form.enableAttribution) }}
+                        {{ form_row(form.enableMultiLanguage) }}
+                        {{ form_row(form.showAuthor) }}
+                        {{ form_row(form.showDate) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
+                    {% set tabTitle = __('Category settings') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('This section allows you to specify category-related options.')|nl2br }}</p>
+                    
+                        {{ form_row(form.enableCategorization) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab3" aria-labelledby="vars3Tab">
+                    {% set tabTitle = __('Display setting') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                    
+                        {{ form_row(form.defaultMessageSorting) }}
+                        {{ form_row(form.defaultMessageSortingBackend) }}
+                        {{ form_row(form.sortingDirection) }}
+                        {{ form_row(form.enableMoreMessagesInCategory) }}
+                        {{ form_row(form.amountOfMoreArticlesInCategory) }}
+                        {{ form_row(form.displayPdfLink) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab4" aria-labelledby="vars4Tab">
+                    {% set tabTitle = __('Upload settings') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can customise the picture upload behaviour.')|nl2br }}</p>
+                    
+                        {{ form_row(form.enablePictureUpload) }}
+                        {{ form_row(form.imageFloatOnViewPage) }}
+                        {{ form_row(form.imageFloatOnDisplayPage) }}
+                        {{ form_row(form.maxSize) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab5" aria-labelledby="vars5Tab">
+                    {% set tabTitle = __('Moderation') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can assign moderation groups for enhanced workflow actions.')|nl2br }}</p>
+                    
+                        {{ form_row(form.moderationGroupForMessages) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab6" aria-labelledby="vars6Tab">
+                    {% set tabTitle = __('List views') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
+                    
+                        {{ form_row(form.messageEntriesPerPage) }}
+                        {{ form_row(form.linkOwnMessagesOnAccountPage) }}
+                        {{ form_row(form.showOnlyOwnEntries) }}
+                        {{ form_row(form.filterDataByLocale) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesMessageImageUpload1" aria-labelledby="imagesMessageImageUpload1Tab">
+                    {% set tabTitle = __('Image settings for messages image upload 1') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForMessageImageUpload1) }}
+                        <div id="shrinkDetailsMessageImageUpload1">
+                        {{ form_row(form.shrinkWidthMessageImageUpload1) }}
+                        {{ form_row(form.shrinkHeightMessageImageUpload1) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeMessageImageUpload1) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload1View) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload1View) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload1Display) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload1Display) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload1Edit) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload1Edit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesMessageImageUpload2" aria-labelledby="imagesMessageImageUpload2Tab">
+                    {% set tabTitle = __('Image settings for messages image upload 2') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForMessageImageUpload2) }}
+                        <div id="shrinkDetailsMessageImageUpload2">
+                        {{ form_row(form.shrinkWidthMessageImageUpload2) }}
+                        {{ form_row(form.shrinkHeightMessageImageUpload2) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeMessageImageUpload2) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload2View) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload2View) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload2Display) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload2Display) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload2Edit) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload2Edit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesMessageImageUpload3" aria-labelledby="imagesMessageImageUpload3Tab">
+                    {% set tabTitle = __('Image settings for messages image upload 3') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForMessageImageUpload3) }}
+                        <div id="shrinkDetailsMessageImageUpload3">
+                        {{ form_row(form.shrinkWidthMessageImageUpload3) }}
+                        {{ form_row(form.shrinkHeightMessageImageUpload3) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeMessageImageUpload3) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload3View) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload3View) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload3Display) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload3Display) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload3Edit) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload3Edit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesMessageImageUpload4" aria-labelledby="imagesMessageImageUpload4Tab">
+                    {% set tabTitle = __('Image settings for messages image upload 4') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForMessageImageUpload4) }}
+                        <div id="shrinkDetailsMessageImageUpload4">
+                        {{ form_row(form.shrinkWidthMessageImageUpload4) }}
+                        {{ form_row(form.shrinkHeightMessageImageUpload4) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeMessageImageUpload4) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload4View) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload4View) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload4Display) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload4Display) }}
+                        {{ form_row(form.thumbnailWidthMessageImageUpload4Edit) }}
+                        {{ form_row(form.thumbnailHeightMessageImageUpload4Edit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab8" aria-labelledby="vars8Tab">
+                    {% set tabTitle = __('Integration') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('These options allow you to configure integration aspects.')|nl2br }}</p>
+                    
+                        {{ form_row(form.enabledFinderTypes) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
+                    {% set tabTitle = __('Workflows') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
+                
+                        <h4>{{ __('Messages') }}</h4>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_standard'}) }}" title="{{ __('Edit workflow for messages') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit messages workflow') }}</a>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-buttons">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.reset) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Config.js')) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
+    {% set formInitScript %}
+        <script>
+        /* <![CDATA[ */
+            ( function($) {
+                $(document).ready(function() {
+                    mUNewsInitEditForm('edit', '1');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', formInitScript) }}
+{% endblock %}

@@ -1,0 +1,75 @@
+{# purpose of this template: reusable display of standard fields #}
+{% set showAuthor = getModVar('MUNewsModule', 'showAuthor') %}
+{% set showDate = getModVar('MUNewsModule', 'showDate') %}
+{% if showAuthor == 1 and showDate == 1 %} 
+    {% set status = 'both' %}
+{% else %}
+    {% if showAuthor == 0 %}
+        {% set status = 'date' %}
+        {% if showDate == 0 %}
+            {% set status = 'none' %}
+        {% endif %}       
+    {% else %}
+        {% set status = 'author' %}  
+    {% endif %}
+{% endif %}
+{% if (obj.createdBy|default and obj.createdBy.getUid() > 0) and (obj.updatedBy|default and obj.updatedBy.getUid() > 0) %}
+
+    <dl class="propertylist">
+    {% if obj.createdBy|default and obj.createdBy.getUid() > 0 %}
+        {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
+        {% if (status == 'both' or status == 'author') and obj.author == '' %}
+        <dd class="message-avatar">{{ userAvatar(obj.createdBy.getUid(), {rating: 'g'}) }}</dd>
+        {% endif %}
+        <dd>
+        {% if status == 'both' %}
+        {% if obj.author == '' %} 
+            {{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
+        {% else %}
+            {{ __f('Created by %user on %date', {'%user': obj.author, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}       
+        {% endif %}
+        {% endif %}
+        {% if status == 'author' %}
+        {% if obj.author == '' %}   
+            {{ __f('Created by %user', {'%user': profileLink})|raw }}      
+        {% else %}
+            {{ __f('Created by %user', {'%user': obj.author})|raw }} 
+        {% endif %}
+        {% endif %}
+        {% if status == 'date' %}
+            {{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
+        {% endif %}
+            {% if currentUser.loggedIn %}
+                {% set sendMessageUrl = obj.createdBy.getUid()|messageSendLink(urlOnly=true) %}
+                {% if sendMessageUrl != '#' %}
+                    <a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', {'%userName%': obj.createdBy.getUname()}) }}"><i class="fa fa-envelope-o"></i></a>
+                {% endif %}
+            {% endif %}
+        </dd>
+    {% endif %}<br />
+    {% if obj.updatedBy|default and obj.updatedBy.getUid() > 0 and obj.updatedBy != obj.createdBy %}
+        {% set profileLink = obj.updatedBy.getUid()|profileLinkByUserId() %}
+        {% if status == 'both' or status == 'author' %}
+        <dd class="message-avatar">{{ userAvatar(obj.updatedBy.getUid(), {rating: 'g'}) }}</dd>
+        {% endif %}
+        <dd>
+        {% if status == 'both' %}
+            {{ __f('Updated by %user on %date', {'%user': profileLink, '%date': obj.updatedDate|localizeddate('medium', 'short')})|raw }}
+        {% endif %}
+        {% if status == 'author' %}
+            {{ __f('Updated by %user', {'%user': profileLink})|raw }}
+        {% endif %}
+        {% if status == 'date' %}
+            {{ __f('Updated on %date', {'%date': obj.updatedDate|localizeddate('medium', 'short')})|raw }}
+        {% endif %}
+            {% if currentUser.loggedIn %}
+                {% set sendMessageUrl = obj.updatedBy.getUid()|messageSendLink(urlOnly=true) %}
+                {% if sendMessageUrl != '#' %}
+                    <a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', {'%userName%': obj.updatedBy.getUname()}) }}"><i class="fa fa-envelope-o"></i></a>
+                {% endif %}
+            {% endif %}
+        </dd>
+    {% endif %}
+    </dl>
+
+{% endif %}

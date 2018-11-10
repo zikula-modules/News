@@ -1,0 +1,22 @@
+services:
+    mu_news_module.link_container:
+        class: MU\NewsModule\Container\LinkContainer
+        arguments:
+            - "@translator.default"
+            - "@router"
+            - "@zikula_extensions_module.api.variable"
+            - "@mu_news_module.controller_helper"
+            - "@mu_news_module.permission_helper"
+        tags: ['zikula.link_container']
+    mu_news_module.menu_builder:
+        class: MU\NewsModule\Menu\MenuBuilder
+        arguments:
+            - "@translator.default"
+            - "@knp_menu.factory"
+            - "@event_dispatcher"
+            - "@request_stack"
+            - "@mu_news_module.permission_helper"
+            - "@mu_news_module.entity_display_helper"
+            - "@zikula_users_module.current_user"
+        tags:
+            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: mUNewsMenuItemActions }

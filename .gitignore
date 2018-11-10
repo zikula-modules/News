@@ -33,6 +33,8 @@ local.properties
 #############
 
 Resources/templates/
+vendor/
+*.mo
 
 
 #################
@@ -217,3 +219,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+*generated*

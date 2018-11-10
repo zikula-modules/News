@@ -1,0 +1,83 @@
+services:
+    # Event subscribers and listeners
+    mu_news_module.entity_lifecycle_listener:
+        class: MU\NewsModule\Listener\EntityLifecycleListener
+        arguments:
+            - "@service_container"
+            - "@event_dispatcher"
+            - "@logger"
+        tags: ['doctrine.event_subscriber']
+    
+    mu_news_module.kernel_listener:
+        class: MU\NewsModule\Listener\KernelListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.installer_listener:
+        class: MU\NewsModule\Listener\InstallerListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.moduledispatch_listener:
+        class: MU\NewsModule\Listener\ModuleDispatchListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.mailer_listener:
+        class: MU\NewsModule\Listener\MailerListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.theme_listener:
+        class: MU\NewsModule\Listener\ThemeListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.userlogin_listener:
+        class: MU\NewsModule\Listener\UserLoginListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.userlogout_listener:
+        class: MU\NewsModule\Listener\UserLogoutListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.user_listener:
+        class: MU\NewsModule\Listener\UserListener
+        arguments:
+            - "@translator.default"
+            - "@mu_news_module.entity_factory"
+            - "@zikula_users_module.current_user"
+            - "@logger"
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.userregistration_listener:
+        class: MU\NewsModule\Listener\UserRegistrationListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.users_listener:
+        class: MU\NewsModule\Listener\UsersListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.group_listener:
+        class: MU\NewsModule\Listener\GroupListener
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.thirdparty_listener:
+        class: MU\NewsModule\Listener\ThirdPartyListener
+        arguments:
+            - "@filesystem"
+            - "@request_stack"
+            - "@mu_news_module.workflow_helper"
+        tags: ['kernel.event_subscriber']
+    
+    mu_news_module.workflow_events_listener:
+        class: MU\NewsModule\Listener\WorkflowEventsListener
+        arguments:
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.permission_helper"
+            - "@mu_news_module.notification_helper"
+        tags: ['kernel.event_subscriber']
+    
+    stof_doctrine_extensions.listener.sluggable:
+        class: '%stof_doctrine_extensions.listener.sluggable.class%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, ["@annotation_reader"] ]
+            - [ setTransliterator, [[MU\NewsModule\Helper\SlugTransliterator, 'transliterate']]]
+    

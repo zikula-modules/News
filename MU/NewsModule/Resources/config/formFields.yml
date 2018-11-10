@@ -1,0 +1,20 @@
+services:
+    # Form field types
+    
+    mu_news_module.form.type.field.multilist:
+        class: MU\NewsModule\Form\Type\Field\MultiListType
+        arguments:
+            - "@mu_news_module.listentries_helper"
+        tags: ['form.type']
+    
+    mu_news_module.form.type.field.translation:
+        class: MU\NewsModule\Form\Type\Field\TranslationType
+        tags: ['form.type']
+    
+    mu_news_module.form.type.field.upload:
+        class: MU\NewsModule\Form\Type\Field\UploadType
+        arguments:
+            - "@translator.default"
+            - "@mu_news_module.image_helper"
+            - "@mu_news_module.upload_helper"
+        tags: ['form.type']
