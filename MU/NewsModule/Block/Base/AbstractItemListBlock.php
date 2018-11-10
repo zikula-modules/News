@@ -48,7 +48,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
      */
     public function getType()
     {
-        return $this->__('List of news items');
+        return $this->__('News list', 'munewsmodule');
     }
     
     /**
@@ -84,7 +84,6 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         $orderBy = $this->get('mu_news_module.model_helper')->resolveSortParameter($objectType, $properties['sorting']);
         $qb = $repository->getListQueryBuilder($properties['filter'], $orderBy);
     
-        // fetch category registries
         if (in_array($objectType, $this->categorisableObjectTypes)) {
             if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $properties['objectType'])) {
                 $categoryHelper = $this->get('mu_news_module.category_helper');
@@ -112,7 +111,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     
         // set a block title
         if (empty($properties['title'])) {
-            $properties['title'] = $this->__('MUNewsModule items');
+            $properties['title'] = $this->__('News list', 'munewsmodule');
         }
     
         $template = $this->getDisplayTemplate($properties);
@@ -141,7 +140,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     protected function getDisplayTemplate(array $properties = [])
     {
         $templateFile = $properties['template'];
-        if ($templateFile == 'custom' && null !== $properties['customTemplate'] && $properties['customTemplate'] != '') {
+        if ('custom' == $templateFile && null !== $properties['customTemplate'] && '' != $properties['customTemplate']) {
             $templateFile = $properties['customTemplate'];
         }
     

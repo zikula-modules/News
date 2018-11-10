@@ -14,6 +14,7 @@ namespace MU\NewsModule\Entity\Factory\Base;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\Helper\PermissionHelper;
 
 /**
@@ -56,6 +57,18 @@ abstract class AbstractEntityInitialiser
     {
         $entity->setMessageLanguage($this->requestStack->getCurrentRequest()->getLocale());
 
+        return $entity;
+    }
+
+    /**
+     * Initialises a given image instance.
+     *
+     * @param ImageEntity $entity The newly created entity instance
+     *
+     * @return ImageEntity The updated entity instance
+     */
+    public function initImage(ImageEntity $entity)
+    {
         return $entity;
     }
 

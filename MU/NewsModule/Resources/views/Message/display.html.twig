@@ -5,10 +5,10 @@
 {% block title %}
     {% set templateTitle = message|munewsmodule_formattedTitle|default(__('Message')) %}
     {{ templateTitle|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ message.workflowState|munewsmodule_objectState(false)|lower }})</small>{% endif %}
-   {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
-            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
-                {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
-            </div>
+    {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+    <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+    </div>
 {% endblock %}
 {% block content %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
@@ -128,16 +128,40 @@
         </div>
     </div>
     </div>
+
+    {% if message.images|length > 0 %}
+        {#% if routeArea == 'admin' %}
+            <h4>{{ __('Images') }}</h4>
+        {% else %}
+            <h3>{{ __('Images') }}</h3>
+        {% endif %}
+        
+        {{ include(
+            '@MUNewsModule/Image/includeDisplayItemListMany.html.twig',
+            {items: message.images}
+        ) }#}
+        <div class="additional-images">
+            {% set thumbnailOptions = {'thumbnail': {'size': [999, 630], 'mode': 'inset', 'extension': null}} %}
+            {% for image in message.images %}
+                <a href="{{ image.theFileUrl }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" class="image-link">
+                    <img class="post-img img-thumbnail img-responsive" src="{{ image.theFile.getPathname()|imagine_filter('zkroot', thumbnailOptions) }}" alt="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" />
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     {{ block('display_hooks') }}
 
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
-    {% if hooks is iterable and hooks|length > 0 %}
-        {% for area, hook in hooks %}
-            <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{% if area != 'provider.mucommentsmodule.ui_hooks.comments' or ( message.allowComments == 1 and area == 'provider.mucommentsmodule.ui_hooks.comments' ) %}{{ hook|raw }}{% endif %}</div>
-        {% endfor %}
+    {% if message.supportsHookSubscribers() %}
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{% if area != 'provider.mucommentsmodule.ui_hooks.comments' or ( message.allowComments == 1 and area == 'provider.mucommentsmodule.ui_hooks.comments' ) %}{{ hook|raw }}{% endif %}</div>
+            {% endfor %}
+        {% endif %}
     {% endif %}
     {{ munewsmodule_setAmount(message, routeArea) }}
 {% endblock %}

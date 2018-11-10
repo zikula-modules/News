@@ -14,35 +14,10 @@ namespace MU\NewsModule\Block\Form\Type;
 
 use MU\NewsModule\Block\Form\Type\Base\AbstractItemListBlockType;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
-
 /**
  * List block form type implementation class.
  */
 class ItemListBlockType extends AbstractItemListBlockType
 {
-    /**
-     * Adds a sorting field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
-     */
-    public function addSortingField(FormBuilderInterface $builder, array $options = [])
-    {
-        $builder->add('sorting', ChoiceType::class, [
-            'label' => $this->__('Sorting', 'munewsmodule') . ':',
-            'empty_data' => 'default',
-            'choices' => [
-                $this->__('Random', 'munewsmodule') => 'random',
-                $this->__('Newest', 'munewsmodule') => 'newest',
-                $this->__('Started last', 'munewsmodule') => 'startedlast',
-                $this->__('Updated', 'munewsmodule') => 'updated',
-                $this->__('Default', 'munewsmodule') => 'default'
-            ],
-            'multiple' => false,
-            'expanded' => false
-        ]);
-    }
     // feel free to extend the list block form type class here
 }

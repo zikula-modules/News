@@ -24,4 +24,11 @@
     {% endif %}</endDate>
     <weight>{{ message.weight }}</weight>
     <workflowState>{{ message.workflowState|munewsmodule_objectState(false)|lower }}</workflowState>
+    <images>
+    {% if message.images|default %}
+        {% for relatedItem in message.images %}
+        <image>{{ relatedItem|munewsmodule_formattedTitle }}</image>
+        {% endfor %}
+    {% endif %}
+    </images>
 </message>

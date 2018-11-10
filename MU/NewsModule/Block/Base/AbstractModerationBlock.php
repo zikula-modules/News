@@ -24,7 +24,7 @@ abstract class AbstractModerationBlock extends AbstractBlockHandler
      */
     public function getType()
     {
-        return $this->__('News moderation');
+        return $this->__('News moderation', 'munewsmodule');
     }
     
     /**
@@ -49,7 +49,7 @@ abstract class AbstractModerationBlock extends AbstractBlockHandler
     
         // set a block title
         if (empty($properties['title'])) {
-            $properties['title'] = $this->__('Moderation');
+            $properties['title'] = $this->__('Moderation', 'munewsmodule');
         }
     
         return $this->renderView($template, ['moderationObjects' => $amounts]);

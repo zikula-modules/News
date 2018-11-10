@@ -15,7 +15,7 @@ namespace MU\NewsModule\Menu;
 use MU\NewsModule\Menu\Base\AbstractMenuBuilder;
 
 /**
- * This is the menu builder implementation class.
+ * Menu builder implementation class.
  */
 class MenuBuilder extends AbstractMenuBuilder
 {

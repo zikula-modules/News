@@ -125,6 +125,66 @@ function mUNewsInitItemActions(context) {
 }
 
 /**
+ * Helper function to create new dialog window instances.
+ * Note we use jQuery UI dialogs instead of Bootstrap modals here
+ * because we want to be able to open multiple windows simultaneously.
+ */
+function mUNewsInitInlineWindow(containerElem) {
+    var newWindowId;
+    var modalTitle;
+
+    // show the container (hidden for users without JavaScript)
+    containerElem.removeClass('hidden');
+
+    // define name of window
+    newWindowId = containerElem.attr('id') + 'Dialog';
+
+    containerElem.unbind('click').click(function (event) {
+        event.preventDefault();
+
+        // check if window exists already
+        if (jQuery('#' + newWindowId).length < 1) {
+            // create new window instance
+            jQuery('<div />', { id: newWindowId })
+                .append(
+                    jQuery('<iframe width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" />')
+                        .attr('src', containerElem.attr('href'))
+                )
+                .dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: 'blind',
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: 'explode',
+                        duration: 1000
+                    },
+                    title: containerElem.data('modal-title'),
+                    width: 600,
+                    height: 400,
+                    modal: false
+                });
+        }
+
+        // open the window
+        jQuery('#' + newWindowId).dialog('open');
+    });
+
+    // return the dialog selector id;
+    return newWindowId;
+}
+
+/**
+ * Initialises modals for inline display of related items.
+ */
+function mUNewsInitQuickViewModals() {
+    jQuery('.munews-inline-window').each(function (index) {
+        mUNewsInitInlineWindow(jQuery(this));
+    });
+}
+
+/**
  * Initialises image viewing behaviour.
  */
 function mUNewsInitImageViewer() {
@@ -168,6 +228,48 @@ function mUNewsInitImageViewer() {
     });
 }
 
+/**
+ * Initialises reordering view entries using drag n drop.
+ */
+function mUNewsInitSortable() {
+    if (jQuery('#sortableTable').length < 1) {
+        return;
+    }
+
+    jQuery('#sortableTable > tbody').sortable({
+        cursor: 'move',
+        handle: '.sort-handle',
+        items: '.sort-item',
+        placeholder: 'ui-state-highlight',
+        tolerance: 'pointer',
+        sort: function (event, ui) {
+            ui.item.addClass('active-item-shadow');
+        },
+        stop: function (event, ui) {
+            ui.item.removeClass('active-item-shadow');
+        },
+        update: function (event, ui) {
+            jQuery.ajax({
+                method: 'POST',
+                url: Routing.generate('munewsmodule_ajax_updatesortpositions'),
+                data: {
+                    ot: jQuery('#sortableTable').data('object-type'),
+                    identifiers: jQuery(this).sortable('toArray', { attribute: 'data-item-id' }),
+                    min: jQuery('#sortableTable').data('min'),
+                    max: jQuery('#sortableTable').data('max')
+                },
+                success: function (data) {
+                    /*if (data.message) {
+                        mUNewsSimpleAlert(jQuery('#sortableTable'), Translator.__('Success'), data.message, 'sortingDoneAlert', 'success');
+                    }*/
+                    window.location.reload();
+            	}
+            });
+        }
+    });
+    jQuery('#sortableTable').disableSelection();
+}
+
 jQuery(document).ready(function () {
     var isViewPage;
     var isDisplayPage;
@@ -182,8 +284,11 @@ jQuery(document).ready(function () {
         mUNewsInitMassToggle();
         mUNewsInitItemActions('view');
         mUNewsInitAjaxToggles();
+        mUNewsInitSortable();
     } else if (isDisplayPage) {
         mUNewsInitItemActions('display');
         mUNewsInitAjaxToggles();
     }
+
+    mUNewsInitQuickViewModals();
 });

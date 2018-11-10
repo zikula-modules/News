@@ -30,37 +30,37 @@ abstract class AbstractWorkflowHelper
      * @var TranslatorInterface
      */
     protected $translator;
-
+    
     /**
      * @var Registry
      */
     protected $workflowRegistry;
-
+    
     /**
      * @var LoggerInterface
      */
     protected $logger;
-
+    
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-
+    
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-
+    
     /**
      * @var ListEntriesHelper
      */
     protected $listEntriesHelper;
-
+    
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-
+    
     /**
      * WorkflowHelper constructor.
      *
@@ -91,7 +91,7 @@ abstract class AbstractWorkflowHelper
         $this->listEntriesHelper = $listEntriesHelper;
         $this->permissionHelper = $permissionHelper;
     }
-
+    
     /**
       * This method returns a list of possible object states.
       *
@@ -256,7 +256,7 @@ abstract class AbstractWorkflowHelper
                 $buttonClass = 'success';
                 break;
             case 'approve':
-                $buttonClass = '';
+                $buttonClass = 'success';
                 break;
             case 'unpublish':
                 $buttonClass = '';
@@ -283,7 +283,7 @@ abstract class AbstractWorkflowHelper
     
         if ($buttonClass == '' && $actionId == 'update') {
             $buttonClass = 'success';
-    	}
+        }
     
         if (empty($buttonClass)) {
             $buttonClass = 'default';
@@ -317,7 +317,7 @@ abstract class AbstractWorkflowHelper
         try {
             $workflow->apply($entity, $actionId);
     
-            if ($actionId == 'delete') {
+            if ('delete' == $actionId) {
                 $entityManager->remove($entity);
             } else {
                 $entityManager->persist($entity);

@@ -30,32 +30,32 @@ abstract class AbstractCategoryHelper
      * @var TranslatorInterface
      */
     protected $translator;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var LoggerInterface
      */
     protected $logger;
-
+    
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-
+    
     /**
      * @var CategoryRegistryRepositoryInterface
      */
     protected $categoryRegistryRepository;
-
+    
     /**
      * @var CategoryPermissionApiInterface
      */
     protected $categoryPermissionApi;
-
+    
     /**
      * CategoryHelper constructor.
      *
@@ -81,7 +81,7 @@ abstract class AbstractCategoryHelper
         $this->categoryRegistryRepository = $categoryRegistryRepository;
         $this->categoryPermissionApi = $categoryPermissionApi;
     }
-
+    
     /**
      * Defines whether multiple selection is enabled for a given object type
      * or not. Subclass can override this method to apply a custom behaviour
@@ -96,7 +96,7 @@ abstract class AbstractCategoryHelper
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));
-    	}
+        }
         if (empty($args['registry'])) {
             // default to the primary registry
             $registry = $this->getPrimaryProperty($objectType);
@@ -127,7 +127,7 @@ abstract class AbstractCategoryHelper
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));
-    	}
+        }
     
         $request = $this->requestStack->getCurrentRequest();
         $dataSource = $source == 'GET' ? $request->query : $request->request;
@@ -240,7 +240,7 @@ abstract class AbstractCategoryHelper
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));
-    	}
+        }
     
         $moduleRegistries = $this->categoryRegistryRepository->findBy([
             'modname' => 'MUNewsModule',
@@ -267,7 +267,7 @@ abstract class AbstractCategoryHelper
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));
-    	}
+        }
     
         $moduleRegistries = $this->categoryRegistryRepository->findBy([
             'modname' => 'MUNewsModule',
@@ -295,7 +295,7 @@ abstract class AbstractCategoryHelper
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));
-    	}
+        }
     
         $registries = $this->getAllPropertiesWithMainCat($objectType, 'property');
         if ($registries && isset($registries[$property]) && $registries[$property]) {

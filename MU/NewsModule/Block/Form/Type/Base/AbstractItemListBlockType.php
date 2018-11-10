@@ -15,7 +15,6 @@ namespace MU\NewsModule\Block\Form\Type\Base;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -83,9 +82,19 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
-        $builder->add('objectType', HiddenType::class, [
+        $builder->add('objectType', ChoiceType::class, [
             'label' => $this->__('Object type', 'munewsmodule') . ':',
-            'empty_data' => 'message'
+            'empty_data' => 'message',
+            'attr' => [
+                'title' => $this->__('If you change this please save the block once to reload the parameters below.', 'munewsmodule')
+            ],
+            'help' => $this->__('If you change this please save the block once to reload the parameters below.', 'munewsmodule'),
+            'choices' => [
+                $this->__('Messages', 'munewsmodule') => 'message',
+                $this->__('Images', 'munewsmodule') => 'image'
+            ],
+            'multiple' => false,
+            'expanded' => false
         ]);
     }
 

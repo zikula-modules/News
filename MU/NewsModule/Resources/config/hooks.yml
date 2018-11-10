@@ -20,3 +20,10 @@ services:
         tags:
             - { name: zikula.hook_subscriber, areaName: 'subscriber.munewsmodule.ui_hooks.messages' }
 
+    mu_news_module.hook_subscriber.filter_hooks.images:
+        class: MU\NewsModule\HookSubscriber\ImageFilterHooksSubscriber
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.munewsmodule.filter_hooks.images' }
+

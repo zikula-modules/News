@@ -52,6 +52,15 @@ class AjaxController extends AbstractAjaxController
     {
         return parent::toggleFlagAction($request);
     }
+    
+    /**
+     * @inheritDoc
+     * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
+     */
+    public function updateSortPositionsAction(Request $request)
+    {
+        return parent::updateSortPositionsAction($request);
+    }
 
     // feel free to add your own ajax controller methods here
 }

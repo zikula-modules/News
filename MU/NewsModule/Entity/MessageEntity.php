@@ -32,15 +32,5 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class MessageEntity extends BaseEntity
 {
-/*
-    protected $articleImages = [];
-
-    public function getArticleImages() {
-            return $this->articleImages;
-    }
-
-    public function setArticleImages(array $articleImages) {
-            $this->articleImages = $articleImages;	
-    }
-*/
+    // feel free to add your own methods here
 }

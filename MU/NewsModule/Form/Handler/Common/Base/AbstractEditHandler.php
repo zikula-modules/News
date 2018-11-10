@@ -113,6 +113,20 @@ abstract class AbstractEditHandler
      * @var string
      */
     protected $repeatReturnUrl = null;
+    
+    /**
+     * List of identifiers for predefined relationships.
+     *
+     * @var mixed
+     */
+    protected $relationPresets = [];
+
+    /**
+     * Full prefix for related items.
+     *
+     * @var string
+     */
+    protected $idPrefix = '';
 
     /**
      * Whether the PageLock extension is used for this entity type or not.
@@ -320,6 +334,9 @@ abstract class AbstractEditHandler
     {
         $request = $this->requestStack->getCurrentRequest();
         $this->templateParameters = $templateParameters;
+        $this->templateParameters['inlineUsage'] = $request->query->getBoolean('raw', false);
+    
+        $this->idPrefix = $request->query->get('idp', '');
     
         // initialise redirect goal
         $this->returnTo = $request->query->get('returnTo', null);
@@ -362,8 +379,6 @@ abstract class AbstractEditHandler
                     // try to guarantee that only one person at a time can be editing this entity
                     $lockName = 'MUNewsModule' . $this->objectTypeCapital . $entity->getKey();
                     $this->lockingApi->addLock($lockName, $this->getRedirectUrl(['commandName' => '']));
-                    // reload entity as the addLock call above has triggered the preUpdate event
-                    $this->entityFactory->getObjectManager()->refresh($entity);
                 }
                 if (!$this->permissionHelper->mayEdit($entity)) {
                     throw new AccessDeniedException();
@@ -422,6 +437,8 @@ abstract class AbstractEditHandler
         if (true === $this->hasTranslatableFields) {
             $this->initTranslationsForEditing();
         }
+        
+        $this->initRelationPresets();
     
         $actions = $this->workflowHelper->getActionsForObject($entity);
         if (false === $actions || !is_array($actions)) {
@@ -488,6 +505,15 @@ abstract class AbstractEditHandler
     {
         // to be customised in sub classes
         return [];
+    }
+    
+    
+    /**
+     * Initialises relationship presets.
+     */
+    protected function initRelationPresets()
+    {
+        // to be customised in sub classes
     }
     
     /**
@@ -647,7 +673,7 @@ abstract class AbstractEditHandler
                 $args['commandName'] = $action['id'];
             }
         }
-        if ($this->templateParameters['mode'] == 'create' && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
+        if ('create' == $this->templateParameters['mode'] && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
             $args['commandName'] = 'submit';
             $this->repeatCreateAction = true;
         }
@@ -660,7 +686,7 @@ abstract class AbstractEditHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-        if ($entity->supportsHookSubscribers() && $action != 'cancel') {
+        if ($entity->supportsHookSubscribers()) {
             // Let any ui hooks perform additional validation actions
             $hookType = $action == 'delete' ? UiHooksCategory::TYPE_VALIDATE_DELETE : UiHooksCategory::TYPE_VALIDATE_EDIT;
             $validationErrors = $this->hookHelper->callValidationHooks($entity, $hookType);
@@ -737,7 +763,7 @@ abstract class AbstractEditHandler
         }
     
         // persist translated fields
-        $this->translatableHelper->processEntityAfterEditing($this->entityRef, $this->form, $this->entityFactory->getObjectManager());
+        $this->translatableHelper->processEntityAfterEditing($this->entityRef, $this->form);
     }
     
     /**
@@ -858,7 +884,7 @@ abstract class AbstractEditHandler
     {
         $roles = [];
         $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
-        $roles['is_creator'] = $this->templateParameters['mode'] == 'create'
+        $roles['is_creator'] = 'create' == $this->templateParameters['mode']
             || (method_exists($this->entityRef, 'getCreatedBy') && $this->entityRef->getCreatedBy()->getUid() == $currentUserId);
     
         $groupApplicationArgs = [

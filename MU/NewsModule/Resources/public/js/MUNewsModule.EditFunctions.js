@@ -113,3 +113,12 @@ function mUNewsInitEditForm(mode, entityId) {
     }
 }
 
+/**
+ * Initialises a relation field section with optional edit capabilities.
+ */
+function mUNewsInitRelationHandling(objectType, alias, idPrefix, includeEditing, inputType, createUrl) {
+    if (includeEditing) {
+        mUNewsInitInlineEditingButtons(objectType, alias, idPrefix, inputType, createUrl);
+    }
+}
+

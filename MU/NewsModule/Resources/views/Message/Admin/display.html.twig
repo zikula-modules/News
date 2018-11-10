@@ -16,6 +16,9 @@
             <li role="presentation" class="active">
                 <a id="fieldsTab" href="#tabFields" title="{{ __('Fields') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
             </li>
+            <li role="presentation">
+                <a id="relationsTab" href="#tabRelations" title="{{ __('Related data') }}" role="tab" data-toggle="tab">{{ __('Related data') }}</a>
+            </li>
             {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
                 <li role="presentation">
                     <a id="attributesTab" href="#tabAttributes" title="{{ __('Attributes') }}" role="tab" data-toggle="tab">{{ __('Attributes') }}</a>
@@ -174,8 +177,35 @@
     </div>
 </div>
 {% endblock %}
+{% block related_items %}
+    <div role="tabpanel" class="tab-pane fade" id="tabRelations" aria-labelledby="relationsTab">
+        <h3>{{ __('Related data') }}</h3>
+        {% if routeArea == 'admin' %}
+            <h4>{{ __('Images') }}</h4>
+        {% else %}
+            <h3>{{ __('Images') }}</h3>
+        {% endif %}
+        
+        {#% if message.images|default %}
+            {{ include(
+                '@MUNewsModule/Image/Admin/includeDisplayItemListMany.html.twig',
+                {items: message.images}
+            ) }}
+        {% endif %#}
+        {% if message.images|length > 0 %}
+            <div class="additional-images">
+                {% set thumbnailOptions = {'thumbnail': {'size': [999, 630], 'mode': 'inset', 'extension': null}} %}
+                {% for image in message.images %}
+                    <a href="{{ image.theFileUrl }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" class="image-link">
+                        <img class="post-img img-thumbnail img-responsive" src="{{ image.theFile.getPathname()|imagine_filter('zkroot', thumbnailOptions) }}" alt="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" />
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
 {% block display_hooks %}
-    {% if message.supportsHookSubscribers %}
+    {% if message.supportsHookSubscribers() %}
         <div role="tabpanel" class="tab-pane fade" id="tabHooks" aria-labelledby="hooksTab">
             <h3>{{ __('Hooks') }}</h3>
         {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}

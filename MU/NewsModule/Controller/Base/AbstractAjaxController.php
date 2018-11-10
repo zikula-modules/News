@@ -226,7 +226,7 @@ abstract class AbstractAjaxController extends AbstractController
         $entity[$field] = !$entity[$field];
         
         // save entity back to database
-        $entityFactory->getObjectManager()->flush();
+        $entityFactory->getObjectManager()->flush($entity);
         
         $logger = $this->get('logger');
         $logArgs = ['app' => 'MUNewsModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'field' => $field, 'entity' => $objectType, 'id' => $id];
@@ -236,6 +236,62 @@ abstract class AbstractAjaxController extends AbstractController
         return $this->json([
             'id' => $id,
             'state' => $entity[$field],
+            'message' => $this->__('The setting has been successfully changed.')
+        ]);
+    }
+    
+    /**
+     * Updates the sort positions for a given list of entities.
+     *
+     * @param Request $request Current request instance
+     *
+     * @return JsonResponse
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function updateSortPositionsAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
+        }
+        
+        if (!$this->hasPermission('MUNewsModule::Ajax', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+        
+        $objectType = $request->request->getAlnum('ot', 'message');
+        $itemIds = $request->request->get('identifiers', []);
+        $min = $request->request->getInt('min', 0);
+        $max = $request->request->getInt('max', 0);
+        
+        if (!is_array($itemIds) || count($itemIds) < 2 || $max < 1 || $max <= $min) {
+            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+        }
+        
+        $entityFactory = $this->get('mu_news_module.entity_factory');
+        $repository = $entityFactory->getRepository($objectType);
+        $sortableFieldMap = [
+            'image' => 'sortNumber'
+        ];
+        
+        $sortFieldSetter = 'set' . ucfirst($sortableFieldMap[$objectType]);
+        $sortCounter = $min;
+        
+        // update sort values
+        foreach ($itemIds as $itemId) {
+            if (empty($itemId) || !is_numeric($itemId)) {
+                continue;
+            }
+            $entity = $repository->selectById($itemId);
+            $entity->$sortFieldSetter($sortCounter);
+            $sortCounter++;
+        }
+        
+        // save entities back to database
+        $entityFactory->getObjectManager()->flush();
+        
+        // return response
+        return $this->json([
             'message' => $this->__('The setting has been successfully changed.')
         ]);
     }

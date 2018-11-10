@@ -16,6 +16,9 @@
                 <li role="presentation" class="active">
                     <a id="fieldsTab" href="#tabFields" title="{{ __('Fields') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
                 </li>
+                <li role="presentation">
+                    <a id="imagesTab" href="#tabImages" title="{{ __('Images') }}" role="tab" data-toggle="tab">{{ __('Images') }}</a>
+                </li>
                 {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
                     <li role="presentation">
                         <a id="attributesTab" href="#tabAttributes" title="{{ __('Attributes') }}" role="tab" data-toggle="tab">{{ __('Attributes') }}</a>
@@ -31,7 +34,7 @@
                         <a id="standardFieldsTab" href="#tabStandardFields" title="{{ __('Creation and update') }}" role="tab" data-toggle="tab">{{ __('Creation and update') }}</a>
                     </li>
                 {% endif %}
-                {% if form.moderationSpecificCreator is defined %}
+                {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
                     <li role="presentation">
                         <a id="moderationTab" href="#tabModeration" title="{{ __('Moderation options') }}" role="tab" data-toggle="tab">{{ __('Moderation') }}</a>
                     </li>
@@ -122,6 +125,10 @@
                     </fieldset>
                 </div>
                 
+                {{ include(
+                    '@MUNewsModule/Image/Admin/includeSelectEditMany.html.twig',
+                    {group: 'message', heading: __('Images'), alias: 'images', mandatory: false, idPrefix: 'newsMessage_Images', linkingItem: message, tabs: true, displayMode: 'choices'}
+                ) }}
                 {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
                     {{ include('@MUNewsModule/Helper/includeAttributesEdit.html.twig', {obj: message, tabs: true}) }}
                 {% endif %}
@@ -132,7 +139,7 @@
                     {{ include('@MUNewsModule/Helper/includeStandardFieldsEdit.html.twig', {obj: message, tabs: true}) }}
                 {% endif %}
                 
-                {% if formHookTemplates|length > 0 %}
+                {% if supportsHookSubscribers and formHookTemplates|length > 0 %}
                     <fieldset>
                         {% for hookTemplate in formHookTemplates %}
                             {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
@@ -145,11 +152,15 @@
                     {{ form_row(form.additionalNotificationRemarks) }}
                 </fieldset>
                 
-                {% if form.moderationSpecificCreator is defined %}
+                {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
                     <div role="tabpanel" class="tab-pane fade" id="tabModeration" aria-labelledby="moderationTab">
                         <h3>{{ __('Moderation') }}</h3>
-                        {{ form_row(form.moderationSpecificCreator) }}
-                        {{ form_row(form.moderationSpecificCreationDate) }}
+                        {% if form.moderationSpecificCreator is defined %}
+                            {{ form_row(form.moderationSpecificCreator) }}
+                        {% endif %}
+                        {% if form.moderationSpecificCreationDate is defined %}
+                            {{ form_row(form.moderationSpecificCreationDate) }}
+                        {% endif %}
                     </div>
                 {% endif %}
 
@@ -170,12 +181,14 @@
             </div>
         </div>
         {{ form_end(form) }}
-        {% set hookId = mode != 'create' ? message.id : null %}
-        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId, outputAsArray=true) %}
-        {% if hooks is iterable and hooks|length > 0 %}
-            {% for area, hook in hooks %}
-                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
-            {% endfor %}
+        {% if supportsHookSubscribers %}
+            {% set hookId = mode != 'create' ? message.id : null %}
+            {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId, outputAsArray=true) %}
+            {% if hooks is iterable and hooks|length > 0 %}
+                {% for area, hook in hooks %}
+                    <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+                {% endfor %}
+            {% endif %}
         {% endif %}
         
     </div>
@@ -184,12 +197,25 @@
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
+    {#{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.InlineEditing.js'), 99) }#}
     {% set formInitScript %}
         <script>
         /* <![CDATA[ */
-            
+{#            var mUNewsInlineEditHandlers = [];
+            var mUNewsEditHandler = null;
+            mUNewsEditHandler = {
+                alias: 'images',
+                prefix: 'newsMessage_ImagesSelectorDoNew',
+                moduleName: 'MUNewsModule',
+                objectType: 'image',
+                inputType: 'select-multi',
+                windowInstanceId: null
+            };
+            mUNewsInlineEditHandlers.push(mUNewsEditHandler);
+#}
             ( function($) {
                 $(document).ready(function() {
+{#                    mUNewsInitRelationHandling('image', 'images', 'newsMessage_Images', true, 'select-multi', '{{ path('munewsmodule_image_' ~ routeArea ~ 'edit') }}');#}
                     mUNewsInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ message.id }}{% endif %}');
                     mUNewsInitUploadField('munewsmodule_message_imageUpload1_imageUpload1');
                     initUserLiveSearch('munewsmodule_message_approver');

@@ -16,6 +16,7 @@ use IntlDateFormatter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\Helper\ListEntriesHelper;
 
 /**
@@ -27,17 +28,17 @@ abstract class AbstractEntityDisplayHelper
      * @var TranslatorInterface
      */
     protected $translator;
-
+    
     /**
      * @var ListEntriesHelper Helper service for managing list entries
      */
     protected $listEntriesHelper;
-
+    
     /**
      * @var IntlDateFormatter Formatter for dates
      */
     protected $dateFormatter;
-
+    
     /**
      * EntityDisplayHelper constructor.
      *
@@ -55,7 +56,7 @@ abstract class AbstractEntityDisplayHelper
         $locale = null !== $requestStack->getCurrentRequest() ? $requestStack->getCurrentRequest()->getLocale() : null;
         $this->dateFormatter = new IntlDateFormatter($locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE);
     }
-
+    
     /**
      * Returns the formatted title for a given entity.
      *
@@ -67,6 +68,9 @@ abstract class AbstractEntityDisplayHelper
     {
         if ($entity instanceof MessageEntity) {
             return $this->formatMessage($entity);
+        }
+        if ($entity instanceof ImageEntity) {
+            return $this->formatImage($entity);
         }
     
         return '';
@@ -87,6 +91,21 @@ abstract class AbstractEntityDisplayHelper
     }
     
     /**
+     * Returns the formatted title for a given entity.
+     *
+     * @param ImageEntity $entity The given entity instance
+     *
+     * @return string The formatted title
+     */
+    protected function formatImage(ImageEntity $entity)
+    {
+        return $this->translator->__f('Image %sortNumber% %caption%', [
+            '%sortNumber%' => $entity->getSortNumber(),
+            '%caption%' => $entity->getCaption()
+        ]);
+    }
+    
+    /**
      * Returns name of the field used as title / name for entities of this repository.
      *
      * @param string $objectType Name of treated entity type
@@ -97,6 +116,9 @@ abstract class AbstractEntityDisplayHelper
     {
         if ($objectType == 'message') {
             return 'title';
+        }
+        if ($objectType == 'image') {
+            return 'caption';
         }
     
         return '';
@@ -114,6 +136,9 @@ abstract class AbstractEntityDisplayHelper
         if ($objectType == 'message') {
             return 'startText';
         }
+        if ($objectType == 'image') {
+            return 'caption';
+        }
     
         return '';
     }
@@ -129,6 +154,9 @@ abstract class AbstractEntityDisplayHelper
     {
         if ($objectType == 'message') {
             return 'imageUpload1';
+        }
+        if ($objectType == 'image') {
+            return 'theFile';
         }
     
         return '';
@@ -146,6 +174,9 @@ abstract class AbstractEntityDisplayHelper
     {
         if ($objectType == 'message') {
             return 'startDate';
+        }
+        if ($objectType == 'image') {
+            return 'createdDate';
         }
     
         return '';

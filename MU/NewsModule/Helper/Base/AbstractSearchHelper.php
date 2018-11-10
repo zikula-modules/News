@@ -194,6 +194,11 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     $whereArray[] = 'tbl.imageUpload3';
                     $whereArray[] = 'tbl.imageUpload4';
                     break;
+                case 'image':
+                    $whereArray[] = 'tbl.workflowState';
+                    $whereArray[] = 'tbl.theFile';
+                    $whereArray[] = 'tbl.caption';
+                    break;
             }
     
             $repository = $this->entityFactory->getRepository($objectType);
@@ -270,6 +275,10 @@ abstract class AbstractSearchHelper implements SearchableInterface
             'mUNewsModuleMessages' => [
                 'value' => 'message',
                 'label' => $this->__('Messages')
+            ],
+            'mUNewsModuleImages' => [
+                'value' => 'image',
+                'label' => $this->__('Images')
             ]
         ];
     

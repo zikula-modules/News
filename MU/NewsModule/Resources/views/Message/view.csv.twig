@@ -1,5 +1,5 @@
 {# purpose of this template: messages view csv view #}
-{% spaceless %}"{{ __('Title') }}";"{{ __('Start text') }}";"{{ __('Image upload 1') }}";"{{ __('Main text') }}";"{{ __('Amount of views') }}";"{{ __('Author') }}";"{{ __('Approver') }}";"{{ __('Notes') }}";"{{ __('Display on index') }}";"{{ __('Message language') }}";"{{ __('Allow comments') }}";"{{ __('Image upload 2') }}";"{{ __('Image upload 3') }}";"{{ __('Image upload 4') }}";"{{ __('Start date') }}";"{{ __('No end date') }}";"{{ __('End date') }}";"{{ __('Weight') }}";"{{ __('Workflow state') }}"
+{% spaceless %}"{{ __('Title') }}";"{{ __('Start text') }}";"{{ __('Image upload 1') }}";"{{ __('Main text') }}";"{{ __('Amount of views') }}";"{{ __('Author') }}";"{{ __('Approver') }}";"{{ __('Notes') }}";"{{ __('Display on index') }}";"{{ __('Message language') }}";"{{ __('Allow comments') }}";"{{ __('Image upload 2') }}";"{{ __('Image upload 3') }}";"{{ __('Image upload 4') }}";"{{ __('Start date') }}";"{{ __('No end date') }}";"{{ __('End date') }}";"{{ __('Weight') }}";"{{ __('Workflow state') }}";"{{ __('Images') }}"
 {% endspaceless %}
 {% for message in items %}
 
@@ -8,6 +8,12 @@
         {{ message.startDate|localizeddate('medium', 'short') }}
     {% endif %}";"{% if not message.noEndDate %}0{% else %}1{% endif %}";"{% if message.endDate is not empty %}
         {{ message.endDate|localizeddate('medium', 'short') }}
-    {% endif %}";"{{ message.weight }}";"{{ message.workflowState|munewsmodule_objectState(false)|lower }}"
+    {% endif %}";"{{ message.weight }}";"{{ message.workflowState|munewsmodule_objectState(false)|lower }}";"
+    {% if message.images|default %}
+        {% for relatedItem in message.images %}
+        {{ relatedItem|munewsmodule_formattedTitle }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+    "
 {% endspaceless %}
 {% endfor %}

@@ -15,6 +15,7 @@ namespace MU\NewsModule\Controller\Base;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
@@ -23,6 +24,7 @@ use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\RouteUrl;
 use MU\NewsModule\Entity\MessageEntity;
 use MU\NewsModule\Helper\FeatureActivationHelper;
@@ -229,7 +231,7 @@ abstract class AbstractMessageController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        if ($message->getWorkflowState() != 'approved' && !$permissionHelper->hasEntityPermission($message, ACCESS_ADMIN)) {
+        if ($message->getWorkflowState() != 'approved' && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         
@@ -606,6 +608,49 @@ abstract class AbstractMessageController extends AbstractController
         }
         
         return $this->redirectToRoute('munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'index');
+    }
+    
+    /**
+     * This method cares for a redirect within an inline frame.
+     *
+     * @param string  $idPrefix    Prefix for inline window element identifier
+     * @param string  $commandName Name of action to be performed (create or edit)
+     * @param integer $id          Identifier of created message (used for activating auto completion after closing the modal window)
+     *
+     * @return PlainResponse Output
+     */
+    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
+    {
+        if (empty($idPrefix)) {
+            return false;
+        }
+        
+        $formattedTitle = '';
+        $searchTerm = '';
+        if (!empty($id)) {
+            $repository = $this->get('mu_news_module.entity_factory')->getRepository('message');
+            $message = null;
+            if (!is_numeric($id)) {
+                $message = $repository->selectBySlug($id);
+            }
+            if (null === $message && is_numeric($id)) {
+                $message = $repository->selectById($id);
+            }
+            if (null !== $message) {
+                $formattedTitle = $this->get('mu_news_module.entity_display_helper')->getFormattedTitle($message);
+                $searchTerm = $message->getTitle();
+            }
+        }
+        
+        $templateParameters = [
+            'itemId' => $id,
+            'formattedTitle' => $formattedTitle,
+            'searchTerm' => $searchTerm,
+            'idPrefix' => $idPrefix,
+            'commandName' => $commandName
+        ];
+        
+        return new PlainResponse($this->get('twig')->render('@MUNewsModule/Message/inlineRedirectHandler.html.twig', $templateParameters));
     }
     
 }
