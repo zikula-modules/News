@@ -19,22 +19,5 @@ use MU\NewsModule\Helper\Base\AbstractModelHelper;
  */
 class ModelHelper extends AbstractModelHelper
 {
-    /**
-     * Returns a desired sorting criteria for passing it to a repository method.
-     *
-     * @param string $objectType Name of treated entity type
-     * @param string $sorting    The type of sorting (newest, random, default)
-     *
-     * @return string The order by clause
-     */
-    public function resolveSortParameter($objectType = '', $sorting = 'default')
-    {
-        if ($sorting == 'startedlast') {
-            return 'startDate DESC';
-        }
-        
-        return parent::resolveSortParameter($objectType, $sorting);
-        
-    }
     // feel free to add your own convenience methods here
 }

@@ -158,14 +158,6 @@ abstract class AbstractAppSettings
     protected $maxSize = '200k';
     
     /**
-     * Used to determine moderator user accounts for sending email notifications.
-     *
-     * @Assert\NotBlank()
-     * @var integer $moderationGroupForMessages
-     */
-    protected $moderationGroupForMessages = 2;
-    
-    /**
      * The amount of messages shown per page
      *
      * @Assert\Type(type="integer")
@@ -628,13 +620,79 @@ abstract class AbstractAppSettings
     protected $thumbnailHeightMessageImageUpload4Edit = 180;
     
     /**
+     * Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.
+     *
+     * @Assert\NotNull()
+     * @Assert\Type(type="bool")
+     * @var boolean $enableShrinkingForImageTheFile
+     */
+    protected $enableShrinkingForImageTheFile = false;
+    
+    /**
+     * The maximum image width in pixels.
+     *
+     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\NotEqualTo(value=0)
+     * @Assert\LessThan(value=100000000000)
+     * @var integer $shrinkWidthImageTheFile
+     */
+    protected $shrinkWidthImageTheFile = 800;
+    
+    /**
+     * The maximum image height in pixels.
+     *
+     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\NotEqualTo(value=0)
+     * @Assert\LessThan(value=100000000000)
+     * @var integer $shrinkHeightImageTheFile
+     */
+    protected $shrinkHeightImageTheFile = 600;
+    
+    /**
+     * Thumbnail mode (inset or outbound).
+     *
+     * @Assert\NotBlank()
+     * @NewsAssert\ListEntry(entityName="appSettings", propertyName="thumbnailModeImageTheFile", multiple=false)
+     * @var string $thumbnailModeImageTheFile
+     */
+    protected $thumbnailModeImageTheFile = 'inset';
+    
+    /**
+     * Used to determine moderator user accounts for sending email notifications.
+     *
+     * @Assert\NotBlank()
+     * @var integer $moderationGroupForMessages
+     */
+    protected $moderationGroupForMessages = 2;
+    
+    /**
+     * Whether to allow moderators choosing a user which will be set as creator.
+     *
+     * @Assert\NotNull()
+     * @Assert\Type(type="bool")
+     * @var boolean $allowModerationSpecificCreatorForMessage
+     */
+    protected $allowModerationSpecificCreatorForMessage = false;
+    
+    /**
+     * Whether to allow moderators choosing a custom creation date.
+     *
+     * @Assert\NotNull()
+     * @Assert\Type(type="bool")
+     * @var boolean $allowModerationSpecificCreationDateForMessage
+     */
+    protected $allowModerationSpecificCreationDateForMessage = false;
+    
+    /**
      * Which sections are supported in the Finder component (used by Scribite plug-ins).
      *
      * @Assert\NotNull()
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="enabledFinderTypes", multiple=true)
      * @var string $enabledFinderTypes
      */
-    protected $enabledFinderTypes = 'message';
+    protected $enabledFinderTypes = 'message###image';
     
     
     /**
@@ -1010,30 +1068,6 @@ abstract class AbstractAppSettings
     {
         if ($this->maxSize !== $maxSize) {
             $this->maxSize = isset($maxSize) ? $maxSize : '';
-        }
-    }
-    
-    /**
-     * Returns the moderation group for messages.
-     *
-     * @return integer
-     */
-    public function getModerationGroupForMessages()
-    {
-        return $this->moderationGroupForMessages;
-    }
-    
-    /**
-     * Sets the moderation group for messages.
-     *
-     * @param integer $moderationGroupForMessages
-     *
-     * @return void
-     */
-    public function setModerationGroupForMessages($moderationGroupForMessages)
-    {
-        if ($this->moderationGroupForMessages !== $moderationGroupForMessages) {
-            $this->moderationGroupForMessages = $moderationGroupForMessages;
         }
     }
     
@@ -2094,6 +2128,174 @@ abstract class AbstractAppSettings
     }
     
     /**
+     * Returns the enable shrinking for image the file.
+     *
+     * @return boolean
+     */
+    public function getEnableShrinkingForImageTheFile()
+    {
+        return $this->enableShrinkingForImageTheFile;
+    }
+    
+    /**
+     * Sets the enable shrinking for image the file.
+     *
+     * @param boolean $enableShrinkingForImageTheFile
+     *
+     * @return void
+     */
+    public function setEnableShrinkingForImageTheFile($enableShrinkingForImageTheFile)
+    {
+        if (boolval($this->enableShrinkingForImageTheFile) !== boolval($enableShrinkingForImageTheFile)) {
+            $this->enableShrinkingForImageTheFile = boolval($enableShrinkingForImageTheFile);
+        }
+    }
+    
+    /**
+     * Returns the shrink width image the file.
+     *
+     * @return integer
+     */
+    public function getShrinkWidthImageTheFile()
+    {
+        return $this->shrinkWidthImageTheFile;
+    }
+    
+    /**
+     * Sets the shrink width image the file.
+     *
+     * @param integer $shrinkWidthImageTheFile
+     *
+     * @return void
+     */
+    public function setShrinkWidthImageTheFile($shrinkWidthImageTheFile)
+    {
+        if (intval($this->shrinkWidthImageTheFile) !== intval($shrinkWidthImageTheFile)) {
+            $this->shrinkWidthImageTheFile = intval($shrinkWidthImageTheFile);
+        }
+    }
+    
+    /**
+     * Returns the shrink height image the file.
+     *
+     * @return integer
+     */
+    public function getShrinkHeightImageTheFile()
+    {
+        return $this->shrinkHeightImageTheFile;
+    }
+    
+    /**
+     * Sets the shrink height image the file.
+     *
+     * @param integer $shrinkHeightImageTheFile
+     *
+     * @return void
+     */
+    public function setShrinkHeightImageTheFile($shrinkHeightImageTheFile)
+    {
+        if (intval($this->shrinkHeightImageTheFile) !== intval($shrinkHeightImageTheFile)) {
+            $this->shrinkHeightImageTheFile = intval($shrinkHeightImageTheFile);
+        }
+    }
+    
+    /**
+     * Returns the thumbnail mode image the file.
+     *
+     * @return string
+     */
+    public function getThumbnailModeImageTheFile()
+    {
+        return $this->thumbnailModeImageTheFile;
+    }
+    
+    /**
+     * Sets the thumbnail mode image the file.
+     *
+     * @param string $thumbnailModeImageTheFile
+     *
+     * @return void
+     */
+    public function setThumbnailModeImageTheFile($thumbnailModeImageTheFile)
+    {
+        if ($this->thumbnailModeImageTheFile !== $thumbnailModeImageTheFile) {
+            $this->thumbnailModeImageTheFile = isset($thumbnailModeImageTheFile) ? $thumbnailModeImageTheFile : '';
+        }
+    }
+    
+    /**
+     * Returns the moderation group for messages.
+     *
+     * @return integer
+     */
+    public function getModerationGroupForMessages()
+    {
+        return $this->moderationGroupForMessages;
+    }
+    
+    /**
+     * Sets the moderation group for messages.
+     *
+     * @param integer $moderationGroupForMessages
+     *
+     * @return void
+     */
+    public function setModerationGroupForMessages($moderationGroupForMessages)
+    {
+        if ($this->moderationGroupForMessages !== $moderationGroupForMessages) {
+            $this->moderationGroupForMessages = $moderationGroupForMessages;
+        }
+    }
+    
+    /**
+     * Returns the allow moderation specific creator for message.
+     *
+     * @return boolean
+     */
+    public function getAllowModerationSpecificCreatorForMessage()
+    {
+        return $this->allowModerationSpecificCreatorForMessage;
+    }
+    
+    /**
+     * Sets the allow moderation specific creator for message.
+     *
+     * @param boolean $allowModerationSpecificCreatorForMessage
+     *
+     * @return void
+     */
+    public function setAllowModerationSpecificCreatorForMessage($allowModerationSpecificCreatorForMessage)
+    {
+        if (boolval($this->allowModerationSpecificCreatorForMessage) !== boolval($allowModerationSpecificCreatorForMessage)) {
+            $this->allowModerationSpecificCreatorForMessage = boolval($allowModerationSpecificCreatorForMessage);
+        }
+    }
+    
+    /**
+     * Returns the allow moderation specific creation date for message.
+     *
+     * @return boolean
+     */
+    public function getAllowModerationSpecificCreationDateForMessage()
+    {
+        return $this->allowModerationSpecificCreationDateForMessage;
+    }
+    
+    /**
+     * Sets the allow moderation specific creation date for message.
+     *
+     * @param boolean $allowModerationSpecificCreationDateForMessage
+     *
+     * @return void
+     */
+    public function setAllowModerationSpecificCreationDateForMessage($allowModerationSpecificCreationDateForMessage)
+    {
+        if (boolval($this->allowModerationSpecificCreationDateForMessage) !== boolval($allowModerationSpecificCreationDateForMessage)) {
+            $this->allowModerationSpecificCreationDateForMessage = boolval($allowModerationSpecificCreationDateForMessage);
+        }
+    }
+    
+    /**
      * Returns the enabled finder types.
      *
      * @return string
@@ -2169,9 +2371,6 @@ abstract class AbstractAppSettings
         }
         if (isset($moduleVars['maxSize'])) {
             $this->setMaxSize($moduleVars['maxSize']);
-        }
-        if (isset($moduleVars['moderationGroupForMessages'])) {
-            $this->setModerationGroupForMessages($moduleVars['moderationGroupForMessages']);
         }
         if (isset($moduleVars['messageEntriesPerPage'])) {
             $this->setMessageEntriesPerPage($moduleVars['messageEntriesPerPage']);
@@ -2305,6 +2504,27 @@ abstract class AbstractAppSettings
         if (isset($moduleVars['thumbnailHeightMessageImageUpload4Edit'])) {
             $this->setThumbnailHeightMessageImageUpload4Edit($moduleVars['thumbnailHeightMessageImageUpload4Edit']);
         }
+        if (isset($moduleVars['enableShrinkingForImageTheFile'])) {
+            $this->setEnableShrinkingForImageTheFile($moduleVars['enableShrinkingForImageTheFile']);
+        }
+        if (isset($moduleVars['shrinkWidthImageTheFile'])) {
+            $this->setShrinkWidthImageTheFile($moduleVars['shrinkWidthImageTheFile']);
+        }
+        if (isset($moduleVars['shrinkHeightImageTheFile'])) {
+            $this->setShrinkHeightImageTheFile($moduleVars['shrinkHeightImageTheFile']);
+        }
+        if (isset($moduleVars['thumbnailModeImageTheFile'])) {
+            $this->setThumbnailModeImageTheFile($moduleVars['thumbnailModeImageTheFile']);
+        }
+        if (isset($moduleVars['moderationGroupForMessages'])) {
+            $this->setModerationGroupForMessages($moduleVars['moderationGroupForMessages']);
+        }
+        if (isset($moduleVars['allowModerationSpecificCreatorForMessage'])) {
+            $this->setAllowModerationSpecificCreatorForMessage($moduleVars['allowModerationSpecificCreatorForMessage']);
+        }
+        if (isset($moduleVars['allowModerationSpecificCreationDateForMessage'])) {
+            $this->setAllowModerationSpecificCreationDateForMessage($moduleVars['allowModerationSpecificCreationDateForMessage']);
+        }
         if (isset($moduleVars['enabledFinderTypes'])) {
             $this->setEnabledFinderTypes($moduleVars['enabledFinderTypes']);
         }
@@ -2344,7 +2564,6 @@ abstract class AbstractAppSettings
         $this->variableApi->set('MUNewsModule', 'imageFloatOnViewPage', $this->getImageFloatOnViewPage());
         $this->variableApi->set('MUNewsModule', 'imageFloatOnDisplayPage', $this->getImageFloatOnDisplayPage());
         $this->variableApi->set('MUNewsModule', 'maxSize', $this->getMaxSize());
-        $this->variableApi->set('MUNewsModule', 'moderationGroupForMessages', $this->getModerationGroupForMessages());
         $this->variableApi->set('MUNewsModule', 'messageEntriesPerPage', $this->getMessageEntriesPerPage());
         $this->variableApi->set('MUNewsModule', 'linkOwnMessagesOnAccountPage', $this->getLinkOwnMessagesOnAccountPage());
         $this->variableApi->set('MUNewsModule', 'showOnlyOwnEntries', $this->getShowOnlyOwnEntries());
@@ -2389,6 +2608,13 @@ abstract class AbstractAppSettings
         $this->variableApi->set('MUNewsModule', 'thumbnailHeightMessageImageUpload4Display', $this->getThumbnailHeightMessageImageUpload4Display());
         $this->variableApi->set('MUNewsModule', 'thumbnailWidthMessageImageUpload4Edit', $this->getThumbnailWidthMessageImageUpload4Edit());
         $this->variableApi->set('MUNewsModule', 'thumbnailHeightMessageImageUpload4Edit', $this->getThumbnailHeightMessageImageUpload4Edit());
+        $this->variableApi->set('MUNewsModule', 'enableShrinkingForImageTheFile', $this->getEnableShrinkingForImageTheFile());
+        $this->variableApi->set('MUNewsModule', 'shrinkWidthImageTheFile', $this->getShrinkWidthImageTheFile());
+        $this->variableApi->set('MUNewsModule', 'shrinkHeightImageTheFile', $this->getShrinkHeightImageTheFile());
+        $this->variableApi->set('MUNewsModule', 'thumbnailModeImageTheFile', $this->getThumbnailModeImageTheFile());
+        $this->variableApi->set('MUNewsModule', 'moderationGroupForMessages', $this->getModerationGroupForMessages());
+        $this->variableApi->set('MUNewsModule', 'allowModerationSpecificCreatorForMessage', $this->getAllowModerationSpecificCreatorForMessage());
+        $this->variableApi->set('MUNewsModule', 'allowModerationSpecificCreationDateForMessage', $this->getAllowModerationSpecificCreationDateForMessage());
         $this->variableApi->set('MUNewsModule', 'enabledFinderTypes', $this->getEnabledFinderTypes());
     }
 }

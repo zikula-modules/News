@@ -14,7 +14,6 @@ namespace MU\NewsModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Common\Collection\Collectible\PendingContentCollectible;
@@ -126,16 +125,10 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     {
         // install assets for Scribite plugins
         $targetDir = 'web/modules/munews';
-        $finder = new Finder();
         if (!$this->filesystem->exists($targetDir)) {
-            $this->filesystem->mkdir($targetDir, 0777);
-            if (is_dir($originDir = 'modules/MU/NewsModule/Resources/public')) {
-                $this->filesystem->mirror($originDir, $targetDir, Finder::create()->in($originDir));
-            }
-            if (is_dir($originDir = 'modules/MU/NewsModule/Resources/scribite')) {
-                $targetDir .= '/scribite';
-                $this->filesystem->mkdir($targetDir, 0777);
-                $this->filesystem->mirror($originDir, $targetDir, Finder::create()->in($originDir));
+            $moduleDirectory = str_replace('Listener/Base', '', __DIR__);
+            if (is_dir($originDir = $moduleDirectory . 'Resources/public')) {
+                $this->filesystem->symlink($originDir, $targetDir, true);
             }
         }
     

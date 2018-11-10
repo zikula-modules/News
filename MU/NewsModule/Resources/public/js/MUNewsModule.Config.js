@@ -1,8 +1,10 @@
 'use strict';
 
 function newsToggleShrinkSettings(fieldName) {
-    var idSuffix = fieldName.replace('munewsmodule_appsettings_', '');
-    jQuery('#shrinkDetails' + idSuffix).toggleClass('hidden', !jQuery('#munewsmodule_appsettings_enableShrinkingFor' + idSuffix).prop('checked'));
+    var idSuffix;
+
+    idSuffix = fieldName.replace('munewsmodule_config_', '');
+    jQuery('#shrinkDetails' + idSuffix).toggleClass('hidden', !jQuery('#munewsmodule_config_enableShrinkingFor' + idSuffix).prop('checked'));
 }
 
 jQuery(document).ready(function () {

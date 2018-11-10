@@ -51,10 +51,24 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
                 */
             case '1.2.0':
                 $this->setVar('defaultMessageSortingBackend', 'articledatetime');
-                
+
             case '1.2.1':
+                try {
+                    $this->schemaTool->create(['MU\NewsModule\Entity\ImageEntity']);
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+                    $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
+            
+                    return false;
+                }
+                $this->setVar('enableShrinkingForImageTheFile', false);
+                $this->setVar('shrinkWidthImageTheFile', 800);
+                $this->setVar('shrinkHeightImageTheFile', 600);
+                $this->setVar('thumbnailModeImageTheFile', 'inset');
+                $this->setVar('enabledFinderTypes', 'message###image');
+
+            case '1.2.5':
                 // for later updates
-            	
         }
 
         // update successful

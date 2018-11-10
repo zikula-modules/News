@@ -26,7 +26,7 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
      */
     public function getType()
     {
-        return $this->__('Single news item');
+        return $this->__('News detail', 'munewsmodule');
     }
     
     /**

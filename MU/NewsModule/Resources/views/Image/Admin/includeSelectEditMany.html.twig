@@ -1,0 +1,155 @@
+{# purpose of this template: inclusion template for managing article images #}
+{% if tabs|default(false) == true %}
+    <div role="tabpanel" class="tab-pane fade" id="tabImages" aria-labelledby="imagesTab">
+    <fieldset class="images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+        <h3><i class="fa fa-picture-o"></i> {{ heading|default ? heading : __('Images') }}</h3>
+{% else %}
+    <fieldset class="images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+    <legend><i class="fa fa-picture-o"></i> {{ heading|default ? heading : __('Images') }}</legend>
+{% endif %}
+    {{ form_row(form.images) }}
+    {#% for image in form.images %}
+        <div class="image-section">
+            {{ form_row(image.theFile) }}
+            {{ form_row(image.caption) }}
+            {{ form_row(image.sortNumber) }}
+        </div>
+    {% endfor %#}
+</fieldset>
+{% if tabs|default(false) == true %}
+    </div>
+{% endif %}
+{% set formInitScript %}
+    <script>
+    /* <![CDATA[ */
+        ( function($) {
+            var imageCollectionHolder;
+            var addImageButton = $('<button type="button" id="addNewImage" class="btn btn-primary"><i class="fa fa-plus"></i> {{ __('Add an image') }}</button>');
+            var newImageContainer = $('<div class="form-group"></div>');
+            newImageContainer.append(
+                $('<div class="col-sm-9 col-sm-offset-3"></div>')
+                    .append(addImageButton)
+            );
+
+            function addImageFormTools(imageFormSection) {
+                var buttonGroup = $('<div class="btn-group btn-group-sm" role="group"></div>');
+                var sortFormButton = $('<a href="javascript:void(0);" class="btn btn-sm btn-default sort-handle"><i class="fa fa-arrows"></i> {{ __('Reorder') }}</a>');
+                var removeFormButton = $('<button type="button" class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>');
+                removeFormButton.on('click', function (event) {
+                    // remove the section for the image form
+                    imageFormSection.remove();
+                    $('#addNewImage').removeClass('hidden');
+                });
+
+                buttonGroup.append(sortFormButton).append(removeFormButton);
+
+                var imageToolsContainer = $('<div class="form-group"></div>');
+                imageToolsContainer.append(
+                    $('<div class="col-sm-9 col-sm-offset-3"></div>')
+                        .append(buttonGroup)
+                );
+
+                imageFormSection.prepend(imageToolsContainer);
+            }
+            function addImageForm(imageCollectionHolder, newImageContainer) {
+                // Get the data-prototype explained earlier
+                var prototype = imageCollectionHolder.data('prototype');
+
+                // get the new index
+                var index = imageCollectionHolder.data('index');
+
+                var newForm = prototype;
+                // You need this only if you didn't set 'label' => false in your tags field in TaskType
+                // Replace '__name__label__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                // newForm = newForm.replace(/__name__label__/g, index);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                newForm = newForm.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                imageCollectionHolder.data('index', index + 1);
+
+                // display the form in the page in a container, before the "Add an image" link
+                var newFormSection = $('<div class="image-section"></div>').append(newForm);
+                newImageContainer.before(newFormSection);
+
+                // add delete and sorting links to the new form
+                addImageFormTools(newFormSection);
+
+                // set new sort number
+                $('#munewsmodule_message_images_' + index + '_sortNumber').val(index + 1);
+                $('#munewsmodule_message_images_' + index + '_sortNumber').parents('.form-group').first().addClass('hidden');
+
+                imageCollectionHolder.sortable('refresh');
+            }
+            function initSortableImages() {
+                imageCollectionHolder.sortable({
+                    axis: 'y',
+                    items: '.image-section',
+                    placeholder: 'ui-state-highlight',
+                    handle: '.sort-handle',
+                    cursor: 'move',
+                    update: function (event, ui) {
+                        var counter = 1;
+                        $('.image-section').each(function (index) {
+                            $(this).find('input[type="number"]').val(counter++);
+                        });
+                    }
+                });
+            }
+            $(document).ready(function() {
+                imageCollectionHolder = $('fieldset.images');
+
+                // move existing entries to other DOM location
+                $('#munewsmodule_message_images > .form-group').each(function (index) {
+                    imageCollectionHolder.append(
+                        $('<div class="image-section"></div>').append(
+                            $(this).detach().find('.col-sm-9').first().html()
+                        )
+                    );
+                });
+                $('#munewsmodule_message_images').remove();
+                $('.image-section input[type="number"]').parent().parent().addClass('hidden');
+
+                // add delete and sorting links to all of the existing image form section elements
+                imageCollectionHolder.find('div.image-section').each(function() {
+                    addImageFormTools($(this));
+                });
+
+                imageCollectionHolder.append(newImageContainer);
+
+                // count the current form inputs we have (e.g. 2), use that as the new
+                // index when inserting a new item (e.g. 2)
+                imageCollectionHolder.data('index', imageCollectionHolder.find('div.image-section').length);
+
+                addImageButton.on('click', function (event) {
+                    // add a new image form (see next code block)
+                    addImageForm(imageCollectionHolder, newImageContainer);
+                });
+
+                initSortableImages();
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
+{% endset %}
+{{ pageAddAsset('footer', formInitScript) }}
+{% set customStyle %}
+    <style type="text/css">
+        .image-section {
+            padding-bottom: 50px;
+        }
+        .ui-state-highlight {
+            height: 8em;
+            line-height: 1.2em;
+            border-color: #666;
+            background-color: #ccc;
+        }
+        .sort-handle {
+            cursor: move;
+        }
+    </style>
+{% endset %}
+{{ pageAddAsset('header', customStyle) }}

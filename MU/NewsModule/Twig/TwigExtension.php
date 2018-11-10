@@ -116,10 +116,11 @@ class TwigExtension extends AbstractTwigExtension
      * @param object $message entity in the template
      * @param string $routeArea backend or not
      */
-    public function setAmount($message, $routeArea) {
-    	if ($routeArea != 'admin') {
-    	 $message->setAmountOfViews($message->getAmountOfViews() + 1);
-    	 $this->workflowHelper->executeAction($message, 'update');
-    	 }
+    public function setAmount($message, $routeArea)
+    {
+        if ('admin' != $routeArea) {
+            $message->setAmountOfViews($message->getAmountOfViews() + 1);
+            $this->workflowHelper->executeAction($message, 'update');
+        }
     }
 }

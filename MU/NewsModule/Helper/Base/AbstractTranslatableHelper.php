@@ -29,27 +29,27 @@ abstract class AbstractTranslatableHelper
      * @var TranslatorInterface
      */
     protected $translator;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var VariableApiInterface
      */
     protected $variableApi;
-
+    
     /**
      * @var LocaleApiInterface
      */
     protected $localeApi;
-
+    
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-
+    
     /**
      * TranslatableHelper constructor.
      *
@@ -72,7 +72,7 @@ abstract class AbstractTranslatableHelper
         $this->localeApi = $localeApi;
         $this->entityFactory = $entityFactory;
     }
-
+    
     /**
      * Return list of translatable fields per entity.
      * These are required to be determined to recognise
@@ -93,7 +93,7 @@ abstract class AbstractTranslatableHelper
     
         return $fields;
     }
-
+    
     /**
      * Return the current language code.
      *
@@ -103,7 +103,7 @@ abstract class AbstractTranslatableHelper
     {
         return $this->requestStack->getCurrentRequest()->getLocale();
     }
-
+    
     /**
      * Return list of supported languages on the current system.
      *
@@ -120,7 +120,7 @@ abstract class AbstractTranslatableHelper
         // if multi language is disabled use only the current language
         return [$this->getCurrentLanguage()];
     }
-
+    
     /**
      * Returns a list of mandatory fields for each supported language.
      *
@@ -137,7 +137,7 @@ abstract class AbstractTranslatableHelper
     
         return $mandatoryFields;
     }
-
+    
     /**
      * Collects translated fields for editing.
      *
@@ -161,7 +161,8 @@ abstract class AbstractTranslatableHelper
         }
     
         // get translations
-        $repository = $this->entityFactory->getObjectManager()->getRepository('Gedmo\Translatable\Entity\Translation');
+        $entityManager = $this->entityFactory->getObjectManager();
+        $repository = $entityManager->getRepository('MU\NewsModule\Entity\\' . ucfirst($objectType) . 'TranslationEntity');
         $entityTranslations = $repository->findTranslations($entity);
     
         $supportedLanguages = $this->getSupportedLanguages($objectType);
@@ -186,28 +187,57 @@ abstract class AbstractTranslatableHelper
     
         return $translations;
     }
-
+    
     /**
      * Post-editing method persisting translated fields.
      *
-     * @param EntityAccess  $entity        The entity being edited
-     * @param FormInterface $form          Form containing translations
-     * @param EntityManager $entityManager Entity manager
+     * @param EntityAccess  $entity The entity being edited
+     * @param FormInterface $form   Form containing translations
      */
-    public function processEntityAfterEditing($entity, $form, $entityManager)
+    public function processEntityAfterEditing($entity, FormInterface $form)
     {
         $objectType = $entity->get_objectType();
+        $entityManager = $this->entityFactory->getObjectManager();
         $supportedLanguages = $this->getSupportedLanguages($objectType);
         foreach ($supportedLanguages as $language) {
-            if (!isset($form['translations' . $language])) {
+            $translationInput = $this->readTranslationInput($form, $language);
+            if (!count($translationInput)) {
                 continue;
             }
-            $translatedFields = $form['translations' . $language];
-            foreach ($translatedFields as $fieldName => $formField) {
-                $entity[$fieldName] = $formField->getData();
+    
+            foreach ($translationInput as $fieldName => $fieldData) {
+                $setter = 'set' . ucfirst($fieldName);
+                $entity->$setter($fieldData);
             }
-            $entity['locale'] = $language;
-            $entityManager->flush();
+    
+            $entity->setLocale($language);
+            $entityManager->flush($entity);
         }
+    }
+    
+    /**
+     * Collects translated fields from given form for a specific language.
+     *
+     * @param FormInterface $form     Form containing translations
+     * @param string        $language The desired language
+     *
+     * @return array
+     */
+    public function readTranslationInput(FormInterface $form, $language = 'en')
+    {
+        $data = [];
+        if (!isset($form['translations' . $language])) {
+            return $data;
+        }
+        $translatedFields = $form['translations' . $language];
+        foreach ($translatedFields as $fieldName => $formField) {
+            $fieldData = $formField->getData();
+            if (!$fieldData && isset($form[$fieldName])) {
+                $fieldData = $form[$fieldName]->getData();
+            }
+            $data[$fieldName] = $fieldData;
+        }
+    
+        return $data;
     }
 }

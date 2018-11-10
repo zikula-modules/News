@@ -126,4 +126,88 @@ abstract class AbstractNewsEvents
      */
     const MESSAGE_POST_UPDATE = 'munewsmodule.message_post_update';
     
+    /**
+     * The munewsmodule.image_post_load event is thrown when images
+     * are loaded from the database.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::postLoad()
+     * @var string
+     */
+    const IMAGE_POST_LOAD = 'munewsmodule.image_post_load';
+    
+    /**
+     * The munewsmodule.image_pre_persist event is thrown before a new image
+     * is created in the system.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::prePersist()
+     * @var string
+     */
+    const IMAGE_PRE_PERSIST = 'munewsmodule.image_pre_persist';
+    
+    /**
+     * The munewsmodule.image_post_persist event is thrown after a new image
+     * has been created in the system.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::postPersist()
+     * @var string
+     */
+    const IMAGE_POST_PERSIST = 'munewsmodule.image_post_persist';
+    
+    /**
+     * The munewsmodule.image_pre_remove event is thrown before an existing image
+     * is removed from the system.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::preRemove()
+     * @var string
+     */
+    const IMAGE_PRE_REMOVE = 'munewsmodule.image_pre_remove';
+    
+    /**
+     * The munewsmodule.image_post_remove event is thrown after an existing image
+     * has been removed from the system.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::postRemove()
+     * @var string
+     */
+    const IMAGE_POST_REMOVE = 'munewsmodule.image_post_remove';
+    
+    /**
+     * The munewsmodule.image_pre_update event is thrown before an existing image
+     * is updated in the system.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::preUpdate()
+     * @var string
+     */
+    const IMAGE_PRE_UPDATE = 'munewsmodule.image_pre_update';
+    
+    /**
+     * The munewsmodule.image_post_update event is thrown after an existing new image
+     * has been updated in the system.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\FilterImageEvent instance.
+     *
+     * @see EntityLifecycleListener::postUpdate()
+     * @var string
+     */
+    const IMAGE_POST_UPDATE = 'munewsmodule.image_post_update';
+    
 }

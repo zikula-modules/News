@@ -17,7 +17,6 @@ use MU\NewsModule\Form\Type\Base\AbstractMessageType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use MU\NewsModule\Form\Type\Field\UploadType;
-use MU\NewsModule\Form\Type\Field\ImagesInArticleType;
 
 /**
  * Message editing form type implementation class.
@@ -79,6 +78,24 @@ class MessageType extends AbstractMessageType
             'entity' => $options['entity'],
             'allowed_extensions' => 'gif, jpeg, jpg, png',
             'allowed_size' => $maxSize
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addOutgoingRelationshipFields(FormBuilderInterface $builder, array $options = [])
+    {
+        $builder->add('images', CollectionType::class, [
+            'label' => false,
+            'required' => false,
+            'entry_type' => ImageType::class,
+            'entry_options' => [
+                'label' => false
+            ],
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false // use $message->addImages()/removeImages() instead of $message->getImages()->add()/remove()
         ]);
     }
 }

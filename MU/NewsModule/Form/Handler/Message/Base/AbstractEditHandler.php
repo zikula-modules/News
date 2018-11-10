@@ -44,7 +44,7 @@ abstract class AbstractEditHandler extends EditHandler
             return $result;
         }
     
-        if ($this->templateParameters['mode'] == 'create') {
+        if ('create' == $this->templateParameters['mode']) {
             if (!$this->modelHelper->canBeCreated($this->objectType)) {
                 $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add('error', $this->__('Sorry, but you can not create the message yet as other items are required which must be created before!'));
                 $logArgs = ['app' => 'MUNewsModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType];
@@ -81,6 +81,10 @@ abstract class AbstractEditHandler extends EditHandler
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionHelper->hasEntityPermission($this->entityRef, ACCESS_ADMIN),
+            'allow_moderation_specific_creator' => $this->variableApi->get('MUNewsModule', 'allowModerationSpecificCreatorFor' . $this->objectTypeCapital, false),
+            'allow_moderation_specific_creation_date' => $this->variableApi->get('MUNewsModule', 'allowModerationSpecificCreationDateFor' . $this->objectTypeCapital, false),
+            'filter_by_ownership' => !$this->permissionHelper->hasEntityPermission($this->entityRef, ACCESS_ADD),
+            'inline_usage' => $this->templateParameters['inlineUsage']
         ];
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, $this->objectType)) {
             $options['attributes'] = $this->templateParameters['attributes'];
@@ -171,7 +175,7 @@ abstract class AbstractEditHandler extends EditHandler
                 $args['commandName'] = $action['id'];
             }
         }
-        if ($this->templateParameters['mode'] == 'create' && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
+        if ('create' == $this->templateParameters['mode'] && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
             $args['commandName'] = 'submit';
             $this->repeatCreateAction = true;
         }
@@ -191,10 +195,13 @@ abstract class AbstractEditHandler extends EditHandler
         $message = '';
         switch ($args['commandName']) {
             case 'submit':
-                if ($this->templateParameters['mode'] == 'create') {
+                if ('create' == $this->templateParameters['mode']) {
                     $message = $this->__('Done! Message created.');
                 } else {
                     $message = $this->__('Done! Message updated.');
+                }
+                if ('waiting' == $this->entityRef->getWorkflowState()) {
+                    $message .= ' ' . $this->__('It is now waiting for approval by our moderators.');
                 }
                 break;
             case 'delete':
@@ -232,7 +239,7 @@ abstract class AbstractEditHandler extends EditHandler
     
         $this->addDefaultMessage($args, $success);
     
-        if ($success && $this->templateParameters['mode'] == 'create') {
+        if ($success && 'create' == $this->templateParameters['mode']) {
             // store new identifier
             $this->idValue = $entity->getKey();
         }
@@ -249,6 +256,18 @@ abstract class AbstractEditHandler extends EditHandler
      */
     protected function getRedirectUrl(array $args = [])
     {
+        if (isset($this->templateParameters['inlineUsage']) && true === $this->templateParameters['inlineUsage']) {
+            $commandName = substr($args['commandName'], 0, 6) == 'submit' ? 'create' : $args['commandName'];
+            $urlArgs = [
+                'idPrefix' => $this->idPrefix,
+                'commandName' => $commandName,
+                'id' => $this->idValue
+            ];
+    
+            // inline usage, return to special function for closing the modal window instance
+            return $this->router->generate('munewsmodule_' . $this->objectTypeLower . '_handleinlineredirect', $urlArgs);
+        }
+    
         if ($this->repeatCreateAction) {
             return $this->repeatReturnUrl;
         }
@@ -259,9 +278,11 @@ abstract class AbstractEditHandler extends EditHandler
             $session->remove('munewsmodule' . $this->objectTypeCapital . 'Referer');
         }
     
-        // force refresh because slugs may have changed (e.g. by translatable)
-        $this->entityFactory->getObjectManager()->clear();
-        $this->entityRef = $this->initEntityForEditing();
+        if ('create' != $this->templateParameters['mode']) {
+            // force refresh because slugs may have changed (e.g. by translatable)
+            $this->entityFactory->getObjectManager()->clear();
+            $this->entityRef = $this->initEntityForEditing();
+        }
     
         // normal usage, compute return url from given redirect code
         if (!in_array($this->returnTo, $this->getRedirectCodes())) {

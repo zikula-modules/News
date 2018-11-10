@@ -237,6 +237,8 @@ abstract class AbstractTwigExtension extends Twig_Extension
             return $value;
         }
     
+        $this->translator->setDomain('munewsmodule');
+    
         return $this->listHelper->resolve($value, $objectType, $fieldName, $delimiter);
     }
     
@@ -265,7 +267,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     public function formatIcalText($string)
     {
         $result = preg_replace('/<a href="(.*)">.*<\/a>/i', "$1", $string);
-        $result = str_replace('€', 'Euro', $result);
+        $result = str_replace('â‚¬', 'Euro', $result);
         $result = ereg_replace("(\r\n|\n|\r)", '=0D=0A', $result);
     
         return ';LANGUAGE=' . $this->requestStack->getCurrentRequest()->getLocale() . ';ENCODING=QUOTED-PRINTABLE:' . $result . "\r\n";
@@ -284,6 +286,10 @@ abstract class AbstractTwigExtension extends Twig_Extension
         $result[] = [
             'text' => $this->__('Messages'),
             'value' => 'message'
+        ];
+        $result[] = [
+            'text' => $this->__('Images'),
+            'value' => 'image'
         ];
     
         return $result;

@@ -102,6 +102,22 @@ abstract class AbstractEntityFactory
     }
 
     /**
+     * Creates a new image instance.
+     *
+     * @return MU\NewsModule\Entity\imageEntity The newly created entity instance
+     */
+    public function createImage()
+    {
+        $entityClass = 'MU\\NewsModule\\Entity\\ImageEntity';
+
+        $entity = new $entityClass();
+
+        $this->entityInitialiser->initImage($entity);
+
+        return $entity;
+    }
+
+    /**
      * Returns the identifier field's name for a given object type.
      *
      * @param string $objectType The object type to be treated

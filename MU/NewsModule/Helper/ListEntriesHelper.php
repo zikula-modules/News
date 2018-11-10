@@ -19,44 +19,42 @@ use MU\NewsModule\Helper\Base\AbstractListEntriesHelper;
  */
 class ListEntriesHelper extends AbstractListEntriesHelper
 {
-	/**
-	 * Get 'default message sorting' list entries.
-	 *
-	 * @return array Array with desired list entries
-	 */
-	public function getDefaultMessageSortingEntriesForAppSettings() {
-		$states = [ ];
-		$states [] = [ 
-				'value' => 'articleID',
-				'text' => $this->__ ( 'ArticleID' ),
-				'title' => '',
-				'image' => '',
-				'default' => false 
-		];
-		$states [] = [ 
-				'value' => 'articledatetime',
-				'text' => $this->__ ( 'ArticleDateTime' ),
-				'title' => '',
-				'image' => '',
-				'default' => false
-		];
-		
-		$states [] = [ 
-				'value' => 'articlestartdate',
-				'text' => $this->__ ( 'ArticleStartDate' ),
-				'title' => '',
-				'image' => '',
-				'default' => true 
-		];
-		
-		$states [] = [ 
-				'value' => 'articleweight',
-				'text' => $this->__ ( 'ArticleWeight' ),
-				'title' => '',
-				'image' => '',
-				'default' => false 
-		];
-		
-		return $states;
-	}
+    /**
+     * Get 'default message sorting' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getDefaultMessageSortingEntriesForAppSettings() {
+        $states = [];
+        $states[] = [
+            'value' => 'articleID',
+            'text' => $this->__('ArticleID'),
+            'title' => '',
+            'image' => '',
+            'default' => false 
+        ];
+        $states[] = [ 
+            'value' => 'articledatetime',
+            'text' => $this->__('ArticleDateTime'),
+            'title' => '',
+            'image' => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value' => 'articlestartdate',
+            'text' => $this->__('ArticleStartDate'),
+            'title' => '',
+            'image' => '',
+            'default' => true 
+        ];
+        $states[] = [
+            'value' => 'articleweight',
+            'text' => $this->__('ArticleWeight'),
+            'title' => '',
+            'image' => '',
+            'default' => false 
+        ];
+
+        return $states;
+    }
 }

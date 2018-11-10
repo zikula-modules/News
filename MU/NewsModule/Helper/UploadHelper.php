@@ -37,6 +37,10 @@ class UploadHelper extends AbstractUploadHelper
      */
     public function performFileUpload($objectType, $file, $fieldName)
     {
+        if ('message' != $objectType) {
+            return parent::performFileUpload($objectType, $file, $fieldName);
+        }
+
         $result = [
             'fileName' => '',
             'metaData' => []
@@ -100,46 +104,47 @@ class UploadHelper extends AbstractUploadHelper
         
         // if not empty, validate
         if ($maxSize != '') {
+            if (strpos($maxSize, 'k') !== false) {
+                $sizeType = 'kilo';
+            } elseif(strpos($maxSize, 'M') !== false) {
+                $sizeType = 'mega';
+            } elseif (strpos($maxSize, 'k') === false && strpos($maxSize, 'M') === false) {
+                $sizeType = 'byte';
+            }
 
-        if (strpos($maxSize, 'k') !== false) {
-        	$sizeType = 'kilo';
-        } elseif(strpos($maxSize, 'M') !== false) {
-        	$sizeType = 'mega';
-        } elseif (strpos($maxSize, 'k') === false && strpos($maxSize, 'M') === false) {
-        	$sizeType = 'byte';
+            if ($sizeType == 'byte') {
+                if ($fileSize > $maxSize) {
+                    $flashBag->add('error', $this->__('Error! This file is too big.'));
+                    $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'byte');
+
+                    return false;
+                }
+            }
+
+            if ($sizeType == 'kilo') {
+                $maxSize = str_replace('k', '', $maxSize);
+                $setMaxSize = $maxSize;
+                $maxSize = $maxSize * 1024;
+                if ($fileSize > $maxSize) {
+                    $flashBag->add('error', $this->__('Error! This file is too big.'));
+                    $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'kilobyte!');
+
+                    return false;
+                }
+            }
+
+            if ($sizeType == 'mega') {
+                $maxSize = str_replace('M', '', $maxSize);
+                $setMaxSize = $maxSize;
+                $maxSize = $maxSize * 1024 * 1024;
+                if ($fileSize > $maxSize) {
+                    $flashBag->add('error', $this->__('Error! This file is too big.'));
+                    $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'megabyte!');
+                    return false;
+                }
+            }
         }
-         
-        if ($sizeType == 'byte') {
-        	if ($fileSize > $maxSize) {
-        		$flashBag->add('error', $this->__('Error! This file is too big.'));
-        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'byte');
-        		return false;
-        	}
-        }
-        
-        if ($sizeType == 'kilo') {
-        	$maxSize = str_replace('k', '', $maxSize);
-        	$setMaxSize = $maxSize;
-        	$maxSize = $maxSize * 1024;
-        	if ($fileSize > $maxSize) {
-        		$flashBag->add('error', $this->__('Error! This file is too big.'));
-        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'kilobyte!');
-        		return false;
-        	}
-        }
-        
-        if ($sizeType == 'mega') {
-        	$maxSize = str_replace('M', '', $maxSize);
-        	$setMaxSize = $maxSize;
-        	$maxSize = $maxSize * 1024 * 1024;
-        	if ($fileSize > $maxSize) {
-        		$flashBag->add('error', $this->__('Error! This file is too big.'));
-        		$flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'megabyte!');
-        		return false;
-        	}
-        }
-        }
-    
+
         // collect data to return
         $result['fileName'] = $fileName;
         $result['metaData'] = $this->readMetaDataForFile($fileName, $destinationFilePath);

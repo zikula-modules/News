@@ -20,6 +20,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Constant as UsersConstant;
 use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\NewsEvents;
 use MU\NewsModule\Event\ConfigureItemActionsMenuEvent;
 use MU\NewsModule\Helper\EntityDisplayHelper;
@@ -27,7 +28,7 @@ use MU\NewsModule\Helper\PermissionHelper;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
- * This is the menu builder implementation class.
+ * Menu builder base class.
  */
 class AbstractMenuBuilder
 {
@@ -126,6 +127,7 @@ class AbstractMenuBuilder
         $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof MessageEntity) {
             $routePrefix = 'munewsmodule_message_';
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
             if ($routeArea == 'admin') {
                 $title = $this->__('Preview', 'munewsmodule');
@@ -199,6 +201,11 @@ class AbstractMenuBuilder
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
+        }
+        if ($entity instanceof ImageEntity) {
+            $routePrefix = 'munewsmodule_image_';
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+        
         }
 
         $this->eventDispatcher->dispatch(NewsEvents::MENU_ITEMACTIONS_POST_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));

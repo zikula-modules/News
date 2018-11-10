@@ -59,9 +59,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
-     * @Assert\Type(type="integer")
-     * @Assert\NotNull()
-     * @Assert\LessThan(value=1000000000)
      * @var integer $id
      */
     protected $id = 0;
@@ -352,7 +349,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * Used locale to override Translation listener's locale.
-     * this is not a mapped field of entity metadata, just a simple property.
+     * This is not a mapped field of entity metadata, just a simple property.
      *
      * @Assert\Locale()
      * @Gedmo\Locale
@@ -376,6 +373,16 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     protected $categories = null;
     
+    /**
+     * Bidirectional - One message [message] has many images [images] (INVERSE SIDE).
+     *
+     * @ORM\OneToMany(targetEntity="MU\NewsModule\Entity\ImageEntity", mappedBy="message", cascade={"persist", "remove", "detach"})
+     * @ORM\JoinTable(name="mu_news_messageimages")
+     * @ORM\OrderBy({"sortNumber" = "ASC"})
+     * @var \MU\NewsModule\Entity\ImageEntity[] $images
+     */
+    protected $images = null;
+    
     
     /**
      * MessageEntity constructor.
@@ -386,6 +393,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     public function __construct()
     {
+        $this->images = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
@@ -413,7 +421,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->_objectType = isset($_objectType) ? $_objectType : '';
         }
     }
-    
     
     /**
      * Returns the _upload base path.
@@ -592,7 +599,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 1.
      *
-     * @param File $imageUpload1
+     * @param File|null $imageUpload1
      *
      * @return void
      */
@@ -606,7 +613,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
         $this->imageUpload1 = $imageUpload1;
     
-        if (null === $this->imageUpload1) {
+        if (null === $this->imageUpload1 || '' == $this->imageUpload1) {
             $this->setImageUpload1FileName('');
             $this->setImageUpload1Url('');
             $this->setImageUpload1Meta([]);
@@ -911,7 +918,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 2.
      *
-     * @param File $imageUpload2
+     * @param File|null $imageUpload2
      *
      * @return void
      */
@@ -925,7 +932,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
         $this->imageUpload2 = $imageUpload2;
     
-        if (null === $this->imageUpload2) {
+        if (null === $this->imageUpload2 || '' == $this->imageUpload2) {
             $this->setImageUpload2FileName('');
             $this->setImageUpload2Url('');
             $this->setImageUpload2Meta([]);
@@ -1038,7 +1045,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 3.
      *
-     * @param File $imageUpload3
+     * @param File|null $imageUpload3
      *
      * @return void
      */
@@ -1052,7 +1059,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
         $this->imageUpload3 = $imageUpload3;
     
-        if (null === $this->imageUpload3) {
+        if (null === $this->imageUpload3 || '' == $this->imageUpload3) {
             $this->setImageUpload3FileName('');
             $this->setImageUpload3Url('');
             $this->setImageUpload3Meta([]);
@@ -1165,7 +1172,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 4.
      *
-     * @param File $imageUpload4
+     * @param File|null $imageUpload4
      *
      * @return void
      */
@@ -1179,7 +1186,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
         $this->imageUpload4 = $imageUpload4;
     
-        if (null === $this->imageUpload4) {
+        if (null === $this->imageUpload4 || '' == $this->imageUpload4) {
             $this->setImageUpload4FileName('');
             $this->setImageUpload4Url('');
             $this->setImageUpload4Meta([]);
@@ -1501,6 +1508,59 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         return false;
     }
     
+    /**
+     * Returns the images.
+     *
+     * @return \MU\NewsModule\Entity\ImageEntity[]
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+    
+    /**
+     * Sets the images.
+     *
+     * @param \MU\NewsModule\Entity\ImageEntity[] $images
+     *
+     * @return void
+     */
+    public function setImages($images)
+    {
+        foreach ($this->images as $imageSingle) {
+            $this->removeImages($imageSingle);
+        }
+        foreach ($images as $imageSingle) {
+            $this->addImages($imageSingle);
+        }
+    }
+    
+    /**
+     * Adds an instance of \MU\NewsModule\Entity\ImageEntity to the list of images.
+     *
+     * @param \MU\NewsModule\Entity\ImageEntity $image The instance to be added to the collection
+     *
+     * @return void
+     */
+    public function addImages(\MU\NewsModule\Entity\ImageEntity $image)
+    {
+        $this->images->add($image);
+        $image->setMessage($this);
+    }
+    
+    /**
+     * Removes an instance of \MU\NewsModule\Entity\ImageEntity from the list of images.
+     *
+     * @param \MU\NewsModule\Entity\ImageEntity $image The instance to be removed from the collection
+     *
+     * @return void
+     */
+    public function removeImages(\MU\NewsModule\Entity\ImageEntity $image)
+    {
+        $this->images->removeElement($image);
+        $image->setMessage(null);
+    }
+    
     
     
     /**
@@ -1576,7 +1636,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     public function getRelatedObjectsToPersist(&$objects = [])
     {
-        return [];
+        foreach ($this->images as $rel) {
+            if (!in_array($rel, $objects, true)) {
+                $objects[] = $rel;
+                $rel->getRelatedObjectsToPersist($objects);
+            }
+        }
+    
+        return $objects;
     }
     
     /**
@@ -1593,7 +1660,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Clone interceptor implementation.
      * This method is for example called by the reuse functionality.
-     * Performs a quite simple shallow copy.
+     * Performs a deep copy.
      *
      * See also:
      * (1) http://docs.doctrine-project.org/en/latest/cookbook/implementing-wakeup-or-clone.html
@@ -1626,6 +1693,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         $this->setUpdatedBy(null);
         $this->setUpdatedDate(null);
     
+        // handle related objects
+        // prevent shared references by doing a deep copy - see (2) and (3) for more information
+        // clone referenced objects only if a new record is necessary
+        $collection = $this->images;
+        $this->images = new ArrayCollection();
+        foreach ($collection as $rel) {
+            $this->addImages( clone $rel);
+        }
     
         // clone categories
         $categories = $this->categories;

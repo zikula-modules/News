@@ -1,5 +1,5 @@
 {# purpose of this template: messages view filter form #}
-{% if hasPermission('MUNewsModule:Message:', '::', 'ACCESS_EDIT') %}
+{% if permissionHelper.hasComponentPermission('message', constant('ACCESS_EDIT')) %}
     {% form_theme quickNavForm with [
         'bootstrap_3_layout.html.twig'
     ] %}

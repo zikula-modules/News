@@ -21,7 +21,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 abstract class AbstractListEntriesHelper
 {
     use TranslatorTrait;
-
+    
     /**
      * ListEntriesHelper constructor.
      *
@@ -31,7 +31,7 @@ abstract class AbstractListEntriesHelper
     {
         $this->setTranslator($translator);
     }
-
+    
     /**
      * Sets the translator.
      *
@@ -41,7 +41,7 @@ abstract class AbstractListEntriesHelper
     {
         $this->translator = $translator;
     }
-
+    
     /**
      * Return the name or names for a given list item.
      *
@@ -89,7 +89,7 @@ abstract class AbstractListEntriesHelper
         return $result;
     }
     
-
+    
     /**
      * Extract concatenated multi selection.
      *
@@ -113,7 +113,7 @@ abstract class AbstractListEntriesHelper
         return $listValues;
     }
     
-
+    
     /**
      * Determine whether a certain dropdown field has a multi selection or not.
      *
@@ -131,6 +131,13 @@ abstract class AbstractListEntriesHelper
         $result = false;
         switch ($objectType) {
             case 'message':
+                switch ($fieldName) {
+                    case 'workflowState':
+                        $result = false;
+                        break;
+                }
+                break;
+            case 'image':
                 switch ($fieldName) {
                     case 'workflowState':
                         $result = false;
@@ -166,6 +173,9 @@ abstract class AbstractListEntriesHelper
                     case 'thumbnailModeMessageImageUpload4':
                         $result = false;
                         break;
+                    case 'thumbnailModeImageTheFile':
+                        $result = false;
+                        break;
                     case 'enabledFinderTypes':
                         $result = true;
                         break;
@@ -176,7 +186,7 @@ abstract class AbstractListEntriesHelper
         return $result;
     }
     
-
+    
     /**
      * Get entries for a certain dropdown field.
      *
@@ -197,6 +207,13 @@ abstract class AbstractListEntriesHelper
                 switch ($fieldName) {
                     case 'workflowState':
                         $entries = $this->getWorkflowStateEntriesForMessage();
+                        break;
+                }
+                break;
+            case 'image':
+                switch ($fieldName) {
+                    case 'workflowState':
+                        $entries = $this->getWorkflowStateEntriesForImage();
                         break;
                 }
                 break;
@@ -229,6 +246,9 @@ abstract class AbstractListEntriesHelper
                     case 'thumbnailModeMessageImageUpload4':
                         $entries = $this->getThumbnailModeMessageImageUpload4EntriesForAppSettings();
                         break;
+                    case 'thumbnailModeImageTheFile':
+                        $entries = $this->getThumbnailModeImageTheFileEntriesForAppSettings();
+                        break;
                     case 'enabledFinderTypes':
                         $entries = $this->getEnabledFinderTypesEntriesForAppSettings();
                         break;
@@ -238,7 +258,7 @@ abstract class AbstractListEntriesHelper
     
         return $entries;
     }
-
+    
     
     /**
      * Get 'workflow state' list entries.
@@ -308,6 +328,46 @@ abstract class AbstractListEntriesHelper
             'value'   => '!archived',
             'text'    => $this->__('All except archived'),
             'title'   => $this->__('Shows all items except these which are archived'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!trashed',
+            'text'    => $this->__('All except trashed'),
+            'title'   => $this->__('Shows all items except these which are trashed'),
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'workflow state' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getWorkflowStateEntriesForImage()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'approved',
+            'text'    => $this->__('Approved'),
+            'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'trashed',
+            'text'    => $this->__('Trashed'),
+            'title'   => $this->__('Content has been marked as deleted, but is still persisted in the database.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!approved',
+            'text'    => $this->__('All except approved'),
+            'title'   => $this->__('Shows all items except these which are approved'),
             'image'   => '',
             'default' => false
         ];
@@ -599,6 +659,32 @@ abstract class AbstractListEntriesHelper
     }
     
     /**
+     * Get 'thumbnail mode image the file' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getThumbnailModeImageTheFileEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'inset',
+            'text'    => $this->__('Inset'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'outbound',
+            'text'    => $this->__('Outbound'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
      * Get 'enabled finder types' list entries.
      *
      * @return array Array with desired list entries
@@ -609,6 +695,13 @@ abstract class AbstractListEntriesHelper
         $states[] = [
             'value'   => 'message',
             'text'    => $this->__('Message'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'image',
+            'text'    => $this->__('Image'),
             'title'   => '',
             'image'   => '',
             'default' => true

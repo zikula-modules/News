@@ -596,7 +596,10 @@ abstract class AbstractMessageRepository extends EntityRepository
         if (!$isPaginated) {
             $result = $query->getResult();
         } else {
-            $paginator = new Paginator($query, false);
+            $paginator = new Paginator($query, true);
+            if (true === $this->translationsEnabled) {
+                $paginator->setUseOutputWalkers(true);
+            }
     
             $count = count($paginator);
             $result = $paginator;
@@ -807,7 +810,7 @@ abstract class AbstractMessageRepository extends EntityRepository
      */
     protected function addJoinsToSelection()
     {
-        $selection = '';
+        $selection = ', tblImages';
     
         $selection .= ', tblCategories';
     
@@ -823,6 +826,7 @@ abstract class AbstractMessageRepository extends EntityRepository
      */
     protected function addJoinsToFrom(QueryBuilder $qb)
     {
+        $qb->leftJoin('tbl.images', 'tblImages');
     
         $qb->leftJoin('tbl.categories', 'tblCategories');
     

@@ -106,6 +106,9 @@ function mUNewsGetPasteSnippet(mode, itemId) {
     itemUrl = jQuery('#url' + itemId).val().replace(quoteFinder, '');
     itemTitle = jQuery('#title' + itemId).val().replace(quoteFinder, '').trim();
     itemDescription = jQuery('#desc' + itemId).val().replace(quoteFinder, '').trim();
+    if (!itemDescription) {
+        itemDescription = itemTitle;
+    }
     imagePath = jQuery('#imagePath' + itemId).length > 0 ? jQuery('#imagePath' + itemId).val().replace(quoteFinder, '') : '';
     pasteMode = jQuery("[id$='pasteAs']").first().val();
 

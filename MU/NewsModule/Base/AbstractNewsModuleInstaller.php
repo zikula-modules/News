@@ -79,7 +79,6 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('imageFloatOnViewPage', 'left');
         $this->setVar('imageFloatOnDisplayPage', 'left');
         $this->setVar('maxSize', '200k');
-        $this->setVar('moderationGroupForMessages', 2);
         $this->setVar('messageEntriesPerPage', 10);
         $this->setVar('linkOwnMessagesOnAccountPage', true);
         $this->setVar('showOnlyOwnEntries', false);
@@ -124,7 +123,14 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('thumbnailHeightMessageImageUpload4Display', 180);
         $this->setVar('thumbnailWidthMessageImageUpload4Edit', 240);
         $this->setVar('thumbnailHeightMessageImageUpload4Edit', 180);
-        $this->setVar('enabledFinderTypes', 'message');
+        $this->setVar('enableShrinkingForImageTheFile', false);
+        $this->setVar('shrinkWidthImageTheFile', 800);
+        $this->setVar('shrinkHeightImageTheFile', 600);
+        $this->setVar('thumbnailModeImageTheFile', 'inset');
+        $this->setVar('moderationGroupForMessages', 2);
+        $this->setVar('allowModerationSpecificCreatorForMessage', false);
+        $this->setVar('allowModerationSpecificCreationDateForMessage', false);
+        $this->setVar('enabledFinderTypes', 'message###image');
     
         // add default entry for category registry (property named Main)
         $categoryHelper = new \MU\NewsModule\Helper\CategoryHelper(
@@ -248,6 +254,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $classNames[] = 'MU\NewsModule\Entity\MessageTranslationEntity';
         $classNames[] = 'MU\NewsModule\Entity\MessageAttributeEntity';
         $classNames[] = 'MU\NewsModule\Entity\MessageCategoryEntity';
+        $classNames[] = 'MU\NewsModule\Entity\ImageEntity';
     
         return $classNames;
     }

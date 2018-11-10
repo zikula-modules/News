@@ -12,6 +12,7 @@
 
 namespace MU\NewsModule\Form\Type\Base;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -35,9 +36,13 @@ use MU\NewsModule\Entity\Factory\EntityFactory;
 use MU\NewsModule\Form\Type\Field\TranslationType;
 use MU\NewsModule\Form\Type\Field\UploadType;
 use Zikula\UsersModule\Form\Type\UserLiveSearchType;
+use MU\NewsModule\Helper\CollectionFilterHelper;
+use MU\NewsModule\Helper\EntityDisplayHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ListEntriesHelper;
 use MU\NewsModule\Helper\TranslatableHelper;
+use MU\NewsModule\Traits\ModerationFormFieldsTrait;
+use MU\NewsModule\Traits\WorkflowFormFieldsTrait;
 
 /**
  * Message editing form type base class.
@@ -45,11 +50,23 @@ use MU\NewsModule\Helper\TranslatableHelper;
 abstract class AbstractMessageType extends AbstractType
 {
     use TranslatorTrait;
+    use ModerationFormFieldsTrait;
+    use WorkflowFormFieldsTrait;
 
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
+
+    /**
+     * @var CollectionFilterHelper
+     */
+    protected $collectionFilterHelper;
+
+    /**
+     * @var EntityDisplayHelper
+     */
+    protected $entityDisplayHelper;
 
     /**
      * @var VariableApiInterface
@@ -81,6 +98,8 @@ abstract class AbstractMessageType extends AbstractType
      *
      * @param TranslatorInterface $translator     Translator service instance
      * @param EntityFactory $entityFactory EntityFactory service instance
+     * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
+     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
      * @param VariableApiInterface $variableApi VariableApi service instance
      * @param TranslatableHelper $translatableHelper TranslatableHelper service instance
      * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
@@ -90,6 +109,8 @@ abstract class AbstractMessageType extends AbstractType
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
+        CollectionFilterHelper $collectionFilterHelper,
+        EntityDisplayHelper $entityDisplayHelper,
         VariableApiInterface $variableApi,
         TranslatableHelper $translatableHelper,
         ListEntriesHelper $listHelper,
@@ -98,6 +119,8 @@ abstract class AbstractMessageType extends AbstractType
     ) {
         $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
+        $this->collectionFilterHelper = $collectionFilterHelper;
+        $this->entityDisplayHelper = $entityDisplayHelper;
         $this->variableApi = $variableApi;
         $this->translatableHelper = $translatableHelper;
         $this->listHelper = $listHelper;
@@ -127,6 +150,7 @@ abstract class AbstractMessageType extends AbstractType
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, 'message')) {
             $this->addCategoriesField($builder, $options);
         }
+        $this->addOutgoingRelationshipFields($builder, $options);
         $this->addAdditionalNotificationRemarksField($builder, $options);
         $this->addModerationFields($builder, $options);
         $this->addSubmitButtons($builder, $options);
@@ -175,16 +199,20 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false,
         ]);
+        $helpText = $this->__('You can input a custom permalink for the message or let this field free to create one automatically.');
+        if ('create' != $options['mode']) {
+            $helpText = '';
+        }
         $builder->add('slug', TextType::class, [
             'label' => $this->__('Permalink') . ':',
-            'required' => false,
+            'required' => 'create' != $options['mode'],
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => 'validate-unique',
-                'title' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically.')
+                'title' => $helpText
             ],
-            'help' => $this->__('You can input a custom permalink for the message or let this field free to create one automatically.')
+            'help' => $helpText
         ]);
         
         if ($this->variableApi->getSystemVar('multilingual') && $this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, 'message')) {
@@ -220,7 +248,7 @@ abstract class AbstractMessageType extends AbstractType
         
         $builder->add('amountOfViews', IntegerType::class, [
             'label' => $this->__('Amount of views') . ':',
-            'empty_data' => '0',
+            'empty_data' => 0,
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
@@ -243,13 +271,14 @@ abstract class AbstractMessageType extends AbstractType
         
         $builder->add('approver', UserLiveSearchType::class, [
             'label' => $this->__('Approver') . ':',
-            'empty_data' => '',
+            'empty_data' => null,
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
                 'title' => $this->__('Enter the approver of the message.')
             ],
             'required' => false,
+            'inline_usage' => $options['inline_usage']
         ]);
         
         $builder->add('notes', TextareaType::class, [
@@ -368,7 +397,7 @@ abstract class AbstractMessageType extends AbstractType
         
         $builder->add('weight', IntegerType::class, [
             'label' => $this->__('Weight') . ':',
-            'empty_data' => '1',
+            'empty_data' => 1,
             'attr' => [
                 'maxlength' => 2,
                 'class' => '',
@@ -424,71 +453,33 @@ abstract class AbstractMessageType extends AbstractType
     }
 
     /**
-     * Adds a field for additional notification remarks.
+     * Adds fields for outgoing relationships.
      *
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addAdditionalNotificationRemarksField(FormBuilderInterface $builder, array $options = [])
+    public function addOutgoingRelationshipFields(FormBuilderInterface $builder, array $options = [])
     {
-        $helpText = '';
-        if ($options['is_moderator']) {
-            $helpText = $this->__('These remarks (like a reason for deny) are not stored, but added to any notification emails send to the creator.');
-        } elseif ($options['is_creator']) {
-            $helpText = $this->__('These remarks (like questions about conformance) are not stored, but added to any notification emails send to our moderators.');
-        }
-    
-        $builder->add('additionalNotificationRemarks', TextareaType::class, [
-            'mapped' => false,
-            'label' => $this->__('Additional remarks'),
-            'label_attr' => [
-                'class' => 'tooltips',
-                'title' => $helpText
-            ],
-            'attr' => [
-                'title' => 'create' == $options['mode'] ? $this->__('Enter any additions about your content') : $this->__('Enter any additions about your changes')
-            ],
+        $queryBuilder = function(EntityRepository $er) {
+            // select without joins
+            return $er->getListQueryBuilder('', '', false);
+        };
+        $entityDisplayHelper = $this->entityDisplayHelper;
+        $choiceLabelClosure = function ($entity) use ($entityDisplayHelper) {
+            return $entityDisplayHelper->getFormattedTitle($entity);
+        };
+        $builder->add('images', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+            'class' => 'MUNewsModule:ImageEntity',
+            'choice_label' => $choiceLabelClosure,
+            'by_reference' => false,
+            'multiple' => true,
+            'expanded' => false,
+            'query_builder' => $queryBuilder,
             'required' => false,
-            'help' => $helpText
-        ]);
-    }
-
-    /**
-     * Adds special fields for moderators.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
-     */
-    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
-    {
-        if (!$options['has_moderate_permission']) {
-            return;
-        }
-    
-        $builder->add('moderationSpecificCreator', UserLiveSearchType::class, [
-            'mapped' => false,
-            'label' => $this->__('Creator') . ':',
+            'label' => $this->__('Images'),
             'attr' => [
-                'maxlength' => 11,
-                'title' => $this->__('Here you can choose a user which will be set as creator.')
-            ],
-            'empty_data' => 0,
-            'required' => false,
-            'help' => $this->__('Here you can choose a user which will be set as creator.')
-        ]);
-        $builder->add('moderationSpecificCreationDate', DateTimeType::class, [
-            'mapped' => false,
-            'label' => $this->__('Creation date') . ':',
-            'attr' => [
-                'class' => '',
-                'title' => $this->__('Here you can choose a custom creation date.')
-            ],
-            'empty_data' => '',
-            'required' => false,
-            'with_seconds' => true,
-            'date_widget' => 'single_text',
-            'time_widget' => 'single_text',
-            'help' => $this->__('Here you can choose a custom creation date.')
+                'title' => $this->__('Choose the images.')
+            ]
         ]);
     }
 
@@ -508,7 +499,7 @@ abstract class AbstractMessageType extends AbstractType
                     'class' => $action['buttonClass']
                 ]
             ]);
-            if ($options['mode'] == 'create' && $action['id'] == 'submit') {
+            if ($options['mode'] == 'create' && $action['id'] == 'submit' && !$options['inline_usage']) {
                 // add additional button to submit item and return to create form
                 $builder->add('submitrepeat', SubmitType::class, [
                     'label' => $this->__('Submit and repeat'),
@@ -571,7 +562,11 @@ abstract class AbstractMessageType extends AbstractType
                 'is_creator' => false,
                 'actions' => [],
                 'has_moderate_permission' => false,
+                'allow_moderation_specific_creator' => false,
+                'allow_moderation_specific_creation_date' => false,
                 'translations' => [],
+                'filter_by_ownership' => true,
+                'inline_usage' => false
             ])
             ->setRequired(['entity', 'mode', 'actions'])
             ->setAllowedTypes('mode', 'string')
@@ -580,7 +575,11 @@ abstract class AbstractMessageType extends AbstractType
             ->setAllowedTypes('is_creator', 'bool')
             ->setAllowedTypes('actions', 'array')
             ->setAllowedTypes('has_moderate_permission', 'bool')
+            ->setAllowedTypes('allow_moderation_specific_creator', 'bool')
+            ->setAllowedTypes('allow_moderation_specific_creation_date', 'bool')
             ->setAllowedTypes('translations', 'array')
+            ->setAllowedTypes('filter_by_ownership', 'bool')
+            ->setAllowedTypes('inline_usage', 'bool')
             ->setAllowedValues('mode', ['create', 'edit'])
         ;
     }

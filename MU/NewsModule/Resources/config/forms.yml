@@ -43,6 +43,8 @@ services:
         arguments:
             - "@translator.default"
             - "@mu_news_module.entity_factory"
+            - "@mu_news_module.collection_filter_helper"
+            - "@mu_news_module.entity_display_helper"
             - "@zikula_extensions_module.api.variable"
             - "@mu_news_module.translatable_helper"
             - "@mu_news_module.listentries_helper"

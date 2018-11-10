@@ -26,6 +26,7 @@ use MU\NewsModule\Helper\CollectionFilterHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ImageHelper;
 use MU\NewsModule\Helper\ModelHelper;
+use MU\NewsModule\Helper\PermissionHelper;
 
 /**
  * Helper base class for controller layer methods.
@@ -33,59 +34,65 @@ use MU\NewsModule\Helper\ModelHelper;
 abstract class AbstractControllerHelper
 {
     use TranslatorTrait;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var FormFactoryInterface
      */
     protected $formFactory;
-
+    
     /**
      * @var VariableApiInterface
      */
     protected $variableApi;
-
+    
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-
+    
     /**
      * @var CollectionFilterHelper
      */
     protected $collectionFilterHelper;
-
+    
+    /**
+     * @var PermissionHelper
+     */
+    protected $permissionHelper;
+    
     /**
      * @var ModelHelper
      */
     protected $modelHelper;
-
+    
     /**
      * @var ImageHelper
      */
     protected $imageHelper;
-
+    
     /**
      * @var FeatureActivationHelper
      */
     protected $featureActivationHelper;
-
+    
     /**
      * ControllerHelper constructor.
      *
-     * @param TranslatorInterface $translator      Translator service instance
-     * @param RequestStack        $requestStack    RequestStack service instance
-     * @param ArchiveHelper       $archiveHelper   ArchiveHelper service instance
-     * @param FormFactoryInterface $formFactory    FormFactory service instance
+     * @param TranslatorInterface $translator       Translator service instance
+     * @param RequestStack        $requestStack     RequestStack service instance
+     * @param ArchiveHelper       $archiveHelper    ArchiveHelper service instance
+     * @param FormFactoryInterface $formFactory     FormFactory service instance
      * @param VariableApiInterface $variableApi     VariableApi service instance
-     * @param EntityFactory       $entityFactory   EntityFactory service instance
+     * @param EntityFactory       $entityFactory    EntityFactory service instance
      * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
-     * @param ModelHelper         $modelHelper     ModelHelper service instance
-     * @param ImageHelper         $imageHelper     ImageHelper service instance
+     * @param PermissionHelper    $permissionHelper PermissionHelper service instance
+     * @param ModelHelper         $modelHelper      ModelHelper service instance
+     * @param ImageHelper         $imageHelper      ImageHelper service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
     public function __construct(
@@ -96,6 +103,7 @@ abstract class AbstractControllerHelper
         VariableApiInterface $variableApi,
         EntityFactory $entityFactory,
         CollectionFilterHelper $collectionFilterHelper,
+        PermissionHelper $permissionHelper,
         ModelHelper $modelHelper,
         ImageHelper $imageHelper,
         FeatureActivationHelper $featureActivationHelper
@@ -106,13 +114,14 @@ abstract class AbstractControllerHelper
         $this->variableApi = $variableApi;
         $this->entityFactory = $entityFactory;
         $this->collectionFilterHelper = $collectionFilterHelper;
+        $this->permissionHelper = $permissionHelper;
         $this->modelHelper = $modelHelper;
         $this->imageHelper = $imageHelper;
         $this->featureActivationHelper = $featureActivationHelper;
-
+    
         $archiveHelper->archiveObsoleteObjects(75);
     }
-
+    
     /**
      * Sets the translator.
      *
@@ -122,7 +131,7 @@ abstract class AbstractControllerHelper
     {
         $this->translator = $translator;
     }
-
+    
     /**
      * Returns an array of all allowed object types in MUNewsModule.
      *
@@ -139,10 +148,11 @@ abstract class AbstractControllerHelper
     
         $allowedObjectTypes = [];
         $allowedObjectTypes[] = 'message';
+        $allowedObjectTypes[] = 'image';
     
         return $allowedObjectTypes;
     }
-
+    
     /**
      * Returns the default object type in MUNewsModule.
      *
@@ -159,7 +169,7 @@ abstract class AbstractControllerHelper
     
         return 'message';
     }
-
+    
     /**
      * Processes the parameters for a view action.
      * This includes handling pagination, quick navigation forms and other aspects.
@@ -215,7 +225,7 @@ abstract class AbstractControllerHelper
                     $sort = $fieldValue;
                 } elseif ($fieldName == 'sortdir' && !empty($fieldValue)) {
                     $sortdir = $fieldValue;
-                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions') && false === stripos($fieldName, 'featureActivationHelper')) {
+                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions') && false === stripos($fieldName, 'featureActivationHelper') && false === stripos($fieldName, 'permissionHelper')) {
                     // set filter as query argument, fetched inside repository
                     if ($fieldValue instanceof UserEntity) {
                         $fieldValue = $fieldValue->getUid();
@@ -313,7 +323,7 @@ abstract class AbstractControllerHelper
     
         return [$sort, $sortdir];
     }
-
+    
     /**
      * Processes the parameters for a display action.
      *
@@ -340,7 +350,7 @@ abstract class AbstractControllerHelper
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
     }
-
+    
     /**
      * Processes the parameters for an edit action.
      *
@@ -358,7 +368,7 @@ abstract class AbstractControllerHelper
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
     }
-
+    
     /**
      * Processes the parameters for a delete action.
      *
@@ -377,7 +387,7 @@ abstract class AbstractControllerHelper
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
     }
-
+    
     /**
      * Returns an array of additional template variables which are specific to the object type.
      *
@@ -413,11 +423,17 @@ abstract class AbstractControllerHelper
                 $thumbRuntimeOptions[$objectType . 'ImageUpload4'] = $this->imageHelper->getRuntimeOptions($objectType, 'imageUpload4', $context, $args);
                 $parameters['thumbRuntimeOptions'] = $thumbRuntimeOptions;
             }
+            if ($objectType == 'image') {
+                $thumbRuntimeOptions = [];
+                $thumbRuntimeOptions[$objectType . 'TheFile'] = $this->imageHelper->getRuntimeOptions($objectType, 'theFile', $context, $args);
+                $parameters['thumbRuntimeOptions'] = $thumbRuntimeOptions;
+            }
             if (in_array($args['action'], ['display', 'edit', 'view'])) {
                 // use separate preset for images in related items
                 $parameters['relationThumbRuntimeOptions'] = $this->imageHelper->getCustomRuntimeOptions('', '', 'MUNewsModule_relateditem', $context, $args);
             }
         }
+        $parameters['permissionHelper'] = $this->permissionHelper;
     
         $parameters['featureActivationHelper'] = $this->featureActivationHelper;
     

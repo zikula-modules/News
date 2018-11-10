@@ -32,37 +32,37 @@ abstract class AbstractArchiveHelper
      * @var TranslatorInterface
      */
     protected $translator;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var LoggerInterface
      */
     protected $logger;
-
+    
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-
+    
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-
+    
     /**
      * @var WorkflowHelper
      */
     protected $workflowHelper;
-
+    
     /**
      * @var HookHelper
      */
     protected $hookHelper;
-
+    
     /**
      * ArchiveHelper constructor.
      *
@@ -91,7 +91,7 @@ abstract class AbstractArchiveHelper
         $this->workflowHelper = $workflowHelper;
         $this->hookHelper = $hookHelper;
     }
-
+    
     /**
      * Moves obsolete data into the archive.
      *

@@ -3,7 +3,11 @@
     <ul>
     {% for modItem in moderationObjects %}
         {% set itemObjectType = modItem.objectType|lower %}
-        <li><a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminview', {workflowState: modItem.state}) }}" class="bold">{{ modItem.message }}</a></li>
+        {% if itemObjectType in ['message'] %}
+            <li><a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminview', {workflowState: modItem.state}) }}" class="bold">{{ modItem.message }}</a></li>
+        {% else %}
+            <li><a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminindex', {workflowState: modItem.state}) }}" class="bold">{{ modItem.message }}</a></li>
+        {% endif %}
     {% endfor %}
     </ul>
 {% endif %}

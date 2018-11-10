@@ -181,7 +181,7 @@
 {% block page_nav_links %}
     <p>
         {% if canBeCreated %}
-            {% if hasPermission('MUNewsModule:Message:', '::', 'ACCESS_COMMENT') %}
+            {% if permissionHelper.hasComponentPermission('message', constant('ACCESS_COMMENT')) %}
                 {% set createTitle = __('Create message') %}
                 <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}"><i class="fa fa-plus"></i> {{ createTitle }}</a>
             {% endif %}

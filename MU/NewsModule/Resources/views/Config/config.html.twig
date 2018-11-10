@@ -27,13 +27,9 @@
                 <li role="presentation">
                     <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
                 </li>
-                {% set tabTitle = __('Moderation') %}
-                <li role="presentation">
-                    <a id="vars5Tab" href="#tab5" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-                </li>
                 {% set tabTitle = __('List views') %}
                 <li role="presentation">
-                    <a id="vars6Tab" href="#tab6" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                    <a id="vars5Tab" href="#tab5" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
                 </li>
                 {% set tabTitle = __('Images') %}
                 <li role="presentation" class=" dropdown">
@@ -51,7 +47,14 @@
                     <li>
                         <a id="imagesMessageImageUpload4Tab" href="#tabImagesMessageImageUpload4" role="tab" data-toggle="tab" aria-controls="tabImagesMessageImageUpload4">{{ __('Messages image upload 4') }}</a>
                     </li>
+                    <li>
+                        <a id="imagesImageTheFileTab" href="#tabImagesImageTheFile" role="tab" data-toggle="tab" aria-controls="tabImagesImageTheFile">{{ __('Images the file') }}</a>
+                    </li>
                     </ul>
+                </li>
+                {% set tabTitle = __('Moderation') %}
+                <li role="presentation">
+                    <a id="vars7Tab" href="#tab7" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
                 </li>
                 {% set tabTitle = __('Integration') %}
                 <li role="presentation">
@@ -116,16 +119,6 @@
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab5" aria-labelledby="vars5Tab">
-                    {% set tabTitle = __('Moderation') %}
-                    <fieldset>
-                        <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('Here you can assign moderation groups for enhanced workflow actions.')|nl2br }}</p>
-                    
-                        {{ form_row(form.moderationGroupForMessages) }}
-                    </fieldset>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab6" aria-labelledby="vars6Tab">
                     {% set tabTitle = __('List views') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
@@ -214,6 +207,31 @@
                         {{ form_row(form.thumbnailHeightMessageImageUpload4Edit) }}
                     </fieldset>
                 </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesImageTheFile" aria-labelledby="imagesImageTheFileTab">
+                    {% set tabTitle = __('Image settings for images the file') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForImageTheFile) }}
+                        <div id="shrinkDetailsImageTheFile">
+                        {{ form_row(form.shrinkWidthImageTheFile) }}
+                        {{ form_row(form.shrinkHeightImageTheFile) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeImageTheFile) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab7" aria-labelledby="vars7Tab">
+                    {% set tabTitle = __('Moderation') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can define moderation-related settings.')|nl2br }}</p>
+                    
+                        {{ form_row(form.moderationGroupForMessages) }}
+                        {{ form_row(form.allowModerationSpecificCreatorForMessage) }}
+                        {{ form_row(form.allowModerationSpecificCreationDateForMessage) }}
+                    </fieldset>
+                </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab8" aria-labelledby="vars8Tab">
                     {% set tabTitle = __('Integration') %}
                     <fieldset>
@@ -233,6 +251,8 @@
                 
                         <h4>{{ __('Messages') }}</h4>
                         <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_standard'}) }}" title="{{ __('Edit workflow for messages') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit messages workflow') }}</a>
+                        <h4>{{ __('Images') }}</h4>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_none'}) }}" title="{{ __('Edit workflow for images') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit images workflow') }}</a>
                     </fieldset>
                 </div>
             </div>
