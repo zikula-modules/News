@@ -39,7 +39,6 @@ application "News" targets ZK20 {
         Resources/config/services.yml,
         Resources/config/twig.yml,
         Resources/views/Block/itemlist_message_display_description.html.twig,
-        Resources/views/Form/bootstrap_3.html.twig,
         Resources/views/Image/Admin/includeSelectEditMany.html.twig,
         Resources/views/Image/includeSelectEditMany.html.twig,
         Resources/views/Message/Admin/edit.html.twig,
