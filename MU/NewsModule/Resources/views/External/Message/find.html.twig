@@ -98,3 +98,7 @@
     </div>
     #}
 {% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Finder.js')) }}
+{% endblock %}

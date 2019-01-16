@@ -247,6 +247,7 @@ abstract class AbstractCollectionFilterHelper
                 } elseif ($v == 'yes' || $v == '1') {
                     $qb->andWhere('tbl.' . $k . ' = 1');
                 }
+                continue;
             }
     
             if (is_array($v)) {

@@ -178,6 +178,7 @@
 </div>
 {% endblock %}
 {% block related_items %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div role="tabpanel" class="tab-pane fade" id="tabRelations" aria-labelledby="relationsTab">
         <h3>{{ __('Related data') }}</h3>
         {% if routeArea == 'admin' %}
@@ -186,21 +187,11 @@
             <h3>{{ __('Images') }}</h3>
         {% endif %}
         
-        {#% if message.images|default %}
+        {% if message.images|default %}
             {{ include(
                 '@MUNewsModule/Image/Admin/includeDisplayItemListMany.html.twig',
                 {items: message.images}
             ) }}
-        {% endif %#}
-        {% if message.images|length > 0 %}
-            <div class="additional-images">
-                {% set thumbnailOptions = {'thumbnail': {'size': [999, 630], 'mode': 'inset', 'extension': null}} %}
-                {% for image in message.images %}
-                    <a href="{{ image.theFileUrl }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" class="image-link">
-                        <img class="post-img img-thumbnail img-responsive" src="{{ image.theFile.getPathname()|imagine_filter('zkroot', thumbnailOptions) }}" alt="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" />
-                    </a>
-                {% endfor %}
-            </div>
         {% endif %}
     </div>
 {% endblock %}

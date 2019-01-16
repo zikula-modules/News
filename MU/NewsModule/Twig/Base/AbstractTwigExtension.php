@@ -59,8 +59,8 @@ abstract class AbstractTwigExtension extends Twig_Extension
      * @param TranslatorInterface $translator     Translator service instance
      * @param RequestStack        $requestStack   RequestStack service instance
      * @param VariableApiInterface   $variableApi    VariableApi service instance
-     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
-     * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
+     * @param EntityDisplayHelper    $entityDisplayHelper EntityDisplayHelper service instance
+     * @param WorkflowHelper         $workflowHelper WorkflowHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      */
     public function __construct(

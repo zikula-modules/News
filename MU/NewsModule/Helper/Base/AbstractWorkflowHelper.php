@@ -93,51 +93,51 @@ abstract class AbstractWorkflowHelper
     }
     
     /**
-      * This method returns a list of possible object states.
-      *
-      * @return array List of collected state information
-      */
-     public function getObjectStates()
-     {
-         $states = [];
-         $states[] = [
-             'value' => 'initial',
-             'text' => $this->translator->__('Initial'),
-             'ui' => 'danger'
-         ];
-         $states[] = [
-             'value' => 'waiting',
-             'text' => $this->translator->__('Waiting'),
-             'ui' => 'warning'
-         ];
-         $states[] = [
-             'value' => 'approved',
-             'text' => $this->translator->__('Approved'),
-             'ui' => 'success'
-         ];
-         $states[] = [
-             'value' => 'suspended',
-             'text' => $this->translator->__('Suspended'),
-             'ui' => 'primary'
-         ];
-         $states[] = [
-             'value' => 'archived',
-             'text' => $this->translator->__('Archived'),
-             'ui' => 'info'
-         ];
-         $states[] = [
-             'value' => 'trashed',
-             'text' => $this->translator->__('Trashed'),
-             'ui' => 'danger'
-         ];
-         $states[] = [
-             'value' => 'deleted',
-             'text' => $this->translator->__('Deleted'),
-             'ui' => 'danger'
-         ];
+     * This method returns a list of possible object states.
+     *
+     * @return array List of collected state information
+     */
+    public function getObjectStates()
+    {
+        $states = [];
+        $states[] = [
+            'value' => 'initial',
+            'text' => $this->translator->__('Initial'),
+            'ui' => 'danger'
+        ];
+        $states[] = [
+            'value' => 'waiting',
+            'text' => $this->translator->__('Waiting'),
+            'ui' => 'warning'
+        ];
+        $states[] = [
+            'value' => 'approved',
+            'text' => $this->translator->__('Approved'),
+            'ui' => 'success'
+        ];
+        $states[] = [
+            'value' => 'suspended',
+            'text' => $this->translator->__('Suspended'),
+            'ui' => 'primary'
+        ];
+        $states[] = [
+            'value' => 'archived',
+            'text' => $this->translator->__('Archived'),
+            'ui' => 'info'
+        ];
+        $states[] = [
+            'value' => 'trashed',
+            'text' => $this->translator->__('Trashed'),
+            'ui' => 'danger'
+        ];
+        $states[] = [
+            'value' => 'deleted',
+            'text' => $this->translator->__('Deleted'),
+            'ui' => 'danger'
+        ];
     
-         return $states;
-     }
+        return $states;
+    }
     
     /**
      * This method returns information about a certain state.
@@ -325,13 +325,13 @@ abstract class AbstractWorkflowHelper
             $entityManager->flush();
     
             $result = true;
-            if ($actionId == 'delete') {
+            if ('delete' == $actionId) {
                 $this->logger->notice('{app}: User {user} deleted an entity.', $logArgs);
             } else {
                 $this->logger->notice('{app}: User {user} updated an entity.', $logArgs);
             }
         } catch (\Exception $exception) {
-            if ($actionId == 'delete') {
+            if ('delete' == $actionId) {
                 $this->logger->error('{app}: User {user} tried to delete an entity, but failed.', $logArgs);
             } else {
                 $this->logger->error('{app}: User {user} tried to update an entity, but failed.', $logArgs);
@@ -373,7 +373,7 @@ abstract class AbstractWorkflowHelper
                     'amount' => $amount,
                     'objectType' => $objectType,
                     'state' => $state,
-                    'message' => $this->translator->_fn('One message is waiting for approval.', '%amount% messages are waiting for approval.', $amount, ['%amount%' => $amount])
+                    'message' => $this->translator->transChoice('One message is waiting for approval.|%count% messages are waiting for approval.', $amount, ['%count%' => $amount], 'munewsmodule')
                 ];
         
                 $this->logger->info('{app}: There are {amount} {entities} waiting for approval.', ['app' => 'MUNewsModule', 'amount' => $amount, 'entities' => 'messages']);

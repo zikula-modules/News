@@ -106,8 +106,9 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             if (true === $this->variableApi->get('MUNewsModule', 'linkOwnMessagesOnAccountPage', true)) {
                 $objectType = 'message';
                 if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_READ)) {
+                    $routeArgs = ['own' => 1];
                     $links[] = [
-                        'url' => $this->router->generate('munewsmodule_' . strtolower($objectType) . '_view', ['own' => 1]),
+                        'url' => $this->router->generate('munewsmodule_' . strtolower($objectType) . '_view', $routeArgs),
                         'text' => $this->__('My messages', 'munewsmodule'),
                         'icon' => 'list-alt'
                     ];

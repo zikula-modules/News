@@ -1,5 +1,5 @@
 {# purpose of this template: show amount of pending items to moderators #}
-{% if not app.request.query.getBoolean('raw', false) %}
+{% if not app.request.query.getBoolean('raw', false) and app.request.requestFormat != 'pdf' %}
     {% set moderationObjects = munewsmodule_moderationObjects() %}
     {% if moderationObjects|length > 0 %}
         {% for modItem in moderationObjects %}
@@ -8,8 +8,10 @@
                 {% set itemObjectType = modItem.objectType|lower %}
                 {% if itemObjectType in ['message'] %}
                     <a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminview', {workflowState: modItem.state}) }}" class="bold alert-link">{{ modItem.message }}</a>
-                {% else %}
+                {% elseif itemObjectType in ['message', 'image'] %}
                     <a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminindex', {workflowState: modItem.state}) }}" class="bold alert-link">{{ modItem.message }}</a>
+                {% else %}
+                    <strong>{{ modItem.message }}</strong>
                 {% endif %}
             </p>
         {% endfor %}

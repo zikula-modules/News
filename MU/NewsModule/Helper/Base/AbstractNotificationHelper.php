@@ -225,7 +225,7 @@ abstract class AbstractNotificationHelper
     {
         $this->recipients = [];
     
-        if ($this->recipientType == 'moderator' || $this->recipientType == 'superModerator') {
+        if (in_array($this->recipientType, ['moderator', 'superModerator'])) {
             $modVarSuffixes = [
                 'message' => 'Messages'
             ];
@@ -242,7 +242,7 @@ abstract class AbstractNotificationHelper
                     $this->addRecipient($user);
                 }
             }
-        } elseif ($this->recipientType == 'creator' && method_exists($this->entity, 'getCreatedBy')) {
+        } elseif ('creator' == $this->recipientType && method_exists($this->entity, 'getCreatedBy')) {
             $this->addRecipient($this->entity->getCreatedBy());
         } elseif ($this->usesDesignatedEntityFields()) {
             $this->addRecipient();

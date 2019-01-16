@@ -5,8 +5,10 @@
         {% set itemObjectType = modItem.objectType|lower %}
         {% if itemObjectType in ['message'] %}
             <li><a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminview', {workflowState: modItem.state}) }}" class="bold">{{ modItem.message }}</a></li>
-        {% else %}
+        {% elseif itemObjectType in ['message', 'image'] %}
             <li><a href="{{ path('munewsmodule_' ~ itemObjectType ~ '_adminindex', {workflowState: modItem.state}) }}" class="bold">{{ modItem.message }}</a></li>
+        {% else %}
+            <li><strong>{{ modItem.message }}</strong></li>
         {% endif %}
     {% endfor %}
     </ul>

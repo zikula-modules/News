@@ -455,7 +455,7 @@ abstract class AbstractEditHandler
             return false;
         }
     
-        if ($entity->supportsHookSubscribers()) {
+        if (method_exists($entity, 'supportsHookSubscribers') && $entity->supportsHookSubscribers()) {
             // Call form aware display hooks
             $formHook = $this->hookHelper->callFormDisplayHooks($this->form, $entity, FormAwareCategory::TYPE_EDIT);
             $this->templateParameters['formHookTemplates'] = $formHook->getTemplates();
@@ -463,7 +463,7 @@ abstract class AbstractEditHandler
     
         // handle form request and check validity constraints of edited entity
         if ($this->form->handleRequest($request) && $this->form->isSubmitted()) {
-            if ($this->form->get('cancel')->isClicked()) {
+            if ($this->form->has('cancel') && $this->form->get('cancel')->isClicked()) {
                 if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
                     $lockName = 'MUNewsModule' . $this->objectTypeCapital . $entity->getKey();
                     $this->lockingApi->releaseLock($lockName);
@@ -686,7 +686,7 @@ abstract class AbstractEditHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-        if ($entity->supportsHookSubscribers()) {
+        if (method_exists($entity, 'supportsHookSubscribers') && $entity->supportsHookSubscribers()) {
             // Let any ui hooks perform additional validation actions
             $hookType = $action == 'delete' ? UiHooksCategory::TYPE_VALIDATE_DELETE : UiHooksCategory::TYPE_VALIDATE_EDIT;
             $validationErrors = $this->hookHelper->callValidationHooks($entity, $hookType);
@@ -712,7 +712,7 @@ abstract class AbstractEditHandler
             }
         }
     
-        if ($entity->supportsHookSubscribers()) {
+        if (method_exists($entity, 'supportsHookSubscribers') && $entity->supportsHookSubscribers()) {
             $entitiesWithDisplayAction = ['message'];
             $hasDisplayAction = in_array($this->objectType, $entitiesWithDisplayAction);
     

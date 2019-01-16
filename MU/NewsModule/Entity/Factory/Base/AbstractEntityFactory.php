@@ -88,7 +88,7 @@ abstract class AbstractEntityFactory
     /**
      * Creates a new message instance.
      *
-     * @return MU\NewsModule\Entity\messageEntity The newly created entity instance
+     * @return \MU\NewsModule\Entity\MessageEntity The newly created entity instance
      */
     public function createMessage()
     {
@@ -104,7 +104,7 @@ abstract class AbstractEntityFactory
     /**
      * Creates a new image instance.
      *
-     * @return MU\NewsModule\Entity\imageEntity The newly created entity instance
+     * @return \MU\NewsModule\Entity\ImageEntity The newly created entity instance
      */
     public function createImage()
     {

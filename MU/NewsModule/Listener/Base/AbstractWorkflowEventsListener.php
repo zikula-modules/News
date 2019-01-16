@@ -270,16 +270,6 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-    
-        $workflowShortName = 'none';
-        if (in_array($entity->get_objectType(), ['message'])) {
-            $workflowShortName = 'standard';
-        } elseif (in_array($entity->get_objectType(), [''])) {
-            $workflowShortName = 'enterprise';
-        }
-        if ('none' != $workflowShortName) {
-            $this->sendNotifications($entity, $event->getTransition()->getName(), $workflowShortName);
-        }
     }
     
     /**
@@ -309,6 +299,16 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
+        }
+        
+        $workflowShortName = 'none';
+        if (in_array($entity->get_objectType(), ['message'])) {
+            $workflowShortName = 'standard';
+        } elseif (in_array($entity->get_objectType(), [''])) {
+            $workflowShortName = 'enterprise';
+        }
+        if ('none' != $workflowShortName) {
+            $this->sendNotifications($entity, $event->getTransition()->getName(), $workflowShortName);
         }
     }
     
@@ -385,6 +385,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
             $sendToSuperModerator = true;
         } elseif ('approve' == $actionId && 'approved' == $newState && 'enterprise' == $workflowShortName) {
             // to creator and moderator
+            $sendToModerator = true;
+        } elseif ('update' == $actionId && 'waiting' == $newState) {
+            // only to moderator
+            $sendToCreator = false;
             $sendToModerator = true;
         }
         $recipientTypes = [];

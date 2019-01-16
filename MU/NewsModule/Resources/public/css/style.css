@@ -66,18 +66,16 @@ div.munewsmodule-relation-rightside {
     background-color: #fff;
 }
 
-div.munewsmodule-autocomplete .ui-autocomplete .suggestion {
+.ui-autocomplete .suggestion:before {
     content: "\f0da";
     font-family: 'FontAwesome';
     font-style: normal;
-    color: #000;
+    color: #7db441;
     margin-right: 15px;
     position: absolute;
-    left: 0;
+    left: 20px;
 }
-div.munewsmodule-autocomplete-with-image .ui-autocomplete .suggestion {
-    content: "\f03e";
-}
+
 .ui-autocomplete .suggestion img {
     max-width: 20px;
     max-height: 20px;
@@ -118,11 +116,6 @@ div.munewsmodule-view form.munewsmodule-quicknav fieldset h3 {
 
 div.munewsmodule-view form.munewsmodule-quicknav fieldset label {
     margin-right: 5px;
-}
-
-div.munewsmodule-view form.munewsmodule-quicknav fieldset #num {
-    width: 50px;
-    text-align: right;
 }
 
 div.munewsmodule-view .avatar img {

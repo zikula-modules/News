@@ -41,6 +41,7 @@ use MU\NewsModule\Helper\EntityDisplayHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ListEntriesHelper;
 use MU\NewsModule\Helper\TranslatableHelper;
+use MU\NewsModule\Helper\UploadHelper;
 use MU\NewsModule\Traits\ModerationFormFieldsTrait;
 use MU\NewsModule\Traits\WorkflowFormFieldsTrait;
 
@@ -84,6 +85,11 @@ abstract class AbstractMessageType extends AbstractType
     protected $listHelper;
 
     /**
+     * @var UploadHelper
+     */
+    protected $uploadHelper;
+
+    /**
      * @var LocaleApiInterface
      */
     protected $localeApi;
@@ -103,6 +109,7 @@ abstract class AbstractMessageType extends AbstractType
      * @param VariableApiInterface $variableApi VariableApi service instance
      * @param TranslatableHelper $translatableHelper TranslatableHelper service instance
      * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
+     * @param UploadHelper $uploadHelper UploadHelper service instance
      * @param LocaleApiInterface $localeApi LocaleApi service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
@@ -114,6 +121,7 @@ abstract class AbstractMessageType extends AbstractType
         VariableApiInterface $variableApi,
         TranslatableHelper $translatableHelper,
         ListEntriesHelper $listHelper,
+        UploadHelper $uploadHelper,
         LocaleApiInterface $localeApi,
         FeatureActivationHelper $featureActivationHelper
     ) {
@@ -124,6 +132,7 @@ abstract class AbstractMessageType extends AbstractType
         $this->variableApi = $variableApi;
         $this->translatableHelper = $translatableHelper;
         $this->listHelper = $listHelper;
+        $this->uploadHelper = $uploadHelper;
         $this->localeApi = $localeApi;
         $this->featureActivationHelper = $featureActivationHelper;
     }
@@ -242,7 +251,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
-            'allowed_extensions' => 'gif, jpeg, jpg, png',
+            'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload1')),
             'allowed_size' => '200k'
         ]);
         
@@ -332,7 +341,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
-            'allowed_extensions' => 'gif, jpeg, jpg, png',
+            'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload2')),
             'allowed_size' => '200k'
         ]);
         
@@ -344,7 +353,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
-            'allowed_extensions' => 'gif, jpeg, jpg, png',
+            'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload3')),
             'allowed_size' => '200k'
         ]);
         
@@ -356,7 +365,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
-            'allowed_extensions' => 'gif, jpeg, jpg, png',
+            'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload4')),
             'allowed_size' => '200k'
         ]);
         
