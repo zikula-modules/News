@@ -82,8 +82,8 @@ class AbstractMenuBuilder
         RequestStack $requestStack,
         PermissionHelper $permissionHelper,
         EntityDisplayHelper $entityDisplayHelper,
-        CurrentUserApiInterface $currentUserApi)
-    {
+        CurrentUserApiInterface $currentUserApi
+    ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->eventDispatcher = $eventDispatcher;

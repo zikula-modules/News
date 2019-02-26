@@ -468,8 +468,10 @@ abstract class AbstractCollectionFilterHelper
             $parameters['searchImageUpload1'] = $fragment;
             $filters[] = 'tbl.mainText LIKE :searchMainText';
             $parameters['searchMainText'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.amountOfViews = :searchAmountOfViews';
-            $parameters['searchAmountOfViews'] = $fragment;
+            if (is_numeric($fragment)) {
+                $filters[] = 'tbl.amountOfViews = :searchAmountOfViews';
+                $parameters['searchAmountOfViews'] = $fragment;
+            }
             $filters[] = 'tbl.author LIKE :searchAuthor';
             $parameters['searchAuthor'] = '%' . $fragment . '%';
             $filters[] = 'tbl.notes LIKE :searchNotes';
@@ -486,16 +488,20 @@ abstract class AbstractCollectionFilterHelper
             $parameters['searchStartDate'] = $fragment;
             $filters[] = 'tbl.endDate = :searchEndDate';
             $parameters['searchEndDate'] = $fragment;
-            $filters[] = 'tbl.weight = :searchWeight';
-            $parameters['searchWeight'] = $fragment;
+            if (is_numeric($fragment)) {
+                $filters[] = 'tbl.weight = :searchWeight';
+                $parameters['searchWeight'] = $fragment;
+            }
         }
         if ($objectType == 'image') {
             $filters[] = 'tbl.theFileFileName = :searchTheFile';
             $parameters['searchTheFile'] = $fragment;
             $filters[] = 'tbl.caption LIKE :searchCaption';
             $parameters['searchCaption'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.sortNumber = :searchSortNumber';
-            $parameters['searchSortNumber'] = $fragment;
+            if (is_numeric($fragment)) {
+                $filters[] = 'tbl.sortNumber = :searchSortNumber';
+                $parameters['searchSortNumber'] = $fragment;
+            }
         }
     
         $qb->andWhere('(' . implode(' OR ', $filters) . ')');

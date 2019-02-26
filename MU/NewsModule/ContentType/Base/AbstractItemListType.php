@@ -270,12 +270,4 @@ abstract class AbstractItemListType extends AbstractContentType
         $this->featureActivationHelper = $featureActivationHelper;
         $this->categoryHelper = $categoryHelper;
     }
-    
-    /**
-     * @param CategoryHelper $categoryHelper
-     */
-    public function setCategoryHelper(CategoryHelper $categoryHelper)
-    {
-        $this->categoryHelper = $categoryHelper;
-    }
 }

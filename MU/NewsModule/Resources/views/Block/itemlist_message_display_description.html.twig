@@ -3,7 +3,7 @@
     {% for message in items %}
         <dt>{{ message|munewsmodule_formattedTitle }}</dt>
         {% if message.startText %}
-            <dd>{{ message.startText|striptags|truncate(100, true, '&hellip;') }}</dd>
+            <dd>{{ message.startText|striptags|truncate(200, true, '&hellip;') }}</dd>
         {% endif %}
         <dd><a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
         </dd>

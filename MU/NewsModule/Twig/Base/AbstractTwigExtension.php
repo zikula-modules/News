@@ -17,8 +17,8 @@ use Twig_Extension;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use MU\NewsModule\Helper\ListEntriesHelper;
 use MU\NewsModule\Helper\EntityDisplayHelper;
+use MU\NewsModule\Helper\ListEntriesHelper;
 use MU\NewsModule\Helper\WorkflowHelper;
 
 /**
@@ -69,8 +69,8 @@ abstract class AbstractTwigExtension extends Twig_Extension
         VariableApiInterface $variableApi,
         EntityDisplayHelper $entityDisplayHelper,
         WorkflowHelper $workflowHelper,
-        ListEntriesHelper $listHelper)
-    {
+        ListEntriesHelper $listHelper
+    ) {
         $this->setTranslator($translator);
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;

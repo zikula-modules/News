@@ -140,6 +140,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
     
         foreach ($searchTypes as $searchType => $typeInfo) {
             $builder->add('active_' . $searchType, CheckboxType::class, [
+                'data' => true,
                 'value' => $typeInfo['value'],
                 'label' => $typeInfo['label'],
                 'label_attr' => ['class' => 'checkbox-inline'],
@@ -185,18 +186,18 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     $whereArray[] = 'tbl.workflowState';
                     $whereArray[] = 'tbl.title';
                     $whereArray[] = 'tbl.startText';
-                    $whereArray[] = 'tbl.imageUpload1';
+                    $whereArray[] = 'tbl.imageUpload1FileName';
                     $whereArray[] = 'tbl.mainText';
                     $whereArray[] = 'tbl.author';
                     $whereArray[] = 'tbl.notes';
                     $whereArray[] = 'tbl.messageLanguage';
-                    $whereArray[] = 'tbl.imageUpload2';
-                    $whereArray[] = 'tbl.imageUpload3';
-                    $whereArray[] = 'tbl.imageUpload4';
+                    $whereArray[] = 'tbl.imageUpload2FileName';
+                    $whereArray[] = 'tbl.imageUpload3FileName';
+                    $whereArray[] = 'tbl.imageUpload4FileName';
                     break;
                 case 'image':
                     $whereArray[] = 'tbl.workflowState';
-                    $whereArray[] = 'tbl.theFile';
+                    $whereArray[] = 'tbl.theFileFileName';
                     $whereArray[] = 'tbl.caption';
                     break;
             }
@@ -239,7 +240,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     }
                 }
     
-                $description = !empty($descriptionFieldName) ? $entity[$descriptionFieldName] : '';
+                $description = !empty($descriptionFieldName) ? strip_tags($entity[$descriptionFieldName]) : '';
                 $created = isset($entity['createdDate']) ? $entity['createdDate'] : null;
     
                 $formattedTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
@@ -274,11 +275,11 @@ abstract class AbstractSearchHelper implements SearchableInterface
         $searchTypes = [
             'mUNewsModuleMessages' => [
                 'value' => 'message',
-                'label' => $this->__('Messages')
+                'label' => $this->__('Messages', 'munewsmodule')
             ],
             'mUNewsModuleImages' => [
                 'value' => 'image',
-                'label' => $this->__('Images')
+                'label' => $this->__('Images', 'munewsmodule')
             ]
         ];
     
