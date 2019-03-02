@@ -39,12 +39,12 @@
             </a>
         </div>
         {% else %}&nbsp;{% endif %}
-        {{ message.startText|safeHtml }}
+        {{ message.startText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}
         </div>
     {% endif %}
     {% if message.mainText is not empty %}
         <div id="message-display-main">
-            {{ message.mainText|safeHtml }}
+            {{ message.mainText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}
         </div>
     {% endif %}
     {% if message.imageUpload2 is not empty or message.imageUpload3 is not empty or message.imageUpload4 is not empty %}

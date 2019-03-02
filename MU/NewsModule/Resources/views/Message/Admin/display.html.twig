@@ -56,7 +56,7 @@
                 {% endif %}
                 {% if message.startText is not empty %}
                     <dt>{{ __('Start text') }}</dt>
-                    <dd>{{ message.startText|safeHtml }}</dd>
+                    <dd>{{ message.startText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}</dd>
                 {% endif %}
                 {% if message.imageUpload1 is not empty %}
                     <dt>{{ __('Image upload 1') }}</dt>
@@ -74,7 +74,7 @@
                 {% endif %}
                 {% if message.mainText is not empty %}
                     <dt>{{ __('Main text') }}</dt>
-                    <dd>{{ message.mainText|safeHtml }}</dd>
+                    <dd>{{ message.mainText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}</dd>
                 {% endif %}
                 {% if message.amountOfViews is not empty %}
                     <dt>{{ __('Amount of views') }}</dt>
@@ -98,7 +98,7 @@
                 {% endif %}
                 {% if message.notes is not empty %}
                     <dt>{{ __('Notes') }}</dt>
-                    <dd>{{ message.notes|safeHtml }}</dd>
+                    <dd>{{ message.notes|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}</dd>
                 {% endif %}
                 <dt>{{ __('Display on index') }}</dt>
                 <dd>{% set itemId = message.getKey() %}
