@@ -45,9 +45,10 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminIndexAction(Request $request)
-    {
-        return parent::adminIndexAction($request);
+    public function adminIndexAction(
+        Request $request
+    ) {
+        return $this->indexInternal($request, true);
     }
     
     /**
@@ -58,9 +59,10 @@ class MessageController extends AbstractMessageController
      * )
      *
      */
-    public function indexAction(Request $request)
-    {
-        return parent::indexAction($request);
+    public function indexAction(
+        Request $request
+    ) {
+        return $this->indexInternal($request, false);
     }
     
     /**
@@ -72,16 +74,15 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     * @param string $sort         Sorting field
-     * @param string $sortdir      Sorting direction
-     * @param int    $pos          Current pager position
-     * @param int    $num          Amount of entries to display
      */
-    public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
-    {
-        return parent::adminViewAction($request, $sort, $sortdir, $pos, $num);
+    public function adminViewAction(
+        Request $request,
+        $sort,
+        $sortdir,
+        $pos,
+        $num
+    ) {
+        return $this->viewInternal($request, $sort, $sortdir, $pos, $num, true);
     }
     
     /**
@@ -92,16 +93,15 @@ class MessageController extends AbstractMessageController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     *
-     * @param Request $request Current request instance
-     * @param string $sort         Sorting field
-     * @param string $sortdir      Sorting direction
-     * @param int    $pos          Current pager position
-     * @param int    $num          Amount of entries to display
      */
-    public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
-    {
-        return parent::viewAction($request, $sort, $sortdir, $pos, $num);
+    public function viewAction(
+        Request $request,
+        $sort,
+        $sortdir,
+        $pos,
+        $num
+    ) {
+        return $this->viewInternal($request, $sort, $sortdir, $pos, $num, false);
     }
     
     /**
@@ -113,15 +113,11 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET", "POST"}
      * )
      * @Theme("admin")
-     *
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by form handler if message to be edited isn't found
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function adminEditAction(Request $request)
-    {
-        return parent::adminEditAction($request);
+    public function adminEditAction(
+        Request $request
+    ) {
+        return $this->editInternal($request, true);
     }
     
     /**
@@ -132,14 +128,11 @@ class MessageController extends AbstractMessageController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by form handler if message to be edited isn't found
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function editAction(Request $request)
-    {
-        return parent::editAction($request);
+    public function editAction(
+        Request $request
+    ) {
+        return $this->editInternal($request, false);
     }
     
     /**
@@ -152,18 +145,12 @@ class MessageController extends AbstractMessageController
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
      * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     * @param MessageEntity $message Treated message instance
-     *
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by param converter if message to be deleted isn't found
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function adminDeleteAction(Request $request, $slug)
-    {
-        return parent::adminDeleteAction($request, $slug);
+    public function adminDeleteAction(
+        Request $request,
+        $slug
+    ) {
+        return $this->deleteInternal($request, $slug, true);
     }
     
     /**
@@ -175,18 +162,12 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
-     *
-     * @param Request $request Current request instance
-     * @param MessageEntity $message Treated message instance
-     *
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by param converter if message to be deleted isn't found
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function deleteAction(Request $request, $slug)
-    {
-        return parent::deleteAction($request, $slug);
+    public function deleteAction(
+        Request $request,
+        $slug
+    ) {
+        return $this->deleteInternal($request, $slug, false);
     }
     
     /**
@@ -199,17 +180,12 @@ class MessageController extends AbstractMessageController
      * )
      * @ParamConverter("message", class="MUNewsModule:MessageEntity", options = {"repository_method" = "selectBySlug", "mapping": {"slug": "slugTitle"}, "map_method_signature" = true})
      * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     * @param MessageEntity $message Treated message instance
-     *
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by param converter if message to be displayed isn't found
      */
-    public function adminDisplayAction(Request $request, $slug)
-    {
-        return parent::adminDisplayAction($request, $slug);
+    public function adminDisplayAction(
+        Request $request,
+        $slug
+    ) {
+        return $this->displayInternal($request, $slug, true);
     }
     
     /**
@@ -229,9 +205,11 @@ class MessageController extends AbstractMessageController
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if message to be displayed isn't found
      */
-    public function displayAction(Request $request, $slug)
-    {
-        return parent::displayAction($request, $slug);
+    public function displayAction(
+        Request $request,
+        $slug
+    ) {
+        return $this->displayInternal($request, $slug, false);
     }
     
     /**
@@ -244,15 +222,11 @@ class MessageController extends AbstractMessageController
      *        methods = {"POST"}
      * )
      * @Theme("admin")
-     *
-     * @param Request $request Current request instance
-     *
-     *
-     * @throws RuntimeException Thrown if executing the workflow action fails
      */
-    public function adminHandleSelectedEntriesAction(Request $request)
-    {
-        return parent::adminHandleSelectedEntriesAction($request);
+    public function adminHandleSelectedEntriesAction(
+        Request $request
+    ) {
+        return $this->handleSelectedEntriesActionInternal($request, true);
     }
     
     /**
@@ -264,15 +238,11 @@ class MessageController extends AbstractMessageController
      * @Route("/messages/handleSelectedEntries",
      *        methods = {"POST"}
      * )
-     *
-     * @param Request $request Current request instance
-     *
-     *
-     * @throws RuntimeException Thrown if executing the workflow action fails
      */
-    public function handleSelectedEntriesAction(Request $request)
-    {
-        return parent::handleSelectedEntriesAction($request);
+    public function handleSelectedEntriesAction(
+        Request $request
+    ) {
+        return $this->handleSelectedEntriesActionInternal($request, false);
     }
     
     // feel free to add your own controller methods here
