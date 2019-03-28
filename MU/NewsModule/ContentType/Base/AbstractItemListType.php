@@ -260,14 +260,14 @@ abstract class AbstractItemListType extends AbstractContentType
     }
     
     /**
-     * @param FeatureActivationHelper $featureActivationHelper
      * @param CategoryHelper $categoryHelper
+     * @param FeatureActivationHelper $featureActivationHelper
      */
     public function setCategoryDependencies(
-        FeatureActivationHelper $featureActivationHelper,
-        CategoryHelper $categoryHelper
+        CategoryHelper $categoryHelper,
+        FeatureActivationHelper $featureActivationHelper
     ) {
-        $this->featureActivationHelper = $featureActivationHelper;
         $this->categoryHelper = $categoryHelper;
+        $this->featureActivationHelper = $featureActivationHelper;
     }
 }

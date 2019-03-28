@@ -147,11 +147,11 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * Updates the creator of all objects created by a certain user.
      *
-     * @param integer                 $userId         The userid of the creator to be replaced
-     * @param integer                 $newUserId      The new userid of the creator as replacement
-     * @param TranslatorInterface     $translator     Translator service instance
-     * @param LoggerInterface         $logger         Logger service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
+     * @param integer $userId
+     * @param integer $newUserId
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return void
      *
@@ -180,11 +180,11 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * Updates the last editor of all objects updated by a certain user.
      *
-     * @param integer                 $userId         The userid of the last editor to be replaced
-     * @param integer                 $newUserId      The new userid of the last editor as replacement
-     * @param TranslatorInterface     $translator     Translator service instance
-     * @param LoggerInterface         $logger         Logger service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
+     * @param integer $userId
+     * @param integer $newUserId
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return void
      *
@@ -213,10 +213,10 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * Deletes all objects created by a certain user.
      *
-     * @param integer                 $userId         The userid of the creator to be removed
-     * @param TranslatorInterface     $translator     Translator service instance
-     * @param LoggerInterface         $logger         Logger service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
+     * @param integer $userId
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return void
      *
@@ -243,10 +243,10 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * Deletes all objects updated by a certain user.
      *
-     * @param integer                 $userId         The userid of the last editor to be removed
-     * @param TranslatorInterface     $translator     Translator service instance
-     * @param LoggerInterface         $logger         Logger service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
+     * @param integer $userId
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return void
      *
@@ -273,12 +273,12 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * Updates a user field value of all objects affected by a certain user.
      *
-     * @param string                  $fieldName      The name of the user field
-     * @param integer                 $userId         The userid to be replaced
-     * @param integer                 $newUserId      The new userid as replacement
-     * @param TranslatorInterface     $translator     Translator service instance
-     * @param LoggerInterface         $logger         Logger service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
+     * @param string $fieldName The name of the user field
+     * @param integer $userId The userid to be replaced
+     * @param integer $newUserId The new userid as replacement
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return void
      *
@@ -311,11 +311,11 @@ abstract class AbstractMessageRepository extends EntityRepository
     /**
      * Deletes all objects updated by a certain user.
      *
-     * @param string                  $fieldName      The name of the user field
-     * @param integer                 $userId         The userid to be removed
-     * @param TranslatorInterface     $translator     Translator service instance
-     * @param LoggerInterface         $logger         Logger service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
+     * @param string $fieldName The name of the user field
+     * @param integer $userId The userid to be removed
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return void
      *

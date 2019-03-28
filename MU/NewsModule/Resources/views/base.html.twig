@@ -9,7 +9,7 @@
 {% block titleArea %}
     <h2>{% block title %}{% endblock %}</h2>
 {% endblock %}
-{{ pageSetVar('title', block('pageTitle')|default(block('title'))) }}
+{{ pageSetVar('title', block('pageTitle') is defined ? block('pageTitle') : block('title')) }}
 
 {{ include('@MUNewsModule/Helper/includeModerationPanel.html.twig') }}
 
@@ -18,6 +18,10 @@
 {% block content %}{% endblock %}
 
 {% block footer %}
+    {{ moduleFooter() }}
+{% endblock %}
+
+{% block assets %}
     {{ pageAddAsset('stylesheet', zasset('@MUNewsModule:css/custom.css'), 120) }}
     {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
     {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}

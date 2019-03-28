@@ -56,12 +56,12 @@ abstract class AbstractTwigExtension extends Twig_Extension
     /**
      * TwigExtension constructor.
      *
-     * @param TranslatorInterface $translator     Translator service instance
-     * @param RequestStack        $requestStack   RequestStack service instance
-     * @param VariableApiInterface   $variableApi    VariableApi service instance
-     * @param EntityDisplayHelper    $entityDisplayHelper EntityDisplayHelper service instance
-     * @param WorkflowHelper         $workflowHelper WorkflowHelper service instance
-     * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
+     * @param TranslatorInterface $translator
+     * @param RequestStack $requestStack
+     * @param VariableApiInterface $variableApi
+     * @param EntityDisplayHelper $entityDisplayHelper
+     * @param WorkflowHelper $workflowHelper
+     * @param ListEntriesHelper $listHelper
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -82,7 +82,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -202,7 +202,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
         // format number
         $dec_point = ',';
         $thousands_separator = '.';
-        if ($size - number_format($size, 0) >= 0.005) {
+        if ($size - intval($size) >= 0.005) {
             $size = number_format($size, 2, $dec_point, $thousands_separator);
         } else {
             $size = number_format($size, 0, '', $thousands_separator);

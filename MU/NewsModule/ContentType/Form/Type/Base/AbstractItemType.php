@@ -41,9 +41,9 @@ abstract class AbstractItemType extends AbstractContentFormType
     /**
      * ItemType constructor.
      *
-     * @param TranslatorInterface $translator          Translator service instance
-     * @param EntityFactory       $entityFactory       EntityFactory service instance
-     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
+     * @param TranslatorInterface $translator
+     * @param EntityFactory $entityFactory
+     * @param EntityDisplayHelper $entityDisplayHelper
      */
     public function __construct(
         TranslatorInterface $translator,

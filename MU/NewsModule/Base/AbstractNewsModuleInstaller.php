@@ -12,16 +12,31 @@
 
 namespace MU\NewsModule\Base;
 
-use Doctrine\DBAL\Connection;
 use RuntimeException;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Entity\MessageTranslationEntity;
+use MU\NewsModule\Entity\MessageAttributeEntity;
+use MU\NewsModule\Entity\MessageCategoryEntity;
+use MU\NewsModule\Entity\ImageEntity;
 
 /**
  * Installer base class.
  */
 abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var array
+     */
+    protected $entities = [
+        MessageEntity::class,
+        MessageTranslationEntity::class,
+        MessageAttributeEntity::class,
+        MessageCategoryEntity::class,
+        ImageEntity::class,
+    ];
+
     /**
      * Install the MUNewsModule application.
      *
@@ -40,7 +55,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
             $uploadHelper = new \MU\NewsModule\Helper\UploadHelper(
                 $container->get('translator.default'),
                 $container->get('filesystem'),
-                $container->get('session'),
+                $container->get('request_stack'),
                 $container->get('logger'),
                 $container->get('zikula_users_module.current_user'),
                 $container->get('zikula_extensions_module.api.variable'),
@@ -55,7 +70,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         }
         // create all tables from according entity definitions
         try {
-            $this->schemaTool->create($this->listEntityClasses());
+            $this->schemaTool->create($this->entities);
         } catch (\Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
             $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
@@ -188,7 +203,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
                 // ...
                 // update the database schema
                 try {
-                    $this->schemaTool->update($this->listEntityClasses());
+                    $this->schemaTool->update($this->entities);
                 } catch (\Exception $exception) {
                     $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
                     $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
@@ -214,7 +229,7 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $logger = $this->container->get('logger');
     
         try {
-            $this->schemaTool->drop($this->listEntityClasses());
+            $this->schemaTool->drop($this->entities);
         } catch (\Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
             $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
@@ -238,22 +253,5 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
     
         // uninstallation successful
         return true;
-    }
-    
-    /**
-     * Build array with all entity classes for MUNewsModule.
-     *
-     * @return string[] List of class names
-     */
-    protected function listEntityClasses()
-    {
-        $classNames = [];
-        $classNames[] = 'MU\NewsModule\Entity\MessageEntity';
-        $classNames[] = 'MU\NewsModule\Entity\MessageTranslationEntity';
-        $classNames[] = 'MU\NewsModule\Entity\MessageAttributeEntity';
-        $classNames[] = 'MU\NewsModule\Entity\MessageCategoryEntity';
-        $classNames[] = 'MU\NewsModule\Entity\ImageEntity';
-    
-        return $classNames;
     }
 }

@@ -45,9 +45,9 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     /**
      * WorkflowEventsListener constructor.
      *
-     * @param EntityFactory $entityFactory EntityFactory service instance
-     * @param PermissionHelper $permissionHelper PermissionHelper service instance
-     * @param NotificationHelper $notificationHelper NotificationHelper service instance
+     * @param EntityFactory $entityFactory
+     * @param PermissionHelper $permissionHelper
+     * @param NotificationHelper $notificationHelper
      */
     public function __construct(
         EntityFactory $entityFactory,

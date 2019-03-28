@@ -38,11 +38,13 @@ abstract class AbstractItemListType extends AbstractContentFormType
     /**
      * ItemListType constructor.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(TranslatorInterface $translator, CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        CategoryRepositoryInterface $categoryRepository
+    ) {
         $this->setTranslator($translator);
         $this->categoryRepository = $categoryRepository;
     }

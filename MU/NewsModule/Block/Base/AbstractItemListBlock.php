@@ -13,9 +13,8 @@
 namespace MU\NewsModule\Block\Base;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\Core\AbstractBundle;
-use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Block\Form\Type\ItemListBlockType;
+use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
  * Generic item list block base class.
@@ -28,20 +27,6 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
      * @var array
      */
     protected $categorisableObjectTypes;
-    
-    /**
-     * ItemListBlock constructor.
-     *
-     * @param AbstractBundle $bundle An AbstractBundle instance
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function __construct(AbstractBundle $bundle)
-    {
-        parent::__construct($bundle);
-    
-        $this->categorisableObjectTypes = ['message'];
-    }
     
     /**
      * @inheritDoc
@@ -61,14 +46,11 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             return '';
         }
     
+        $this->categorisableObjectTypes = ['message'];
+    
         // set default values for all params which are not properly set
         $defaults = $this->getDefaults();
         $properties = array_merge($defaults, $properties);
-    
-        $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
-        if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $properties['objectType'])) {
-            $properties = $this->resolveCategoryIds($properties);
-        }
     
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['name' => 'list'];
@@ -78,19 +60,24 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     
         $objectType = $properties['objectType'];
     
+        $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
+        $hasCategories = in_array($objectType, $this->categorisableObjectTypes)
+            && $featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $properties['objectType']);
+        if ($hasCategories) {
+            $categoryProperties = $this->resolveCategoryIds($properties);
+        }
+    
         $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
     
         // create query
         $orderBy = $this->get('mu_news_module.model_helper')->resolveSortParameter($objectType, $properties['sorting']);
         $qb = $repository->getListQueryBuilder($properties['filter'], $orderBy);
     
-        if (in_array($objectType, $this->categorisableObjectTypes)) {
-            if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $properties['objectType'])) {
-                $categoryHelper = $this->get('mu_news_module.category_helper');
-                // apply category filters
-                if (is_array($properties['categories']) && count($properties['categories']) > 0) {
-                    $qb = $categoryHelper->buildFilterClauses($qb, $objectType, $properties['categories']);
-                }
+        if ($hasCategories) {
+            $categoryHelper = $this->get('mu_news_module.category_helper');
+            // apply category filters
+            if (is_array($properties['categories']) && count($properties['categories']) > 0) {
+                $qb = $categoryHelper->buildFilterClauses($qb, $objectType, $properties['categories']);
             }
         }
     
@@ -105,7 +92,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             $objectCount = 0;
         }
     
-        if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
+        if ($hasCategories) {
             $entities = $this->get('mu_news_module.category_helper')->filterEntitiesByPermission($entities);
         }
     
@@ -121,8 +108,8 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             'objectType' => $objectType,
             'items' => $entities
         ];
-        if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $properties['objectType'])) {
-            $templateParameters['properties'] = $properties;
+        if ($hasCategories) {
+            $templateParameters['properties'] = $categoryProperties;
         }
     
         $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($properties['objectType'], $templateParameters, 'block', []);
@@ -178,6 +165,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     public function getFormOptions()
     {
         $objectType = 'message';
+        $this->categorisableObjectTypes = ['message'];
     
         $request = $this->get('request_stack')->getCurrentRequest();
         if ($request->attributes->has('blockEntity')) {

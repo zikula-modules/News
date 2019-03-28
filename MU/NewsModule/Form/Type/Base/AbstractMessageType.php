@@ -102,16 +102,16 @@ abstract class AbstractMessageType extends AbstractType
     /**
      * MessageType constructor.
      *
-     * @param TranslatorInterface $translator     Translator service instance
-     * @param EntityFactory $entityFactory EntityFactory service instance
-     * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
-     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param TranslatableHelper $translatableHelper TranslatableHelper service instance
-     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
-     * @param UploadHelper $uploadHelper UploadHelper service instance
-     * @param LocaleApiInterface $localeApi LocaleApi service instance
-     * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
+     * @param TranslatorInterface $translator
+     * @param EntityFactory $entityFactory
+     * @param CollectionFilterHelper $collectionFilterHelper
+     * @param EntityDisplayHelper $entityDisplayHelper
+     * @param VariableApiInterface $variableApi
+     * @param TranslatableHelper $translatableHelper
+     * @param ListEntriesHelper $listHelper
+     * @param UploadHelper $uploadHelper
+     * @param LocaleApiInterface $localeApi
+     * @param FeatureActivationHelper $featureActivationHelper
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -140,7 +140,7 @@ abstract class AbstractMessageType extends AbstractType
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {

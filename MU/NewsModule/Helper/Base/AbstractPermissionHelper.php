@@ -12,9 +12,6 @@
 
 namespace MU\NewsModule\Helper\Base;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
@@ -24,10 +21,8 @@ use Zikula\UsersModule\Entity\UserEntity;
 /**
  * Permission helper base class.
  */
-abstract class AbstractPermissionHelper implements ContainerAwareInterface
+abstract class AbstractPermissionHelper
 {
-    use ContainerAwareTrait;
-    
     /**
      * @var RequestStack
      */
@@ -51,20 +46,17 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     /**
      * PermissionHelper constructor.
      *
-     * @param ContainerInterface      $container
-     * @param RequestStack            $requestStack   RequestStack service instance
-     * @param PermissionApiInterface  $permissionApi  PermissionApi service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param UserRepositoryInterface $userRepository UserRepository service instance
+     * @param RequestStack $requestStack
+     * @param PermissionApiInterface $permissionApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
-        ContainerInterface $container,
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ) {
-        $this->setContainer($container);
         $this->requestStack = $requestStack;
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
@@ -74,7 +66,7 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     /**
      * Checks if the given entity instance may be read.
      *
-     * @param object  $entity
+     * @param object $entity
      * @param integer $userId
      *
      * @return boolean
@@ -87,7 +79,7 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     /**
      * Checks if the given entity instance may be edited.
      *
-     * @param object  $entity
+     * @param object $entity
      * @param integer $userId
      *
      * @return boolean
@@ -100,7 +92,7 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     /**
      * Checks if the given entity instance may be deleted.
      *
-     * @param object  $entity
+     * @param object $entity
      * @param integer $userId
      *
      * @return boolean
@@ -113,7 +105,7 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     /**
      * Checks if a certain permission level is granted for the given entity instance.
      *
-     * @param object  $entity
+     * @param object $entity
      * @param integer $permissionLevel
      * @param integer $userId
      *
@@ -130,7 +122,7 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     /**
      * Checks if a certain permission level is granted for the given object type.
      *
-     * @param string  $objectType
+     * @param string $objectType
      * @param integer $permissionLevel
      * @param integer $userId
      *
@@ -139,6 +131,19 @@ abstract class AbstractPermissionHelper implements ContainerAwareInterface
     public function hasComponentPermission($objectType, $permissionLevel, $userId = null)
     {
         return $this->permissionApi->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permissionLevel, $userId);
+    }
+    
+    /**
+     * Checks if the quick navigation form for the given object type may be used or not.
+     *
+     * @param string $objectType
+     * @param integer $userId
+     *
+     * @return boolean
+     */
+    public function mayUseQuickNav($objectType, $userId = null)
+    {
+        return $this->hasComponentPermission($objectType, ACCESS_READ, $userId);
     }
     
     /**

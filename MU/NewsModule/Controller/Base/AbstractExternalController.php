@@ -27,16 +27,22 @@ abstract class AbstractExternalController extends AbstractController
     /**
      * Displays one item of a certain object type using a separate template for external usages.
      *
-     * @param Request $request     The current request
-     * @param string  $objectType  The currently treated object type
-     * @param int     $id          Identifier of the entity to be shown
-     * @param string  $source      Source of this call (block, contentType, scribite)
-     * @param string  $displayMode Display mode (link or embed)
+     * @param Request $request
+     * @param string $objectType The currently treated object type
+     * @param int $id Identifier of the entity to be shown
+     * @param string $source Source of this call (block, contentType, scribite)
+     * @param string $displayMode Display mode (link or embed)
      *
      * @return string Desired data output
      */
-    public function displayAction(Request $request, $objectType, $id, $source, $displayMode)
-    {
+    public function displayAction(
+        Request $request,
+        $objectType,
+        $id,
+        $source,
+        $displayMode
+    )
+     {
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs))) {
@@ -57,7 +63,7 @@ abstract class AbstractExternalController extends AbstractController
         }
         
         $template = $request->query->has('template') ? $request->query->get('template', null) : null;
-        if (null === $template || $template == '') {
+        if (null === $template || '' == $template) {
             $template = 'display.html.twig';
         }
         
@@ -81,25 +87,28 @@ abstract class AbstractExternalController extends AbstractController
      * Popup selector for Scribite plugins.
      * Finds items of a certain object type.
      *
-     * @param Request $request    The current request
-     * @param string  $objectType The object type
-     * @param string  $editor     Name of used Scribite editor
-     * @param string  $sort       Sorting field
-     * @param string  $sortdir    Sorting direction
-     * @param int     $pos        Current pager position
-     * @param int     $num        Amount of entries to display
+     * @param Request $request
+     * @param string $objectType The object type
+     * @param string $editor Name of used Scribite editor
+     * @param string $sort Sorting field
+     * @param string $sortdir Sorting direction
+     * @param int $pos Current pager position
+     * @param int $num Amount of entries to display
      *
      * @return output The external item finder page
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function finderAction(Request $request, $objectType, $editor, $sort, $sortdir, $pos = 1, $num = 0)
-    {
-        $assetHelper = $this->get('zikula_core.common.theme.asset_helper');
-        $cssAssetBag = $this->get('zikula_core.common.theme.assets_css');
-        $cssAssetBag->add($assetHelper->resolve('@MUNewsModule:css/style.css'));
-        $cssAssetBag->add([$assetHelper->resolve('@MUNewsModule:css/custom.css') => 120]);
-        
+    public function finderAction(
+        Request $request,
+        $objectType,
+        $editor,
+        $sort,
+        $sortdir,
+        $pos = 1,
+        $num = 0
+    )
+     {
         $listEntriesHelper = $this->get('mu_news_module.listentries_helper');
         $activatedObjectTypes = $listEntriesHelper->extractMultiList($this->getVar('enabledFinderTypes', ''));
         if (!in_array($objectType, $activatedObjectTypes)) {
@@ -120,6 +129,11 @@ abstract class AbstractExternalController extends AbstractController
         if (empty($editor) || !in_array($editor, ['ckeditor', 'quill', 'summernote', 'tinymce'])) {
             return new Response($this->__('Error: Invalid editor context given for external controller action.'));
         }
+        
+        $assetHelper = $this->get('zikula_core.common.theme.asset_helper');
+        $cssAssetBag = $this->get('zikula_core.common.theme.assets_css');
+        $cssAssetBag->add($assetHelper->resolve('@MUNewsModule:css/style.css'));
+        $cssAssetBag->add([$assetHelper->resolve('@MUNewsModule:css/custom.css') => 120]);
         
         $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
@@ -157,7 +171,8 @@ abstract class AbstractExternalController extends AbstractController
         ];
         $form = $this->createForm('MU\NewsModule\Form\Type\Finder\\' . ucfirst($objectType) . 'FinderType', $templateParameters, $formOptions);
         
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $templateParameters = array_merge($templateParameters, $formData);
             $currentPage = $formData['currentPage'];

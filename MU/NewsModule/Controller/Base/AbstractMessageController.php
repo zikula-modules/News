@@ -34,39 +34,20 @@ use MU\NewsModule\Helper\FeatureActivationHelper;
  */
 abstract class AbstractMessageController extends AbstractController
 {
-    /**
-     * This is the default action handling the index admin area called without defining arguments.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminIndexAction(Request $request)
-    {
-        return $this->indexInternal($request, true);
-    }
     
     /**
      * This is the default action handling the index area called without defining arguments.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function indexAction(Request $request)
-    {
-        return $this->indexInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminIndex() and index().
-     */
-    protected function indexInternal(Request $request, $isAdmin = false)
-    {
+    protected function indexInternal(
+        Request $request,
+        $isAdmin = false
+    ) {
         $objectType = 'message';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
@@ -82,47 +63,28 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToRoute('munewsmodule_message_' . $templateParameters['routeArea'] . 'view');
     }
     
-    /**
-     * This action provides an item list overview in the admin area.
-     *
-     * @param Request $request Current request instance
-     * @param string $sort         Sorting field
-     * @param string $sortdir      Sorting direction
-     * @param int    $pos          Current pager position
-     * @param int    $num          Amount of entries to display
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
-    {
-        return $this->viewInternal($request, $sort, $sortdir, $pos, $num, true);
-    }
     
     /**
      * This action provides an item list overview.
      *
-     * @param Request $request Current request instance
-     * @param string $sort         Sorting field
-     * @param string $sortdir      Sorting direction
-     * @param int    $pos          Current pager position
-     * @param int    $num          Amount of entries to display
+     * @param Request $request
+     * @param string $sort Sorting field
+     * @param string $sortdir Sorting direction
+     * @param int $pos Current pager position
+     * @param int $num Amount of entries to display
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
-    {
-        return $this->viewInternal($request, $sort, $sortdir, $pos, $num, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminView() and view().
-     */
-    protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
-    {
+    protected function viewInternal(
+        Request $request,
+        $sort,
+        $sortdir,
+        $pos,
+        $num,
+        $isAdmin = false
+    ) {
         $objectType = 'message';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
@@ -176,31 +138,11 @@ abstract class AbstractMessageController extends AbstractController
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
     
-    /**
-     * This action provides a item detail view in the admin area.
-     *
-     * @param Request $request Current request instance
-     * @param string $slug Slug of treated message instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown if message to be displayed isn't found
-     */
-    public function adminDisplayAction(Request $request, $slug)
-    {
-        $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
-        if (null === $message) {
-            throw new NotFoundHttpException($this->__('No such message found.'));
-        }
-    
-        return $this->displayInternal($request, $message, true);
-    }
     
     /**
      * This action provides a item detail view.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      * @param string $slug Slug of treated message instance
      *
      * @return Response Output
@@ -208,21 +150,16 @@ abstract class AbstractMessageController extends AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if message to be displayed isn't found
      */
-    public function displayAction(Request $request, $slug)
-    {
+    protected function displayInternal(
+        Request $request,
+        $slug,
+        $isAdmin = false
+    ) {
         $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
         if (null === $message) {
             throw new NotFoundHttpException($this->__('No such message found.'));
         }
-    
-        return $this->displayInternal($request, $message, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminDisplay() and display().
-     */
-    protected function displayInternal(Request $request, MessageEntity $message, $isAdmin = false)
-    {
+        
         $objectType = 'message';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
@@ -231,7 +168,7 @@ abstract class AbstractMessageController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        if ($message->getWorkflowState() != 'approved' && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
+        if ('approved' != $message->getWorkflowState() && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         
@@ -266,44 +203,24 @@ abstract class AbstractMessageController extends AbstractController
         return $response;
     }
     
-    /**
-     * This action provides a handling of edit requests in the admin area.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
-     */
-    public function adminEditAction(Request $request)
-    {
-        return $this->editInternal($request, true);
-    }
     
     /**
      * This action provides a handling of edit requests.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
+     * @throws RuntimeException Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function editAction(Request $request)
-    {
-        return $this->editInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminEdit() and edit().
-     */
-    protected function editInternal(Request $request, $isAdmin = false)
-    {
+    protected function editInternal(
+        Request $request,
+        $isAdmin = false
+    ) {
         $objectType = 'message';
         // permission check
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
+        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_COMMENT;
         $permissionHelper = $this->get('mu_news_module.permission_helper');
         if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
@@ -329,45 +246,24 @@ abstract class AbstractMessageController extends AbstractController
         return $this->get('mu_news_module.view_helper')->processTemplate($objectType, 'edit', $templateParameters);
     }
     
-    /**
-     * This action provides a handling of simple delete requests in the admin area.
-     *
-     * @param Request $request Current request instance
-     * @param string $slug Slug of treated message instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown if message to be deleted isn't found
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
-     */
-    public function adminDeleteAction(Request $request, $slug)
-    {
-        return $this->deleteInternal($request, $slug, true);
-    }
     
     /**
      * This action provides a handling of simple delete requests.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      * @param string $slug Slug of treated message instance
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if message to be deleted isn't found
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
+     * @throws RuntimeException Thrown if another critical error occurs (e.g. workflow actions not available)
      */
-    public function deleteAction(Request $request, $slug)
-    {
-        return $this->deleteInternal($request, $slug, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminDelete() and delete().
-     */
-    protected function deleteInternal(Request $request, $slug, $isAdmin = false)
-    {
+    protected function deleteInternal(
+        Request $request,
+        $slug,
+        $isAdmin = false
+    ) {
         $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
         if (null === $message) {
             throw new NotFoundHttpException($this->__('No such message found.'));
@@ -421,7 +317,8 @@ abstract class AbstractMessageController extends AbstractController
             $formHook = $hookHelper->callFormDisplayHooks($form, $message, FormAwareCategory::TYPE_DELETE);
         }
         
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 if ($message->supportsHookSubscribers()) {
                     // Let any ui hooks perform additional validation actions
@@ -489,22 +386,6 @@ abstract class AbstractMessageController extends AbstractController
         return $this->get('mu_news_module.view_helper')->processTemplate($objectType, 'delete', $templateParameters);
     }
     
-    /**
-     * Process status changes for multiple items.
-     *
-     * This function processes the items selected in the admin view page.
-     * Multiple items may have their state changed or be deleted.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return RedirectResponse
-     *
-     * @throws RuntimeException Thrown if executing the workflow action fails
-     */
-    public function adminHandleSelectedEntriesAction(Request $request)
-    {
-        return $this->handleSelectedEntriesActionInternal($request, true);
-    }
     
     /**
      * Process status changes for multiple items.
@@ -512,30 +393,25 @@ abstract class AbstractMessageController extends AbstractController
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
      *
-     * @param Request $request Current request instance
-     *
-     * @return RedirectResponse
-     *
-     * @throws RuntimeException Thrown if executing the workflow action fails
-     */
-    public function handleSelectedEntriesAction(Request $request)
-    {
-        return $this->handleSelectedEntriesActionInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminHandleSelectedEntriesAction() and handleSelectedEntriesAction().
-     *
-     * @param Request $request Current request instance
+     * @param Request $request
      * @param boolean $isAdmin Whether the admin area is used or not
+     *
+     * @return RedirectResponse
+     *
+     * @throws RuntimeException Thrown if executing the workflow action fails
      */
-    protected function handleSelectedEntriesActionInternal(Request $request, $isAdmin = false)
-    {
+    protected function handleSelectedEntriesActionInternal(
+        Request $request,
+        $isAdmin = false
+    ) {
         $objectType = 'message';
         
         // Get parameters
         $action = $request->request->get('action', null);
         $items = $request->request->get('items', null);
+        if (!is_array($items) || !count($items)) {
+            return $this->redirectToRoute('munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'index');
+        }
         
         $action = strtolower($action);
         
@@ -613,14 +489,18 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * This method cares for a redirect within an inline frame.
      *
-     * @param string  $idPrefix    Prefix for inline window element identifier
-     * @param string  $commandName Name of action to be performed (create or edit)
-     * @param integer $id          Identifier of created message (used for activating auto completion after closing the modal window)
+     * @param string $idPrefix Prefix for inline window element identifier
+     * @param string $commandName Name of action to be performed (create or edit)
+     * @param integer $id Identifier of created message (used for activating auto completion after closing the modal window)
      *
      * @return PlainResponse Output
      */
-    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
-    {
+    public function handleInlineRedirectAction(
+        $idPrefix,
+        $commandName,
+        $id = 0
+    )
+     {
         if (empty($idPrefix)) {
             return false;
         }

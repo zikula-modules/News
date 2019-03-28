@@ -53,10 +53,10 @@ abstract class AbstractMessageQuickNavType extends AbstractType
     /**
      * MessageQuickNavType constructor.
      *
-     * @param TranslatorInterface $translator   Translator service instance
-     * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance
-     * @param LocaleApiInterface  $localeApi    LocaleApi service instance
-     * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
+     * @param TranslatorInterface $translator
+     * @param ListEntriesHelper $listHelper
+     * @param LocaleApiInterface $localeApi
+     * @param FeatureActivationHelper $featureActivationHelper
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -73,7 +73,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -127,7 +127,6 @@ abstract class AbstractMessageQuickNavType extends AbstractType
                 'class' => 'input-sm category-selector',
                 'title' => $this->__('This is an optional filter.')
             ],
-            'help' => $this->__('This is an optional filter.'),
             'required' => false,
             'multiple' => true,
             'module' => 'MUNewsModule',

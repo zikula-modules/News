@@ -43,9 +43,9 @@ abstract class AbstractItemBlockType extends AbstractType
     /**
      * ItemBlockType constructor.
      *
-     * @param TranslatorInterface $translator          Translator service instance
-     * @param EntityFactory       $entityFactory       EntityFactory service instance
-     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
+     * @param TranslatorInterface $translator
+     * @param EntityFactory $entityFactory
+     * @param EntityDisplayHelper $entityDisplayHelper
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -60,7 +60,7 @@ abstract class AbstractItemBlockType extends AbstractType
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {

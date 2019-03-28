@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\RouteUrl;
@@ -37,11 +36,6 @@ use MU\NewsModule\Helper\PermissionHelper;
 abstract class AbstractSearchHelper implements SearchableInterface
 {
     use TranslatorTrait;
-    
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
     
     /**
      * @var RequestStack
@@ -81,19 +75,17 @@ abstract class AbstractSearchHelper implements SearchableInterface
     /**
      * SearchHelper constructor.
      *
-     * @param TranslatorInterface $translator          Translator service instance
-     * @param SessionInterface    $session             Session service instance
-     * @param RequestStack        $requestStack        RequestStack service instance
-     * @param EntityFactory       $entityFactory       EntityFactory service instance
-     * @param ControllerHelper    $controllerHelper    ControllerHelper service instance
-     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
-     * @param PermissionHelper    $permissionHelper    PermissionHelper service instance
-     * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
-     * @param CategoryHelper      $categoryHelper      CategoryHelper service instance
+     * @param TranslatorInterface $translator
+     * @param RequestStack $requestStack
+     * @param EntityFactory $entityFactory
+     * @param ControllerHelper $controllerHelper
+     * @param EntityDisplayHelper $entityDisplayHelper
+     * @param PermissionHelper $permissionHelper
+     * @param FeatureActivationHelper $featureActivationHelper
+     * @param CategoryHelper $categoryHelper
      */
     public function __construct(
         TranslatorInterface $translator,
-        SessionInterface $session,
         RequestStack $requestStack,
         EntityFactory $entityFactory,
         ControllerHelper $controllerHelper,
@@ -103,7 +95,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
         CategoryHelper $categoryHelper
     ) {
         $this->setTranslator($translator);
-        $this->session = $session;
         $this->requestStack = $requestStack;
         $this->entityFactory = $entityFactory;
         $this->controllerHelper = $controllerHelper;
@@ -116,7 +107,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -227,6 +218,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
             $descriptionFieldName = $this->entityDisplayHelper->getDescriptionFieldName($objectType);
             $hasDisplayAction = in_array($objectType, $entitiesWithDisplayAction);
     
+            $session = $request->getSession();
             foreach ($entities as $entity) {
                 if (!$this->permissionHelper->mayRead($entity)) {
                     continue;
@@ -256,7 +248,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     ->setText($description)
                     ->setModule('MUNewsModule')
                     ->setCreated($created)
-                    ->setSesid($this->session->getId());
+                    ->setSesid($session->getId());
                 if (null !== $displayUrl) {
                     $result->setUrl($displayUrl);
                 }

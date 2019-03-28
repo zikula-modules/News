@@ -12,11 +12,11 @@
 
 namespace MU\NewsModule\Controller;
 
-use MU\NewsModule\Controller\Base\AbstractAjaxController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use MU\NewsModule\Controller\Base\AbstractAjaxController;
 
 /**
  * Ajax controller implementation class.
@@ -30,8 +30,10 @@ class AjaxController extends AbstractAjaxController
      * @inheritDoc
      * @Route("/getItemListFinder", methods = {"GET"}, options={"expose"=true})
      */
-    public function getItemListFinderAction(Request $request)
-    {
+    public function getItemListFinderAction(
+        Request $request
+    )
+     {
         return parent::getItemListFinderAction($request);
     }
     
@@ -39,8 +41,10 @@ class AjaxController extends AbstractAjaxController
      * @inheritDoc
      * @Route("/checkForDuplicate", methods = {"GET"}, options={"expose"=true})
      */
-    public function checkForDuplicateAction(Request $request)
-    {
+    public function checkForDuplicateAction(
+        Request $request
+    )
+     {
         return parent::checkForDuplicateAction($request);
     }
     
@@ -48,8 +52,10 @@ class AjaxController extends AbstractAjaxController
      * @inheritDoc
      * @Route("/toggleFlag", methods = {"POST"}, options={"expose"=true})
      */
-    public function toggleFlagAction(Request $request)
-    {
+    public function toggleFlagAction(
+        Request $request
+    )
+     {
         return parent::toggleFlagAction($request);
     }
     
@@ -57,8 +63,10 @@ class AjaxController extends AbstractAjaxController
      * @inheritDoc
      * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
      */
-    public function updateSortPositionsAction(Request $request)
-    {
+    public function updateSortPositionsAction(
+        Request $request
+    )
+     {
         return parent::updateSortPositionsAction($request);
     }
 

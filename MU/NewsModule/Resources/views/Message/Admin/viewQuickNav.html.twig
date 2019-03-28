@@ -1,5 +1,5 @@
 {# purpose of this template: messages view filter form #}
-{% if permissionHelper.hasComponentPermission('message', constant('ACCESS_EDIT')) %}
+{% if permissionHelper.mayUseQuickNav('message') %}
     {% form_theme quickNavForm with [
         'bootstrap_3_layout.html.twig'
     ] %}
@@ -13,14 +13,14 @@
             <h3>{{ __('Quick navigation') }}</h3>
             {% set categoriesEnabled = featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
             {% if categoriesEnabled %}
-                {% if (categoryFilter is defined and categoryFilter != true) %}
+                {% if categoryFilter is defined and categoryFilter != true %}
                     <div class="hidden">
                 {% else %}
                     <div class="row">
                         <div class="col-sm-3">
                 {% endif %}
                     {{ form_row(quickNavForm.categories) }}
-                {% if (categoryFilter is defined and categoryFilter != true) %}
+                {% if categoryFilter is defined and categoryFilter != true %}
                     </div>
                 {% else %}
                         </div>

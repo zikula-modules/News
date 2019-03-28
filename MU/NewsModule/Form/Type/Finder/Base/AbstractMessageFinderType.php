@@ -40,11 +40,13 @@ abstract class AbstractMessageFinderType extends AbstractType
     /**
      * MessageFinderType constructor.
      *
-     * @param TranslatorInterface $translator Translator service instance
-     * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
+     * @param TranslatorInterface $translator
+     * @param FeatureActivationHelper $featureActivationHelper
      */
-    public function __construct(TranslatorInterface $translator, FeatureActivationHelper $featureActivationHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        FeatureActivationHelper $featureActivationHelper
+    ) {
         $this->setTranslator($translator);
         $this->featureActivationHelper = $featureActivationHelper;
     }
@@ -52,7 +54,7 @@ abstract class AbstractMessageFinderType extends AbstractType
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {

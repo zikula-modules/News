@@ -60,7 +60,7 @@ abstract class AbstractNotificationHelper
     /**
      * @var Twig_Environment
      */
-    protected $templating;
+    protected $twig;
     
     /**
      * @var MailerApiInterface
@@ -120,16 +120,16 @@ abstract class AbstractNotificationHelper
     /**
      * NotificationHelper constructor.
      *
-     * @param ZikulaHttpKernelInterface $kernel              Kernel service instance
-     * @param TranslatorInterface       $translator          Translator service instance
-     * @param Routerinterface           $router              Router service instance
-     * @param RequestStack              $requestStack        RequestStack service instance
-     * @param VariableApiInterface      $variableApi         VariableApi service instance
-     * @param Twig_Environment          $twig                Twig service instance
-     * @param MailerApiInterface        $mailerApi           MailerApi service instance
-     * @param GroupRepositoryInterface  $groupRepository     GroupRepository service instance
-     * @param EntityDisplayHelper       $entityDisplayHelper EntityDisplayHelper service instance
-     * @param WorkflowHelper            $workflowHelper      WorkflowHelper service instance
+     * @param ZikulaHttpKernelInterface $kernel
+     * @param TranslatorInterface $translator
+     * @param Routerinterface $router
+     * @param RequestStack $requestStack
+     * @param VariableApiInterface $variableApi
+     * @param Twig_Environment $twig
+     * @param MailerApiInterface $mailerApi
+     * @param GroupRepositoryInterface $groupRepository
+     * @param EntityDisplayHelper $entityDisplayHelper
+     * @param WorkflowHelper $workflowHelper
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
@@ -148,7 +148,7 @@ abstract class AbstractNotificationHelper
         $this->router = $router;
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
-        $this->templating = $twig;
+        $this->twig = $twig;
         $this->mailerApi = $mailerApi;
         $this->groupRepository = $groupRepository;
         $this->entityDisplayHelper = $entityDisplayHelper;
@@ -159,7 +159,7 @@ abstract class AbstractNotificationHelper
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -323,7 +323,7 @@ abstract class AbstractNotificationHelper
                 continue;
             }
     
-            $body = $this->templating->render('@MUNewsModule/' . $template, [
+            $body = $this->twig->render('@MUNewsModule/' . $template, [
                 'recipient' => $recipient,
                 'mailData' => $mailData
             ]);
@@ -333,7 +333,6 @@ abstract class AbstractNotificationHelper
             // create new message instance
             /** @var Swift_Message */
             $message = Swift_Message::newInstance();
-    
             $message->setFrom([$adminMail => $siteName]);
             $message->setTo([$recipient['email'] => $recipient['name']]);
     

@@ -25,16 +25,16 @@ abstract class AbstractAjaxController extends AbstractController
 {
     
     /**
-     * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
+     * Retrieve item list for finder selections, for example used in Scribite editor plug-ins.
      *
-     * @param string $ot      Name of currently used object type
-     * @param string $sort    Sorting field
-     * @param string $sortdir Sorting direction
+     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function getItemListFinderAction(Request $request)
-    {
+    public function getItemListFinderAction(
+        Request $request
+    )
+     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
@@ -82,7 +82,7 @@ abstract class AbstractAjaxController extends AbstractController
                 continue;
             }
             $itemId = $item->getKey();
-            $slimItems[] = $this->prepareSlimItem($repository, $objectType, $item, $itemId, $descriptionFieldName);
+            $slimItems[] = $this->prepareSlimItem($repository, $item, $itemId, $descriptionFieldName);
         }
         
         // return response
@@ -92,16 +92,16 @@ abstract class AbstractAjaxController extends AbstractController
     /**
      * Builds and returns a slim data array from a given entity.
      *
-     * @param EntityRepository $repository       Repository for the treated object type
-     * @param string           $objectType       The currently treated object type
-     * @param object           $item             The currently treated entity
-     * @param string           $itemId           Data item identifier(s)
-     * @param string           $descriptionField Name of item description field
+     * @param EntityRepository $repository Repository for the treated object type
+     * @param object $item The currently treated entity
+     * @param string $itemId Data item identifier(s)
+     * @param string $descriptionField Name of item description field
      *
      * @return array The slim data representation
      */
-    protected function prepareSlimItem($repository, $objectType, $item, $itemId, $descriptionField)
+    protected function prepareSlimItem($repository, $item, $itemId, $descriptionField)
     {
+        $objectType = $item->get_objectType();
         $previewParameters = [
             $objectType => $item
         ];
@@ -124,14 +124,16 @@ abstract class AbstractAjaxController extends AbstractController
     /**
      * Checks whether a field value is a duplicate or not.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return JsonResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function checkForDuplicateAction(Request $request)
-    {
+    public function checkForDuplicateAction(
+        Request $request
+    )
+     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
@@ -169,15 +171,15 @@ abstract class AbstractAjaxController extends AbstractController
         
         $result = false;
         switch ($objectType) {
-        case 'message':
-            $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
-            switch ($fieldName) {
-                case 'slug':
-                    $entity = $repository->selectBySlug($value, false, false, $exclude);
-                    $result = null !== $entity && isset($entity['slug']);
-                    break;
-            }
-            break;
+            case 'message':
+                $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
+                switch ($fieldName) {
+                    case 'slug':
+                        $entity = $repository->selectBySlug($value, false, false, $exclude);
+                        $result = null !== $entity && isset($entity['slug']);
+                        break;
+                }
+                break;
         }
         
         // return response
@@ -187,14 +189,16 @@ abstract class AbstractAjaxController extends AbstractController
     /**
      * Changes a given flag (boolean field) by switching between true and false.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return JsonResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function toggleFlagAction(Request $request)
-    {
+    public function toggleFlagAction(
+        Request $request
+    )
+     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
@@ -226,7 +230,7 @@ abstract class AbstractAjaxController extends AbstractController
         $entity[$field] = !$entity[$field];
         
         // save entity back to database
-        $entityFactory->getObjectManager()->flush($entity);
+        $entityFactory->getEntityManager()->flush($entity);
         
         $logger = $this->get('logger');
         $logArgs = ['app' => 'MUNewsModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'field' => $field, 'entity' => $objectType, 'id' => $id];
@@ -243,14 +247,16 @@ abstract class AbstractAjaxController extends AbstractController
     /**
      * Updates the sort positions for a given list of entities.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return JsonResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function updateSortPositionsAction(Request $request)
-    {
+    public function updateSortPositionsAction(
+        Request $request
+    )
+     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
@@ -288,7 +294,7 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         // save entities back to database
-        $entityFactory->getObjectManager()->flush();
+        $entityFactory->getEntityManager()->flush();
         
         // return response
         return $this->json([

@@ -78,6 +78,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
-            - [ setAnnotationReader, ["@annotation_reader"] ]
-            - [ setTransliterator, [[MU\NewsModule\Helper\SlugTransliterator, 'transliterate']]]
+            - [setAnnotationReader, ["@annotation_reader"]]
+            - [setTransliterator, [[MU\NewsModule\Helper\SlugTransliterator, 'transliterate']]]
     

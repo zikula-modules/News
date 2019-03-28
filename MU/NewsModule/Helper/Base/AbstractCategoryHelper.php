@@ -59,12 +59,12 @@ abstract class AbstractCategoryHelper
     /**
      * CategoryHelper constructor.
      *
-     * @param TranslatorInterface                 $translator                 Translator service instance
-     * @param RequestStack                        $requestStack               RequestStack service instance
-     * @param LoggerInterface                     $logger                     Logger service instance
-     * @param CurrentUserApiInterface             $currentUserApi             CurrentUserApi service instance
-     * @param CategoryRegistryRepositoryInterface $categoryRegistryRepository CategoryRegistryRepository service instance
-     * @param CategoryPermissionApiInterface      $categoryPermissionApi      CategoryPermissionApi service instance
+     * @param TranslatorInterface $translator
+     * @param RequestStack $requestStack
+     * @param LoggerInterface $logger
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param CategoryRegistryRepositoryInterface $categoryRegistryRepository
+     * @param CategoryPermissionApiInterface $categoryPermissionApi
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -206,6 +206,7 @@ abstract class AbstractCategoryHelper
                 continue;
             }
     
+            $propertyName = str_replace(' ', '', $propertyName);
             $filtersPerRegistry[] = '(
                 tblCategories.categoryRegistryId = :propId' . $propertyName . '
                 AND tblCategories.category IN (:categories' . $propertyName . ')

@@ -7,7 +7,7 @@ services:
             - [setControllerHelper, ['@mu_news_module.controller_helper']]
             - [setModelHelper, ['@mu_news_module.model_helper']]
             - [setEntityFactory, ['@mu_news_module.entity_factory']]
-            - [setCategoryDependencies, ['@mu_news_module.feature_activation_helper', '@mu_news_module.category_helper']]
+            - [setCategoryDependencies, ['@mu_news_module.category_helper', '@mu_news_module.feature_activation_helper']]
         tags: ['zikula.content_type']
     MU\NewsModule\ContentType\Form\Type\ItemListType:
         parent: zikula.content_type.form.base

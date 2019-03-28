@@ -26,7 +26,7 @@ abstract class AbstractConfigController extends AbstractController
     /**
      * This method takes care of the application configuration.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return Response Output
      *
@@ -39,8 +39,8 @@ abstract class AbstractConfigController extends AbstractController
         }
         
         $form = $this->createForm(ConfigType::class, $this->get('mu_news_module.app_settings'));
-        
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $appSettings = $form->getData();
                 $appSettings->save();

@@ -8,9 +8,9 @@ function mUNewsCreateInlineEditingWindowInstance(containerElem) {
 
     // define the new window instance
     newWindowId = containerElem.attr('id') + 'Dialog';
-    jQuery('<div />', { id: newWindowId })
+    jQuery('<div>', { id: newWindowId })
         .append(
-            jQuery('<iframe />', { src: containerElem.attr('href') })
+            jQuery('<iframe>', { src: containerElem.attr('href') })
                 .css({ width: '100%', height: '440px' })
         )
         .dialog({
@@ -86,12 +86,12 @@ function mUNewsCreateInlineEditLink(objectType, idPrefix, elemPrefix, itemId) {
     var editHref, editLink;
 
     editHref = jQuery('#' + idPrefix + 'SelectorDoNew').attr('href') + '&id=' + itemId;
-    editLink = jQuery('<a />', {
+    editLink = jQuery('<a>', {
         id: elemPrefix + 'Edit',
         href: editHref,
         text: 'edit'
     }).append(
-        jQuery('<span />', { class: 'fa fa-pencil-square-o' })
+        jQuery('<span>', { class: 'fa fa-pencil-square-o' })
     );
 
     return editLink;
@@ -153,13 +153,13 @@ function mUNewsInitInlineEditingButtons(objectType, alias, idPrefix, inputType, 
             return;
         }
         // dynamically add create button
-        createButton = jQuery('<a />', {
+        createButton = jQuery('<a>', {
             id: createButtonId,
             href: createUrl,
             title: Translator.__('Create new entry'),
             class: 'btn btn-default munewsmodule-inline-button'
         }).append(
-            jQuery('<i />', { class: 'fa fa-plus' })
+            jQuery('<i>', { class: 'fa fa-plus' })
         ).append(' ' + Translator.__('Create'));
 
         if (inputType === 'select-single' || inputType === 'select-multi') {
@@ -195,12 +195,12 @@ function mUNewsInitInlineEditingButtons(objectType, alias, idPrefix, inputType, 
             elemPrefix = idPrefix + 'Reference_' + existingId + 'Edit';
             if (jQuery('#' + elemPrefix).length < 1) {
                 jQuery(this).parent().append(' ').append(
-                    jQuery('<a />', {
+                    jQuery('<a>', {
                         id: elemPrefix,
                         href: createUrl,
                         title: Translator.__('Edit this entry')
                     }).append(
-                        jQuery('<span />', { class: 'fa fa-pencil-square-o' })
+                        jQuery('<span>', { class: 'fa fa-pencil-square-o' })
                     )
                 );
             }
@@ -272,16 +272,16 @@ function mUNewsCloseWindowFromInside(idPrefix, itemId, formattedTitle, searchTer
                     }, 1000);
                 }
             } else if (inputType === 'select-single' || inputType === 'select-multi') {
-                newElement = jQuery('<option />', {
+                newElement = jQuery('<option>', {
                     value: itemId,
                     selected: 'selected'
                 }).text(formattedTitle);
             } else if (inputType === 'checkbox' || inputType === 'radio') {
                 if (inputType === 'checkbox') {
-                    newElement = jQuery('<label />', {
+                    newElement = jQuery('<label>', {
                         class: 'checkbox-inline'
                     }).append(
-                        jQuery('<input />', {
+                        jQuery('<input>', {
                             type: 'checkbox',
                             id: inputReference.identifier + '_' + itemId,
                             name: inputReference.prefix + '[' + editHandler.alias + '][]',
@@ -290,10 +290,10 @@ function mUNewsCloseWindowFromInside(idPrefix, itemId, formattedTitle, searchTer
                         })
                     ).append(' ' + formattedTitle);
                 } else if (inputType === 'radio') {
-                    newElement = jQuery('<label />', {
+                    newElement = jQuery('<label>', {
                         class: 'radio-inline'
                     }).append(
-                        jQuery('<input />', {
+                        jQuery('<input>', {
                             type: 'radio',
                             id: inputReference.identifier + '_' + itemId,
                             name: inputReference.prefix + '[' + editHandler.alias + ']',

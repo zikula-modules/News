@@ -34,9 +34,10 @@ class ImageController extends AbstractImageController
      * )
      * @Theme("admin")
      */
-    public function adminIndexAction(Request $request)
-    {
-        return parent::adminIndexAction($request);
+    public function adminIndexAction(
+        Request $request
+    ) {
+        return $this->indexInternal($request, true);
     }
     
     /**
@@ -46,9 +47,10 @@ class ImageController extends AbstractImageController
      *        methods = {"GET"}
      * )
      */
-    public function indexAction(Request $request)
-    {
-        return parent::indexAction($request);
+    public function indexAction(
+        Request $request
+    ) {
+        return $this->indexInternal($request, false);
     }
     
     // feel free to add your own controller methods here

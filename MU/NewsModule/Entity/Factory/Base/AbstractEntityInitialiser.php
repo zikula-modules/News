@@ -35,8 +35,8 @@ abstract class AbstractEntityInitialiser
     /**
      * EntityInitialiser constructor.
      *
-     * @param RequestStack $requestStack RequestStack service instance
-     * @param PermissionHelper $permissionHelper PermissionHelper service instance
+     * @param RequestStack $requestStack
+     * @param PermissionHelper $permissionHelper
      */
     public function __construct(
         RequestStack $requestStack,
