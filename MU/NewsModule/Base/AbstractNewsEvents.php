@@ -13,6 +13,7 @@
 namespace MU\NewsModule\Base;
 
 use MU\NewsModule\Listener\EntityLifecycleListener;
+use MU\NewsModule\Menu\MenuBuilder;
 
 /**
  * Events definition base class.
@@ -26,7 +27,7 @@ abstract class AbstractNewsEvents
      * The event listener receives an
      * MU\NewsModule\Event\ConfigureItemActionsMenuEvent instance.
      *
-     * @see MU\NewsModule\Menu\MenuBuilder::createItemActionsMenu()
+     * @see MenuBuilder::createItemActionsMenu()
      * @var string
      */
     const MENU_ITEMACTIONS_PRE_CONFIGURE = 'munewsmodule.itemactionsmenu_pre_configure';
@@ -38,7 +39,7 @@ abstract class AbstractNewsEvents
      * The event listener receives an
      * MU\NewsModule\Event\ConfigureItemActionsMenuEvent instance.
      *
-     * @see MU\NewsModule\Menu\MenuBuilder::createItemActionsMenu()
+     * @see MenuBuilder::createItemActionsMenu()
      * @var string
      */
     const MENU_ITEMACTIONS_POST_CONFIGURE = 'munewsmodule.itemactionsmenu_post_configure';

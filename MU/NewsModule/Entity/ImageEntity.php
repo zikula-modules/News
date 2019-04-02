@@ -33,7 +33,7 @@ class ImageEntity extends BaseEntity
      */
     public function setTheFile($theFile)
     {
-        if (null === $theFile || '' == $theFile) {
+        if (null === $theFile || '' === $theFile) {
             return;
         }
 

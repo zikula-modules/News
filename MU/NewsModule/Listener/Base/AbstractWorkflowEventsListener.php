@@ -42,26 +42,16 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      */
     protected $notificationHelper;
     
-    /**
-     * WorkflowEventsListener constructor.
-     *
-     * @param EntityFactory $entityFactory
-     * @param PermissionHelper $permissionHelper
-     * @param NotificationHelper $notificationHelper
-     */
     public function __construct(
         EntityFactory $entityFactory,
         PermissionHelper $permissionHelper,
-        NotificationHelper $notificationHelper)
-    {
+        NotificationHelper $notificationHelper
+    ) {
         $this->entityFactory = $entityFactory;
         $this->permissionHelper = $permissionHelper;
         $this->notificationHelper = $notificationHelper;
     }
     
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -99,11 +89,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *     `if (!$event->isBlocked()) {
      *         $event->setBlocked(true);
      *     }`
-     *
-     * @param GuardEvent $event The event instance
      */
     public function onGuard(GuardEvent $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -167,11 +156,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
     public function onLeave(Event $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -199,11 +187,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
     public function onEntered(Event $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -230,11 +217,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
     public function onTransition(Event $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -261,11 +247,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
     public function onEnter(Event $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -291,11 +276,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
     public function onCompleted(Event $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -331,11 +315,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
     public function onAnnounce(Event $event)
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -347,7 +330,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *
      * @param EntityAccess $entity The given entity
      *
-     * @return boolean True if entity is managed by this listener, false otherwise
+     * @return bool True if entity is managed by this listener, false otherwise
      */
     protected function isEntityManagedByThisBundle($entity)
     {
@@ -357,19 +340,19 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     
         $entityClassParts = explode('\\', get_class($entity));
     
-        if ('DoctrineProxy' == $entityClassParts[0] && '__CG__' == $entityClassParts[1]) {
+        if ('DoctrineProxy' === $entityClassParts[0] && '__CG__' === $entityClassParts[1]) {
             array_shift($entityClassParts);
             array_shift($entityClassParts);
         }
     
-        return ('MU' == $entityClassParts[0] && 'NewsModule' == $entityClassParts[1]);
+        return 'MU' === $entityClassParts[0] && 'NewsModule' === $entityClassParts[1];
     }
     
     /**
      * Sends email notifications.
      *
-     * @param object $entity            Processed entity
-     * @param string $actionId          Name of performed transition
+     * @param EntityAccess $entity Processed entity
+     * @param string $actionId Name of performed transition
      * @param string $workflowShortName Name of workflow (none, standard, enterprise)
      */
     protected function sendNotifications($entity, $actionId, $workflowShortName)
@@ -380,18 +363,18 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         $sendToCreator = true;
         $sendToModerator = false;
         $sendToSuperModerator = false;
-        if ('submit' == $actionId && 'waiting' == $newState
-            || 'demote' == $actionId && 'accepted' == $newState) {
+        if ('submit' === $actionId && 'waiting' === $newState
+            || 'demote' === $actionId && 'accepted' === $newState) {
             // only to moderator
             $sendToCreator = false;
             $sendToModerator = true;
-        } elseif ('accept' == $actionId && 'accepted' == $newState) {
+        } elseif ('accept' === $actionId && 'accepted' === $newState) {
             // to creator and super moderator
             $sendToSuperModerator = true;
-        } elseif ('approve' == $actionId && 'approved' == $newState && 'enterprise' == $workflowShortName) {
+        } elseif ('approve' === $actionId && 'approved' === $newState && 'enterprise' === $workflowShortName) {
             // to creator and moderator
             $sendToModerator = true;
-        } elseif ('update' == $actionId && 'waiting' == $newState) {
+        } elseif ('update' === $actionId && 'waiting' === $newState) {
             // only to moderator
             $sendToCreator = false;
             $sendToModerator = true;

@@ -13,11 +13,11 @@
 namespace MU\NewsModule\Entity\Repository\Base;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Sortable\Entity\Repository\SortableRepository;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Gedmo\Sortable\Entity\Repository\SortableRepository;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -35,7 +35,7 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * @var string The main entity class
      */
-    protected $mainEntityClass = 'MU\NewsModule\Entity\ImageEntity';
+    protected $mainEntityClass = ImageEntity::class;
 
     /**
      * @var string The default sorting field/expression
@@ -45,7 +45,7 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * @var CollectionFilterHelper
      */
-    protected $collectionFilterHelper = null;
+    protected $collectionFilterHelper;
 
     /**
      * Retrieves an array with all fields which can be used for sorting instances.
@@ -82,9 +82,9 @@ abstract class AbstractImageRepository extends SortableRepository
      *
      * @return void
      */
-    public function setDefaultSortingField($defaultSortingField)
+    public function setDefaultSortingField($defaultSortingField = null)
     {
-        if ($this->defaultSortingField != $defaultSortingField) {
+        if ($this->defaultSortingField !== $defaultSortingField) {
             $this->defaultSortingField = $defaultSortingField;
         }
     }
@@ -106,9 +106,9 @@ abstract class AbstractImageRepository extends SortableRepository
      *
      * @return void
      */
-    public function setCollectionFilterHelper($collectionFilterHelper)
+    public function setCollectionFilterHelper(CollectionFilterHelper $collectionFilterHelper = null)
     {
-        if ($this->collectionFilterHelper != $collectionFilterHelper) {
+        if ($this->collectionFilterHelper !== $collectionFilterHelper) {
             $this->collectionFilterHelper = $collectionFilterHelper;
         }
     }
@@ -117,8 +117,8 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Updates the creator of all objects created by a certain user.
      *
-     * @param integer $userId
-     * @param integer $newUserId
+     * @param int $userId
+     * @param int $newUserId
      * @param TranslatorInterface $translator
      * @param LoggerInterface $logger
      * @param CurrentUserApiInterface $currentUserApi
@@ -127,11 +127,16 @@ abstract class AbstractImageRepository extends SortableRepository
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateCreator($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
-    {
-        // check id parameter
-        if ($userId == 0 || !is_numeric($userId)
-         || $newUserId == 0 || !is_numeric($newUserId)) {
+    public function updateCreator(
+        $userId,
+        $newUserId,
+        TranslatorInterface $translator,
+        LoggerInterface $logger,
+        CurrentUserApiInterface $currentUserApi
+    ) {
+        if (0 === $userId || !is_numeric($userId)
+            || 0 === $newUserId || !is_numeric($newUserId)
+        ) {
             throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
         }
     
@@ -150,8 +155,8 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Updates the last editor of all objects updated by a certain user.
      *
-     * @param integer $userId
-     * @param integer $newUserId
+     * @param int $userId
+     * @param int $newUserId
      * @param TranslatorInterface $translator
      * @param LoggerInterface $logger
      * @param CurrentUserApiInterface $currentUserApi
@@ -160,11 +165,16 @@ abstract class AbstractImageRepository extends SortableRepository
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateLastEditor($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
-    {
-        // check id parameter
-        if ($userId == 0 || !is_numeric($userId)
-         || $newUserId == 0 || !is_numeric($newUserId)) {
+    public function updateLastEditor(
+        $userId,
+        $newUserId,
+        TranslatorInterface $translator,
+        LoggerInterface $logger,
+        CurrentUserApiInterface $currentUserApi
+    ) {
+        if (0 === $userId || !is_numeric($userId)
+            || 0 === $newUserId || !is_numeric($newUserId)
+        ) {
             throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
         }
     
@@ -183,7 +193,7 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Deletes all objects created by a certain user.
      *
-     * @param integer $userId
+     * @param int $userId
      * @param TranslatorInterface $translator
      * @param LoggerInterface $logger
      * @param CurrentUserApiInterface $currentUserApi
@@ -192,10 +202,13 @@ abstract class AbstractImageRepository extends SortableRepository
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByCreator($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
-    {
-        // check id parameter
-        if ($userId == 0 || !is_numeric($userId)) {
+    public function deleteByCreator(
+        $userId,
+        TranslatorInterface $translator,
+        LoggerInterface $logger,
+        CurrentUserApiInterface $currentUserApi
+    ) {
+        if (0 === $userId || !is_numeric($userId)) {
             throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
         }
     
@@ -213,7 +226,7 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Deletes all objects updated by a certain user.
      *
-     * @param integer $userId
+     * @param int $userId
      * @param TranslatorInterface $translator
      * @param LoggerInterface $logger
      * @param CurrentUserApiInterface $currentUserApi
@@ -222,10 +235,13 @@ abstract class AbstractImageRepository extends SortableRepository
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByLastEditor($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
-    {
-        // check id parameter
-        if ($userId == 0 || !is_numeric($userId)) {
+    public function deleteByLastEditor(
+        $userId,
+        TranslatorInterface $translator,
+        LoggerInterface $logger,
+        CurrentUserApiInterface $currentUserApi
+    ) {
+        if (0 === $userId || !is_numeric($userId)) {
             throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
         }
     
@@ -243,8 +259,8 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Adds an array of id filters to given query instance.
      *
-     * @param array        $idList List of identifiers to use to retrieve the object
-     * @param QueryBuilder $qb     Query builder to be enhanced
+     * @param array $idList List of identifiers to use to retrieve the object
+     * @param QueryBuilder $qb Query builder to be enhanced
      *
      * @return QueryBuilder Enriched query builder instance
      *
@@ -255,8 +271,7 @@ abstract class AbstractImageRepository extends SortableRepository
         $orX = $qb->expr()->orX();
     
         foreach ($idList as $id) {
-            // check id parameter
-            if ($id == 0) {
+            if (0 === $id) {
                 throw new InvalidArgumentException('Invalid identifier received.');
             }
     
@@ -271,29 +286,29 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Selects an object from the database.
      *
-     * @param mixed   $id       The id (or array of ids) to use to retrieve the object (optional) (default=0)
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
-     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param mixed $id The id (or array of ids) to use to retrieve the object (optional) (default=0)
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param bool $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return array|imageEntity Retrieved data array or imageEntity instance
+     * @return array|ImageEntity Retrieved data array or imageEntity instance
      */
     public function selectById($id = 0, $useJoins = true, $slimMode = false)
     {
         $results = $this->selectByIdList(is_array($id) ? $id : [$id], $useJoins, $slimMode);
     
-        return null !== $results && count($results) > 0 ? $results[0] : null;
+        return null !== $results && 0 < count($results) ? $results[0] : null;
     }
     
     /**
      * Selects a list of objects with an array of ids
      *
-     * @param mixed   $idList   The array of ids to use to retrieve the objects (optional) (default=0)
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
-     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param array $idList The array of ids to use to retrieve the objects (optional) (default=0)
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param bool $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return ArrayCollection Collection containing retrieved imageEntity instances
+     * @return array Retrieved ImageEntity instances
      */
-    public function selectByIdList($idList = [0], $useJoins = true, $slimMode = false)
+    public function selectByIdList(array $idList = [0], $useJoins = true, $slimMode = false)
     {
         $qb = $this->genericBaseQuery('', '', $useJoins, $slimMode);
         $qb = $this->addIdListFilter($idList, $qb);
@@ -306,20 +321,20 @@ abstract class AbstractImageRepository extends SortableRepository
     
         $results = $query->getResult();
     
-        return count($results) > 0 ? $results : null;
+        return 0 < count($results) ? $results : null;
     }
 
     /**
      * Adds where clauses excluding desired identifiers from selection.
      *
-     * @param QueryBuilder $qb         Query builder to be enhanced
-     * @param array        $exclusions List of identifiers to be excluded from selection
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param array $exclusions List of identifiers to be excluded from selection
      *
      * @return QueryBuilder Enriched query builder instance
      */
     protected function addExclusion(QueryBuilder $qb, array $exclusions = [])
     {
-        if (count($exclusions) > 0) {
+        if (0 < count($exclusions)) {
             $qb->andWhere('tbl.id NOT IN (:excludedIdentifiers)')
                ->setParameter('excludedIdentifiers', $exclusions);
         }
@@ -330,10 +345,10 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Returns query builder for selecting a list of objects with a given where clause.
      *
-     * @param string  $where    The where clause to use when retrieving the collection (optional) (default='')
-     * @param string  $orderBy  The order-by clause to use when retrieving the collection (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
-     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param string $where The where clause to use when retrieving the collection (optional) (default='')
+     * @param string $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param bool $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
      * @return QueryBuilder Query builder for the given arguments
      */
@@ -350,12 +365,12 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Selects a list of objects with a given where clause.
      *
-     * @param string  $where    The where clause to use when retrieving the collection (optional) (default='')
-     * @param string  $orderBy  The order-by clause to use when retrieving the collection (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
-     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param string $where The where clause to use when retrieving the collection (optional) (default='')
+     * @param string $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param bool $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return ArrayCollection Collection containing retrieved imageEntity instances
+     * @return array List of retrieved imageEntity instances
      */
     public function selectWhere($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
     {
@@ -363,28 +378,28 @@ abstract class AbstractImageRepository extends SortableRepository
     
         $query = $this->getQueryFromBuilder($qb);
     
-        return $this->retrieveCollectionResult($query, false);
+        return $this->retrieveCollectionResult($query);
     }
 
     /**
      * Returns query builder instance for retrieving a list of objects with a given where clause and pagination parameters.
      *
-     * @param QueryBuilder $qb             Query builder to be enhanced
-     * @param integer      $currentPage    Where to start selection
-     * @param integer      $resultsPerPage Amount of items to select
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param int $currentPage Where to start selection
+     * @param int $resultsPerPage Amount of items to select
      *
      * @return Query Created query instance
      */
     public function getSelectWherePaginatedQuery(QueryBuilder $qb, $currentPage = 1, $resultsPerPage = 25)
     {
-        if ($currentPage < 1) {
+        if (1 > $currentPage) {
             $currentPage = 1;
         }
-        if ($resultsPerPage < 1) {
+        if (1 > $resultsPerPage) {
             $resultsPerPage = 25;
         }
         $query = $this->getQueryFromBuilder($qb);
-        $offset = ($currentPage-1) * $resultsPerPage;
+        $offset = ($currentPage - 1) * $resultsPerPage;
     
         $query->setFirstResult($offset)
               ->setMaxResults($resultsPerPage);
@@ -395,14 +410,14 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Selects a list of objects with a given where clause and pagination parameters.
      *
-     * @param string  $where          The where clause to use when retrieving the collection (optional) (default='')
-     * @param string  $orderBy        The order-by clause to use when retrieving the collection (optional) (default='')
-     * @param integer $currentPage    Where to start selection
-     * @param integer $resultsPerPage Amount of items to select
-     * @param boolean $useJoins       Whether to include joining related objects (optional) (default=true)
-     * @param boolean $slimMode       If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param string $where The where clause to use when retrieving the collection (optional) (default='')
+     * @param string $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param int $currentPage Where to start selection
+     * @param int $resultsPerPage Amount of items to select
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param bool $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return array Retrieved collection and amount of total records affected by this query
+     * @return array Retrieved collection and the amount of total records affected
      */
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
@@ -415,19 +430,19 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Selects entities by a given search fragment.
      *
-     * @param string  $fragment       The fragment to search for
-     * @param array   $exclude        List of identifiers to be excluded from search
-     * @param string  $orderBy        The order-by clause to use when retrieving the collection (optional) (default='')
-     * @param integer $currentPage    Where to start selection
-     * @param integer $resultsPerPage Amount of items to select
-     * @param boolean $useJoins       Whether to include joining related objects (optional) (default=true)
+     * @param string $fragment The fragment to search for
+     * @param array $exclude List of identifiers to be excluded from search
+     * @param string $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param in $currentPage Where to start selection
+     * @param in $resultsPerPage Amount of items to select
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
      *
-     * @return array Retrieved collection and amount of total records affected by this query
+     * @return array Retrieved collection and (for paginated queries) the amount of total records affected
      */
     public function selectSearch($fragment = '', array $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
         $qb = $this->getListQueryBuilder('', $orderBy, $useJoins);
-        if (count($exclude) > 0) {
+        if (0 < count($exclude)) {
             $qb = $this->addExclusion($qb, $exclude);
         }
     
@@ -443,8 +458,8 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Performs a given database selection and post-processed the results.
      *
-     * @param Query   $query       The Query instance to be executed
-     * @param boolean $isPaginated Whether the given query uses a paginator or not (optional) (default=false)
+     * @param Query $query The Query instance to be executed
+     * @param bool $isPaginated Whether the given query uses a paginator or not (optional) (default=false)
      *
      * @return array Retrieved collection and (for paginated queries) the amount of total records affected
      */
@@ -470,8 +485,8 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Returns query builder instance for a count query.
      *
-     * @param string  $where    The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=false)
+     * @param string $where The where clause to use when retrieving the object count (optional) (default='')
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=false)
      *
      * @return QueryBuilder Created query builder instance
      */
@@ -497,11 +512,11 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Selects entity count with a given where clause.
      *
-     * @param string  $where      The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=false)
-     * @param array   $parameters List of determined filter options
+     * @param string $where The where clause to use when retrieving the object count (optional) (default='')
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=false)
+     * @param array $parameters List of determined filter options
      *
-     * @return integer Amount of affected records
+     * @return int Amount of affected records
      */
     public function selectCount($where = '', $useJoins = false, array $parameters = [])
     {
@@ -513,22 +528,22 @@ abstract class AbstractImageRepository extends SortableRepository
     
         $query = $qb->getQuery();
     
-        return $query->getSingleScalarResult();
+        return (int)$query->getSingleScalarResult();
     }
 
 
     /**
      * Checks for unique values.
      *
-     * @param string  $fieldName  The name of the property to be checked
-     * @param string  $fieldValue The value of the property to be checked
-     * @param integer $excludeId  Id of images to exclude (optional)
+     * @param string $fieldName The name of the property to be checked
+     * @param string $fieldValue The value of the property to be checked
+     * @param int $excludeId Identifier of images to exclude (optional)
      *
-     * @return boolean Result of this check, true if the given image does not already exist
+     * @return bool Result of this check, true if the given image does not already exist
      */
     public function detectUniqueState($fieldName, $fieldValue, $excludeId = 0)
     {
-        $qb = $this->getCountQuery('', false);
+        $qb = $this->getCountQuery();
         $qb->andWhere('tbl.' . $fieldName . ' = :' . $fieldName)
            ->setParameter($fieldName, $fieldValue);
     
@@ -538,18 +553,18 @@ abstract class AbstractImageRepository extends SortableRepository
     
         $query = $qb->getQuery();
     
-        $count = $query->getSingleScalarResult();
+        $count = (int)$query->getSingleScalarResult();
     
-        return ($count == 0);
+        return 1 > $count;
     }
 
     /**
      * Builds a generic Doctrine query supporting WHERE and ORDER BY.
      *
-     * @param string  $where    The where clause to use when retrieving the collection (optional) (default='')
-     * @param string  $orderBy  The order-by clause to use when retrieving the collection (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
-     * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
+     * @param string $where The where clause to use when retrieving the collection (optional) (default='')
+     * @param string $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param bool $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param bool $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
      * @return QueryBuilder Query builder instance to be further processed
      */
@@ -591,17 +606,17 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Adds ORDER BY clause to given query builder.
      *
-     * @param QueryBuilder $qb      Given query builder instance
-     * @param string       $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param QueryBuilder $qb Given query builder instance
+     * @param string $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
      *
      * @return QueryBuilder Query builder instance to be further processed
      */
     protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
     {
-        if ($orderBy == 'RAND()') {
+        if ('RAND()' === $orderBy) {
             // random selection
             $qb->addSelect('MOD(tbl.id, ' . mt_rand(2, 15) . ') AS HIDDEN randomIdentifiers')
-               ->add('orderBy', 'randomIdentifiers');
+               ->orderBy('randomIdentifiers');
     
             return $qb;
         }
@@ -653,7 +668,7 @@ abstract class AbstractImageRepository extends SortableRepository
     /**
      * Helper method to add join selections.
      *
-     * @return String Enhancement for select clause
+     * @return string Enhancement for select clause
      */
     protected function addJoinsToSelection()
     {

@@ -36,14 +36,14 @@ abstract class AbstractAppSettings
     /**
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableAttribution
+     * @var bool $enableAttribution
      */
     protected $enableAttribution = false;
     
     /**
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableMultiLanguage
+     * @var bool $enableMultiLanguage
      */
     protected $enableMultiLanguage = false;
     
@@ -52,7 +52,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $showAuthor
+     * @var bool $showAuthor
      */
     protected $showAuthor = false;
     
@@ -61,14 +61,14 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $showDate
+     * @var bool $showDate
      */
     protected $showDate = false;
     
     /**
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableCategorization
+     * @var bool $enableCategorization
      */
     protected $enableCategorization = false;
     
@@ -98,7 +98,7 @@ abstract class AbstractAppSettings
     /**
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableMoreMessagesInCategory
+     * @var bool $enableMoreMessagesInCategory
      */
     protected $enableMoreMessagesInCategory = false;
     
@@ -108,7 +108,7 @@ abstract class AbstractAppSettings
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=100000000000)
-     * @var integer $amountOfMoreArticlesInCategory
+     * @var int $amountOfMoreArticlesInCategory
      */
     protected $amountOfMoreArticlesInCategory = 0;
     
@@ -117,7 +117,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $displayPdfLink
+     * @var bool $displayPdfLink
      */
     protected $displayPdfLink = false;
     
@@ -126,7 +126,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enablePictureUpload
+     * @var bool $enablePictureUpload
      */
     protected $enablePictureUpload = false;
     
@@ -164,7 +164,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $messageEntriesPerPage
+     * @var int $messageEntriesPerPage
      */
     protected $messageEntriesPerPage = 10;
     
@@ -173,7 +173,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $linkOwnMessagesOnAccountPage
+     * @var bool $linkOwnMessagesOnAccountPage
      */
     protected $linkOwnMessagesOnAccountPage = true;
     
@@ -182,7 +182,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $showOnlyOwnEntries
+     * @var bool $showOnlyOwnEntries
      */
     protected $showOnlyOwnEntries = false;
     
@@ -191,7 +191,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $filterDataByLocale
+     * @var bool $filterDataByLocale
      */
     protected $filterDataByLocale = false;
     
@@ -200,7 +200,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableShrinkingForMessageImageUpload1
+     * @var bool $enableShrinkingForMessageImageUpload1
      */
     protected $enableShrinkingForMessageImageUpload1 = false;
     
@@ -211,7 +211,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkWidthMessageImageUpload1
+     * @var int $shrinkWidthMessageImageUpload1
      */
     protected $shrinkWidthMessageImageUpload1 = 800;
     
@@ -222,7 +222,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkHeightMessageImageUpload1
+     * @var int $shrinkHeightMessageImageUpload1
      */
     protected $shrinkHeightMessageImageUpload1 = 600;
     
@@ -242,7 +242,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload1View
+     * @var int $thumbnailWidthMessageImageUpload1View
      */
     protected $thumbnailWidthMessageImageUpload1View = 32;
     
@@ -253,7 +253,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload1View
+     * @var int $thumbnailHeightMessageImageUpload1View
      */
     protected $thumbnailHeightMessageImageUpload1View = 24;
     
@@ -264,7 +264,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload1Display
+     * @var int $thumbnailWidthMessageImageUpload1Display
      */
     protected $thumbnailWidthMessageImageUpload1Display = 240;
     
@@ -275,7 +275,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload1Display
+     * @var int $thumbnailHeightMessageImageUpload1Display
      */
     protected $thumbnailHeightMessageImageUpload1Display = 180;
     
@@ -286,7 +286,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload1Edit
+     * @var int $thumbnailWidthMessageImageUpload1Edit
      */
     protected $thumbnailWidthMessageImageUpload1Edit = 240;
     
@@ -297,7 +297,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload1Edit
+     * @var int $thumbnailHeightMessageImageUpload1Edit
      */
     protected $thumbnailHeightMessageImageUpload1Edit = 180;
     
@@ -306,7 +306,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableShrinkingForMessageImageUpload2
+     * @var bool $enableShrinkingForMessageImageUpload2
      */
     protected $enableShrinkingForMessageImageUpload2 = false;
     
@@ -317,7 +317,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkWidthMessageImageUpload2
+     * @var int $shrinkWidthMessageImageUpload2
      */
     protected $shrinkWidthMessageImageUpload2 = 800;
     
@@ -328,7 +328,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkHeightMessageImageUpload2
+     * @var int $shrinkHeightMessageImageUpload2
      */
     protected $shrinkHeightMessageImageUpload2 = 600;
     
@@ -348,7 +348,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload2View
+     * @var int $thumbnailWidthMessageImageUpload2View
      */
     protected $thumbnailWidthMessageImageUpload2View = 32;
     
@@ -359,7 +359,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload2View
+     * @var int $thumbnailHeightMessageImageUpload2View
      */
     protected $thumbnailHeightMessageImageUpload2View = 24;
     
@@ -370,7 +370,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload2Display
+     * @var int $thumbnailWidthMessageImageUpload2Display
      */
     protected $thumbnailWidthMessageImageUpload2Display = 240;
     
@@ -381,7 +381,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload2Display
+     * @var int $thumbnailHeightMessageImageUpload2Display
      */
     protected $thumbnailHeightMessageImageUpload2Display = 180;
     
@@ -392,7 +392,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload2Edit
+     * @var int $thumbnailWidthMessageImageUpload2Edit
      */
     protected $thumbnailWidthMessageImageUpload2Edit = 240;
     
@@ -403,7 +403,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload2Edit
+     * @var int $thumbnailHeightMessageImageUpload2Edit
      */
     protected $thumbnailHeightMessageImageUpload2Edit = 180;
     
@@ -412,7 +412,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableShrinkingForMessageImageUpload3
+     * @var bool $enableShrinkingForMessageImageUpload3
      */
     protected $enableShrinkingForMessageImageUpload3 = false;
     
@@ -423,7 +423,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkWidthMessageImageUpload3
+     * @var int $shrinkWidthMessageImageUpload3
      */
     protected $shrinkWidthMessageImageUpload3 = 800;
     
@@ -434,7 +434,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkHeightMessageImageUpload3
+     * @var int $shrinkHeightMessageImageUpload3
      */
     protected $shrinkHeightMessageImageUpload3 = 600;
     
@@ -454,7 +454,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload3View
+     * @var int $thumbnailWidthMessageImageUpload3View
      */
     protected $thumbnailWidthMessageImageUpload3View = 32;
     
@@ -465,7 +465,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload3View
+     * @var int $thumbnailHeightMessageImageUpload3View
      */
     protected $thumbnailHeightMessageImageUpload3View = 24;
     
@@ -476,7 +476,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload3Display
+     * @var int $thumbnailWidthMessageImageUpload3Display
      */
     protected $thumbnailWidthMessageImageUpload3Display = 240;
     
@@ -487,7 +487,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload3Display
+     * @var int $thumbnailHeightMessageImageUpload3Display
      */
     protected $thumbnailHeightMessageImageUpload3Display = 180;
     
@@ -498,7 +498,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload3Edit
+     * @var int $thumbnailWidthMessageImageUpload3Edit
      */
     protected $thumbnailWidthMessageImageUpload3Edit = 240;
     
@@ -509,7 +509,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload3Edit
+     * @var int $thumbnailHeightMessageImageUpload3Edit
      */
     protected $thumbnailHeightMessageImageUpload3Edit = 180;
     
@@ -518,7 +518,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableShrinkingForMessageImageUpload4
+     * @var bool $enableShrinkingForMessageImageUpload4
      */
     protected $enableShrinkingForMessageImageUpload4 = false;
     
@@ -529,7 +529,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkWidthMessageImageUpload4
+     * @var int $shrinkWidthMessageImageUpload4
      */
     protected $shrinkWidthMessageImageUpload4 = 800;
     
@@ -540,7 +540,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkHeightMessageImageUpload4
+     * @var int $shrinkHeightMessageImageUpload4
      */
     protected $shrinkHeightMessageImageUpload4 = 600;
     
@@ -560,7 +560,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload4View
+     * @var int $thumbnailWidthMessageImageUpload4View
      */
     protected $thumbnailWidthMessageImageUpload4View = 32;
     
@@ -571,7 +571,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload4View
+     * @var int $thumbnailHeightMessageImageUpload4View
      */
     protected $thumbnailHeightMessageImageUpload4View = 24;
     
@@ -582,7 +582,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload4Display
+     * @var int $thumbnailWidthMessageImageUpload4Display
      */
     protected $thumbnailWidthMessageImageUpload4Display = 240;
     
@@ -593,7 +593,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload4Display
+     * @var int $thumbnailHeightMessageImageUpload4Display
      */
     protected $thumbnailHeightMessageImageUpload4Display = 180;
     
@@ -604,7 +604,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailWidthMessageImageUpload4Edit
+     * @var int $thumbnailWidthMessageImageUpload4Edit
      */
     protected $thumbnailWidthMessageImageUpload4Edit = 240;
     
@@ -615,7 +615,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $thumbnailHeightMessageImageUpload4Edit
+     * @var int $thumbnailHeightMessageImageUpload4Edit
      */
     protected $thumbnailHeightMessageImageUpload4Edit = 180;
     
@@ -624,7 +624,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $enableShrinkingForImageTheFile
+     * @var bool $enableShrinkingForImageTheFile
      */
     protected $enableShrinkingForImageTheFile = false;
     
@@ -635,7 +635,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkWidthImageTheFile
+     * @var int $shrinkWidthImageTheFile
      */
     protected $shrinkWidthImageTheFile = 800;
     
@@ -646,7 +646,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $shrinkHeightImageTheFile
+     * @var int $shrinkHeightImageTheFile
      */
     protected $shrinkHeightImageTheFile = 600;
     
@@ -663,7 +663,7 @@ abstract class AbstractAppSettings
      * Used to determine moderator user accounts for sending email notifications.
      *
      * @Assert\NotBlank()
-     * @var integer $moderationGroupForMessages
+     * @var int $moderationGroupForMessages
      */
     protected $moderationGroupForMessages = 2;
     
@@ -672,7 +672,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $allowModerationSpecificCreatorForMessage
+     * @var bool $allowModerationSpecificCreatorForMessage
      */
     protected $allowModerationSpecificCreatorForMessage = false;
     
@@ -681,7 +681,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $allowModerationSpecificCreationDateForMessage
+     * @var bool $allowModerationSpecificCreationDateForMessage
      */
     protected $allowModerationSpecificCreationDateForMessage = false;
     
@@ -695,12 +695,6 @@ abstract class AbstractAppSettings
     protected $enabledFinderTypes = 'message###image';
     
     
-    /**
-     * AppSettings constructor.
-     *
-     * @param VariableApiInterface $variableApi
-     * @param GroupRepositoryInterface $groupRepository
-     */
     public function __construct(
         VariableApiInterface $variableApi,
         GroupRepositoryInterface $groupRepository
@@ -714,7 +708,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the enable attribution.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableAttribution()
     {
@@ -724,21 +718,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable attribution.
      *
-     * @param boolean $enableAttribution
+     * @param bool $enableAttribution
      *
      * @return void
      */
     public function setEnableAttribution($enableAttribution)
     {
-        if (boolval($this->enableAttribution) !== boolval($enableAttribution)) {
-            $this->enableAttribution = boolval($enableAttribution);
+        if ((bool)$this->enableAttribution !== (bool)$enableAttribution) {
+            $this->enableAttribution = (bool)$enableAttribution;
         }
     }
     
     /**
      * Returns the enable multi language.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableMultiLanguage()
     {
@@ -748,21 +742,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable multi language.
      *
-     * @param boolean $enableMultiLanguage
+     * @param bool $enableMultiLanguage
      *
      * @return void
      */
     public function setEnableMultiLanguage($enableMultiLanguage)
     {
-        if (boolval($this->enableMultiLanguage) !== boolval($enableMultiLanguage)) {
-            $this->enableMultiLanguage = boolval($enableMultiLanguage);
+        if ((bool)$this->enableMultiLanguage !== (bool)$enableMultiLanguage) {
+            $this->enableMultiLanguage = (bool)$enableMultiLanguage;
         }
     }
     
     /**
      * Returns the show author.
      *
-     * @return boolean
+     * @return bool
      */
     public function getShowAuthor()
     {
@@ -772,21 +766,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the show author.
      *
-     * @param boolean $showAuthor
+     * @param bool $showAuthor
      *
      * @return void
      */
     public function setShowAuthor($showAuthor)
     {
-        if (boolval($this->showAuthor) !== boolval($showAuthor)) {
-            $this->showAuthor = boolval($showAuthor);
+        if ((bool)$this->showAuthor !== (bool)$showAuthor) {
+            $this->showAuthor = (bool)$showAuthor;
         }
     }
     
     /**
      * Returns the show date.
      *
-     * @return boolean
+     * @return bool
      */
     public function getShowDate()
     {
@@ -796,21 +790,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the show date.
      *
-     * @param boolean $showDate
+     * @param bool $showDate
      *
      * @return void
      */
     public function setShowDate($showDate)
     {
-        if (boolval($this->showDate) !== boolval($showDate)) {
-            $this->showDate = boolval($showDate);
+        if ((bool)$this->showDate !== (bool)$showDate) {
+            $this->showDate = (bool)$showDate;
         }
     }
     
     /**
      * Returns the enable categorization.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableCategorization()
     {
@@ -820,14 +814,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable categorization.
      *
-     * @param boolean $enableCategorization
+     * @param bool $enableCategorization
      *
      * @return void
      */
     public function setEnableCategorization($enableCategorization)
     {
-        if (boolval($this->enableCategorization) !== boolval($enableCategorization)) {
-            $this->enableCategorization = boolval($enableCategorization);
+        if ((bool)$this->enableCategorization !== (bool)$enableCategorization) {
+            $this->enableCategorization = (bool)$enableCategorization;
         }
     }
     
@@ -906,7 +900,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the enable more messages in category.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableMoreMessagesInCategory()
     {
@@ -916,21 +910,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable more messages in category.
      *
-     * @param boolean $enableMoreMessagesInCategory
+     * @param bool $enableMoreMessagesInCategory
      *
      * @return void
      */
     public function setEnableMoreMessagesInCategory($enableMoreMessagesInCategory)
     {
-        if (boolval($this->enableMoreMessagesInCategory) !== boolval($enableMoreMessagesInCategory)) {
-            $this->enableMoreMessagesInCategory = boolval($enableMoreMessagesInCategory);
+        if ((bool)$this->enableMoreMessagesInCategory !== (bool)$enableMoreMessagesInCategory) {
+            $this->enableMoreMessagesInCategory = (bool)$enableMoreMessagesInCategory;
         }
     }
     
     /**
      * Returns the amount of more articles in category.
      *
-     * @return integer
+     * @return int
      */
     public function getAmountOfMoreArticlesInCategory()
     {
@@ -940,21 +934,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the amount of more articles in category.
      *
-     * @param integer $amountOfMoreArticlesInCategory
+     * @param int $amountOfMoreArticlesInCategory
      *
      * @return void
      */
     public function setAmountOfMoreArticlesInCategory($amountOfMoreArticlesInCategory)
     {
-        if (intval($this->amountOfMoreArticlesInCategory) !== intval($amountOfMoreArticlesInCategory)) {
-            $this->amountOfMoreArticlesInCategory = intval($amountOfMoreArticlesInCategory);
+        if ((int)$this->amountOfMoreArticlesInCategory !== (int)$amountOfMoreArticlesInCategory) {
+            $this->amountOfMoreArticlesInCategory = (int)$amountOfMoreArticlesInCategory;
         }
     }
     
     /**
      * Returns the display pdf link.
      *
-     * @return boolean
+     * @return bool
      */
     public function getDisplayPdfLink()
     {
@@ -964,21 +958,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the display pdf link.
      *
-     * @param boolean $displayPdfLink
+     * @param bool $displayPdfLink
      *
      * @return void
      */
     public function setDisplayPdfLink($displayPdfLink)
     {
-        if (boolval($this->displayPdfLink) !== boolval($displayPdfLink)) {
-            $this->displayPdfLink = boolval($displayPdfLink);
+        if ((bool)$this->displayPdfLink !== (bool)$displayPdfLink) {
+            $this->displayPdfLink = (bool)$displayPdfLink;
         }
     }
     
     /**
      * Returns the enable picture upload.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnablePictureUpload()
     {
@@ -988,14 +982,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable picture upload.
      *
-     * @param boolean $enablePictureUpload
+     * @param bool $enablePictureUpload
      *
      * @return void
      */
     public function setEnablePictureUpload($enablePictureUpload)
     {
-        if (boolval($this->enablePictureUpload) !== boolval($enablePictureUpload)) {
-            $this->enablePictureUpload = boolval($enablePictureUpload);
+        if ((bool)$this->enablePictureUpload !== (bool)$enablePictureUpload) {
+            $this->enablePictureUpload = (bool)$enablePictureUpload;
         }
     }
     
@@ -1074,7 +1068,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the message entries per page.
      *
-     * @return integer
+     * @return int
      */
     public function getMessageEntriesPerPage()
     {
@@ -1084,21 +1078,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the message entries per page.
      *
-     * @param integer $messageEntriesPerPage
+     * @param int $messageEntriesPerPage
      *
      * @return void
      */
     public function setMessageEntriesPerPage($messageEntriesPerPage)
     {
-        if (intval($this->messageEntriesPerPage) !== intval($messageEntriesPerPage)) {
-            $this->messageEntriesPerPage = intval($messageEntriesPerPage);
+        if ((int)$this->messageEntriesPerPage !== (int)$messageEntriesPerPage) {
+            $this->messageEntriesPerPage = (int)$messageEntriesPerPage;
         }
     }
     
     /**
      * Returns the link own messages on account page.
      *
-     * @return boolean
+     * @return bool
      */
     public function getLinkOwnMessagesOnAccountPage()
     {
@@ -1108,21 +1102,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the link own messages on account page.
      *
-     * @param boolean $linkOwnMessagesOnAccountPage
+     * @param bool $linkOwnMessagesOnAccountPage
      *
      * @return void
      */
     public function setLinkOwnMessagesOnAccountPage($linkOwnMessagesOnAccountPage)
     {
-        if (boolval($this->linkOwnMessagesOnAccountPage) !== boolval($linkOwnMessagesOnAccountPage)) {
-            $this->linkOwnMessagesOnAccountPage = boolval($linkOwnMessagesOnAccountPage);
+        if ((bool)$this->linkOwnMessagesOnAccountPage !== (bool)$linkOwnMessagesOnAccountPage) {
+            $this->linkOwnMessagesOnAccountPage = (bool)$linkOwnMessagesOnAccountPage;
         }
     }
     
     /**
      * Returns the show only own entries.
      *
-     * @return boolean
+     * @return bool
      */
     public function getShowOnlyOwnEntries()
     {
@@ -1132,21 +1126,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the show only own entries.
      *
-     * @param boolean $showOnlyOwnEntries
+     * @param bool $showOnlyOwnEntries
      *
      * @return void
      */
     public function setShowOnlyOwnEntries($showOnlyOwnEntries)
     {
-        if (boolval($this->showOnlyOwnEntries) !== boolval($showOnlyOwnEntries)) {
-            $this->showOnlyOwnEntries = boolval($showOnlyOwnEntries);
+        if ((bool)$this->showOnlyOwnEntries !== (bool)$showOnlyOwnEntries) {
+            $this->showOnlyOwnEntries = (bool)$showOnlyOwnEntries;
         }
     }
     
     /**
      * Returns the filter data by locale.
      *
-     * @return boolean
+     * @return bool
      */
     public function getFilterDataByLocale()
     {
@@ -1156,21 +1150,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the filter data by locale.
      *
-     * @param boolean $filterDataByLocale
+     * @param bool $filterDataByLocale
      *
      * @return void
      */
     public function setFilterDataByLocale($filterDataByLocale)
     {
-        if (boolval($this->filterDataByLocale) !== boolval($filterDataByLocale)) {
-            $this->filterDataByLocale = boolval($filterDataByLocale);
+        if ((bool)$this->filterDataByLocale !== (bool)$filterDataByLocale) {
+            $this->filterDataByLocale = (bool)$filterDataByLocale;
         }
     }
     
     /**
      * Returns the enable shrinking for message image upload 1.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableShrinkingForMessageImageUpload1()
     {
@@ -1180,21 +1174,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable shrinking for message image upload 1.
      *
-     * @param boolean $enableShrinkingForMessageImageUpload1
+     * @param bool $enableShrinkingForMessageImageUpload1
      *
      * @return void
      */
     public function setEnableShrinkingForMessageImageUpload1($enableShrinkingForMessageImageUpload1)
     {
-        if (boolval($this->enableShrinkingForMessageImageUpload1) !== boolval($enableShrinkingForMessageImageUpload1)) {
-            $this->enableShrinkingForMessageImageUpload1 = boolval($enableShrinkingForMessageImageUpload1);
+        if ((bool)$this->enableShrinkingForMessageImageUpload1 !== (bool)$enableShrinkingForMessageImageUpload1) {
+            $this->enableShrinkingForMessageImageUpload1 = (bool)$enableShrinkingForMessageImageUpload1;
         }
     }
     
     /**
      * Returns the shrink width message image upload 1.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkWidthMessageImageUpload1()
     {
@@ -1204,21 +1198,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink width message image upload 1.
      *
-     * @param integer $shrinkWidthMessageImageUpload1
+     * @param int $shrinkWidthMessageImageUpload1
      *
      * @return void
      */
     public function setShrinkWidthMessageImageUpload1($shrinkWidthMessageImageUpload1)
     {
-        if (intval($this->shrinkWidthMessageImageUpload1) !== intval($shrinkWidthMessageImageUpload1)) {
-            $this->shrinkWidthMessageImageUpload1 = intval($shrinkWidthMessageImageUpload1);
+        if ((int)$this->shrinkWidthMessageImageUpload1 !== (int)$shrinkWidthMessageImageUpload1) {
+            $this->shrinkWidthMessageImageUpload1 = (int)$shrinkWidthMessageImageUpload1;
         }
     }
     
     /**
      * Returns the shrink height message image upload 1.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkHeightMessageImageUpload1()
     {
@@ -1228,14 +1222,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink height message image upload 1.
      *
-     * @param integer $shrinkHeightMessageImageUpload1
+     * @param int $shrinkHeightMessageImageUpload1
      *
      * @return void
      */
     public function setShrinkHeightMessageImageUpload1($shrinkHeightMessageImageUpload1)
     {
-        if (intval($this->shrinkHeightMessageImageUpload1) !== intval($shrinkHeightMessageImageUpload1)) {
-            $this->shrinkHeightMessageImageUpload1 = intval($shrinkHeightMessageImageUpload1);
+        if ((int)$this->shrinkHeightMessageImageUpload1 !== (int)$shrinkHeightMessageImageUpload1) {
+            $this->shrinkHeightMessageImageUpload1 = (int)$shrinkHeightMessageImageUpload1;
         }
     }
     
@@ -1266,7 +1260,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the thumbnail width message image upload 1 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload1View()
     {
@@ -1276,21 +1270,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 1 view.
      *
-     * @param integer $thumbnailWidthMessageImageUpload1View
+     * @param int $thumbnailWidthMessageImageUpload1View
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload1View($thumbnailWidthMessageImageUpload1View)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload1View) !== intval($thumbnailWidthMessageImageUpload1View)) {
-            $this->thumbnailWidthMessageImageUpload1View = intval($thumbnailWidthMessageImageUpload1View);
+        if ((int)$this->thumbnailWidthMessageImageUpload1View !== (int)$thumbnailWidthMessageImageUpload1View) {
+            $this->thumbnailWidthMessageImageUpload1View = (int)$thumbnailWidthMessageImageUpload1View;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 1 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload1View()
     {
@@ -1300,21 +1294,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 1 view.
      *
-     * @param integer $thumbnailHeightMessageImageUpload1View
+     * @param int $thumbnailHeightMessageImageUpload1View
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload1View($thumbnailHeightMessageImageUpload1View)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload1View) !== intval($thumbnailHeightMessageImageUpload1View)) {
-            $this->thumbnailHeightMessageImageUpload1View = intval($thumbnailHeightMessageImageUpload1View);
+        if ((int)$this->thumbnailHeightMessageImageUpload1View !== (int)$thumbnailHeightMessageImageUpload1View) {
+            $this->thumbnailHeightMessageImageUpload1View = (int)$thumbnailHeightMessageImageUpload1View;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 1 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload1Display()
     {
@@ -1324,21 +1318,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 1 display.
      *
-     * @param integer $thumbnailWidthMessageImageUpload1Display
+     * @param int $thumbnailWidthMessageImageUpload1Display
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload1Display($thumbnailWidthMessageImageUpload1Display)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload1Display) !== intval($thumbnailWidthMessageImageUpload1Display)) {
-            $this->thumbnailWidthMessageImageUpload1Display = intval($thumbnailWidthMessageImageUpload1Display);
+        if ((int)$this->thumbnailWidthMessageImageUpload1Display !== (int)$thumbnailWidthMessageImageUpload1Display) {
+            $this->thumbnailWidthMessageImageUpload1Display = (int)$thumbnailWidthMessageImageUpload1Display;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 1 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload1Display()
     {
@@ -1348,21 +1342,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 1 display.
      *
-     * @param integer $thumbnailHeightMessageImageUpload1Display
+     * @param int $thumbnailHeightMessageImageUpload1Display
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload1Display($thumbnailHeightMessageImageUpload1Display)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload1Display) !== intval($thumbnailHeightMessageImageUpload1Display)) {
-            $this->thumbnailHeightMessageImageUpload1Display = intval($thumbnailHeightMessageImageUpload1Display);
+        if ((int)$this->thumbnailHeightMessageImageUpload1Display !== (int)$thumbnailHeightMessageImageUpload1Display) {
+            $this->thumbnailHeightMessageImageUpload1Display = (int)$thumbnailHeightMessageImageUpload1Display;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 1 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload1Edit()
     {
@@ -1372,21 +1366,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 1 edit.
      *
-     * @param integer $thumbnailWidthMessageImageUpload1Edit
+     * @param int $thumbnailWidthMessageImageUpload1Edit
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload1Edit($thumbnailWidthMessageImageUpload1Edit)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload1Edit) !== intval($thumbnailWidthMessageImageUpload1Edit)) {
-            $this->thumbnailWidthMessageImageUpload1Edit = intval($thumbnailWidthMessageImageUpload1Edit);
+        if ((int)$this->thumbnailWidthMessageImageUpload1Edit !== (int)$thumbnailWidthMessageImageUpload1Edit) {
+            $this->thumbnailWidthMessageImageUpload1Edit = (int)$thumbnailWidthMessageImageUpload1Edit;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 1 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload1Edit()
     {
@@ -1396,21 +1390,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 1 edit.
      *
-     * @param integer $thumbnailHeightMessageImageUpload1Edit
+     * @param int $thumbnailHeightMessageImageUpload1Edit
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload1Edit($thumbnailHeightMessageImageUpload1Edit)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload1Edit) !== intval($thumbnailHeightMessageImageUpload1Edit)) {
-            $this->thumbnailHeightMessageImageUpload1Edit = intval($thumbnailHeightMessageImageUpload1Edit);
+        if ((int)$this->thumbnailHeightMessageImageUpload1Edit !== (int)$thumbnailHeightMessageImageUpload1Edit) {
+            $this->thumbnailHeightMessageImageUpload1Edit = (int)$thumbnailHeightMessageImageUpload1Edit;
         }
     }
     
     /**
      * Returns the enable shrinking for message image upload 2.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableShrinkingForMessageImageUpload2()
     {
@@ -1420,21 +1414,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable shrinking for message image upload 2.
      *
-     * @param boolean $enableShrinkingForMessageImageUpload2
+     * @param bool $enableShrinkingForMessageImageUpload2
      *
      * @return void
      */
     public function setEnableShrinkingForMessageImageUpload2($enableShrinkingForMessageImageUpload2)
     {
-        if (boolval($this->enableShrinkingForMessageImageUpload2) !== boolval($enableShrinkingForMessageImageUpload2)) {
-            $this->enableShrinkingForMessageImageUpload2 = boolval($enableShrinkingForMessageImageUpload2);
+        if ((bool)$this->enableShrinkingForMessageImageUpload2 !== (bool)$enableShrinkingForMessageImageUpload2) {
+            $this->enableShrinkingForMessageImageUpload2 = (bool)$enableShrinkingForMessageImageUpload2;
         }
     }
     
     /**
      * Returns the shrink width message image upload 2.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkWidthMessageImageUpload2()
     {
@@ -1444,21 +1438,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink width message image upload 2.
      *
-     * @param integer $shrinkWidthMessageImageUpload2
+     * @param int $shrinkWidthMessageImageUpload2
      *
      * @return void
      */
     public function setShrinkWidthMessageImageUpload2($shrinkWidthMessageImageUpload2)
     {
-        if (intval($this->shrinkWidthMessageImageUpload2) !== intval($shrinkWidthMessageImageUpload2)) {
-            $this->shrinkWidthMessageImageUpload2 = intval($shrinkWidthMessageImageUpload2);
+        if ((int)$this->shrinkWidthMessageImageUpload2 !== (int)$shrinkWidthMessageImageUpload2) {
+            $this->shrinkWidthMessageImageUpload2 = (int)$shrinkWidthMessageImageUpload2;
         }
     }
     
     /**
      * Returns the shrink height message image upload 2.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkHeightMessageImageUpload2()
     {
@@ -1468,14 +1462,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink height message image upload 2.
      *
-     * @param integer $shrinkHeightMessageImageUpload2
+     * @param int $shrinkHeightMessageImageUpload2
      *
      * @return void
      */
     public function setShrinkHeightMessageImageUpload2($shrinkHeightMessageImageUpload2)
     {
-        if (intval($this->shrinkHeightMessageImageUpload2) !== intval($shrinkHeightMessageImageUpload2)) {
-            $this->shrinkHeightMessageImageUpload2 = intval($shrinkHeightMessageImageUpload2);
+        if ((int)$this->shrinkHeightMessageImageUpload2 !== (int)$shrinkHeightMessageImageUpload2) {
+            $this->shrinkHeightMessageImageUpload2 = (int)$shrinkHeightMessageImageUpload2;
         }
     }
     
@@ -1506,7 +1500,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the thumbnail width message image upload 2 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload2View()
     {
@@ -1516,21 +1510,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 2 view.
      *
-     * @param integer $thumbnailWidthMessageImageUpload2View
+     * @param int $thumbnailWidthMessageImageUpload2View
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload2View($thumbnailWidthMessageImageUpload2View)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload2View) !== intval($thumbnailWidthMessageImageUpload2View)) {
-            $this->thumbnailWidthMessageImageUpload2View = intval($thumbnailWidthMessageImageUpload2View);
+        if ((int)$this->thumbnailWidthMessageImageUpload2View !== (int)$thumbnailWidthMessageImageUpload2View) {
+            $this->thumbnailWidthMessageImageUpload2View = (int)$thumbnailWidthMessageImageUpload2View;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 2 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload2View()
     {
@@ -1540,21 +1534,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 2 view.
      *
-     * @param integer $thumbnailHeightMessageImageUpload2View
+     * @param int $thumbnailHeightMessageImageUpload2View
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload2View($thumbnailHeightMessageImageUpload2View)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload2View) !== intval($thumbnailHeightMessageImageUpload2View)) {
-            $this->thumbnailHeightMessageImageUpload2View = intval($thumbnailHeightMessageImageUpload2View);
+        if ((int)$this->thumbnailHeightMessageImageUpload2View !== (int)$thumbnailHeightMessageImageUpload2View) {
+            $this->thumbnailHeightMessageImageUpload2View = (int)$thumbnailHeightMessageImageUpload2View;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 2 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload2Display()
     {
@@ -1564,21 +1558,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 2 display.
      *
-     * @param integer $thumbnailWidthMessageImageUpload2Display
+     * @param int $thumbnailWidthMessageImageUpload2Display
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload2Display($thumbnailWidthMessageImageUpload2Display)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload2Display) !== intval($thumbnailWidthMessageImageUpload2Display)) {
-            $this->thumbnailWidthMessageImageUpload2Display = intval($thumbnailWidthMessageImageUpload2Display);
+        if ((int)$this->thumbnailWidthMessageImageUpload2Display !== (int)$thumbnailWidthMessageImageUpload2Display) {
+            $this->thumbnailWidthMessageImageUpload2Display = (int)$thumbnailWidthMessageImageUpload2Display;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 2 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload2Display()
     {
@@ -1588,21 +1582,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 2 display.
      *
-     * @param integer $thumbnailHeightMessageImageUpload2Display
+     * @param int $thumbnailHeightMessageImageUpload2Display
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload2Display($thumbnailHeightMessageImageUpload2Display)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload2Display) !== intval($thumbnailHeightMessageImageUpload2Display)) {
-            $this->thumbnailHeightMessageImageUpload2Display = intval($thumbnailHeightMessageImageUpload2Display);
+        if ((int)$this->thumbnailHeightMessageImageUpload2Display !== (int)$thumbnailHeightMessageImageUpload2Display) {
+            $this->thumbnailHeightMessageImageUpload2Display = (int)$thumbnailHeightMessageImageUpload2Display;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 2 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload2Edit()
     {
@@ -1612,21 +1606,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 2 edit.
      *
-     * @param integer $thumbnailWidthMessageImageUpload2Edit
+     * @param int $thumbnailWidthMessageImageUpload2Edit
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload2Edit($thumbnailWidthMessageImageUpload2Edit)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload2Edit) !== intval($thumbnailWidthMessageImageUpload2Edit)) {
-            $this->thumbnailWidthMessageImageUpload2Edit = intval($thumbnailWidthMessageImageUpload2Edit);
+        if ((int)$this->thumbnailWidthMessageImageUpload2Edit !== (int)$thumbnailWidthMessageImageUpload2Edit) {
+            $this->thumbnailWidthMessageImageUpload2Edit = (int)$thumbnailWidthMessageImageUpload2Edit;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 2 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload2Edit()
     {
@@ -1636,21 +1630,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 2 edit.
      *
-     * @param integer $thumbnailHeightMessageImageUpload2Edit
+     * @param int $thumbnailHeightMessageImageUpload2Edit
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload2Edit($thumbnailHeightMessageImageUpload2Edit)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload2Edit) !== intval($thumbnailHeightMessageImageUpload2Edit)) {
-            $this->thumbnailHeightMessageImageUpload2Edit = intval($thumbnailHeightMessageImageUpload2Edit);
+        if ((int)$this->thumbnailHeightMessageImageUpload2Edit !== (int)$thumbnailHeightMessageImageUpload2Edit) {
+            $this->thumbnailHeightMessageImageUpload2Edit = (int)$thumbnailHeightMessageImageUpload2Edit;
         }
     }
     
     /**
      * Returns the enable shrinking for message image upload 3.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableShrinkingForMessageImageUpload3()
     {
@@ -1660,21 +1654,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable shrinking for message image upload 3.
      *
-     * @param boolean $enableShrinkingForMessageImageUpload3
+     * @param bool $enableShrinkingForMessageImageUpload3
      *
      * @return void
      */
     public function setEnableShrinkingForMessageImageUpload3($enableShrinkingForMessageImageUpload3)
     {
-        if (boolval($this->enableShrinkingForMessageImageUpload3) !== boolval($enableShrinkingForMessageImageUpload3)) {
-            $this->enableShrinkingForMessageImageUpload3 = boolval($enableShrinkingForMessageImageUpload3);
+        if ((bool)$this->enableShrinkingForMessageImageUpload3 !== (bool)$enableShrinkingForMessageImageUpload3) {
+            $this->enableShrinkingForMessageImageUpload3 = (bool)$enableShrinkingForMessageImageUpload3;
         }
     }
     
     /**
      * Returns the shrink width message image upload 3.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkWidthMessageImageUpload3()
     {
@@ -1684,21 +1678,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink width message image upload 3.
      *
-     * @param integer $shrinkWidthMessageImageUpload3
+     * @param int $shrinkWidthMessageImageUpload3
      *
      * @return void
      */
     public function setShrinkWidthMessageImageUpload3($shrinkWidthMessageImageUpload3)
     {
-        if (intval($this->shrinkWidthMessageImageUpload3) !== intval($shrinkWidthMessageImageUpload3)) {
-            $this->shrinkWidthMessageImageUpload3 = intval($shrinkWidthMessageImageUpload3);
+        if ((int)$this->shrinkWidthMessageImageUpload3 !== (int)$shrinkWidthMessageImageUpload3) {
+            $this->shrinkWidthMessageImageUpload3 = (int)$shrinkWidthMessageImageUpload3;
         }
     }
     
     /**
      * Returns the shrink height message image upload 3.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkHeightMessageImageUpload3()
     {
@@ -1708,14 +1702,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink height message image upload 3.
      *
-     * @param integer $shrinkHeightMessageImageUpload3
+     * @param int $shrinkHeightMessageImageUpload3
      *
      * @return void
      */
     public function setShrinkHeightMessageImageUpload3($shrinkHeightMessageImageUpload3)
     {
-        if (intval($this->shrinkHeightMessageImageUpload3) !== intval($shrinkHeightMessageImageUpload3)) {
-            $this->shrinkHeightMessageImageUpload3 = intval($shrinkHeightMessageImageUpload3);
+        if ((int)$this->shrinkHeightMessageImageUpload3 !== (int)$shrinkHeightMessageImageUpload3) {
+            $this->shrinkHeightMessageImageUpload3 = (int)$shrinkHeightMessageImageUpload3;
         }
     }
     
@@ -1746,7 +1740,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the thumbnail width message image upload 3 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload3View()
     {
@@ -1756,21 +1750,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 3 view.
      *
-     * @param integer $thumbnailWidthMessageImageUpload3View
+     * @param int $thumbnailWidthMessageImageUpload3View
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload3View($thumbnailWidthMessageImageUpload3View)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload3View) !== intval($thumbnailWidthMessageImageUpload3View)) {
-            $this->thumbnailWidthMessageImageUpload3View = intval($thumbnailWidthMessageImageUpload3View);
+        if ((int)$this->thumbnailWidthMessageImageUpload3View !== (int)$thumbnailWidthMessageImageUpload3View) {
+            $this->thumbnailWidthMessageImageUpload3View = (int)$thumbnailWidthMessageImageUpload3View;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 3 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload3View()
     {
@@ -1780,21 +1774,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 3 view.
      *
-     * @param integer $thumbnailHeightMessageImageUpload3View
+     * @param int $thumbnailHeightMessageImageUpload3View
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload3View($thumbnailHeightMessageImageUpload3View)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload3View) !== intval($thumbnailHeightMessageImageUpload3View)) {
-            $this->thumbnailHeightMessageImageUpload3View = intval($thumbnailHeightMessageImageUpload3View);
+        if ((int)$this->thumbnailHeightMessageImageUpload3View !== (int)$thumbnailHeightMessageImageUpload3View) {
+            $this->thumbnailHeightMessageImageUpload3View = (int)$thumbnailHeightMessageImageUpload3View;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 3 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload3Display()
     {
@@ -1804,21 +1798,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 3 display.
      *
-     * @param integer $thumbnailWidthMessageImageUpload3Display
+     * @param int $thumbnailWidthMessageImageUpload3Display
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload3Display($thumbnailWidthMessageImageUpload3Display)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload3Display) !== intval($thumbnailWidthMessageImageUpload3Display)) {
-            $this->thumbnailWidthMessageImageUpload3Display = intval($thumbnailWidthMessageImageUpload3Display);
+        if ((int)$this->thumbnailWidthMessageImageUpload3Display !== (int)$thumbnailWidthMessageImageUpload3Display) {
+            $this->thumbnailWidthMessageImageUpload3Display = (int)$thumbnailWidthMessageImageUpload3Display;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 3 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload3Display()
     {
@@ -1828,21 +1822,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 3 display.
      *
-     * @param integer $thumbnailHeightMessageImageUpload3Display
+     * @param int $thumbnailHeightMessageImageUpload3Display
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload3Display($thumbnailHeightMessageImageUpload3Display)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload3Display) !== intval($thumbnailHeightMessageImageUpload3Display)) {
-            $this->thumbnailHeightMessageImageUpload3Display = intval($thumbnailHeightMessageImageUpload3Display);
+        if ((int)$this->thumbnailHeightMessageImageUpload3Display !== (int)$thumbnailHeightMessageImageUpload3Display) {
+            $this->thumbnailHeightMessageImageUpload3Display = (int)$thumbnailHeightMessageImageUpload3Display;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 3 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload3Edit()
     {
@@ -1852,21 +1846,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 3 edit.
      *
-     * @param integer $thumbnailWidthMessageImageUpload3Edit
+     * @param int $thumbnailWidthMessageImageUpload3Edit
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload3Edit($thumbnailWidthMessageImageUpload3Edit)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload3Edit) !== intval($thumbnailWidthMessageImageUpload3Edit)) {
-            $this->thumbnailWidthMessageImageUpload3Edit = intval($thumbnailWidthMessageImageUpload3Edit);
+        if ((int)$this->thumbnailWidthMessageImageUpload3Edit !== (int)$thumbnailWidthMessageImageUpload3Edit) {
+            $this->thumbnailWidthMessageImageUpload3Edit = (int)$thumbnailWidthMessageImageUpload3Edit;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 3 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload3Edit()
     {
@@ -1876,21 +1870,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 3 edit.
      *
-     * @param integer $thumbnailHeightMessageImageUpload3Edit
+     * @param int $thumbnailHeightMessageImageUpload3Edit
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload3Edit($thumbnailHeightMessageImageUpload3Edit)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload3Edit) !== intval($thumbnailHeightMessageImageUpload3Edit)) {
-            $this->thumbnailHeightMessageImageUpload3Edit = intval($thumbnailHeightMessageImageUpload3Edit);
+        if ((int)$this->thumbnailHeightMessageImageUpload3Edit !== (int)$thumbnailHeightMessageImageUpload3Edit) {
+            $this->thumbnailHeightMessageImageUpload3Edit = (int)$thumbnailHeightMessageImageUpload3Edit;
         }
     }
     
     /**
      * Returns the enable shrinking for message image upload 4.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableShrinkingForMessageImageUpload4()
     {
@@ -1900,21 +1894,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable shrinking for message image upload 4.
      *
-     * @param boolean $enableShrinkingForMessageImageUpload4
+     * @param bool $enableShrinkingForMessageImageUpload4
      *
      * @return void
      */
     public function setEnableShrinkingForMessageImageUpload4($enableShrinkingForMessageImageUpload4)
     {
-        if (boolval($this->enableShrinkingForMessageImageUpload4) !== boolval($enableShrinkingForMessageImageUpload4)) {
-            $this->enableShrinkingForMessageImageUpload4 = boolval($enableShrinkingForMessageImageUpload4);
+        if ((bool)$this->enableShrinkingForMessageImageUpload4 !== (bool)$enableShrinkingForMessageImageUpload4) {
+            $this->enableShrinkingForMessageImageUpload4 = (bool)$enableShrinkingForMessageImageUpload4;
         }
     }
     
     /**
      * Returns the shrink width message image upload 4.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkWidthMessageImageUpload4()
     {
@@ -1924,21 +1918,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink width message image upload 4.
      *
-     * @param integer $shrinkWidthMessageImageUpload4
+     * @param int $shrinkWidthMessageImageUpload4
      *
      * @return void
      */
     public function setShrinkWidthMessageImageUpload4($shrinkWidthMessageImageUpload4)
     {
-        if (intval($this->shrinkWidthMessageImageUpload4) !== intval($shrinkWidthMessageImageUpload4)) {
-            $this->shrinkWidthMessageImageUpload4 = intval($shrinkWidthMessageImageUpload4);
+        if ((int)$this->shrinkWidthMessageImageUpload4 !== (int)$shrinkWidthMessageImageUpload4) {
+            $this->shrinkWidthMessageImageUpload4 = (int)$shrinkWidthMessageImageUpload4;
         }
     }
     
     /**
      * Returns the shrink height message image upload 4.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkHeightMessageImageUpload4()
     {
@@ -1948,14 +1942,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink height message image upload 4.
      *
-     * @param integer $shrinkHeightMessageImageUpload4
+     * @param int $shrinkHeightMessageImageUpload4
      *
      * @return void
      */
     public function setShrinkHeightMessageImageUpload4($shrinkHeightMessageImageUpload4)
     {
-        if (intval($this->shrinkHeightMessageImageUpload4) !== intval($shrinkHeightMessageImageUpload4)) {
-            $this->shrinkHeightMessageImageUpload4 = intval($shrinkHeightMessageImageUpload4);
+        if ((int)$this->shrinkHeightMessageImageUpload4 !== (int)$shrinkHeightMessageImageUpload4) {
+            $this->shrinkHeightMessageImageUpload4 = (int)$shrinkHeightMessageImageUpload4;
         }
     }
     
@@ -1986,7 +1980,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the thumbnail width message image upload 4 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload4View()
     {
@@ -1996,21 +1990,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 4 view.
      *
-     * @param integer $thumbnailWidthMessageImageUpload4View
+     * @param int $thumbnailWidthMessageImageUpload4View
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload4View($thumbnailWidthMessageImageUpload4View)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload4View) !== intval($thumbnailWidthMessageImageUpload4View)) {
-            $this->thumbnailWidthMessageImageUpload4View = intval($thumbnailWidthMessageImageUpload4View);
+        if ((int)$this->thumbnailWidthMessageImageUpload4View !== (int)$thumbnailWidthMessageImageUpload4View) {
+            $this->thumbnailWidthMessageImageUpload4View = (int)$thumbnailWidthMessageImageUpload4View;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 4 view.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload4View()
     {
@@ -2020,21 +2014,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 4 view.
      *
-     * @param integer $thumbnailHeightMessageImageUpload4View
+     * @param int $thumbnailHeightMessageImageUpload4View
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload4View($thumbnailHeightMessageImageUpload4View)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload4View) !== intval($thumbnailHeightMessageImageUpload4View)) {
-            $this->thumbnailHeightMessageImageUpload4View = intval($thumbnailHeightMessageImageUpload4View);
+        if ((int)$this->thumbnailHeightMessageImageUpload4View !== (int)$thumbnailHeightMessageImageUpload4View) {
+            $this->thumbnailHeightMessageImageUpload4View = (int)$thumbnailHeightMessageImageUpload4View;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 4 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload4Display()
     {
@@ -2044,21 +2038,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 4 display.
      *
-     * @param integer $thumbnailWidthMessageImageUpload4Display
+     * @param int $thumbnailWidthMessageImageUpload4Display
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload4Display($thumbnailWidthMessageImageUpload4Display)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload4Display) !== intval($thumbnailWidthMessageImageUpload4Display)) {
-            $this->thumbnailWidthMessageImageUpload4Display = intval($thumbnailWidthMessageImageUpload4Display);
+        if ((int)$this->thumbnailWidthMessageImageUpload4Display !== (int)$thumbnailWidthMessageImageUpload4Display) {
+            $this->thumbnailWidthMessageImageUpload4Display = (int)$thumbnailWidthMessageImageUpload4Display;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 4 display.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload4Display()
     {
@@ -2068,21 +2062,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 4 display.
      *
-     * @param integer $thumbnailHeightMessageImageUpload4Display
+     * @param int $thumbnailHeightMessageImageUpload4Display
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload4Display($thumbnailHeightMessageImageUpload4Display)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload4Display) !== intval($thumbnailHeightMessageImageUpload4Display)) {
-            $this->thumbnailHeightMessageImageUpload4Display = intval($thumbnailHeightMessageImageUpload4Display);
+        if ((int)$this->thumbnailHeightMessageImageUpload4Display !== (int)$thumbnailHeightMessageImageUpload4Display) {
+            $this->thumbnailHeightMessageImageUpload4Display = (int)$thumbnailHeightMessageImageUpload4Display;
         }
     }
     
     /**
      * Returns the thumbnail width message image upload 4 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailWidthMessageImageUpload4Edit()
     {
@@ -2092,21 +2086,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail width message image upload 4 edit.
      *
-     * @param integer $thumbnailWidthMessageImageUpload4Edit
+     * @param int $thumbnailWidthMessageImageUpload4Edit
      *
      * @return void
      */
     public function setThumbnailWidthMessageImageUpload4Edit($thumbnailWidthMessageImageUpload4Edit)
     {
-        if (intval($this->thumbnailWidthMessageImageUpload4Edit) !== intval($thumbnailWidthMessageImageUpload4Edit)) {
-            $this->thumbnailWidthMessageImageUpload4Edit = intval($thumbnailWidthMessageImageUpload4Edit);
+        if ((int)$this->thumbnailWidthMessageImageUpload4Edit !== (int)$thumbnailWidthMessageImageUpload4Edit) {
+            $this->thumbnailWidthMessageImageUpload4Edit = (int)$thumbnailWidthMessageImageUpload4Edit;
         }
     }
     
     /**
      * Returns the thumbnail height message image upload 4 edit.
      *
-     * @return integer
+     * @return int
      */
     public function getThumbnailHeightMessageImageUpload4Edit()
     {
@@ -2116,21 +2110,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the thumbnail height message image upload 4 edit.
      *
-     * @param integer $thumbnailHeightMessageImageUpload4Edit
+     * @param int $thumbnailHeightMessageImageUpload4Edit
      *
      * @return void
      */
     public function setThumbnailHeightMessageImageUpload4Edit($thumbnailHeightMessageImageUpload4Edit)
     {
-        if (intval($this->thumbnailHeightMessageImageUpload4Edit) !== intval($thumbnailHeightMessageImageUpload4Edit)) {
-            $this->thumbnailHeightMessageImageUpload4Edit = intval($thumbnailHeightMessageImageUpload4Edit);
+        if ((int)$this->thumbnailHeightMessageImageUpload4Edit !== (int)$thumbnailHeightMessageImageUpload4Edit) {
+            $this->thumbnailHeightMessageImageUpload4Edit = (int)$thumbnailHeightMessageImageUpload4Edit;
         }
     }
     
     /**
      * Returns the enable shrinking for image the file.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnableShrinkingForImageTheFile()
     {
@@ -2140,21 +2134,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the enable shrinking for image the file.
      *
-     * @param boolean $enableShrinkingForImageTheFile
+     * @param bool $enableShrinkingForImageTheFile
      *
      * @return void
      */
     public function setEnableShrinkingForImageTheFile($enableShrinkingForImageTheFile)
     {
-        if (boolval($this->enableShrinkingForImageTheFile) !== boolval($enableShrinkingForImageTheFile)) {
-            $this->enableShrinkingForImageTheFile = boolval($enableShrinkingForImageTheFile);
+        if ((bool)$this->enableShrinkingForImageTheFile !== (bool)$enableShrinkingForImageTheFile) {
+            $this->enableShrinkingForImageTheFile = (bool)$enableShrinkingForImageTheFile;
         }
     }
     
     /**
      * Returns the shrink width image the file.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkWidthImageTheFile()
     {
@@ -2164,21 +2158,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink width image the file.
      *
-     * @param integer $shrinkWidthImageTheFile
+     * @param int $shrinkWidthImageTheFile
      *
      * @return void
      */
     public function setShrinkWidthImageTheFile($shrinkWidthImageTheFile)
     {
-        if (intval($this->shrinkWidthImageTheFile) !== intval($shrinkWidthImageTheFile)) {
-            $this->shrinkWidthImageTheFile = intval($shrinkWidthImageTheFile);
+        if ((int)$this->shrinkWidthImageTheFile !== (int)$shrinkWidthImageTheFile) {
+            $this->shrinkWidthImageTheFile = (int)$shrinkWidthImageTheFile;
         }
     }
     
     /**
      * Returns the shrink height image the file.
      *
-     * @return integer
+     * @return int
      */
     public function getShrinkHeightImageTheFile()
     {
@@ -2188,14 +2182,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the shrink height image the file.
      *
-     * @param integer $shrinkHeightImageTheFile
+     * @param int $shrinkHeightImageTheFile
      *
      * @return void
      */
     public function setShrinkHeightImageTheFile($shrinkHeightImageTheFile)
     {
-        if (intval($this->shrinkHeightImageTheFile) !== intval($shrinkHeightImageTheFile)) {
-            $this->shrinkHeightImageTheFile = intval($shrinkHeightImageTheFile);
+        if ((int)$this->shrinkHeightImageTheFile !== (int)$shrinkHeightImageTheFile) {
+            $this->shrinkHeightImageTheFile = (int)$shrinkHeightImageTheFile;
         }
     }
     
@@ -2226,7 +2220,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the moderation group for messages.
      *
-     * @return integer
+     * @return int
      */
     public function getModerationGroupForMessages()
     {
@@ -2236,7 +2230,7 @@ abstract class AbstractAppSettings
     /**
      * Sets the moderation group for messages.
      *
-     * @param integer $moderationGroupForMessages
+     * @param int $moderationGroupForMessages
      *
      * @return void
      */
@@ -2250,7 +2244,7 @@ abstract class AbstractAppSettings
     /**
      * Returns the allow moderation specific creator for message.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAllowModerationSpecificCreatorForMessage()
     {
@@ -2260,21 +2254,21 @@ abstract class AbstractAppSettings
     /**
      * Sets the allow moderation specific creator for message.
      *
-     * @param boolean $allowModerationSpecificCreatorForMessage
+     * @param bool $allowModerationSpecificCreatorForMessage
      *
      * @return void
      */
     public function setAllowModerationSpecificCreatorForMessage($allowModerationSpecificCreatorForMessage)
     {
-        if (boolval($this->allowModerationSpecificCreatorForMessage) !== boolval($allowModerationSpecificCreatorForMessage)) {
-            $this->allowModerationSpecificCreatorForMessage = boolval($allowModerationSpecificCreatorForMessage);
+        if ((bool)$this->allowModerationSpecificCreatorForMessage !== (bool)$allowModerationSpecificCreatorForMessage) {
+            $this->allowModerationSpecificCreatorForMessage = (bool)$allowModerationSpecificCreatorForMessage;
         }
     }
     
     /**
      * Returns the allow moderation specific creation date for message.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAllowModerationSpecificCreationDateForMessage()
     {
@@ -2284,14 +2278,14 @@ abstract class AbstractAppSettings
     /**
      * Sets the allow moderation specific creation date for message.
      *
-     * @param boolean $allowModerationSpecificCreationDateForMessage
+     * @param bool $allowModerationSpecificCreationDateForMessage
      *
      * @return void
      */
     public function setAllowModerationSpecificCreationDateForMessage($allowModerationSpecificCreationDateForMessage)
     {
-        if (boolval($this->allowModerationSpecificCreationDateForMessage) !== boolval($allowModerationSpecificCreationDateForMessage)) {
-            $this->allowModerationSpecificCreationDateForMessage = boolval($allowModerationSpecificCreationDateForMessage);
+        if ((bool)$this->allowModerationSpecificCreationDateForMessage !== (bool)$allowModerationSpecificCreationDateForMessage) {
+            $this->allowModerationSpecificCreationDateForMessage = (bool)$allowModerationSpecificCreationDateForMessage;
         }
     }
     
@@ -2532,7 +2526,7 @@ abstract class AbstractAppSettings
         // prepare group selectors, fallback to admin group for undefined values
         $adminGroupId = GroupsConstant::GROUP_ID_ADMIN;
         $groupId = $this->getModerationGroupForMessages();
-        if ($groupId < 1) {
+        if (GROUP_ID_USERS > $groupId) {
             $groupId = $adminGroupId;
         }
     

@@ -38,13 +38,6 @@ abstract class AbstractItemType extends AbstractContentFormType
      */
     protected $entityDisplayHelper;
 
-    /**
-     * ItemType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param EntityFactory $entityFactory
-     * @param EntityDisplayHelper $entityDisplayHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
@@ -55,9 +48,6 @@ abstract class AbstractItemType extends AbstractContentFormType
         $this->entityDisplayHelper = $entityDisplayHelper;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addObjectTypeField($builder, $options);
@@ -68,9 +58,6 @@ abstract class AbstractItemType extends AbstractContentFormType
 
     /**
      * Adds an object type field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
@@ -82,9 +69,6 @@ abstract class AbstractItemType extends AbstractContentFormType
 
     /**
      * Adds a item identifier field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addIdField(FormBuilderInterface $builder, array $options = [])
     {
@@ -109,9 +93,6 @@ abstract class AbstractItemType extends AbstractContentFormType
 
     /**
      * Adds a display mode field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addDisplayModeField(FormBuilderInterface $builder, array $options = [])
     {
@@ -132,9 +113,6 @@ abstract class AbstractItemType extends AbstractContentFormType
 
     /**
      * Adds template fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addTemplateField(FormBuilderInterface $builder, array $options = [])
     {
@@ -154,17 +132,11 @@ abstract class AbstractItemType extends AbstractContentFormType
         ;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'munewsmodule_contenttype_detail';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver

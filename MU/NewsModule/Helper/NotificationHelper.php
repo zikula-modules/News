@@ -29,7 +29,7 @@ class NotificationHelper extends AbstractNotificationHelper
         $request = $this->requestStack->getCurrentRequest();
         $zkFunc = $request->attributes->get('_zkFunc');
 
-        if ('display' != $zkFunc) {
+        if ('display' !== $zkFunc) {
             return parent::process($args);
         }
 

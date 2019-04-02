@@ -21,21 +21,15 @@ use MU\NewsModule\Block\Form\Type\ItemBlockType;
  */
 abstract class AbstractItemBlock extends AbstractBlockHandler
 {
-    /**
-     * @inheritDoc
-     */
     public function getType()
     {
         return $this->__('News detail', 'munewsmodule');
     }
     
-    /**
-     * @inheritDoc
-     */
     public function display(array $properties = [])
     {
         // only show block content if the user has the required permissions
-        if (!$this->hasPermission('MUNewsModule:ItemBlock:', "$properties[title]::", ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission('MUNewsModule:ItemBlock:', $properties['title'] . '::', ACCESS_OVERVIEW)) {
             return '';
         }
     
@@ -49,13 +43,13 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
     
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['name' => 'detail'];
-        if (!isset($properties['objectType']) || !in_array($properties['objectType'], $controllerHelper->getObjectTypes('block', $contextArgs))) {
+        if (!isset($properties['objectType']) || !in_array($properties['objectType'], $controllerHelper->getObjectTypes('block', $contextArgs), true)) {
             $properties['objectType'] = $controllerHelper->getDefaultObjectType('block', $contextArgs);
         }
     
         $controllerReference = new ControllerReference('MUNewsModule:External:display', $this->getDisplayArguments($properties), ['template' => $properties['customTemplate']]);
     
-        return $this->get('fragment.handler')->render($controllerReference, 'inline', []);
+        return $this->get('fragment.handler')->render($controllerReference);
     }
     
     /**
@@ -75,23 +69,17 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
         ];
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getFormClassName()
     {
         return ItemBlockType::class;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getFormOptions()
     {
         $objectType = 'message';
     
         $request = $this->get('request_stack')->getCurrentRequest();
-        if ($request->attributes->has('blockEntity')) {
+        if (null !== $request && $request->attributes->has('blockEntity')) {
             $blockEntity = $request->attributes->get('blockEntity');
             if (is_object($blockEntity) && method_exists($blockEntity, 'getProperties')) {
                 $blockProperties = $blockEntity->getProperties();
@@ -109,9 +97,6 @@ abstract class AbstractItemBlock extends AbstractBlockHandler
         ];
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getFormTemplate()
     {
         return '@MUNewsModule/Block/item_modify.html.twig';

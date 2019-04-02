@@ -103,28 +103,26 @@ class UploadHelper extends AbstractUploadHelper
         $maxSize = $this->moduleVars['maxSize'];
         
         // if not empty, validate
-        if ($maxSize != '') {
-            if (strpos($maxSize, 'k') !== false) {
+        if ('' !== $maxSize) {
+            if (false !== strpos($maxSize, 'k')) {
                 $sizeType = 'kilo';
-            } elseif(strpos($maxSize, 'M') !== false) {
+            } elseif (false !== strpos($maxSize, 'M')) {
                 $sizeType = 'mega';
-            } elseif (strpos($maxSize, 'k') === false && strpos($maxSize, 'M') === false) {
+            } elseif (false === strpos($maxSize, 'k') && false === strpos($maxSize, 'M')) {
                 $sizeType = 'byte';
             }
 
-            if ($sizeType == 'byte') {
-                if ($fileSize > $maxSize) {
-                    $flashBag->add('error', $this->__('Error! This file is too big.'));
-                    $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'byte');
+            if ('byte' === $sizeType && $fileSize > $maxSize) {
+                $flashBag->add('error', $this->__('Error! This file is too big.'));
+                $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'byte');
 
-                    return false;
-                }
+                return false;
             }
 
-            if ($sizeType == 'kilo') {
+            if ('kilo' === $sizeType) {
                 $maxSize = str_replace('k', '', $maxSize);
                 $setMaxSize = $maxSize;
-                $maxSize = $maxSize * 1024;
+                $maxSize *= 1024;
                 if ($fileSize > $maxSize) {
                     $flashBag->add('error', $this->__('Error! This file is too big.'));
                     $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'kilobyte!');
@@ -133,7 +131,7 @@ class UploadHelper extends AbstractUploadHelper
                 }
             }
 
-            if ($sizeType == 'mega') {
+            if ('mega' === $sizeType) {
                 $maxSize = str_replace('M', '', $maxSize);
                 $setMaxSize = $maxSize;
                 $maxSize = $maxSize * 1024 * 1024;

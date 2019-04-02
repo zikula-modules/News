@@ -16,6 +16,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 use MU\NewsModule\Entity\Factory\EntityInitialiser;
+use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\Helper\CollectionFilterHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 
@@ -30,7 +32,7 @@ abstract class AbstractEntityFactory
     protected $entityManager;
 
     /**
-     * @var EntityInitialiser The entity initialiser for dynamic application of default values
+     * @var EntityInitialiser
      */
     protected $entityInitialiser;
 
@@ -44,14 +46,6 @@ abstract class AbstractEntityFactory
      */
     protected $featureActivationHelper;
 
-    /**
-     * EntityFactory constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EntityInitialiser $entityInitialiser
-     * @param CollectionFilterHelper $collectionFilterHelper
-     * @param FeatureActivationHelper $featureActivationHelper
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         EntityInitialiser $entityInitialiser,
@@ -75,10 +69,11 @@ abstract class AbstractEntityFactory
     {
         $entityClass = 'MU\\NewsModule\\Entity\\' . ucfirst($objectType) . 'Entity';
 
+        /** @var EntityRepository $repository */
         $repository = $this->getEntityManager()->getRepository($entityClass);
         $repository->setCollectionFilterHelper($this->collectionFilterHelper);
 
-        if (in_array($objectType, ['message'])) {
+        if (in_array($objectType, ['message'], true)) {
             $repository->setTranslationsEnabled($this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, $objectType));
         }
 
@@ -88,13 +83,11 @@ abstract class AbstractEntityFactory
     /**
      * Creates a new message instance.
      *
-     * @return \MU\NewsModule\Entity\MessageEntity The newly created entity instance
+     * @return MessageEntity The newly created entity instance
      */
     public function createMessage()
     {
-        $entityClass = 'MU\\NewsModule\\Entity\\MessageEntity';
-
-        $entity = new $entityClass();
+        $entity = new MessageEntity();
 
         $this->entityInitialiser->initMessage($entity);
 
@@ -104,13 +97,11 @@ abstract class AbstractEntityFactory
     /**
      * Creates a new image instance.
      *
-     * @return \MU\NewsModule\Entity\ImageEntity The newly created entity instance
+     * @return ImageEntity The newly created entity instance
      */
     public function createImage()
     {
-        $entityClass = 'MU\\NewsModule\\Entity\\ImageEntity';
-
-        $entity = new $entityClass();
+        $entity = new ImageEntity();
 
         $this->entityInitialiser->initImage($entity);
 
@@ -153,14 +144,13 @@ abstract class AbstractEntityFactory
      *
      * @return void
      */
-    public function setEntityManager($entityManager)
+    public function setEntityManager(EntityManagerInterface $entityManager = null)
     {
-        if ($this->entityManager != $entityManager) {
+        if ($this->entityManager !== $entityManager) {
             $this->entityManager = $entityManager;
         }
     }
     
-
     /**
      * Returns the entity initialiser.
      *
@@ -178,9 +168,9 @@ abstract class AbstractEntityFactory
      *
      * @return void
      */
-    public function setEntityInitialiser($entityInitialiser)
+    public function setEntityInitialiser(EntityInitialiser $entityInitialiser = null)
     {
-        if ($this->entityInitialiser != $entityInitialiser) {
+        if ($this->entityInitialiser !== $entityInitialiser) {
             $this->entityInitialiser = $entityInitialiser;
         }
     }

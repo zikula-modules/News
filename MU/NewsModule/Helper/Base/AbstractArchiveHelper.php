@@ -13,10 +13,12 @@
 namespace MU\NewsModule\Helper\Base;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\Core\RouteUrl;
 use MU\NewsModule\Entity\Factory\EntityFactory;
 use MU\NewsModule\Helper\HookHelper;
@@ -63,17 +65,6 @@ abstract class AbstractArchiveHelper
      */
     protected $hookHelper;
     
-    /**
-     * ArchiveHelper constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RequestStack $requestStack
-     * @param LoggerInterface $logger
-     * @param EntityFactory $entityFactory
-     * @param PermissionHelper $permissionHelper
-     * @param WorkflowHelper $workflowHelper
-     * @param HookHelper $hookHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
@@ -95,7 +86,7 @@ abstract class AbstractArchiveHelper
     /**
      * Moves obsolete data into the archive.
      *
-     * @param integer $probabilityPercent Execution probability
+     * @param int $probabilityPercent Execution probability
      */
     public function archiveObsoleteObjects($probabilityPercent = 75)
     {
@@ -135,8 +126,8 @@ abstract class AbstractArchiveHelper
      * Returns the list of entities which should be archived.
      *
      * @param string $objectType Name of treated entity type
-     * @param string $endField   Name of field storing the end date
-     * @param mixed  $endDate    Datetime or date string for the threshold date
+     * @param string $endField Name of field storing the end date
+     * @param mixed $endDate Datetime or date string for the threshold date
      *
      * @return array List of affected entities
      */
@@ -166,9 +157,9 @@ abstract class AbstractArchiveHelper
     /**
      * Archives a single entity.
      *
-     * @param object $entity The given entity instance
+     * @param EntityAccess $entity The given entity instance
      *
-     * @return boolean True if everything worked successfully, false otherwise
+     * @return bool True if everything worked successfully, false otherwise
      */
     protected function archiveSingleObject($entity)
     {
@@ -176,7 +167,7 @@ abstract class AbstractArchiveHelper
         if ($entity->supportsHookSubscribers()) {
             // Let any hooks perform additional validation actions
             $validationErrors = $this->hookHelper->callValidationHooks($entity, UiHooksCategory::TYPE_VALIDATE_EDIT);
-            if (count($validationErrors) > 0) {
+            if (0 < count($validationErrors)) {
                 if (null !== $request) {
                     $flashBag = $request->getSession()->getFlashBag();
                     foreach ($validationErrors as $message) {
@@ -192,7 +183,7 @@ abstract class AbstractArchiveHelper
         try {
             // execute the workflow action
             $success = $this->workflowHelper->executeAction($entity, 'archive');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             if (null !== $request) {
                 $flashBag = $request->getSession()->getFlashBag();
                 $flashBag->add('error', $this->translator->__f('Sorry, but an error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]) . '  ' . $exception->getMessage());
@@ -218,5 +209,7 @@ abstract class AbstractArchiveHelper
         	}
             $this->hookHelper->callProcessHooks($entity, UiHooksCategory::TYPE_PROCESS_EDIT, $url);
         }
+    
+        return $success;
     }
 }

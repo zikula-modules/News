@@ -14,8 +14,10 @@ namespace MU\NewsModule\Entity\Base;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -59,7 +61,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
-     * @var integer $id
+     * @var int $id
      */
     protected $id = 0;
     
@@ -87,7 +89,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="text", length=10000)
      * @Assert\NotBlank()
      * @Assert\Length(min="0", max="10000")
-     * @var text $startText
+     * @var string $startText
      */
     protected $startText = '';
     
@@ -133,7 +135,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="text", length=20000)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="20000")
-     * @var text $mainText
+     * @var string $mainText
      */
     protected $mainText = '';
     
@@ -142,7 +144,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=100000000000)
-     * @var integer $amountOfViews
+     * @var int $amountOfViews
      */
     protected $amountOfViews = 0;
     
@@ -165,7 +167,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="text", length=2000)
      * @Assert\NotNull()
      * @Assert\Length(min="0", max="2000")
-     * @var text $notes
+     * @var string $notes
      */
     protected $notes = '';
     
@@ -173,7 +175,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="boolean")
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $displayOnIndex
+     * @var bool $displayOnIndex
      */
     protected $displayOnIndex = true;
     
@@ -190,7 +192,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="boolean")
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $allowComments
+     * @var bool $allowComments
      */
     protected $allowComments = true;
     
@@ -308,7 +310,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
-     * @var DateTime $startDate
+     * @var \DateTime $startDate
      */
     protected $startDate;
     
@@ -316,7 +318,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="boolean")
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $noEndDate
+     * @var bool $noEndDate
      */
     protected $noEndDate = true;
     
@@ -324,7 +326,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      * @Assert\Expression("!value or value > this.getStartDate()", message="The start must be before the end.")
-     * @var DateTime $endDate
+     * @var \DateTime $endDate
      */
     protected $endDate;
     
@@ -333,7 +335,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=100)
-     * @var integer $weight
+     * @var int $weight
      */
     protected $weight = 1;
     
@@ -417,7 +419,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     public function set_objectType($_objectType)
     {
-        if ($this->_objectType != $_objectType) {
+        if ($this->_objectType !== $_objectType) {
             $this->_objectType = isset($_objectType) ? $_objectType : '';
         }
     }
@@ -441,7 +443,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     public function set_uploadBasePath($_uploadBasePath)
     {
-        if ($this->_uploadBasePath != $_uploadBasePath) {
+        if ($this->_uploadBasePath !== $_uploadBasePath) {
             $this->_uploadBasePath = isset($_uploadBasePath) ? $_uploadBasePath : '';
         }
     }
@@ -465,7 +467,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      */
     public function set_uploadBaseUrl($_uploadBaseUrl)
     {
-        if ($this->_uploadBaseUrl != $_uploadBaseUrl) {
+        if ($this->_uploadBaseUrl !== $_uploadBaseUrl) {
             $this->_uploadBaseUrl = isset($_uploadBaseUrl) ? $_uploadBaseUrl : '';
         }
     }
@@ -474,7 +476,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -484,14 +486,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the id.
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return void
      */
     public function setId($id)
     {
-        if (intval($this->id) !== intval($id)) {
-            $this->id = intval($id);
+        if ((int)$this->id !== (int)$id) {
+            $this->id = (int)$id;
         }
     }
     
@@ -546,7 +548,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the start text.
      *
-     * @return text
+     * @return string
      */
     public function getStartText()
     {
@@ -556,7 +558,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the start text.
      *
-     * @param text $startText
+     * @param string $startText
      *
      * @return void
      */
@@ -580,7 +582,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload1FileName;
         if (!empty($fileName) && !$this->_uploadBasePath) {
-            throw new \RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload1().');
+            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload1().');
         }
     
         $filePath = $this->_uploadBasePath . 'imageupload1/' . $fileName;
@@ -599,21 +601,19 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 1.
      *
-     * @param File|null $imageUpload1
-     *
      * @return void
      */
-    public function setImageUpload1($imageUpload1)
+    public function setImageUpload1(File $imageUpload1 = null)
     {
         if (null === $this->imageUpload1 && null === $imageUpload1) {
             return;
         }
-        if (null !== $this->imageUpload1 && null !== $imageUpload1 && $this->imageUpload1->getRealPath() === $imageUpload1->getRealPath()) {
+        if (null !== $this->imageUpload1 && null !== $imageUpload1 && $this->imageUpload1 instanceof File && $this->imageUpload1->getRealPath() === $imageUpload1->getRealPath()) {
             return;
         }
         $this->imageUpload1 = $imageUpload1;
     
-        if (null === $this->imageUpload1 || '' == $this->imageUpload1) {
+        if (null === $this->imageUpload1 || '' === $this->imageUpload1) {
             $this->setImageUpload1FileName('');
             $this->setImageUpload1Url('');
             $this->setImageUpload1Meta([]);
@@ -639,7 +639,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload1FileName($imageUpload1FileName)
+    public function setImageUpload1FileName($imageUpload1FileName = null)
     {
         if ($this->imageUpload1FileName !== $imageUpload1FileName) {
             $this->imageUpload1FileName = $imageUpload1FileName;
@@ -663,7 +663,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload1Url($imageUpload1Url)
+    public function setImageUpload1Url($imageUpload1Url = null)
     {
         if ($this->imageUpload1Url !== $imageUpload1Url) {
             $this->imageUpload1Url = $imageUpload1Url;
@@ -687,7 +687,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload1Meta($imageUpload1Meta = [])
+    public function setImageUpload1Meta(array $imageUpload1Meta = [])
     {
         if ($this->imageUpload1Meta !== $imageUpload1Meta) {
             $this->imageUpload1Meta = $imageUpload1Meta;
@@ -697,7 +697,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the main text.
      *
-     * @return text
+     * @return string
      */
     public function getMainText()
     {
@@ -707,7 +707,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the main text.
      *
-     * @param text $mainText
+     * @param string $mainText
      *
      * @return void
      */
@@ -721,7 +721,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the amount of views.
      *
-     * @return integer
+     * @return int
      */
     public function getAmountOfViews()
     {
@@ -731,14 +731,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the amount of views.
      *
-     * @param integer $amountOfViews
+     * @param int $amountOfViews
      *
      * @return void
      */
     public function setAmountOfViews($amountOfViews)
     {
-        if (intval($this->amountOfViews) !== intval($amountOfViews)) {
-            $this->amountOfViews = intval($amountOfViews);
+        if ((int)$this->amountOfViews !== (int)$amountOfViews) {
+            $this->amountOfViews = (int)$amountOfViews;
         }
     }
     
@@ -783,7 +783,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setApprover($approver)
+    public function setApprover($approver = null)
     {
         if ($this->approver !== $approver) {
             $this->approver = $approver;
@@ -793,7 +793,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the notes.
      *
-     * @return text
+     * @return string
      */
     public function getNotes()
     {
@@ -803,7 +803,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the notes.
      *
-     * @param text $notes
+     * @param string $notes
      *
      * @return void
      */
@@ -817,7 +817,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the display on index.
      *
-     * @return boolean
+     * @return bool
      */
     public function getDisplayOnIndex()
     {
@@ -827,14 +827,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the display on index.
      *
-     * @param boolean $displayOnIndex
+     * @param bool $displayOnIndex
      *
      * @return void
      */
     public function setDisplayOnIndex($displayOnIndex)
     {
-        if (boolval($this->displayOnIndex) !== boolval($displayOnIndex)) {
-            $this->displayOnIndex = boolval($displayOnIndex);
+        if ((bool)$this->displayOnIndex !== (bool)$displayOnIndex) {
+            $this->displayOnIndex = (bool)$displayOnIndex;
         }
     }
     
@@ -865,7 +865,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the allow comments.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAllowComments()
     {
@@ -875,14 +875,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the allow comments.
      *
-     * @param boolean $allowComments
+     * @param bool $allowComments
      *
      * @return void
      */
     public function setAllowComments($allowComments)
     {
-        if (boolval($this->allowComments) !== boolval($allowComments)) {
-            $this->allowComments = boolval($allowComments);
+        if ((bool)$this->allowComments !== (bool)$allowComments) {
+            $this->allowComments = (bool)$allowComments;
         }
     }
     
@@ -899,7 +899,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload2FileName;
         if (!empty($fileName) && !$this->_uploadBasePath) {
-            throw new \RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload2().');
+            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload2().');
         }
     
         $filePath = $this->_uploadBasePath . 'imageupload2/' . $fileName;
@@ -918,21 +918,19 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 2.
      *
-     * @param File|null $imageUpload2
-     *
      * @return void
      */
-    public function setImageUpload2($imageUpload2)
+    public function setImageUpload2(File $imageUpload2 = null)
     {
         if (null === $this->imageUpload2 && null === $imageUpload2) {
             return;
         }
-        if (null !== $this->imageUpload2 && null !== $imageUpload2 && $this->imageUpload2->getRealPath() === $imageUpload2->getRealPath()) {
+        if (null !== $this->imageUpload2 && null !== $imageUpload2 && $this->imageUpload2 instanceof File && $this->imageUpload2->getRealPath() === $imageUpload2->getRealPath()) {
             return;
         }
         $this->imageUpload2 = $imageUpload2;
     
-        if (null === $this->imageUpload2 || '' == $this->imageUpload2) {
+        if (null === $this->imageUpload2 || '' === $this->imageUpload2) {
             $this->setImageUpload2FileName('');
             $this->setImageUpload2Url('');
             $this->setImageUpload2Meta([]);
@@ -958,7 +956,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload2FileName($imageUpload2FileName)
+    public function setImageUpload2FileName($imageUpload2FileName = null)
     {
         if ($this->imageUpload2FileName !== $imageUpload2FileName) {
             $this->imageUpload2FileName = $imageUpload2FileName;
@@ -982,7 +980,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload2Url($imageUpload2Url)
+    public function setImageUpload2Url($imageUpload2Url = null)
     {
         if ($this->imageUpload2Url !== $imageUpload2Url) {
             $this->imageUpload2Url = $imageUpload2Url;
@@ -1006,7 +1004,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload2Meta($imageUpload2Meta = [])
+    public function setImageUpload2Meta(array $imageUpload2Meta = [])
     {
         if ($this->imageUpload2Meta !== $imageUpload2Meta) {
             $this->imageUpload2Meta = $imageUpload2Meta;
@@ -1026,7 +1024,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload3FileName;
         if (!empty($fileName) && !$this->_uploadBasePath) {
-            throw new \RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload3().');
+            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload3().');
         }
     
         $filePath = $this->_uploadBasePath . 'imageupload3/' . $fileName;
@@ -1045,21 +1043,19 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 3.
      *
-     * @param File|null $imageUpload3
-     *
      * @return void
      */
-    public function setImageUpload3($imageUpload3)
+    public function setImageUpload3(File $imageUpload3 = null)
     {
         if (null === $this->imageUpload3 && null === $imageUpload3) {
             return;
         }
-        if (null !== $this->imageUpload3 && null !== $imageUpload3 && $this->imageUpload3->getRealPath() === $imageUpload3->getRealPath()) {
+        if (null !== $this->imageUpload3 && null !== $imageUpload3 && $this->imageUpload3 instanceof File && $this->imageUpload3->getRealPath() === $imageUpload3->getRealPath()) {
             return;
         }
         $this->imageUpload3 = $imageUpload3;
     
-        if (null === $this->imageUpload3 || '' == $this->imageUpload3) {
+        if (null === $this->imageUpload3 || '' === $this->imageUpload3) {
             $this->setImageUpload3FileName('');
             $this->setImageUpload3Url('');
             $this->setImageUpload3Meta([]);
@@ -1085,7 +1081,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload3FileName($imageUpload3FileName)
+    public function setImageUpload3FileName($imageUpload3FileName = null)
     {
         if ($this->imageUpload3FileName !== $imageUpload3FileName) {
             $this->imageUpload3FileName = $imageUpload3FileName;
@@ -1109,7 +1105,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload3Url($imageUpload3Url)
+    public function setImageUpload3Url($imageUpload3Url = null)
     {
         if ($this->imageUpload3Url !== $imageUpload3Url) {
             $this->imageUpload3Url = $imageUpload3Url;
@@ -1133,7 +1129,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload3Meta($imageUpload3Meta = [])
+    public function setImageUpload3Meta(array $imageUpload3Meta = [])
     {
         if ($this->imageUpload3Meta !== $imageUpload3Meta) {
             $this->imageUpload3Meta = $imageUpload3Meta;
@@ -1153,7 +1149,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload4FileName;
         if (!empty($fileName) && !$this->_uploadBasePath) {
-            throw new \RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload4().');
+            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload4().');
         }
     
         $filePath = $this->_uploadBasePath . 'imageupload4/' . $fileName;
@@ -1172,21 +1168,19 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 4.
      *
-     * @param File|null $imageUpload4
-     *
      * @return void
      */
-    public function setImageUpload4($imageUpload4)
+    public function setImageUpload4(File $imageUpload4 = null)
     {
         if (null === $this->imageUpload4 && null === $imageUpload4) {
             return;
         }
-        if (null !== $this->imageUpload4 && null !== $imageUpload4 && $this->imageUpload4->getRealPath() === $imageUpload4->getRealPath()) {
+        if (null !== $this->imageUpload4 && null !== $imageUpload4 && $this->imageUpload4 instanceof File && $this->imageUpload4->getRealPath() === $imageUpload4->getRealPath()) {
             return;
         }
         $this->imageUpload4 = $imageUpload4;
     
-        if (null === $this->imageUpload4 || '' == $this->imageUpload4) {
+        if (null === $this->imageUpload4 || '' === $this->imageUpload4) {
             $this->setImageUpload4FileName('');
             $this->setImageUpload4Url('');
             $this->setImageUpload4Meta([]);
@@ -1212,7 +1206,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload4FileName($imageUpload4FileName)
+    public function setImageUpload4FileName($imageUpload4FileName = null)
     {
         if ($this->imageUpload4FileName !== $imageUpload4FileName) {
             $this->imageUpload4FileName = $imageUpload4FileName;
@@ -1236,7 +1230,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload4Url($imageUpload4Url)
+    public function setImageUpload4Url($imageUpload4Url = null)
     {
         if ($this->imageUpload4Url !== $imageUpload4Url) {
             $this->imageUpload4Url = $imageUpload4Url;
@@ -1260,7 +1254,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImageUpload4Meta($imageUpload4Meta = [])
+    public function setImageUpload4Meta(array $imageUpload4Meta = [])
     {
         if ($this->imageUpload4Meta !== $imageUpload4Meta) {
             $this->imageUpload4Meta = $imageUpload4Meta;
@@ -1270,7 +1264,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the start date.
      *
-     * @return DateTime
+     * @return \DateTimeInterface
      */
     public function getStartDate()
     {
@@ -1280,18 +1274,18 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the start date.
      *
-     * @param DateTime $startDate
+     * @param \DateTimeInterface $startDate
      *
      * @return void
      */
-    public function setStartDate($startDate)
+    public function setStartDate($startDate = null)
     {
         if ($this->startDate !== $startDate) {
-            if (!(null == $startDate && empty($startDate)) && !(is_object($startDate) && $startDate instanceOf \DateTimeInterface)) {
+            if (!(null === $startDate && empty($startDate)) && !(is_object($startDate) && $startDate instanceOf \DateTimeInterface)) {
                 $startDate = new \DateTime($startDate);
             }
             
-            if ($this->startDate != $startDate) {
+            if ($this->startDate !== $startDate) {
                 $this->startDate = $startDate;
             }
         }
@@ -1300,7 +1294,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the no end date.
      *
-     * @return boolean
+     * @return bool
      */
     public function getNoEndDate()
     {
@@ -1310,21 +1304,21 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the no end date.
      *
-     * @param boolean $noEndDate
+     * @param bool $noEndDate
      *
      * @return void
      */
     public function setNoEndDate($noEndDate)
     {
-        if (boolval($this->noEndDate) !== boolval($noEndDate)) {
-            $this->noEndDate = boolval($noEndDate);
+        if ((bool)$this->noEndDate !== (bool)$noEndDate) {
+            $this->noEndDate = (bool)$noEndDate;
         }
     }
     
     /**
      * Returns the end date.
      *
-     * @return DateTime
+     * @return \DateTimeInterface
      */
     public function getEndDate()
     {
@@ -1334,18 +1328,18 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the end date.
      *
-     * @param DateTime $endDate
+     * @param \DateTimeInterface $endDate
      *
      * @return void
      */
-    public function setEndDate($endDate)
+    public function setEndDate($endDate = null)
     {
         if ($this->endDate !== $endDate) {
-            if (!(null == $endDate && empty($endDate)) && !(is_object($endDate) && $endDate instanceOf \DateTimeInterface)) {
+            if (!(null === $endDate && empty($endDate)) && !(is_object($endDate) && $endDate instanceOf \DateTimeInterface)) {
                 $endDate = new \DateTime($endDate);
             }
             
-            if ($this->endDate != $endDate) {
+            if ($this->endDate !== $endDate) {
                 $this->endDate = $endDate;
             }
         }
@@ -1354,7 +1348,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the weight.
      *
-     * @return integer
+     * @return int
      */
     public function getWeight()
     {
@@ -1364,14 +1358,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the weight.
      *
-     * @param integer $weight
+     * @param int $weight
      *
      * @return void
      */
     public function setWeight($weight)
     {
-        if (intval($this->weight) !== intval($weight)) {
-            $this->weight = intval($weight);
+        if ((int)$this->weight !== (int)$weight) {
+            $this->weight = (int)$weight;
         }
     }
     
@@ -1392,9 +1386,9 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setSlug($slug)
+    public function setSlug($slug = null)
     {
-        if ($this->slug != $slug) {
+        if ($this->slug !== $slug) {
             $this->slug = $slug;
         }
     }
@@ -1416,9 +1410,9 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setLocale($locale)
+    public function setLocale($locale = null)
     {
-        if ($this->locale != $locale) {
+        if ($this->locale !== $locale) {
             $this->locale = $locale;
         }
     }
@@ -1426,7 +1420,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the attributes.
      *
-     * @return array
+     * @return Collection[]
      */
     public function getAttributes()
     {
@@ -1436,7 +1430,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Set attribute.
      *
-     * @param string $name  Attribute name
+     * @param string $name Attribute name
      * @param string $value Attribute value
      *
      * @return void
@@ -1457,7 +1451,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the categories.
      *
-     * @return ArrayCollection[]
+     * @return Collection[]
      */
     public function getCategories()
     {
@@ -1468,14 +1462,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the categories.
      *
-     * @param ArrayCollection $categories List of categories
-     *
      * @return void
      */
-    public function setCategories(ArrayCollection $categories)
+    public function setCategories(Collection $categories)
     {
         foreach ($this->categories as $category) {
-            if (false === $key = $this->collectionContains($categories, $category)) {
+            if (false === ($key = $this->collectionContains($categories, $category))) {
                 $this->categories->removeElement($category);
             } else {
                 $categories->remove($key);
@@ -1489,17 +1481,17 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Checks if a collection contains an element based only on two criteria (categoryRegistryId, category).
      *
-     * @param ArrayCollection $collection Given collection
+     * @param Collection $collection Given collection
      * @param \MU\NewsModule\Entity\MessageCategoryEntity $element Element to search for
      *
      * @return bool|int
      */
-    private function collectionContains(ArrayCollection $collection, \MU\NewsModule\Entity\MessageCategoryEntity $element)
+    private function collectionContains(Collection $collection, \MU\NewsModule\Entity\MessageCategoryEntity $element)
     {
         foreach ($collection as $key => $category) {
             /** @var \MU\NewsModule\Entity\MessageCategoryEntity $category */
-            if ($category->getCategoryRegistryId() == $element->getCategoryRegistryId()
-                && $category->getCategory() == $element->getCategory()
+            if ($category->getCategoryRegistryId() === $element->getCategoryRegistryId()
+                && $category->getCategory() === $element->getCategory()
             ) {
                 return $key;
             }
@@ -1525,7 +1517,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setImages($images)
+    public function setImages($images = null)
     {
         foreach ($this->images as $imageSingle) {
             $this->removeImages($imageSingle);
@@ -1579,7 +1571,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @param boolean $forEditing
+     * @param bool $forEditing
      *
      * @return array List of resulting arguments
      */
@@ -1600,7 +1592,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Returns the primary key.
      *
-     * @return integer The identifier
+     * @return int The identifier
      */
     public function getKey()
     {
@@ -1610,7 +1602,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Determines whether this entity supports hook subscribers or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsHookSubscribers()
     {

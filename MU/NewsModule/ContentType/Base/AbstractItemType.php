@@ -33,33 +33,21 @@ abstract class AbstractItemType extends AbstractContentType
      */
     protected $fragmentHandler;
     
-    /**
-     * @inheritDoc
-     */
     public function getIcon()
     {
         return 'circle-o';
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getTitle()
     {
         return $this->translator->__('News detail', 'munewsmodule');
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getDescription()
     {
         return $this->translator->__('Display or link a single news object.', 'munewsmodule');
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getDefaultData()
     {
         return [
@@ -70,15 +58,12 @@ abstract class AbstractItemType extends AbstractContentType
         ];
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getData()
     {
         $data = parent::getData();
     
         $contextArgs = ['name' => 'detail'];
-        if (!isset($data['objectType']) || !in_array($data['objectType'], $this->controllerHelper->getObjectTypes('contentType', $contextArgs))) {
+        if (!isset($data['objectType']) || !in_array($data['objectType'], $this->controllerHelper->getObjectTypes('contentType', $contextArgs), true)) {
             $data['objectType'] = $this->controllerHelper->getDefaultObjectType('contentType', $contextArgs);
             $this->data = $data;
         }
@@ -86,9 +71,6 @@ abstract class AbstractItemType extends AbstractContentType
         return $data;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function displayView()
     {
         if (null === $this->data['id'] || empty($this->data['id']) || empty($this->data['displayMode'])) {
@@ -100,9 +82,6 @@ abstract class AbstractItemType extends AbstractContentType
         return $this->fragmentHandler->render($controllerReference, 'inline', []);
     }
     
-    /**
-     * @inheritDoc
-     */
     public function displayEditing()
     {
         if (null === $this->data['id'] || empty($this->data['id']) || empty($this->data['displayMode'])) {
@@ -127,17 +106,11 @@ abstract class AbstractItemType extends AbstractContentType
         ];
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getEditFormClass()
     {
         return FormType::class;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getEditFormOptions($context)
     {
         $options = parent::getEditFormOptions($context);
@@ -147,17 +120,11 @@ abstract class AbstractItemType extends AbstractContentType
         return $options;
     }
     
-    /**
-     * @param ControllerHelper $controllerHelper
-     */
     public function setControllerHelper(ControllerHelper $controllerHelper)
     {
         $this->controllerHelper = $controllerHelper;
     }
     
-    /**
-     * @param FragmentHandler $fragmentHandler
-     */
     public function setFragmentHandler(FragmentHandler $fragmentHandler)
     {
         $this->fragmentHandler = $fragmentHandler;

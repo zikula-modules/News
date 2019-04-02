@@ -46,7 +46,7 @@ abstract class AbstractAjaxController extends AbstractController
         $objectType = $request->query->getAlnum('ot', 'message');
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['controller' => 'ajax', 'action' => 'getItemListFinder'];
-        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs))) {
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs), true)) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $contextArgs);
         }
         
@@ -54,22 +54,22 @@ abstract class AbstractAjaxController extends AbstractController
         $entityDisplayHelper = $this->get('mu_news_module.entity_display_helper');
         $descriptionFieldName = $entityDisplayHelper->getDescriptionFieldName($objectType);
         
-        $sort = $request->query->getAlnum('sort', '');
-        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
+        $sort = $request->query->getAlnum('sort');
+        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields(), true)) {
             $sort = $repository->getDefaultSortingField();
         }
         
-        $sdir = strtolower($request->query->getAlpha('sortdir', ''));
-        if ($sdir != 'asc' && $sdir != 'desc') {
+        $sdir = strtolower($request->query->getAlpha('sortdir'));
+        if ('asc' !== $sdir && 'desc' !== $sdir) {
             $sdir = 'asc';
         }
         
         $where = ''; // filters are processed inside the repository class
-        $searchTerm = $request->query->get('q', '');
+        $searchTerm = $request->query->get('q');
         $sortParam = $sort . ' ' . $sdir;
         
         $entities = [];
-        if ($searchTerm != '') {
+        if ('' !== $searchTerm) {
             list ($entities, $totalAmount) = $repository->selectSearch($searchTerm, [], $sortParam, 1, 50);
         } else {
             $entities = $repository->selectWhere($where, $sortParam);
@@ -99,8 +99,12 @@ abstract class AbstractAjaxController extends AbstractController
      *
      * @return array The slim data representation
      */
-    protected function prepareSlimItem($repository, $item, $itemId, $descriptionField)
-    {
+    protected function prepareSlimItem(
+        $repository,
+        $item,
+        $itemId,
+        $descriptionField
+    ) {
         $objectType = $item->get_objectType();
         $previewParameters = [
             $objectType => $item
@@ -111,11 +115,11 @@ abstract class AbstractAjaxController extends AbstractController
         $previewInfo = base64_encode($this->get('twig')->render('@MUNewsModule/External/' . ucfirst($objectType) . '/info.html.twig', $previewParameters));
     
         $title = $this->get('mu_news_module.entity_display_helper')->getFormattedTitle($item);
-        $description = $descriptionField != '' ? $item[$descriptionField] : '';
+        $description = $descriptionField !== '' ? $item[$descriptionField] : '';
     
         return [
-            'id'          => $itemId,
-            'title'       => str_replace('&amp;', '&', $title),
+            'id' => $itemId,
+            'title' => str_replace('&amp;', '&', $title),
             'description' => $description,
             'previewInfo' => $previewInfo
         ];
@@ -145,12 +149,12 @@ abstract class AbstractAjaxController extends AbstractController
         $objectType = $request->query->getAlnum('ot', 'message');
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['controller' => 'ajax', 'action' => 'checkForDuplicate'];
-        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs))) {
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs), true)) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $contextArgs);
         }
         
-        $fieldName = $request->query->getAlnum('fn', '');
-        $value = $request->query->get('v', '');
+        $fieldName = $request->query->getAlnum('fn');
+        $value = $request->query->get('v');
         
         if (empty($fieldName) || empty($value)) {
             return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
@@ -163,11 +167,11 @@ abstract class AbstractAjaxController extends AbstractController
                 $uniqueFields = ['slug'];
                 break;
         }
-        if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields)) {
+        if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields, true)) {
             return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
-        $exclude = $request->query->getInt('ex', '');
+        $exclude = $request->query->getInt('ex');
         
         $result = false;
         switch ($objectType) {
@@ -208,12 +212,12 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         $objectType = $request->request->getAlnum('ot', 'message');
-        $field = $request->request->getAlnum('field', '');
-        $id = $request->request->getInt('id', 0);
+        $field = $request->request->getAlnum('field');
+        $id = $request->request->getInt('id');
         
-        if ($id == 0
-            || ($objectType != 'message')
-        || ($objectType == 'message' && !in_array($field, ['displayOnIndex', 'allowComments', 'noEndDate']))
+        if (0 === $id
+            || ('message' !== $objectType)
+        || ('message' === $objectType && !in_array($field, ['displayOnIndex', 'allowComments', 'noEndDate'], true))
         ) {
             return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
@@ -230,7 +234,7 @@ abstract class AbstractAjaxController extends AbstractController
         $entity[$field] = !$entity[$field];
         
         // save entity back to database
-        $entityFactory->getEntityManager()->flush($entity);
+        $entityFactory->getEntityManager()->flush();
         
         $logger = $this->get('logger');
         $logArgs = ['app' => 'MUNewsModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'field' => $field, 'entity' => $objectType, 'id' => $id];
@@ -267,10 +271,10 @@ abstract class AbstractAjaxController extends AbstractController
         
         $objectType = $request->request->getAlnum('ot', 'message');
         $itemIds = $request->request->get('identifiers', []);
-        $min = $request->request->getInt('min', 0);
-        $max = $request->request->getInt('max', 0);
+        $min = $request->request->getInt('min');
+        $max = $request->request->getInt('max');
         
-        if (!is_array($itemIds) || count($itemIds) < 2 || $max < 1 || $max <= $min) {
+        if (!is_array($itemIds) || 2 > count($itemIds) || 1 > $max || $max <= $min) {
             return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         

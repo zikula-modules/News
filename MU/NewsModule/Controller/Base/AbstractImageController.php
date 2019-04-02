@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\RouteUrl;
 use MU\NewsModule\Entity\ImageEntity;
 
 /**

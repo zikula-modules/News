@@ -37,12 +37,6 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     protected $categoryRepository;
 
-    /**
-     * ItemListBlockType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         CategoryRepositoryInterface $categoryRepository
@@ -51,19 +45,11 @@ abstract class AbstractItemListBlockType extends AbstractType
         $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addObjectTypeField($builder, $options);
@@ -78,9 +64,6 @@ abstract class AbstractItemListBlockType extends AbstractType
 
     /**
      * Adds an object type field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
@@ -102,9 +85,6 @@ abstract class AbstractItemListBlockType extends AbstractType
 
     /**
      * Adds a categories field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
@@ -132,7 +112,7 @@ abstract class AbstractItemListBlockType extends AbstractType
     
         $categoryRepository = $this->categoryRepository;
         $builder->get('categories')->addModelTransformer(new CallbackTransformer(
-            function ($catIds) use ($categoryRepository, $objectType, $hasMultiSelection) {
+            static function ($catIds) use ($categoryRepository, $objectType, $hasMultiSelection) {
                 $categoryMappings = [];
                 $entityCategoryClass = 'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity';
     
@@ -147,12 +127,12 @@ abstract class AbstractItemListBlockType extends AbstractType
                 }
     
                 if (!$hasMultiSelection) {
-                    $categoryMappings = count($categoryMappings) > 0 ? reset($categoryMappings) : null;
+                    $categoryMappings = 0 < count($categoryMappings) ? reset($categoryMappings) : null;
                 }
     
                 return $categoryMappings;
             },
-            function ($result) use ($hasMultiSelection) {
+            static function ($result) use ($hasMultiSelection) {
                 $catIds = [];
     
                 foreach ($result as $categoryMapping) {
@@ -166,9 +146,6 @@ abstract class AbstractItemListBlockType extends AbstractType
 
     /**
      * Adds a sorting field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addSortingField(FormBuilderInterface $builder, array $options = [])
     {
@@ -188,9 +165,6 @@ abstract class AbstractItemListBlockType extends AbstractType
 
     /**
      * Adds a page size field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
@@ -208,9 +182,6 @@ abstract class AbstractItemListBlockType extends AbstractType
 
     /**
      * Adds template fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addTemplateFields(FormBuilderInterface $builder, array $options = [])
     {
@@ -240,9 +211,6 @@ abstract class AbstractItemListBlockType extends AbstractType
 
     /**
      * Adds a filter field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addFilterField(FormBuilderInterface $builder, array $options = [])
     {
@@ -257,17 +225,11 @@ abstract class AbstractItemListBlockType extends AbstractType
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'munewsmodule_listblock';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver

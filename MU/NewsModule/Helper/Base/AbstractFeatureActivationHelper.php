@@ -35,36 +35,36 @@ abstract class AbstractFeatureActivationHelper
     /**
      * This method checks whether a certain feature is enabled for a given entity type or not.
      *
-     * @param string $feature     Name of requested feature
-     * @param string $objectType  Currently treated entity type
+     * @param string $feature Name of requested feature
+     * @param string $objectType Currently treated entity type
      *
-     * @return boolean True if the feature is enabled, false otherwise
+     * @return bool True if the feature is enabled, false otherwise
      */
-    public function isEnabled($feature, $objectType)
+    public function isEnabled($feature = '', $objectType = '')
     {
-        if (self::CATEGORIES == $feature) {
+        if (self::CATEGORIES === $feature) {
             $method = 'hasCategories';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
-        if (self::ATTRIBUTES == $feature) {
+        if (self::ATTRIBUTES === $feature) {
             $method = 'hasAttributes';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
-        if (self::TRANSLATIONS == $feature) {
+        if (self::TRANSLATIONS === $feature) {
             $method = 'hasTranslations';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
     
         return false;

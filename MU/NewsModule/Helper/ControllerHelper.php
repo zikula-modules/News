@@ -42,13 +42,13 @@ class ControllerHelper extends AbstractControllerHelper
             $defaultSorting = $this->variableApi->get('MUNewsModule', $sorting, 'articledatetime');
             $defaultSortingDirection = $this->variableApi->get('MUNewsModule', 'sortingDirection', 'descending');
             $sortdir = str_replace('ending', '', $defaultSortingDirection);
-            if ($defaultSorting == 'articleID') {
+            if ('articleID' === $defaultSorting) {
                 $sort = 'id';
-            } elseif ($defaultSorting == 'articledatetime') {
+            } elseif ('articledatetime' === $defaultSorting) {
                 $sort = 'createdDate';
-            } elseif ($defaultSorting == 'articleweight') {
+            } elseif ('articleweight' === $defaultSorting) {
                 $sort = 'weight';
-            } elseif ($defaultSorting == 'articlestartdate') {
+            } elseif ('articlestartdate' === $defaultSorting) {
                 $sort = 'startDate';
             }
 

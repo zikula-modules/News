@@ -19,21 +19,15 @@ use Zikula\BlocksModule\AbstractBlockHandler;
  */
 abstract class AbstractModerationBlock extends AbstractBlockHandler
 {
-    /**
-     * @inheritDoc
-     */
     public function getType()
     {
         return $this->__('News moderation', 'munewsmodule');
     }
     
-    /**
-     * @inheritDoc
-     */
     public function display(array $properties = [])
     {
         // only show block content if the user has the required permissions
-        if (!$this->hasPermission('MUNewsModule:ModerationBlock:', "$properties[title]::", ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission('MUNewsModule:ModerationBlock:', $properties['title'] . '::', ACCESS_OVERVIEW)) {
             return '';
         }
     
@@ -57,8 +51,8 @@ abstract class AbstractModerationBlock extends AbstractBlockHandler
     
     /**
      * Returns the template used for output.
-     *
-     * @return string the template path
+    *
+    * @return string the template path
      */
     protected function getDisplayTemplate()
     {

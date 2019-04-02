@@ -12,6 +12,7 @@
 
 namespace MU\NewsModule\Helper\Base;
 
+use Dompdf\Dompdf;
 use Symfony\Bundle\TwigBundle\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,20 +69,6 @@ abstract class AbstractViewHelper
      */
     protected $permissionHelper;
     
-    /**
-     * ViewHelper constructor.
-     *
-     * @param Twig_Environment $twig
-     * @param FilesystemLoader $twigLoader
-     * @param RequestStack $requestStack
-     * @param VariableApiInterface $variableApi
-     * @param AssetFilter $assetFilter
-     * @param ParameterBag $pageVars
-     * @param ControllerHelper $controllerHelper
-     * @param PermissionHelper $permissionHelper
-     *
-     * @return void
-     */
     public function __construct(
         Twig_Environment $twig,
         FilesystemLoader $twigLoader,
@@ -105,9 +92,9 @@ abstract class AbstractViewHelper
     /**
      * Determines the view template for a certain method with given parameters.
      *
-     * @param string  $type    Current controller (name of currently treated entity)
-     * @param string  $func    Current function (index, view, ...)
-     * @param boolean $isAdmin Whether an admin template is desired or not
+     * @param string $type Current controller (name of currently treated entity)
+     * @param string $func Current function (index, view, ...)
+     * @param bool $isAdmin Whether an admin template is desired or not
      *
      * @return string name of template file
      */
@@ -120,7 +107,8 @@ abstract class AbstractViewHelper
         $templateExtension = '.' . $this->determineExtension($type, $func);
     
         // check whether a special template is used
-        $tpl = $this->requestStack->getCurrentRequest()->query->getAlnum('tpl', '');
+        $request = $this->requestStack->getCurrentRequest();
+        $tpl = null !== $request ? $request->query->getAlnum('tpl') : '';
         if (!empty($tpl)) {
             // check if custom template exists
             $customTemplate = $template . ucfirst($tpl);
@@ -137,30 +125,35 @@ abstract class AbstractViewHelper
     /**
      * Helper method for managing view templates.
      *
-     * @param string $type               Current controller (name of currently treated entity)
-     * @param string $func               Current function (index, view, ...)
-     * @param array  $templateParameters Template data
-     * @param string $template           Optional assignment of precalculated template file
+     * @param string $type Current controller (name of currently treated entity)
+     * @param string $func Current function (index, view, ...)
+     * @param array $templateParameters Template data
+     * @param string $template Optional assignment of precalculated template file
      *
-     * @return mixed Output
+     * @return Response
      */
-    public function processTemplate($type, $func, array $templateParameters = [], $template = '')
-    {
+    public function processTemplate(
+        $type,
+        $func,
+        array $templateParameters = [],
+        $template = ''
+    ) {
         $templateExtension = $this->determineExtension($type, $func);
         if (empty($template)) {
             $isAdmin = isset($templateParameters['routeArea']) && $templateParameters['routeArea'] == 'admin';
             $template = $this->getViewTemplate($type, $func, $isAdmin);
         }
     
-        if ($templateExtension == 'pdf.twig') {
+        if ('pdf.twig' === $templateExtension) {
             $template = str_replace('.pdf', '.html', $template);
     
             return $this->processPdf($templateParameters, $template);
         }
     
         // look whether we need output with or without the theme
-        $raw = $this->requestStack->getCurrentRequest()->query->getBoolean('raw', false);
-        if (!$raw && $templateExtension != 'html.twig') {
+        $request = $this->requestStack->getCurrentRequest();
+        $raw = null !== $request ? $request->query->getBoolean('raw') : false;
+        if (!$raw && 'html.twig' !== $templateExtension) {
             $raw = true;
         }
     
@@ -168,7 +161,7 @@ abstract class AbstractViewHelper
         $response = null;
         if (true === $raw) {
             // standalone output
-            if ($templateExtension == 'csv.twig') {
+            if ('csv.twig' === $templateExtension) {
                 // convert to UTF-16 for improved excel compatibility
                 // see http://stackoverflow.com/questions/4348802/how-can-i-output-a-utf-8-csv-in-php-that-excel-will-read-properly
                 $output = chr(255) . chr(254) . mb_convert_encoding($output, 'UTF-16LE', 'UTF-8');
@@ -236,8 +229,13 @@ abstract class AbstractViewHelper
         }
     
         $extensions = $this->availableExtensions($type, $func);
-        $format = $this->requestStack->getCurrentRequest()->getRequestFormat();
-        if ($format != 'html' && in_array($format, $extensions)) {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return $templateExtension;
+        }
+    
+        $format = $request->getRequestFormat();
+        if ('html' !== $format && in_array($format, $extensions, true)) {
             $templateExtension = $format . '.twig';
         }
     
@@ -256,13 +254,13 @@ abstract class AbstractViewHelper
     {
         $extensions = [];
         $hasAdminAccess = $this->permissionHelper->hasComponentPermission($type, ACCESS_ADMIN);
-        if ($func == 'view') {
+        if ('view' === $func) {
             if ($hasAdminAccess) {
                 $extensions = ['csv', 'rss', 'atom', 'xml', 'json', 'pdf'];
             } else {
                 $extensions = ['rss', 'atom', 'pdf'];
             }
-        } elseif ($func == 'display') {
+        } elseif ('display' === $func) {
             if ($hasAdminAccess) {
                 $extensions = ['xml', 'json', 'ics', 'pdf'];
             } else {
@@ -276,10 +274,10 @@ abstract class AbstractViewHelper
     /**
      * Processes a template file using dompdf (LGPL).
      *
-     * @param array  $templateParameters Template data
-     * @param string $template           Name of template to use
+     * @param array $templateParameters Template data
+     * @param string $template Name of template to use
      *
-     * @return mixed Output
+     * @return Response
      */
     protected function processPdf(array $templateParameters = [], $template = '')
     {
@@ -288,19 +286,23 @@ abstract class AbstractViewHelper
     
         // make local images absolute
         $request = $this->requestStack->getCurrentRequest();
-        $output = str_replace('img src="' . $request->getSchemeAndHttpHost() . $request->getBasePath() . '/', 'img src="/', $output);
-        $output = str_replace('img src="/', 'img src="' . $request->server->get('DOCUMENT_ROOT') . '/', $output);
+        $output = str_replace(
+            ['img src="' . $request->getSchemeAndHttpHost() . $request->getBasePath() . '/', 'img src="/'],
+            ['img src="/', 'img src="' . $request->server->get('DOCUMENT_ROOT') . '/'],
+            $output
+        );
     
         // then the surrounding
         $output = $this->twig->render('@MUNewsModule/includePdfHeader.html.twig') . $output . '</body></html>';
     
         // create name of the pdf output file
         $siteName = $this->variableApi->getSystemVar('sitename');
-        $pageTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $this->pageVars->get('title', ''));
+        $pageTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $this->pageVars->get('title'));
         $fileTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $siteName)
-                   . '-'
-                   . ($pageTitle != '' ? $pageTitle . '-' : '')
-                   . date('Ymd') . '.pdf';
+           . '-'
+           . ('' !== $pageTitle ? $pageTitle . '-' : '')
+           . date('Ymd') . '.pdf'
+       ;
        $fileTitle = str_replace(' ', '_', $fileTitle);
     
         /*
@@ -310,7 +312,7 @@ abstract class AbstractViewHelper
         */
     
         // instantiate pdf object
-        $pdf = new \Dompdf\Dompdf();
+        $pdf = new Dompdf();
         // define page properties
         $pdf->setPaper('A4', 'portrait');
         // load html input data

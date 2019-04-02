@@ -12,6 +12,7 @@
 
 namespace MU\NewsModule\Entity\Factory\Base;
 
+use DateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
 use MU\NewsModule\Entity\MessageEntity;
 use MU\NewsModule\Entity\ImageEntity;
@@ -32,12 +33,6 @@ abstract class AbstractEntityInitialiser
      */
     protected $permissionHelper;
 
-    /**
-     * EntityInitialiser constructor.
-     *
-     * @param RequestStack $requestStack
-     * @param PermissionHelper $permissionHelper
-     */
     public function __construct(
         RequestStack $requestStack,
         PermissionHelper $permissionHelper

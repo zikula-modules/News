@@ -35,12 +35,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
      */
     protected $categoryRepository;
 
-    /**
-     * ItemListType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         CategoryRepositoryInterface $categoryRepository
@@ -49,9 +43,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
         $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addObjectTypeField($builder, $options);
@@ -66,9 +57,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
 
     /**
      * Adds an object type field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
@@ -90,9 +78,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
 
     /**
      * Adds a categories field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
@@ -135,7 +120,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
                 }
     
                 if (!$hasMultiSelection) {
-                    $categoryMappings = count($categoryMappings) > 0 ? reset($categoryMappings) : null;
+                    $categoryMappings = 0 < count($categoryMappings) ? reset($categoryMappings) : null;
                 }
     
                 return $categoryMappings;
@@ -154,9 +139,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
 
     /**
      * Adds a sorting field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addSortingField(FormBuilderInterface $builder, array $options = [])
     {
@@ -176,9 +158,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
 
     /**
      * Adds a page size field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
@@ -196,9 +175,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
 
     /**
      * Adds template fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addTemplateFields(FormBuilderInterface $builder, array $options = [])
     {
@@ -228,9 +204,6 @@ abstract class AbstractItemListType extends AbstractContentFormType
 
     /**
      * Adds a filter field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addFilterField(FormBuilderInterface $builder, array $options = [])
     {
@@ -245,17 +218,11 @@ abstract class AbstractItemListType extends AbstractContentFormType
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'munewsmodule_contenttype_list';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver

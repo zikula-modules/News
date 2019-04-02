@@ -14,6 +14,7 @@ namespace MU\NewsModule\Entity\Base;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
+use MU\NewsModule\Entity\MessageEntity;
 
 /**
  * Entity extension domain class storing message categories.
@@ -25,14 +26,14 @@ abstract class AbstractMessageCategoryEntity extends AbstractCategoryAssignment
     /**
      * @ORM\ManyToOne(targetEntity="\MU\NewsModule\Entity\MessageEntity", inversedBy="categories")
      * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
-     * @var \MU\NewsModule\Entity\MessageEntity
+     * @var MessageEntity
      */
     protected $entity;
     
     /**
-     * Get reference to owning entity.
+     * Returns the entity.
      *
-     * @return \MU\NewsModule\Entity\MessageEntity
+     * @return MessageEntity
      */
     public function getEntity()
     {
@@ -40,12 +41,17 @@ abstract class AbstractMessageCategoryEntity extends AbstractCategoryAssignment
     }
     
     /**
-     * Set reference to owning entity.
+     * Sets the entity.
      *
-     * @param \MU\NewsModule\Entity\MessageEntity $entity
+     * @param MessageEntity $entity
+     *
+     * @return void
      */
-    public function setEntity(/*\MU\NewsModule\Entity\MessageEntity */$entity)
+    public function setEntity($entity)
     {
-        $this->entity = $entity;
+        if ($this->entity !== $entity) {
+            $this->entity = isset($entity) ? $entity : '';
+        }
     }
+    
 }

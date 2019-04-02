@@ -14,6 +14,7 @@ namespace MU\NewsModule\Entity\Base;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
@@ -55,7 +56,7 @@ abstract class AbstractImageEntity extends EntityAccess
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
-     * @var integer $id
+     * @var int $id
      */
     protected $id = 0;
     
@@ -121,7 +122,7 @@ abstract class AbstractImageEntity extends EntityAccess
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\GreaterThanOrEqual(value=1)
-     * @var integer $sortNumber
+     * @var int $sortNumber
      */
     protected $sortNumber = 1;
     
@@ -167,7 +168,7 @@ abstract class AbstractImageEntity extends EntityAccess
      */
     public function set_objectType($_objectType)
     {
-        if ($this->_objectType != $_objectType) {
+        if ($this->_objectType !== $_objectType) {
             $this->_objectType = isset($_objectType) ? $_objectType : '';
         }
     }
@@ -191,7 +192,7 @@ abstract class AbstractImageEntity extends EntityAccess
      */
     public function set_uploadBasePath($_uploadBasePath)
     {
-        if ($this->_uploadBasePath != $_uploadBasePath) {
+        if ($this->_uploadBasePath !== $_uploadBasePath) {
             $this->_uploadBasePath = isset($_uploadBasePath) ? $_uploadBasePath : '';
         }
     }
@@ -215,7 +216,7 @@ abstract class AbstractImageEntity extends EntityAccess
      */
     public function set_uploadBaseUrl($_uploadBaseUrl)
     {
-        if ($this->_uploadBaseUrl != $_uploadBaseUrl) {
+        if ($this->_uploadBaseUrl !== $_uploadBaseUrl) {
             $this->_uploadBaseUrl = isset($_uploadBaseUrl) ? $_uploadBaseUrl : '';
         }
     }
@@ -224,7 +225,7 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Returns the id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -234,14 +235,14 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Sets the id.
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return void
      */
     public function setId($id)
     {
-        if (intval($this->id) !== intval($id)) {
-            $this->id = intval($id);
+        if ((int)$this->id !== (int)$id) {
+            $this->id = (int)$id;
         }
     }
     
@@ -282,7 +283,7 @@ abstract class AbstractImageEntity extends EntityAccess
     
         $fileName = $this->theFileFileName;
         if (!empty($fileName) && !$this->_uploadBasePath) {
-            throw new \RuntimeException('Invalid upload base path in ' . get_class($this) . '#getTheFile().');
+            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getTheFile().');
         }
     
         $filePath = $this->_uploadBasePath . 'thefile/' . $fileName;
@@ -301,21 +302,19 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Sets the the file.
      *
-     * @param File|null $theFile
-     *
      * @return void
      */
-    public function setTheFile($theFile)
+    public function setTheFile(File $theFile = null)
     {
         if (null === $this->theFile && null === $theFile) {
             return;
         }
-        if (null !== $this->theFile && null !== $theFile && $this->theFile->getRealPath() === $theFile->getRealPath()) {
+        if (null !== $this->theFile && null !== $theFile && $this->theFile instanceof File && $this->theFile->getRealPath() === $theFile->getRealPath()) {
             return;
         }
         $this->theFile = isset($theFile) ? $theFile : '';
     
-        if (null === $this->theFile || '' == $this->theFile) {
+        if (null === $this->theFile || '' === $this->theFile) {
             $this->setTheFileFileName('');
             $this->setTheFileUrl('');
             $this->setTheFileMeta([]);
@@ -341,7 +340,7 @@ abstract class AbstractImageEntity extends EntityAccess
      *
      * @return void
      */
-    public function setTheFileFileName($theFileFileName)
+    public function setTheFileFileName($theFileFileName = null)
     {
         if ($this->theFileFileName !== $theFileFileName) {
             $this->theFileFileName = isset($theFileFileName) ? $theFileFileName : '';
@@ -365,7 +364,7 @@ abstract class AbstractImageEntity extends EntityAccess
      *
      * @return void
      */
-    public function setTheFileUrl($theFileUrl)
+    public function setTheFileUrl($theFileUrl = null)
     {
         if ($this->theFileUrl !== $theFileUrl) {
             $this->theFileUrl = isset($theFileUrl) ? $theFileUrl : '';
@@ -389,7 +388,7 @@ abstract class AbstractImageEntity extends EntityAccess
      *
      * @return void
      */
-    public function setTheFileMeta($theFileMeta = [])
+    public function setTheFileMeta(array $theFileMeta = [])
     {
         if ($this->theFileMeta !== $theFileMeta) {
             $this->theFileMeta = isset($theFileMeta) ? $theFileMeta : '';
@@ -423,7 +422,7 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Returns the sort number.
      *
-     * @return integer
+     * @return int
      */
     public function getSortNumber()
     {
@@ -433,14 +432,14 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Sets the sort number.
      *
-     * @param integer $sortNumber
+     * @param int $sortNumber
      *
      * @return void
      */
     public function setSortNumber($sortNumber)
     {
-        if (intval($this->sortNumber) !== intval($sortNumber)) {
-            $this->sortNumber = intval($sortNumber);
+        if ((int)$this->sortNumber !== (int)$sortNumber) {
+            $this->sortNumber = (int)$sortNumber;
         }
     }
     
@@ -462,7 +461,7 @@ abstract class AbstractImageEntity extends EntityAccess
      *
      * @return void
      */
-    public function setMessage($message = null)
+    public function setMessage(\MU\NewsModule\Entity\MessageEntity $message = null)
     {
         $this->message = $message;
     }
@@ -484,7 +483,7 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Returns the primary key.
      *
-     * @return integer The identifier
+     * @return int The identifier
      */
     public function getKey()
     {
@@ -494,7 +493,7 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Determines whether this entity supports hook subscribers or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsHookSubscribers()
     {

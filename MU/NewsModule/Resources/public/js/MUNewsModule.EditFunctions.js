@@ -108,7 +108,7 @@ function mUNewsInitEditForm(mode, entityId) {
     });
     editForm.submit(mUNewsHandleFormSubmit);
 
-    if (mode != 'create') {
+    if ('create' !== mode) {
         mUNewsTriggerFormValidation();
     }
 }

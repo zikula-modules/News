@@ -72,18 +72,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
      */
     protected $categoryHelper;
     
-    /**
-     * SearchHelper constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RequestStack $requestStack
-     * @param EntityFactory $entityFactory
-     * @param ControllerHelper $controllerHelper
-     * @param EntityDisplayHelper $entityDisplayHelper
-     * @param PermissionHelper $permissionHelper
-     * @param FeatureActivationHelper $featureActivationHelper
-     * @param CategoryHelper $categoryHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
@@ -104,19 +92,11 @@ abstract class AbstractSearchHelper implements SearchableInterface
         $this->categoryHelper = $categoryHelper;
     }
     
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function amendForm(FormBuilderInterface $builder)
     {
         if (!$this->permissionHelper->hasPermission(ACCESS_READ)) {
@@ -140,9 +120,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
         }
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
         if (!$this->permissionHelper->hasPermission(ACCESS_READ)) {
@@ -211,12 +188,12 @@ abstract class AbstractSearchHelper implements SearchableInterface
             // fetch the results
             $entities = $query->getResult();
     
-            if (count($entities) == 0) {
+            if (0 === count($entities)) {
                 continue;
             }
     
             $descriptionFieldName = $this->entityDisplayHelper->getDescriptionFieldName($objectType);
-            $hasDisplayAction = in_array($objectType, $entitiesWithDisplayAction);
+            $hasDisplayAction = in_array($objectType, $entitiesWithDisplayAction, true);
     
             $session = $request->getSession();
             foreach ($entities as $entity) {
@@ -224,7 +201,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     continue;
                 }
     
-                if (in_array($objectType, ['message'])) {
+                if (in_array($objectType, ['message'], true)) {
                     if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
                         if (!$this->categoryHelper->hasPermission($entity)) {
                             continue;
@@ -239,7 +216,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                 $displayUrl = null;
                 if ($hasDisplayAction) {
                     $urlArgs = $entity->createUrlArgs();
-                    $urlArgs['_locale'] = (null !== $languageField && !empty($entity[$languageField])) ? $entity[$languageField] : $request->getLocale();
+                    $urlArgs['_locale'] = null !== $languageField && !empty($entity[$languageField]) ? $entity[$languageField] : $request->getLocale();
                     $displayUrl = new RouteUrl('munewsmodule_' . strtolower($objectType) . '_display', $urlArgs);
                 }
     
@@ -248,7 +225,8 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     ->setText($description)
                     ->setModule('MUNewsModule')
                     ->setCreated($created)
-                    ->setSesid($session->getId());
+                    ->setSesid($session->getId())
+                ;
                 if (null !== $displayUrl) {
                     $result->setUrl($displayUrl);
                 }
@@ -280,7 +258,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
         $allowedTypes = $this->controllerHelper->getObjectTypes('helper', ['helper' => 'search', 'action' => 'getSearchTypes']);
         $allowedSearchTypes = [];
         foreach ($searchTypes as $searchType => $typeInfo) {
-            if (!in_array($typeInfo['value'], $allowedTypes)) {
+            if (!in_array($typeInfo['value'], $allowedTypes, true)) {
                 continue;
             }
             if (!$this->permissionHelper->hasComponentPermission($typeInfo['value'], ACCESS_READ)) {
@@ -292,9 +270,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
         return $allowedSearchTypes;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getErrors()
     {
         return [];
@@ -316,7 +291,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
             return null;
         }
     
-        $method = ($searchtype == 'OR') ? 'orX' : 'andX';
+        $method = 'OR' === $searchtype ? 'orX' : 'andX';
         /** @var $where Composite */
         $where = $qb->expr()->$method();
         $i = 1;

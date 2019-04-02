@@ -57,33 +57,21 @@ abstract class AbstractItemListType extends AbstractContentType
      */
     protected $categorisableObjectTypes;
     
-    /**
-     * @inheritDoc
-     */
     public function getIcon()
     {
         return 'th-list';
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getTitle()
     {
         return $this->translator->__('News list', 'munewsmodule');
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getDescription()
     {
         return $this->translator->__('Display a list of news objects.', 'munewsmodule');
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getDefaultData()
     {
         return [
@@ -96,15 +84,12 @@ abstract class AbstractItemListType extends AbstractContentType
         ];
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getData()
     {
         $data = parent::getData();
     
         $contextArgs = ['name' => 'list'];
-        if (!isset($data['objectType']) || !in_array($data['objectType'], $this->controllerHelper->getObjectTypes('contentType', $contextArgs))) {
+        if (!isset($data['objectType']) || !in_array($data['objectType'], $this->controllerHelper->getObjectTypes('contentType', $contextArgs), true)) {
             $data['objectType'] = $this->controllerHelper->getDefaultObjectType('contentType', $contextArgs);
         }
     
@@ -137,9 +122,6 @@ abstract class AbstractItemListType extends AbstractContentType
         return $data;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function displayView()
     {
         $objectType = $this->data['objectType'];
@@ -183,13 +165,10 @@ abstract class AbstractItemListType extends AbstractContentType
         return parent::displayView();
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getViewTemplatePath($suffix = '')
     {
         $templateFile = $this->data['template'];
-        if ('custom' == $templateFile && null !== $this->data['customTemplate'] && '' != $this->data['customTemplate']) {
+        if ('custom' === $templateFile && null !== $this->data['customTemplate'] && '' !== $this->data['customTemplate']) {
             $templateFile = $this->data['customTemplate'];
         }
     
@@ -212,17 +191,11 @@ abstract class AbstractItemListType extends AbstractContentType
         return $template;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getEditFormClass()
     {
         return FormType::class;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getEditFormOptions($context)
     {
         $options = parent::getEditFormOptions($context);
@@ -235,34 +208,21 @@ abstract class AbstractItemListType extends AbstractContentType
         return $options;
     }
     
-    /**
-     * @param ControllerHelper $controllerHelper
-     */
     public function setControllerHelper(ControllerHelper $controllerHelper)
     {
         $this->controllerHelper = $controllerHelper;
     }
     
-    /**
-     * @param ModelHelper $modelHelper
-     */
     public function setModelHelper(ModelHelper $modelHelper)
     {
         $this->modelHelper = $modelHelper;
     }
     
-    /**
-     * @param EntityFactory $entityFactory
-     */
     public function setEntityFactory(EntityFactory $entityFactory)
     {
         $this->entityFactory = $entityFactory;
     }
     
-    /**
-     * @param CategoryHelper $categoryHelper
-     * @param FeatureActivationHelper $featureActivationHelper
-     */
     public function setCategoryDependencies(
         CategoryHelper $categoryHelper,
         FeatureActivationHelper $featureActivationHelper

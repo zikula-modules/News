@@ -14,6 +14,7 @@ namespace MU\NewsModule\Entity\Base;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\Entity\AbstractEntityAttribute;
+use MU\NewsModule\Entity\MessageEntity;
 
 /**
  * Entity extension domain class storing message attributes.
@@ -25,14 +26,14 @@ abstract class AbstractMessageAttributeEntity extends AbstractEntityAttribute
     /**
      * @ORM\ManyToOne(targetEntity="\MU\NewsModule\Entity\MessageEntity", inversedBy="attributes")
      * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
-     * @var \MU\NewsModule\Entity\MessageEntity
+     * @var MessageEntity
      */
     protected $entity;
     
     /**
-     * Get reference to owning entity.
+     * Returns the entity.
      *
-     * @return \MU\NewsModule\Entity\MessageEntity
+     * @return MessageEntity
      */
     public function getEntity()
     {
@@ -40,12 +41,17 @@ abstract class AbstractMessageAttributeEntity extends AbstractEntityAttribute
     }
     
     /**
-     * Set reference to owning entity.
+     * Sets the entity.
      *
-     * @param \MU\NewsModule\Entity\MessageEntity $entity
+     * @param MessageEntity $entity
+     *
+     * @return void
      */
-    public function setEntity(/*\MU\NewsModule\Entity\MessageEntity */$entity)
+    public function setEntity($entity)
     {
-        $this->entity = $entity;
+        if ($this->entity !== $entity) {
+            $this->entity = isset($entity) ? $entity : '';
+        }
     }
+    
 }

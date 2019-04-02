@@ -27,11 +27,6 @@ abstract class AbstractListFieldTransformer implements DataTransformerInterface
      */
     protected $listHelper;
 
-    /**
-     * ListFieldTransformer constructor.
-     *
-     * @param ListEntriesHelper $listHelper
-     */
     public function __construct(ListEntriesHelper $listHelper)
     {
         $this->listHelper = $listHelper;

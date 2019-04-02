@@ -118,7 +118,7 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function setAmount($message, $routeArea)
     {
-        if ('admin' != $routeArea) {
+        if ('admin' !== $routeArea) {
             $message->setAmountOfViews($message->getAmountOfViews() + 1);
             $this->workflowHelper->executeAction($message, 'update');
         }

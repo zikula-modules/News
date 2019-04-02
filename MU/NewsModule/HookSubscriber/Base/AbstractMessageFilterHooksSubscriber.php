@@ -26,43 +26,26 @@ abstract class AbstractMessageFilterHooksSubscriber implements HookSubscriberInt
      */
     protected $translator;
 
-    /**
-     * MessageFilterHooksSubscriber constructor.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getOwner()
     {
         return 'MUNewsModule';
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getCategory()
     {
         return FilterHooksCategory::NAME;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getTitle()
     {
         return $this->translator->__('Message filter hooks subscriber');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getEvents()
     {
         return [

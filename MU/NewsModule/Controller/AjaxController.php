@@ -15,7 +15,6 @@ namespace MU\NewsModule\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use MU\NewsModule\Controller\Base\AbstractAjaxController;
 
 /**
@@ -27,6 +26,7 @@ class AjaxController extends AbstractAjaxController
 {
     
     /**
+     *
      * @inheritDoc
      * @Route("/getItemListFinder", methods = {"GET"}, options={"expose"=true})
      */

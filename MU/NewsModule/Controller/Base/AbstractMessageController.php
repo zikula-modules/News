@@ -12,10 +12,12 @@
 
 namespace MU\NewsModule\Controller\Base;
 
+use Exception;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
@@ -76,6 +78,7 @@ abstract class AbstractMessageController extends AbstractController
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws Exception
      */
     protected function viewInternal(
         Request $request,
@@ -103,7 +106,9 @@ abstract class AbstractMessageController extends AbstractController
         $request->query->set('sortdir', $sortdir);
         $request->query->set('pos', $pos);
         
-        $sortableColumns = new SortableColumns($this->get('router'), 'munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
+        /** @var RouterInterface $router */
+        $router = $this->get('router');
+        $sortableColumns = new SortableColumns($router, 'munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         
         $sortableColumns->addColumns([
             new Column('workflowState'),
@@ -152,10 +157,13 @@ abstract class AbstractMessageController extends AbstractController
      */
     protected function displayInternal(
         Request $request,
-        $slug,
+        MessageEntity $message = null,
+        string $slug = '',
         $isAdmin = false
     ) {
-        $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
+        if (null === $message) {
+            $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
+        }
         if (null === $message) {
             throw new NotFoundHttpException($this->__('No such message found.'));
         }
@@ -168,7 +176,7 @@ abstract class AbstractMessageController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        if ('approved' != $message->getWorkflowState() && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
+        if ('approved' !== $message->getWorkflowState() && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         
@@ -190,7 +198,7 @@ abstract class AbstractMessageController extends AbstractController
         // fetch and return the appropriate template
         $response = $this->get('mu_news_module.view_helper')->processTemplate($objectType, 'display', $templateParameters);
         
-        if ('ics' == $request->getRequestFormat()) {
+        if ('ics' === $request->getRequestFormat()) {
             $fileName = $objectType . '_' .
                 (property_exists($message, 'slug')
                     ? $message['slug']
@@ -213,6 +221,7 @@ abstract class AbstractMessageController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws RuntimeException Thrown if another critical error occurs (e.g. workflow actions not available)
+     * @throws Exception
      */
     protected function editInternal(
         Request $request,
@@ -264,7 +273,9 @@ abstract class AbstractMessageController extends AbstractController
         $slug,
         $isAdmin = false
     ) {
-        $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
+        if (null === $message) {
+            $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
+        }
         if (null === $message) {
             throw new NotFoundHttpException($this->__('No such message found.'));
         }
@@ -286,7 +297,7 @@ abstract class AbstractMessageController extends AbstractController
         if (false === $actions || !is_array($actions)) {
             $this->addFlash('error', $this->__('Error! Could not determine workflow actions.'));
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
-            throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
+            throw new RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
         
         // redirect to the list of messages
@@ -323,7 +334,7 @@ abstract class AbstractMessageController extends AbstractController
                 if ($message->supportsHookSubscribers()) {
                     // Let any ui hooks perform additional validation actions
                     $validationErrors = $hookHelper->callValidationHooks($message, UiHooksCategory::TYPE_VALIDATE_DELETE);
-                    if (count($validationErrors) > 0) {
+                    if (0 < count($validationErrors)) {
                         foreach ($validationErrors as $message) {
                             $this->addFlash('error', $message);
                         }
@@ -407,8 +418,8 @@ abstract class AbstractMessageController extends AbstractController
         $objectType = 'message';
         
         // Get parameters
-        $action = $request->request->get('action', null);
-        $items = $request->request->get('items', null);
+        $action = $request->request->get('action');
+        $items = $request->request->get('items');
         if (!is_array($items) || !count($items)) {
             return $this->redirectToRoute('munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'index');
         }
@@ -432,14 +443,14 @@ abstract class AbstractMessageController extends AbstractController
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
             $actionIds = array_keys($allowedActions);
-            if (!in_array($action, $actionIds)) {
+            if (!in_array($action, $actionIds, true)) {
                 // action not allowed, skip this object
                 continue;
             }
         
             if ($entity->supportsHookSubscribers()) {
                 // Let any ui hooks perform additional validation actions
-                $hookType = $action == 'delete' ? UiHooksCategory::TYPE_VALIDATE_DELETE : UiHooksCategory::TYPE_VALIDATE_EDIT;
+                $hookType = 'delete' === $action ? UiHooksCategory::TYPE_VALIDATE_DELETE : UiHooksCategory::TYPE_VALIDATE_EDIT;
                 $validationErrors = $hookHelper->callValidationHooks($entity, $hookType);
                 if (count($validationErrors) > 0) {
                     foreach ($validationErrors as $message) {
@@ -453,7 +464,7 @@ abstract class AbstractMessageController extends AbstractController
             try {
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $exception->getMessage());
                 $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'user' => $userName, 'action' => $action, 'entity' => 'message', 'id' => $itemId, 'errorMessage' => $exception->getMessage()]);
             }
@@ -462,7 +473,7 @@ abstract class AbstractMessageController extends AbstractController
                 continue;
             }
         
-            if ($action == 'delete') {
+            if ('delete' === $action) {
                 $this->addFlash('status', $this->__('Done! Item deleted.'));
                 $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'MUNewsModule', 'user' => $userName, 'entity' => 'message', 'id' => $itemId]);
             } else {
@@ -472,9 +483,9 @@ abstract class AbstractMessageController extends AbstractController
         
             if ($entity->supportsHookSubscribers()) {
                 // Let any ui hooks know that we have updated or deleted an item
-                $hookType = $action == 'delete' ? UiHooksCategory::TYPE_PROCESS_DELETE : UiHooksCategory::TYPE_PROCESS_EDIT;
+                $hookType = 'delete' === $action ? UiHooksCategory::TYPE_PROCESS_DELETE : UiHooksCategory::TYPE_PROCESS_EDIT;
                 $url = null;
-                if ($action != 'delete') {
+                if ('delete' !== $action) {
                     $urlArgs = $entity->createUrlArgs();
                     $urlArgs['_locale'] = $request->getLocale();
                     $url = new RouteUrl('munewsmodule_message_display', $urlArgs);
@@ -491,14 +502,14 @@ abstract class AbstractMessageController extends AbstractController
      *
      * @param string $idPrefix Prefix for inline window element identifier
      * @param string $commandName Name of action to be performed (create or edit)
-     * @param integer $id Identifier of created message (used for activating auto completion after closing the modal window)
+     * @param int $id Identifier of created message (used for activating auto completion after closing the modal window)
      *
-     * @return PlainResponse Output
+     * @return Response
      */
     public function handleInlineRedirectAction(
-        $idPrefix,
-        $commandName,
-        $id = 0
+        string $idPrefix,
+        string $commandName,
+        int $id = 0
     )
      {
         if (empty($idPrefix)) {

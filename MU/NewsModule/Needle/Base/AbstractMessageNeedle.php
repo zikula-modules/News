@@ -25,8 +25,6 @@ use MU\NewsModule\Helper\PermissionHelper;
 abstract class AbstractMessageNeedle
 {
     /**
-     * Translator instance
-     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -65,15 +63,6 @@ abstract class AbstractMessageNeedle
      */
     protected $name;
     
-    /**
-     * MessageNeedle constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RouterInterface $router
-     * @param PermissionHelper $permissionHelper
-    * @param EntityFactory $entityFactory
-    * @param EntityDisplayHelper $entityDisplayHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
@@ -95,91 +84,41 @@ abstract class AbstractMessageNeedle
         $this->name = str_replace('Needle', '', array_pop($nsParts));
     }
     
-    /**
-     * Returns the bundle name.
-     *
-     * @return string
-     */
-    public function getBundleName()
-    {
-        return $this->bundleName;
-    }
-    
-    /**
-     * Returns the name of this needle.
-     *
-     * @return string
-     */
     public function getName()
     {
         return $this->name;
     }
     
-    /**
-     * Returns the icon name (FontAwesome icon code suffix, e.g. "pencil").
-     *
-     * @return string
-     */
     public function getIcon()
     {
         return 'circle-o';
     }
     
-    /**
-     * Returns the title of this needle.
-     *
-     * @return string
-     */
     public function getTitle()
     {
         return $this->translator->__('Messages', 'munewsmodule');
     }
     
-    /**
-     * Returns the description of this needle.
-     *
-     * @return string
-     */
     public function getDescription()
     {
         return $this->translator->__('Links to the list of messages and specific messages.', 'munewsmodule');
     }
     
-    /**
-     * Returns usage information shown on settings page.
-     *
-     * @return string
-     */
     public function getUsageInfo()
     {
         return 'NEWS{MESSAGES|MESSAGE-messageId}';
     }
     
-    /**
-     * Returns whether this needle is active or not.
-     *
-     * @return boolean
-     */
     public function isActive()
     {
         return true;
     }
     
-    /**
-     * Returns whether this needle is case sensitive or not.
-     *
-     * @return boolean
-     */
     public function isCaseSensitive()
     {
         return true;
     }
     
-    /**
-     * Returns the needle subject entries.
-     *
-     * @return string[]
-     */
     public function getSubjects()
     {
         return ['NEWSMESSAGES', 'NEWSMESSAGE-'];
@@ -209,7 +148,7 @@ abstract class AbstractMessageNeedle
         // strip application prefix from needle
         $needleText = str_replace('NEWS', '', $needleText);
     
-        if ('MESSAGES' == $needleText) {
+        if ('MESSAGES' === $needleText) {
             if (!$this->permissionHelper->hasComponentPermission('message', ACCESS_READ)) {
                 $cache[$needleId] = '';
             } else {
@@ -219,7 +158,7 @@ abstract class AbstractMessageNeedle
             return $cache[$needleId];
         }
     
-        $entityId = intval($needleId);
+        $entityId = (int)$needleId;
         if (!$entityId) {
             $cache[$needleId] = '';
     
@@ -244,5 +183,10 @@ abstract class AbstractMessageNeedle
         $cache[$needleId] = '<a href="' . $this->router->generate('munewsmodule_message_display', $entity->createUrlArgs(), UrlGeneratorInterface::ABSOLUTE_URL) . '" title="' . str_replace('"', '', $title) . '">' . $title . '</a>';
     
         return $cache[$needleId];
+    }
+    
+    public function getBundleName()
+    {
+        return $this->bundleName;
     }
 }

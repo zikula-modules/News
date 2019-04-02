@@ -30,12 +30,6 @@ class AbstractFilterImageEvent extends Event
      */
     protected $entityChangeSet = [];
 
-    /**
-     * FilterImageEvent constructor.
-     *
-     * @param ImageEntity $image Processed entity
-     * @param array $entityChangeSet Change set for preUpdate events
-     */
     public function __construct(ImageEntity $image, array $entityChangeSet = [])
     {
         $this->image = $image;
@@ -43,8 +37,6 @@ class AbstractFilterImageEvent extends Event
     }
 
     /**
-     * Returns the entity.
-     *
      * @return ImageEntity
      */
     public function getImage()
@@ -53,8 +45,6 @@ class AbstractFilterImageEvent extends Event
     }
 
     /**
-     * Returns the change set.
-     *
      * @return array Entity change set
      */
     public function getEntityChangeSet()

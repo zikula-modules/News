@@ -30,12 +30,6 @@ class AbstractFilterMessageEvent extends Event
      */
     protected $entityChangeSet = [];
 
-    /**
-     * FilterMessageEvent constructor.
-     *
-     * @param MessageEntity $message Processed entity
-     * @param array $entityChangeSet Change set for preUpdate events
-     */
     public function __construct(MessageEntity $message, array $entityChangeSet = [])
     {
         $this->message = $message;
@@ -43,8 +37,6 @@ class AbstractFilterMessageEvent extends Event
     }
 
     /**
-     * Returns the entity.
-     *
      * @return MessageEntity
      */
     public function getMessage()
@@ -53,8 +45,6 @@ class AbstractFilterMessageEvent extends Event
     }
 
     /**
-     * Returns the change set.
-     *
      * @return array Entity change set
      */
     public function getEntityChangeSet()

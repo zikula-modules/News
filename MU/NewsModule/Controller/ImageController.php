@@ -13,11 +13,9 @@
 namespace MU\NewsModule\Controller;
 
 use MU\NewsModule\Controller\Base\AbstractImageController;
-
-
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use MU\NewsModule\Entity\ImageEntity;
 
@@ -27,7 +25,6 @@ use MU\NewsModule\Entity\ImageEntity;
 class ImageController extends AbstractImageController
 {
     /**
-     * @inheritDoc
      *
      * @Route("/admin/images",
      *        methods = {"GET"}
@@ -41,7 +38,6 @@ class ImageController extends AbstractImageController
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/images",
      *        methods = {"GET"}

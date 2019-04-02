@@ -117,20 +117,6 @@ abstract class AbstractNotificationHelper
      */
     protected $name;
     
-    /**
-     * NotificationHelper constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param TranslatorInterface $translator
-     * @param Routerinterface $router
-     * @param RequestStack $requestStack
-     * @param VariableApiInterface $variableApi
-     * @param Twig_Environment $twig
-     * @param MailerApiInterface $mailerApi
-     * @param GroupRepositoryInterface $groupRepository
-     * @param EntityDisplayHelper $entityDisplayHelper
-     * @param WorkflowHelper $workflowHelper
-     */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
@@ -156,11 +142,6 @@ abstract class AbstractNotificationHelper
         $this->name = 'MUNewsModule';
     }
     
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -171,9 +152,9 @@ abstract class AbstractNotificationHelper
      *
      * @param array $args
      *
-     * @return boolean
+     * @return bool
      */
-    public function process($args)
+    public function process(array $args)
     {
         if (!isset($args['recipientType']) || !$args['recipientType']) {
             return false;
@@ -227,14 +208,14 @@ abstract class AbstractNotificationHelper
     {
         $this->recipients = [];
     
-        if (in_array($this->recipientType, ['moderator', 'superModerator'])) {
+        if (in_array($this->recipientType, ['moderator', 'superModerator'], true)) {
             $modVarSuffixes = [
                 'message' => 'Messages'
             ];
             $modVarSuffix = $modVarSuffixes[$this->entity['_objectType']];
     
             $moderatorGroupId = $this->variableApi->get('MUNewsModule', 'moderationGroupFor' . $modVarSuffix, GroupsConstant::GROUP_ID_ADMIN);
-            if ($this->recipientType == 'superModerator') {
+            if ('superModerator' === $this->recipientType) {
                 $moderatorGroupId = $this->variableApi->get('MUNewsModule', 'superModerationGroupFor' . $modVarSuffix, GroupsConstant::GROUP_ID_ADMIN);
             }
     
@@ -244,7 +225,7 @@ abstract class AbstractNotificationHelper
                     $this->addRecipient($user);
                 }
             }
-        } elseif ('creator' == $this->recipientType && method_exists($this->entity, 'getCreatedBy')) {
+        } elseif ('creator' === $this->recipientType && method_exists($this->entity, 'getCreatedBy')) {
             $this->addRecipient($this->entity->getCreatedBy());
         } elseif ($this->usesDesignatedEntityFields()) {
             $this->addRecipient();
@@ -295,6 +276,8 @@ abstract class AbstractNotificationHelper
     
     /**
      * Performs the actual mailing.
+     *
+     * @return bool
      */
     protected function sendMails()
     {
@@ -350,28 +333,28 @@ abstract class AbstractNotificationHelper
     protected function getMailSubject()
     {
         $mailSubject = '';
-        if ($this->recipientType == 'moderator' || $this->recipientType == 'superModerator' || $this->usesDesignatedEntityFields()) {
-            if ($this->action == 'submit') {
+        if ('moderator' === $this->recipientType || 'superModerator' === $this->recipientType || $this->usesDesignatedEntityFields()) {
+            if ('submit' === $this->action) {
                 $mailSubject = $this->__('New content has been submitted');
-            } elseif ($this->action == 'demote') {
+            } elseif ('demote' === $this->action) {
                 $mailSubject = $this->__('Content has been demoted');
-            } elseif ($this->action == 'accept') {
+            } elseif ('accept' === $this->action) {
                 $mailSubject = $this->__('Content has been accepted');
-            } elseif ($this->action == 'approve') {
+            } elseif ('approve' === $this->action) {
                 $mailSubject = $this->__('Content has been approved');
-            } elseif ($this->action == 'delete') {
+            } elseif ('delete' === $this->action) {
                 $mailSubject = $this->__('Content has been deleted');
             } else {
                 $mailSubject = $this->__('Content has been updated');
             }
-        } elseif ($this->recipientType == 'creator') {
-            if ($this->action == 'accept') {
+        } elseif ('creator' === $this->recipientType) {
+            if ('accept' === $this->action) {
                 $mailSubject = $this->__('Your submission has been accepted');
-            } elseif ($this->action == 'approve') {
+            } elseif ('approve' === $this->action) {
                 $mailSubject = $this->__('Your submission has been approved');
-            } elseif ($this->action == 'reject') {
+            } elseif ('reject' === $this->action) {
                 $mailSubject = $this->__('Your submission has been rejected');
-            } elseif ($this->action == 'delete') {
+            } elseif ('delete' === $this->action) {
                 $mailSubject = $this->__('Your submission has been deleted');
             } else {
                 $mailSubject = $this->__('Your submission has been updated');
@@ -396,15 +379,15 @@ abstract class AbstractNotificationHelper
         $session = null !== $request ? $request->getSession() : null;
         $remarks = null !== $session ? $session->get($this->name . 'AdditionalNotificationRemarks', '') : '';
     
-        $hasDisplayAction = in_array($objectType, ['message']);
-        $hasEditAction = in_array($objectType, ['message']);
-        $routeArea = in_array($this->recipientType, ['moderator', 'superModerator']) ? 'admin' : '';
+        $hasDisplayAction = in_array($objectType, ['message'], true);
+        $hasEditAction = in_array($objectType, ['message'], true);
+        $routeArea = in_array($this->recipientType, ['moderator', 'superModerator'], true) ? 'admin' : '';
         $routePrefix = 'munewsmodule_' . strtolower($objectType) . '_' . $routeArea;
     
         $urlArgs = $this->entity->createUrlArgs();
         $displayUrl = $hasDisplayAction ? $this->router->generate($routePrefix . 'display', $urlArgs, UrlGeneratorInterface::ABSOLUTE_URL) : '';
     
-        $needsArg = in_array($objectType, ['message']);
+        $needsArg = in_array($objectType, ['message'], true);
         $urlArgs = $needsArg ? $this->entity->createUrlArgs(true) : $this->entity->createUrlArgs();
         $editUrl = $hasEditAction ? $this->router->generate($routePrefix . 'edit', $urlArgs, UrlGeneratorInterface::ABSOLUTE_URL) : '';
     
@@ -420,10 +403,10 @@ abstract class AbstractNotificationHelper
     /**
      * Checks whether a special notification type is used or not.
      *
-     * @return boolean
+     * @return bool
      */
     protected function usesDesignatedEntityFields()
     {
-        return strpos($this->recipientType, 'field-') === 0;
+        return 0 === strpos($this->recipientType, 'field-');
     }
 }

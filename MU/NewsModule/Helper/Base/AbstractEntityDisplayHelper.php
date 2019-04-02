@@ -15,6 +15,7 @@ namespace MU\NewsModule\Helper\Base;
 use IntlDateFormatter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\Doctrine\EntityAccess;
 use MU\NewsModule\Entity\MessageEntity;
 use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\Helper\ListEntriesHelper;
@@ -39,13 +40,6 @@ abstract class AbstractEntityDisplayHelper
      */
     protected $dateFormatter;
     
-    /**
-     * EntityDisplayHelper constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RequestStack $requestStack
-     * @param ListEntriesHelper $listEntriesHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
@@ -60,11 +54,11 @@ abstract class AbstractEntityDisplayHelper
     /**
      * Returns the formatted title for a given entity.
      *
-     * @param object $entity The given entity instance
+     * @param EntityAccess $entity The given entity instance
      *
      * @return string The formatted title
      */
-    public function getFormattedTitle($entity)
+    public function getFormattedTitle(EntityAccess $entity)
     {
         if ($entity instanceof MessageEntity) {
             return $this->formatMessage($entity);
@@ -112,12 +106,12 @@ abstract class AbstractEntityDisplayHelper
      *
      * @return string Name of field to be used as title
      */
-    public function getTitleFieldName($objectType)
+    public function getTitleFieldName($objectType = '')
     {
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return 'title';
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return 'caption';
         }
     
@@ -131,12 +125,12 @@ abstract class AbstractEntityDisplayHelper
      *
      * @return string Name of field to be used as description
      */
-    public function getDescriptionFieldName($objectType)
+    public function getDescriptionFieldName($objectType = '')
     {
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return 'startText';
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return 'caption';
         }
     
@@ -150,12 +144,12 @@ abstract class AbstractEntityDisplayHelper
      *
      * @return string Name of field to be used for preview images
      */
-    public function getPreviewFieldName($objectType)
+    public function getPreviewFieldName($objectType = '')
     {
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return 'imageUpload1';
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return 'theFile';
         }
     
@@ -170,12 +164,12 @@ abstract class AbstractEntityDisplayHelper
      *
      * @return string Name of field to be used as date
      */
-    public function getStartDateFieldName($objectType)
+    public function getStartDateFieldName($objectType = '')
     {
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return 'startDate';
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return 'createdDate';
         }
     

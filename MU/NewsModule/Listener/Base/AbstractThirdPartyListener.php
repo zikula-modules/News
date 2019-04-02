@@ -15,7 +15,6 @@ namespace MU\NewsModule\Listener\Base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Common\Collection\Collectible\PendingContentCollectible;
 use Zikula\Common\Collection\Container;
 use Zikula\Core\Event\GenericEvent;
@@ -42,15 +41,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      */
     protected $workflowHelper;
     
-    /**
-     * ThirdPartyListener constructor.
-     *
-     * @param Filesystem $filesystem
-     * @param RequestStack $requestStack
-     * @param WorkflowHelper $workflowHelper
-     *
-     * @return void
-     */
     public function __construct(Filesystem $filesystem, RequestStack $requestStack, WorkflowHelper $workflowHelper)
     {
         $this->filesystem = $filesystem;
@@ -58,9 +48,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
         $this->workflowHelper = $workflowHelper;
     }
     
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -82,13 +69,12 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
     public function pendingContentListener(GenericEvent $event)
     {
         $collection = new Container('MUNewsModule');
         $amounts = $this->workflowHelper->collectAmountOfModerationItems();
-        if (count($amounts) > 0) {
+        if (0 < count($amounts)) {
             foreach ($amounts as $amountInfo) {
                 $aggregateType = $amountInfo['aggregateType'];
                 $description = $amountInfo['description'];
@@ -102,7 +88,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
             }
         
             // add collected items for pending content
-            if ($collection->count() > 0) {
+            if (0 < $collection->count()) {
                 $event->getSubject()->add($collection);
             }
         }
@@ -119,7 +105,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param EditorHelperEvent $event The event instance
      */
     public function getEditorHelpers(EditorHelperEvent $event)
     {
@@ -151,7 +136,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
     public function getCKEditorPlugins(GenericEvent $event)
     {
@@ -173,7 +157,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
     public function getQuillPlugins(GenericEvent $event)
     {
@@ -193,7 +176,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
     public function getSummernotePlugins(GenericEvent $event)
     {
@@ -213,7 +195,6 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
     public function getTinyMcePlugins(GenericEvent $event)
     {

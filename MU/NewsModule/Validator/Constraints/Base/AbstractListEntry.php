@@ -49,9 +49,6 @@ abstract class AbstractListEntry extends Constraint
      */
     public $max;
 
-    /**
-     * @inheritDoc
-     */
     public function validatedBy()
     {
         return 'mu_news_module.validator.list_entry.validator';

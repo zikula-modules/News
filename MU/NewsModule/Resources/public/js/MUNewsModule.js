@@ -112,10 +112,10 @@ function mUNewsInitMassToggle() {
  * Creates a dropdown menu for the item actions.
  */
 function mUNewsInitItemActions(context) {
-    if (context == 'view') {
+    if ('view' === context) {
         jQuery('ul.list-inline > li > a > i.tooltips').tooltip();
     }
-    if (context == 'display') {
+    if ('display' === context) {
         jQuery('.btn-group-sm.item-actions').each(function (index) {
             var innerList;
             innerList = jQuery(this).children('ul.list-inline').first().detach();

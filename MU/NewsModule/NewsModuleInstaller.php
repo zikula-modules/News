@@ -13,6 +13,7 @@
 namespace MU\NewsModule;
 
 use MU\NewsModule\Base\AbstractNewsModuleInstaller;
+use MU\NewsModule\Entity\ImageEntity;
 
 /**
  * Installer implementation class.
@@ -24,7 +25,7 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
      */
     public function upgrade($oldVersion)
     {
-        if ($oldVersion == '1.0.0') {
+        if ('1.0.0' === $oldVersion) {
             $this->addFlash('error', 'Update from 1.0.0 to 1.2.0 is not supported. Please update to 1.1.0 first.');
 
             return false;
@@ -35,26 +36,16 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.1.0':
-
                 // TODO update from 1.1.0 to 1.2.0
 
-                // update the database schema
-                /*
-                try {
-                    $this->schemaTool->update($this->listEntityClasses());
-                } catch (\Exception $exception) {
-                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
-                    $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
-    
-                    return false;
-                }
-                */
             case '1.2.0':
                 $this->setVar('defaultMessageSortingBackend', 'articledatetime');
 
             case '1.2.1':
                 try {
-                    $this->schemaTool->create(['MU\NewsModule\Entity\ImageEntity']);
+                    $this->schemaTool->create([
+                        ImageEntity::class
+                    ]);
                 } catch (\Exception $exception) {
                     $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
                     $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);

@@ -15,7 +15,7 @@ namespace MU\NewsModule\DependencyInjection;
 use MU\NewsModule\DependencyInjection\Base\AbstractMUNewsExtension;
 
 /**
- * Implementation class for service definition loader using the DependencyInjection extension.
+ * DependencyInjection extension implementation class.
  */
 class MUNewsExtension extends AbstractMUNewsExtension
 {

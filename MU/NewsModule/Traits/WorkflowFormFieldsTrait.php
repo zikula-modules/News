@@ -24,7 +24,7 @@ trait WorkflowFormFieldsTrait
      * Adds a field for additional notification remarks.
      *
      * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
+     * @param array $options The options
      */
     public function addAdditionalNotificationRemarksField(FormBuilderInterface $builder, array $options = [])
     {

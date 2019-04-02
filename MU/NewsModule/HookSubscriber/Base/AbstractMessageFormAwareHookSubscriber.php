@@ -26,43 +26,26 @@ abstract class AbstractMessageFormAwareHookSubscriber implements HookSubscriberI
      */
     protected $translator;
 
-    /**
-     * MessageFormAwareHookSubscriber constructor.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getOwner()
     {
         return 'MUNewsModule';
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getCategory()
     {
         return FormAwareCategory::NAME;
     }
     
-    /**
-     * @inheritDoc
-     */
     public function getTitle()
     {
         return $this->translator->__('Message form aware subscriber');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getEvents()
     {
         return [

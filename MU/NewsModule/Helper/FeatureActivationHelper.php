@@ -51,47 +51,47 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
      */
     public function isEnabled($feature, $objectType)
     {
-        if (self::CATEGORIES == $feature) {
+        if (self::CATEGORIES === $feature) {
             $method = 'hasCategories';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
-        if (self::ATTRIBUTES == $feature) {
+        if (self::ATTRIBUTES === $feature) {
             $method = 'hasAttributes';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
-        if (self::TRANSLATIONS == $feature) {
+        if (self::TRANSLATIONS === $feature) {
             $method = 'hasTranslations';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
         
-        if (self::CREATORS == $feature) {
+        if (self::CREATORS === $feature) {
             $method = 'hasCreators';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
         
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
         
-        if (self::CREATEDDATES == $feature) {
+        if (self::CREATEDDATES === $feature) {
             $method = 'hasCreatedDates';
             if (method_exists($this, $method)) {
                 return $this->$method($objectType);
             }
         
-            return in_array($objectType, ['message']);
+            return in_array($objectType, ['message'], true);
         }
     
         return false;
@@ -99,26 +99,26 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
     
     public function hasCategories($objectType)
     {
-        return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableCategorization') == 1;
+        return 'message' === $objectType && 1 == $this->variableApi->get('MUNewsModule', 'enableCategorization');
     }
     
     public function hasAttributes($objectType)
     {
-        return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableAttribution') == 1;
+        return 'message' === $objectType && $this->variableApi->get('MUNewsModule', 'enableAttribution') == 1;
     }
     
     public function hasTranslations($objectType)
     {
-        return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'enableMultiLanguage') == 1;
+        return 'message' === $objectType && $this->variableApi->get('MUNewsModule', 'enableMultiLanguage') == 1;
     }
     
     public function hasCreators($objectType)
     {
-        return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'showAuthor') == 1;
+        return 'message' === $objectType && $this->variableApi->get('MUNewsModule', 'showAuthor') == 1;
     }
     
     public function hasCreatedDates($objectType)
     {
-        return $objectType == 'message' && $this->variableApi->get('MUNewsModule', 'showDate') == 1;
+        return 'message' === $objectType && $this->variableApi->get('MUNewsModule', 'showDate') == 1;
     }
 }

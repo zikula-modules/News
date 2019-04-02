@@ -36,6 +36,8 @@ use MU\NewsModule\Entity\Factory\EntityFactory;
 use MU\NewsModule\Form\Type\Field\TranslationType;
 use MU\NewsModule\Form\Type\Field\UploadType;
 use Zikula\UsersModule\Form\Type\UserLiveSearchType;
+use MU\NewsModule\Entity\MessageEntity;
+use MU\NewsModule\Entity\MessageCategoryEntity;
 use MU\NewsModule\Helper\CollectionFilterHelper;
 use MU\NewsModule\Helper\EntityDisplayHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
@@ -99,20 +101,6 @@ abstract class AbstractMessageType extends AbstractType
      */
     protected $featureActivationHelper;
 
-    /**
-     * MessageType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param EntityFactory $entityFactory
-     * @param CollectionFilterHelper $collectionFilterHelper
-     * @param EntityDisplayHelper $entityDisplayHelper
-     * @param VariableApiInterface $variableApi
-     * @param TranslatableHelper $translatableHelper
-     * @param ListEntriesHelper $listHelper
-     * @param UploadHelper $uploadHelper
-     * @param LocaleApiInterface $localeApi
-     * @param FeatureActivationHelper $featureActivationHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
@@ -137,19 +125,11 @@ abstract class AbstractMessageType extends AbstractType
         $this->featureActivationHelper = $featureActivationHelper;
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder, $options);
@@ -167,9 +147,6 @@ abstract class AbstractMessageType extends AbstractType
 
     /**
      * Adds basic entity fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options = [])
     {
@@ -209,12 +186,12 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
         ]);
         $helpText = $this->__('You can input a custom permalink for the message or let this field free to create one automatically.');
-        if ('create' != $options['mode']) {
+        if ('create' !== $options['mode']) {
             $helpText = '';
         }
         $builder->add('slug', TextType::class, [
             'label' => $this->__('Permalink') . ':',
-            'required' => 'create' != $options['mode'],
+            'required' => 'create' !== $options['mode'],
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
@@ -231,7 +208,7 @@ abstract class AbstractMessageType extends AbstractType
                 $translatableFields = $this->translatableHelper->getTranslatableFields('message');
                 $mandatoryFields = $this->translatableHelper->getMandatoryFields('message');
                 foreach ($supportedLanguages as $language) {
-                    if ($language == $currentLanguage) {
+                    if ($language === $currentLanguage) {
                         continue;
                     }
                     $builder->add('translations' . $language, TranslationType::class, [
@@ -419,9 +396,6 @@ abstract class AbstractMessageType extends AbstractType
 
     /**
      * Adds fields for attributes.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addAttributeFields(FormBuilderInterface $builder, array $options = [])
     {
@@ -440,9 +414,6 @@ abstract class AbstractMessageType extends AbstractType
 
     /**
      * Adds a categories field.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
@@ -456,16 +427,13 @@ abstract class AbstractMessageType extends AbstractType
             'multiple' => true,
             'module' => 'MUNewsModule',
             'entity' => 'MessageEntity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\MessageCategoryEntity',
+            'entityCategoryClass' => MessageCategoryEntity::class,
             'showRegistryLabels' => true
         ]);
     }
 
     /**
      * Adds fields for outgoing relationships.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addOutgoingRelationshipFields(FormBuilderInterface $builder, array $options = [])
     {
@@ -494,21 +462,18 @@ abstract class AbstractMessageType extends AbstractType
 
     /**
      * Adds submit buttons.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [
                 'label' => $action['title'],
-                'icon' => ($action['id'] == 'delete' ? 'fa-trash-o' : ''),
+                'icon' => 'delete' === $action['id'] ? 'fa-trash-o' : '',
                 'attr' => [
                     'class' => $action['buttonClass']
                 ]
             ]);
-            if ($options['mode'] == 'create' && $action['id'] == 'submit' && !$options['inline_usage']) {
+            if ('create' === $options['mode'] && 'submit' === $action['id'] && !$options['inline_usage']) {
                 // add additional button to submit item and return to create form
                 $builder->add('submitrepeat', SubmitType::class, [
                     'label' => $this->__('Submit and repeat'),
@@ -537,23 +502,17 @@ abstract class AbstractMessageType extends AbstractType
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'munewsmodule_message';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults([
                 // define class for underlying data (required for embedding forms)
-                'data_class' => 'MU\NewsModule\Entity\MessageEntity',
+                'data_class' => MessageEntity::class,
                 'empty_data' => function (FormInterface $form) {
                     return $this->entityFactory->createMessage();
                 },

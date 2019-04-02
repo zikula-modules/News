@@ -64,17 +64,6 @@ class AbstractMenuBuilder
      */
     protected $currentUserApi;
 
-    /**
-     * MenuBuilder constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param FactoryInterface $factory
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param RequestStack $requestStack
-     * @param PermissionHelper $permissionHelper
-     * @param EntityDisplayHelper $entityDisplayHelper
-     * @param CurrentUserApiInterface $currentUserApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         FactoryInterface $factory,
@@ -93,11 +82,6 @@ class AbstractMenuBuilder
         $this->currentUserApi = $currentUserApi;
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -113,7 +97,7 @@ class AbstractMenuBuilder
     public function createItemActionsMenu(array $options = [])
     {
         $menu = $this->factory->createItem('itemActions');
-        if (!isset($options['entity']) || !isset($options['area']) || !isset($options['context'])) {
+        if (!isset($options['entity'], $options['area'], $options['context'])) {
             return $menu;
         }
 
@@ -127,9 +111,9 @@ class AbstractMenuBuilder
         $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof MessageEntity) {
             $routePrefix = 'munewsmodule_message_';
-            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId === $entity->getCreatedBy()->getUid();
         
-            if ($routeArea == 'admin') {
+            if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'munewsmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
                 $previewRouteParameters['preview'] = 1;
@@ -139,19 +123,19 @@ class AbstractMenuBuilder
                 ]);
                 $menu[$title]->setLinkAttribute('target', '_blank');
                 $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'munewsmodule'));
-                if ($context == 'display') {
+                if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
-            if ($context != 'display') {
+            if ('display' !== $context) {
                 $title = $this->__('Details', 'munewsmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
                 $menu[$title]->setLinkAttribute('title', str_replace('"', '', $this->entityDisplayHelper->getFormattedTitle($entity)));
-                if ($context == 'display') {
+                if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-eye');
@@ -163,7 +147,7 @@ class AbstractMenuBuilder
                     'routeParameters' => $entity->createUrlArgs(true)
                 ]);
                 $menu[$title]->setLinkAttribute('title', $this->__('Edit this message', 'munewsmodule'));
-                if ($context == 'display') {
+                if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
@@ -173,7 +157,7 @@ class AbstractMenuBuilder
                     'routeParameters' => ['astemplate' => $entity->getKey()]
                 ]);
                 $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new message', 'munewsmodule'));
-                if ($context == 'display') {
+                if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-files-o');
@@ -185,18 +169,18 @@ class AbstractMenuBuilder
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
                 $menu[$title]->setLinkAttribute('title', $this->__('Delete this message', 'munewsmodule'));
-                if ($context == 'display') {
+                if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-danger');
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
             }
-            if ($context == 'display') {
+            if ('display' === $context) {
                 $title = $this->__('Messages list', 'munewsmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
                 ]);
                 $menu[$title]->setLinkAttribute('title', $title);
-                if ($context == 'display') {
+                if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
                 $menu[$title]->setAttribute('icon', 'fa fa-reply');
@@ -204,7 +188,7 @@ class AbstractMenuBuilder
         }
         if ($entity instanceof ImageEntity) {
             $routePrefix = 'munewsmodule_image_';
-            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId === $entity->getCreatedBy()->getUid();
         
         }
 

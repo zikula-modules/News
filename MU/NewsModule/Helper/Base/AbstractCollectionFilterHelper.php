@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use MU\NewsModule\Entity\MessageEntity;
-use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\Helper\CategoryHelper;
 use MU\NewsModule\Helper\PermissionHelper;
 
@@ -57,15 +55,6 @@ abstract class AbstractCollectionFilterHelper
      */
     protected $filterDataByLocale = false;
     
-    /**
-     * CollectionFilterHelper constructor.
-     *
-     * @param RequestStack $requestStack
-     * @param PermissionHelper $permissionHelper
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param CategoryHelper $categoryHelper
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         RequestStack $requestStack,
         PermissionHelper $permissionHelper,
@@ -77,29 +66,29 @@ abstract class AbstractCollectionFilterHelper
         $this->permissionHelper = $permissionHelper;
         $this->currentUserApi = $currentUserApi;
         $this->categoryHelper = $categoryHelper;
-        $this->showOnlyOwnEntries = $variableApi->get('MUNewsModule', 'showOnlyOwnEntries', false);
-        $this->filterDataByLocale = $variableApi->get('MUNewsModule', 'filterDataByLocale', false);
+        $this->showOnlyOwnEntries = (bool)$variableApi->get('MUNewsModule', 'showOnlyOwnEntries');
+        $this->filterDataByLocale = (bool)$variableApi->get('MUNewsModule', 'filterDataByLocale');
     }
     
     /**
      * Returns an array of additional template variables for view quick navigation forms.
      *
      * @param string $objectType Name of treated entity type
-     * @param string $context    Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
-     * @param array  $args       Additional arguments
+     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
+     * @param array $args Additional arguments
      *
      * @return array List of template variables to be assigned
      */
     public function getViewQuickNavParameters($objectType = '', $context = '', array $args = [])
     {
-        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
+        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'], true)) {
             $context = 'controllerAction';
         }
     
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return $this->getViewQuickNavParametersForMessage($context, $args);
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return $this->getViewQuickNavParametersForImage($context, $args);
         }
     
@@ -109,17 +98,17 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Adds quick navigation related filter options as where clauses.
      *
-     * @param string       $objectType Name of treated entity type
-     * @param QueryBuilder $qb         Query builder to be enhanced
+     * @param string $objectType Name of treated entity type
+     * @param QueryBuilder $qb Query builder to be enhanced
      *
      * @return QueryBuilder Enriched query builder instance
      */
     public function addCommonViewFilters($objectType, QueryBuilder $qb)
     {
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return $this->addCommonViewFiltersForMessage($qb);
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return $this->addCommonViewFiltersForImage($qb);
         }
     
@@ -129,18 +118,18 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Adds default filters as where clauses.
      *
-     * @param string       $objectType Name of treated entity type
-     * @param QueryBuilder $qb         Query builder to be enhanced
-     * @param array        $parameters List of determined filter options
+     * @param string $objectType Name of treated entity type
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param array $parameters List of determined filter options
      *
      * @return QueryBuilder Enriched query builder instance
      */
     public function applyDefaultFilters($objectType, QueryBuilder $qb, array $parameters = [])
     {
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             return $this->applyDefaultFiltersForMessage($qb, $parameters);
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             return $this->applyDefaultFiltersForImage($qb, $parameters);
         }
     
@@ -151,7 +140,7 @@ abstract class AbstractCollectionFilterHelper
      * Returns an array of additional template variables for view quick navigation forms.
      *
      * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
-     * @param array  $args    Additional arguments
+     * @param array $args Additional arguments
      *
      * @return array List of template variables to be assigned
      */
@@ -180,7 +169,7 @@ abstract class AbstractCollectionFilterHelper
      * Returns an array of additional template variables for view quick navigation forms.
      *
      * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
-     * @param array  $args    Additional arguments
+     * @param array $args Additional arguments
      *
      * @return array List of template variables to be assigned
      */
@@ -212,38 +201,41 @@ abstract class AbstractCollectionFilterHelper
         if (null === $request) {
             return $qb;
         }
-        $routeName = $request->get('_route');
+        $routeName = $request->get('_route', '');
         if (false !== strpos($routeName, 'edit')) {
             return $qb;
         }
     
         $parameters = $this->getViewQuickNavParametersForMessage();
         foreach ($parameters as $k => $v) {
-            if ($k == 'catId') {
-                if (intval($v) > 0) {
+            if (null === $v) {
+                continue;
+            }
+            if ('catId' === $k) {
+                if (0 < (int)$v) {
                     // single category filter
                     $qb->andWhere('tblCategories.category = :category')
                        ->setParameter('category', $v);
                 }
                 continue;
             }
-            if ($k == 'catIdList') {
+            if ('catIdList' === $k) {
                 // multi category filter
                 $qb = $this->categoryHelper->buildFilterClauses($qb, 'message', $v);
                 continue;
             }
-            if (in_array($k, ['q', 'searchterm'])) {
+            if (in_array($k, ['q', 'searchterm'], true)) {
                 // quick search
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter('message', $qb, $v);
                 }
                 continue;
             }
-            if (in_array($k, ['displayOnIndex', 'allowComments', 'noEndDate'])) {
+            if (in_array($k, ['displayOnIndex', 'allowComments', 'noEndDate'], true)) {
                 // boolean filter
-                if ($v == 'no') {
+                if ('no' === $v) {
                     $qb->andWhere('tbl.' . $k . ' = 0');
-                } elseif ($v == 'yes' || $v == '1') {
+                } elseif ('yes' === $v || '1' === $v) {
                     $qb->andWhere('tbl.' . $k . ' = 1');
                 }
                 continue;
@@ -254,15 +246,15 @@ abstract class AbstractCollectionFilterHelper
             }
     
             // field filter
-            if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
-                if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
+            if ((!is_numeric($v) && '' !== $v) || (is_numeric($v) && 0 < $v)) {
+                if ('workflowState' === $k && '0' === strpos($v, '!')) {
                     $qb->andWhere('tbl.' . $k . ' != :' . $k)
-                       ->setParameter($k, substr($v, 1, strlen($v)-1));
-                } elseif (substr($v, 0, 1) == '%') {
+                       ->setParameter($k, substr($v, 1));
+                } elseif (0 === strpos($v, '%')) {
                     $qb->andWhere('tbl.' . $k . ' LIKE :' . $k)
                        ->setParameter($k, '%' . substr($v, 1) . '%');
                 } else {
-                    if (in_array($k, ['approver'])) {
+                    if (in_array($k, ['approver'], true)) {
                         $qb->leftJoin('tbl.' . $k, 'tbl' . ucfirst($k))
                            ->andWhere('tbl' . ucfirst($k) . '.uid = :' . $k)
                            ->setParameter($k, $v);
@@ -274,9 +266,7 @@ abstract class AbstractCollectionFilterHelper
             }
         }
     
-        $qb = $this->applyDefaultFiltersForMessage($qb, $parameters);
-    
-        return $qb;
+        return $this->applyDefaultFiltersForMessage($qb, $parameters);
     }
     
     /**
@@ -292,14 +282,17 @@ abstract class AbstractCollectionFilterHelper
         if (null === $request) {
             return $qb;
         }
-        $routeName = $request->get('_route');
+        $routeName = $request->get('_route', '');
         if (false !== strpos($routeName, 'edit')) {
             return $qb;
         }
     
         $parameters = $this->getViewQuickNavParametersForImage();
         foreach ($parameters as $k => $v) {
-            if (in_array($k, ['q', 'searchterm'])) {
+            if (null === $v) {
+                continue;
+            }
+            if (in_array($k, ['q', 'searchterm'], true)) {
                 // quick search
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter('image', $qb, $v);
@@ -312,11 +305,11 @@ abstract class AbstractCollectionFilterHelper
             }
     
             // field filter
-            if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
-                if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
+            if ((!is_numeric($v) && '' !== $v) || (is_numeric($v) && 0 < $v)) {
+                if ('workflowState' === $k && '0' === strpos($v, '!')) {
                     $qb->andWhere('tbl.' . $k . ' != :' . $k)
-                       ->setParameter($k, substr($v, 1, strlen($v)-1));
-                } elseif (substr($v, 0, 1) == '%') {
+                       ->setParameter($k, substr($v, 1));
+                } elseif (0 === strpos($v, '%')) {
                     $qb->andWhere('tbl.' . $k . ' LIKE :' . $k)
                        ->setParameter($k, '%' . substr($v, 1) . '%');
                 } else {
@@ -326,16 +319,14 @@ abstract class AbstractCollectionFilterHelper
             }
         }
     
-        $qb = $this->applyDefaultFiltersForImage($qb, $parameters);
-    
-        return $qb;
+        return $this->applyDefaultFiltersForImage($qb, $parameters);
     }
     
     /**
      * Adds default filters as where clauses.
      *
-     * @param QueryBuilder $qb         Query builder to be enhanced
-     * @param array        $parameters List of determined filter options
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param array $parameters List of determined filter options
      *
      * @return QueryBuilder Enriched query builder instance
      */
@@ -345,7 +336,7 @@ abstract class AbstractCollectionFilterHelper
         if (null === $request) {
             return $qb;
         }
-        $routeName = $request->get('_route');
+        $routeName = $request->get('_route', '');
         $isAdminArea = false !== strpos($routeName, 'munewsmodule_message_admin');
         if ($isAdminArea) {
             return $qb;
@@ -353,7 +344,7 @@ abstract class AbstractCollectionFilterHelper
     
         $showOnlyOwnEntries = (bool)$request->query->getInt('own', $this->showOnlyOwnEntries);
     
-        if (!in_array('workflowState', array_keys($parameters)) || empty($parameters['workflowState'])) {
+        if (!array_key_exists('workflowState', $parameters) || empty($parameters['workflowState'])) {
             // per default we show approved messages only
             $onlineStates = ['approved'];
             $qb->andWhere('tbl.workflowState IN (:onlineStates)')
@@ -366,7 +357,7 @@ abstract class AbstractCollectionFilterHelper
     
         if (true === (bool)$this->filterDataByLocale) {
             $allowedLocales = ['', $request->getLocale()];
-            if (!in_array('messageLanguage', array_keys($parameters)) || empty($parameters['messageLanguage'])) {
+            if (!array_key_exists('messageLanguage', $parameters) || empty($parameters['messageLanguage'])) {
                 $qb->andWhere('tbl.messageLanguage IN (:currentMessageLanguage)')
                    ->setParameter('currentMessageLanguage', $allowedLocales);
             }
@@ -380,8 +371,8 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Adds default filters as where clauses.
      *
-     * @param QueryBuilder $qb         Query builder to be enhanced
-     * @param array        $parameters List of determined filter options
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param array $parameters List of determined filter options
      *
      * @return QueryBuilder Enriched query builder instance
      */
@@ -391,7 +382,7 @@ abstract class AbstractCollectionFilterHelper
         if (null === $request) {
             return $qb;
         }
-        $routeName = $request->get('_route');
+        $routeName = $request->get('_route', '');
         $isAdminArea = false !== strpos($routeName, 'munewsmodule_image_admin');
         if ($isAdminArea) {
             return $qb;
@@ -399,7 +390,7 @@ abstract class AbstractCollectionFilterHelper
     
         $showOnlyOwnEntries = (bool)$request->query->getInt('own', $this->showOnlyOwnEntries);
     
-        if (!in_array('workflowState', array_keys($parameters)) || empty($parameters['workflowState'])) {
+        if (!array_key_exists('workflowState', $parameters) || empty($parameters['workflowState'])) {
             // per default we show approved images only
             $onlineStates = ['approved'];
             $qb->andWhere('tbl.workflowState IN (:onlineStates)')
@@ -409,7 +400,7 @@ abstract class AbstractCollectionFilterHelper
         if ($showOnlyOwnEntries) {
             $qb = $this->addCreatorFilter($qb);
         }
-        if (in_array('tblMessage', $qb->getAllAliases())) {
+        if (in_array('tblMessage', $qb->getAllAliases(), true)) {
             $qb = $this->applyDateRangeFilterForMessage($qb, 'tblMessage');
         }
     
@@ -419,8 +410,8 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Applies start and end date filters for selecting messages.
      *
-     * @param QueryBuilder $qb    Query builder to be enhanced
-     * @param string       $alias Table alias
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param string $alias Table alias
      *
      * @return QueryBuilder Enriched query builder instance
      */
@@ -441,22 +432,22 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Adds a where clause for search query.
      *
-     * @param string       $objectType Name of treated entity type
-     * @param QueryBuilder $qb         Query builder to be enhanced
-     * @param string       $fragment   The fragment to search for
+     * @param string $objectType Name of treated entity type
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param string $fragment The fragment to search for
      *
      * @return QueryBuilder Enriched query builder instance
      */
     public function addSearchFilter($objectType, QueryBuilder $qb, $fragment = '')
     {
-        if ($fragment == '') {
+        if ('' === $fragment) {
             return $qb;
         }
     
         $filters = [];
         $parameters = [];
     
-        if ($objectType == 'message') {
+        if ('message' === $objectType) {
             $filters[] = 'tbl.workflowState = :searchWorkflowState';
             $parameters['searchWorkflowState'] = $fragment;
             $filters[] = 'tbl.title LIKE :searchTitle';
@@ -492,7 +483,7 @@ abstract class AbstractCollectionFilterHelper
                 $parameters['searchWeight'] = $fragment;
             }
         }
-        if ($objectType == 'image') {
+        if ('image' === $objectType) {
             $filters[] = 'tbl.theFileFileName = :searchTheFile';
             $parameters['searchTheFile'] = $fragment;
             $filters[] = 'tbl.caption LIKE :searchCaption';
@@ -515,24 +506,19 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Adds a filter for the createdBy field.
      *
-     * @param QueryBuilder $qb     Query builder to be enhanced
-     * @param integer      $userId The user identifier used for filtering
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param int $userId The user identifier used for filtering
      *
      * @return QueryBuilder Enriched query builder instance
      */
     public function addCreatorFilter(QueryBuilder $qb, $userId = null)
     {
         if (null === $userId) {
-            $userId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
+            $userId = $this->currentUserApi->isLoggedIn() ? (int)$this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         }
     
-        if (is_array($userId)) {
-            $qb->andWhere('tbl.createdBy IN (:userIds)')
-               ->setParameter('userIds', $userId);
-        } else {
-            $qb->andWhere('tbl.createdBy = :userId')
-               ->setParameter('userId', $userId);
-        }
+        $qb->andWhere('tbl.createdBy = :userId')
+           ->setParameter('userId', $userId);
     
         return $qb;
     }
