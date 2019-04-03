@@ -158,7 +158,7 @@ abstract class AbstractMessageController extends AbstractController
     protected function displayInternal(
         Request $request,
         MessageEntity $message = null,
-        string $slug = '',
+        $slug = '',
         $isAdmin = false
     ) {
         if (null === $message) {
@@ -507,9 +507,9 @@ abstract class AbstractMessageController extends AbstractController
      * @return Response
      */
     public function handleInlineRedirectAction(
-        string $idPrefix,
-        string $commandName,
-        int $id = 0
+        $idPrefix,
+        $commandName,
+        $id = 0
     )
      {
         if (empty($idPrefix)) {
