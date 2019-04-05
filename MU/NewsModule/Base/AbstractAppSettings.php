@@ -2526,7 +2526,7 @@ abstract class AbstractAppSettings
         // prepare group selectors, fallback to admin group for undefined values
         $adminGroupId = GroupsConstant::GROUP_ID_ADMIN;
         $groupId = $this->getModerationGroupForMessages();
-        if (GROUP_ID_USERS > $groupId) {
+        if (GroupsConstant::GROUP_ID_USERS > $groupId) {
             $groupId = $adminGroupId;
         }
     

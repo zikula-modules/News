@@ -183,9 +183,10 @@ class MessageController extends AbstractMessageController
      */
     public function adminDisplayAction(
         Request $request,
-        $slug
+        MessageEntity $message = null,
+        $slug = ''
     ) {
-        return $this->displayInternal($request, $slug, true);
+        return $this->displayInternal($request, $message, $slug, true);
     }
     
     /**
@@ -207,9 +208,10 @@ class MessageController extends AbstractMessageController
      */
     public function displayAction(
         Request $request,
-        $slug
+        MessageEntity $message = null,
+        $slug = ''
     ) {
-        return $this->displayInternal($request, $slug, false);
+        return $this->displayInternal($request, $message, $slug, false);
     }
     
     /**
