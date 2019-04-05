@@ -46,10 +46,7 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
         $this->variableApi = $variableApi;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isEnabled($feature, $objectType)
+    public function isEnabled($feature = '', $objectType = '')
     {
         if (self::CATEGORIES === $feature) {
             $method = 'hasCategories';

@@ -14,6 +14,7 @@ namespace MU\NewsModule\Entity;
 
 use MU\NewsModule\Entity\Base\AbstractImageEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -31,7 +32,7 @@ class ImageEntity extends BaseEntity
     /**
      * @inheritDoc
      */
-    public function setTheFile($theFile)
+    public function setTheFile(File $theFile = null)
     {
         if (null === $theFile || '' === $theFile) {
             return;
