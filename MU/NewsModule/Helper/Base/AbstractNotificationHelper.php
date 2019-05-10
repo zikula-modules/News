@@ -26,6 +26,7 @@ use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use MU\NewsModule\Helper\EntityDisplayHelper;
 use MU\NewsModule\Helper\WorkflowHelper;
@@ -71,6 +72,11 @@ abstract class AbstractNotificationHelper
      * @var GroupRepositoryInterface
      */
     protected $groupRepository;
+    
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
     
     /**
      * @var EntityDisplayHelper
@@ -126,6 +132,7 @@ abstract class AbstractNotificationHelper
         Twig_Environment $twig,
         MailerApiInterface $mailerApi,
         GroupRepositoryInterface $groupRepository,
+        UserRepositoryInterface $userRepository,
         EntityDisplayHelper $entityDisplayHelper,
         WorkflowHelper $workflowHelper
     ) {
@@ -137,6 +144,7 @@ abstract class AbstractNotificationHelper
         $this->twig = $twig;
         $this->mailerApi = $mailerApi;
         $this->groupRepository = $groupRepository;
+        $this->userRepository = $userRepository;
         $this->entityDisplayHelper = $entityDisplayHelper;
         $this->workflowHelper = $workflowHelper;
         $this->name = 'MUNewsModule';
@@ -233,7 +241,7 @@ abstract class AbstractNotificationHelper
     
         if ($debug) {
             // add the admin, too
-            $this->addRecipient(UsersConstant::USER_ID_ADMIN);
+            $this->addRecipient($this->userRepository->find(UsersConstant::USER_ID_ADMIN));
         }
     }
     

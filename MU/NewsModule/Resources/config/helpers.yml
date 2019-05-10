@@ -90,6 +90,7 @@ services:
             - "@twig"
             - "@zikula_mailer_module.api.mailer"
             - "@zikula_groups_module.group_repository"
+            - "@zikula_users_module.user_repository"
             - "@mu_news_module.entity_display_helper"
             - "@mu_news_module.workflow_helper"
             

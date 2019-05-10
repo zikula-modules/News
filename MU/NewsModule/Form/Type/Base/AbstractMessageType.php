@@ -228,6 +228,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
+            'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload1')),
             'allowed_size' => '200k'
         ]);
@@ -318,6 +319,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
+            'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload2')),
             'allowed_size' => '200k'
         ]);
@@ -330,6 +332,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
+            'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload3')),
             'allowed_size' => '200k'
         ]);
@@ -342,6 +345,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
+            'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload4')),
             'allowed_size' => '200k'
         ]);
