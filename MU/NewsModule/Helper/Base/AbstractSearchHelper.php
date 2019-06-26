@@ -24,10 +24,8 @@ use Zikula\Core\RouteUrl;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
 use MU\NewsModule\Entity\Factory\EntityFactory;
-use MU\NewsModule\Helper\CategoryHelper;
 use MU\NewsModule\Helper\ControllerHelper;
 use MU\NewsModule\Helper\EntityDisplayHelper;
-use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\PermissionHelper;
 
 /**
@@ -62,25 +60,13 @@ abstract class AbstractSearchHelper implements SearchableInterface
      */
     protected $permissionHelper;
     
-    /**
-     * @var FeatureActivationHelper
-     */
-    protected $featureActivationHelper;
-    
-    /**
-     * @var CategoryHelper
-     */
-    protected $categoryHelper;
-    
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
         EntityFactory $entityFactory,
         ControllerHelper $controllerHelper,
         EntityDisplayHelper $entityDisplayHelper,
-        PermissionHelper $permissionHelper,
-        FeatureActivationHelper $featureActivationHelper,
-        CategoryHelper $categoryHelper
+        PermissionHelper $permissionHelper
     ) {
         $this->setTranslator($translator);
         $this->requestStack = $requestStack;
@@ -88,8 +74,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
         $this->controllerHelper = $controllerHelper;
         $this->entityDisplayHelper = $entityDisplayHelper;
         $this->permissionHelper = $permissionHelper;
-        $this->featureActivationHelper = $featureActivationHelper;
-        $this->categoryHelper = $categoryHelper;
     }
     
     public function setTranslator(TranslatorInterface $translator)
@@ -199,14 +183,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
             foreach ($entities as $entity) {
                 if (!$this->permissionHelper->mayRead($entity)) {
                     continue;
-                }
-    
-                if (in_array($objectType, ['message'], true)) {
-                    if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-                        if (!$this->categoryHelper->hasPermission($entity)) {
-                            continue;
-                        }
-                    }
                 }
     
                 $description = !empty($descriptionFieldName) ? strip_tags($entity[$descriptionFieldName]) : '';

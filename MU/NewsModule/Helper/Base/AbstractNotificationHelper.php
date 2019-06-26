@@ -210,7 +210,7 @@ abstract class AbstractNotificationHelper
     /**
      * Collects the recipients.
      *
-     * @param boolean $debug Whether to add the admin or not
+     * @param bool $debug Whether to add the admin or not
      */
     protected function collectRecipients($debug = false)
     {

@@ -87,9 +87,8 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             $objectCount = 0;
         }
     
-        if ($hasCategories) {
-            $entities = $this->get('mu_news_module.category_helper')->filterEntitiesByPermission($entities);
-        }
+        // filter by permissions
+        $entities = $this->get('mu_news_module.permission_helper')->filterCollection($objectType, $entities, ACCESS_READ);
     
         // set a block title
         if (empty($properties['title'])) {

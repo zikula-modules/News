@@ -12,6 +12,7 @@
 
 namespace MU\NewsModule\Helper\Base;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -19,6 +20,8 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use MU\NewsModule\Helper\CategoryHelper;
+use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
  * Permission helper base class.
@@ -45,16 +48,30 @@ abstract class AbstractPermissionHelper
      */
     protected $userRepository;
     
+    /**
+     * @var FeatureActivationHelper
+     */
+    protected $featureActivationHelper;
+    
+    /**
+     * @var CategoryHelper
+     */
+    protected $categoryHelper;
+    
     public function __construct(
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        FeatureActivationHelper $featureActivationHelper,
+        CategoryHelper $categoryHelper
     ) {
         $this->requestStack = $requestStack;
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
         $this->userRepository = $userRepository;
+        $this->featureActivationHelper = $featureActivationHelper;
+        $this->categoryHelper = $categoryHelper;
     }
     
     /**
@@ -110,7 +127,36 @@ abstract class AbstractPermissionHelper
         $objectType = $entity->get_objectType();
         $instance = $entity->getKey() . '::';
     
+        // check category permissions
+        if (in_array($objectType, ['message'], true)) {
+            if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
+                if (!$this->categoryHelper->hasPermission($entity)) {
+                    return false;
+                }
+            }
+        }
+    
         return $this->permissionApi->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', $instance, $permissionLevel, $userId);
+    }
+    
+    /**
+     * Filters a given collection of entities based on different permission checks.
+     *
+     * @param array|ArrayCollection $entities The given list of entities
+     *
+     * @return array The filtered list of entities
+     */
+    public function filterCollection($objectType, $entities, $permissionLevel, $userId = null)
+    {
+        $filteredEntities = [];
+        foreach ($entities as $news) {
+            if (!$this->hasEntityPermission($news, $permissionLevel, $userId)) {
+                continue;
+            }
+            $filteredEntities[] = $news;
+        }
+    
+        return $filteredEntities;
     }
     
     /**

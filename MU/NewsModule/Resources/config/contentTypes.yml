@@ -6,6 +6,7 @@ services:
         calls:
             - [setControllerHelper, ['@mu_news_module.controller_helper']]
             - [setModelHelper, ['@mu_news_module.model_helper']]
+            - [setModulePermissionHelper, ['@mu_news_module.permission_helper']]
             - [setEntityFactory, ['@mu_news_module.entity_factory']]
             - [setCategoryDependencies, ['@mu_news_module.category_helper', '@mu_news_module.feature_activation_helper']]
         tags: ['zikula.content_type']

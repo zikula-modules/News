@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -155,7 +156,6 @@ abstract class AbstractMessageQuickNavType extends AbstractType
             ],
             'required' => false,
             'placeholder' => $this->__('All'),
-            // Zikula core should provide a form type for this to hide entity details
             'class' => UserEntity::class,
             'choice_label' => 'uname'
         ]);
@@ -304,5 +304,12 @@ abstract class AbstractMessageQuickNavType extends AbstractType
     public function getBlockPrefix()
     {
         return 'munewsmodule_messagequicknav';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => false
+        ]);
     }
 }

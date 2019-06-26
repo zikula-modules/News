@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
  * Controller for external calls base class.
@@ -206,12 +205,8 @@ abstract class AbstractExternalController extends AbstractController
         
         list($entities, $objectCount) = $repository->retrieveCollectionResult($query, true);
         
-        if (in_array($objectType, ['message'], true)) {
-            $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
-            if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-                $entities = $this->get('mu_news_module.category_helper')->filterEntitiesByPermission($entities);
-            }
-        }
+        // filter by permissions
+        $entities = $this->get('mu_news_module.permission_helper')->filterCollection($objectType, $entities, ACCESS_READ);
         
         $templateParameters['items'] = $entities;
         $templateParameters['finderForm'] = $form->createView();

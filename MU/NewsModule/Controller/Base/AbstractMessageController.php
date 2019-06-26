@@ -29,7 +29,6 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\RouteUrl;
 use MU\NewsModule\Entity\MessageEntity;
-use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
  * Message controller base class.
@@ -124,20 +123,7 @@ abstract class AbstractMessageController extends AbstractController
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
         
         // filter by permissions
-        $filteredEntities = [];
-        foreach ($templateParameters['items'] as $message) {
-            if (!$permissionHelper->hasEntityPermission($message, $permLevel)) {
-                continue;
-            }
-            $filteredEntities[] = $message;
-        }
-        $templateParameters['items'] = $filteredEntities;
-        
-        // filter by category permissions
-        $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
-        if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-            $templateParameters['items'] = $this->get('mu_news_module.category_helper')->filterEntitiesByPermission($templateParameters['items']);
-        }
+        $templateParameters['items'] = $permissionHelper->filterCollection($objectType, $templateParameters['items'], $permLevel);
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
@@ -178,13 +164,6 @@ abstract class AbstractMessageController extends AbstractController
         
         if ('approved' !== $message->getWorkflowState() && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
             throw new AccessDeniedException();
-        }
-        
-        $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
-        if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-            if (!$this->get('mu_news_module.category_helper')->hasPermission($message)) {
-                throw new AccessDeniedException();
-            }
         }
         
         $templateParameters = [

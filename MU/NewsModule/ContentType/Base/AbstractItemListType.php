@@ -19,6 +19,7 @@ use MU\NewsModule\Helper\CategoryHelper;
 use MU\NewsModule\Helper\ControllerHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ModelHelper;
+use MU\NewsModule\Helper\PermissionHelper;
 
 /**
  * Generic item list content type base class.
@@ -34,6 +35,11 @@ abstract class AbstractItemListType extends AbstractContentType
      * @var ModelHelper
      */
     protected $modelHelper;
+    
+    /**
+     * @var PermissionHelper
+     */
+    protected $modulePermissionHelper;
     
     /**
      * @var EntityFactory
@@ -152,9 +158,8 @@ abstract class AbstractItemListType extends AbstractContentType
             $objectCount = 0;
         }
     
-        if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-            $entities = $this->categoryHelper->filterEntitiesByPermission($entities);
-        }
+        // filter by permissions
+        $entities = $this->modulePermissionHelper->filterCollection($objectType, $entities, ACCESS_READ);
     
         $data = $this->data;
         $data['items'] = $entities;
@@ -201,6 +206,7 @@ abstract class AbstractItemListType extends AbstractContentType
         $options = parent::getEditFormOptions($context);
         $data = $this->getData();
         $options['object_type'] = $data['objectType'];
+        $this->categorisableObjectTypes = ['message'];
         $options['is_categorisable'] = in_array($this->data['objectType'], $this->categorisableObjectTypes);
         $options['category_helper'] = $this->categoryHelper;
         $options['feature_activation_helper'] = $this->featureActivationHelper;
@@ -216,6 +222,11 @@ abstract class AbstractItemListType extends AbstractContentType
     public function setModelHelper(ModelHelper $modelHelper)
     {
         $this->modelHelper = $modelHelper;
+    }
+    
+    public function setModulePermissionHelper(PermissionHelper $permissionHelper)
+    {
+        $this->modulePermissionHelper = $permissionHelper;
     }
     
     public function setEntityFactory(EntityFactory $entityFactory)

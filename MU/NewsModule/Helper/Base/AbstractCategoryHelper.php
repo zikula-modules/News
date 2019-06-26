@@ -12,6 +12,7 @@
 
 namespace MU\NewsModule\Helper\Base;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -308,26 +309,6 @@ abstract class AbstractCategoryHelper
     public function getPrimaryProperty($objectType = '')
     {
         return 'Main';
-    }
-    
-    /**
-     * Filters a given list of entities to these the current user has permissions for.
-     *
-     * @param array|ArrayCollection $entities The given list of entities
-     *
-     * @return array The filtered list of entities
-     */
-    public function filterEntitiesByPermission($entities)
-    {
-        $filteredEntities = [];
-        foreach ($entities as $entity) {
-            if (!$this->hasPermission($entity)) {
-                continue;
-            }
-            $filteredEntities[] = $entity;
-        }
-    
-        return $filteredEntities;
     }
     
     /**

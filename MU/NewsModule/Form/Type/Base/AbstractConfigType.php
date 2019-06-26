@@ -1245,7 +1245,6 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => $this->__('Choose the moderation group for messages')
             ],
             'required' => true,
-            // Zikula core should provide a form type for this to hide entity details
             'class' => 'ZikulaGroupsModule:GroupEntity',
             'choice_label' => 'name',
             'choice_value' => 'gid'
@@ -1300,7 +1299,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
             ],
             'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
-            'empty_data' => 'message###image',
+            'empty_data' => [],
             'attr' => [
                 'class' => '',
                 'title' => $this->__('Choose the enabled finder types.')
