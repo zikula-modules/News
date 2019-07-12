@@ -23,76 +23,76 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
     /**
      * @inheritDoc
      */
-	public function install()
+    public function install()
     {
-		parent::install();
-		//Check that news table exists in DB
-		$connection = $this->entityManager->getConnection();
-		$dbName = $this->getDbName();
-		$transStmt = $connection->executeQuery("SHOW TABLES LIKE 'news'");
-		$valor = $transStmt->fetchAll();
+        parent::install();
+        //Check that news table exists in DB
+        $connection = $this->entityManager->getConnection();
+        $dbName = $this->getDbName();
+        $transStmt = $connection->executeQuery("SHOW TABLES LIKE 'news'");
+        $valor = $transStmt->fetchAll();
 
-		if(count($valor) == 1){
-			//Exists, import data
-			ini_set('memory_limit', '2048M');
-			ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
-			
-			//Users
-			$userRepository = $this->container->get('zikula_users_module.user_repository');
-			$userMap = [];
+        if (count($valor) == 1) {
+            //Exists, import data
+            ini_set('memory_limit', '2048M');
+            ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
 
-			//Retrieve data
-			$stmt = $connection->executeQuery("
+            //Users
+            $userRepository = $this->container->get('zikula_users_module.user_repository');
+            $userMap = [];
+
+            //Retrieve data
+            $stmt = $connection->executeQuery("
                 SELECT *
                 FROM $dbName.`news`
                 ORDER BY `sid`
             ");
 
-			while ($row = $stmt->fetch()) {
-				$new = new MessageEntity();
-				$new->setWorkflowState('approved');
-				$new->setTitle($row['title']);
-				$new->setSlug($row['urltitle']);
-				$new->setStartText($row['hometext']);
-				$new->setMainText($row['bodytext']);
-				$new->setAmountOfViews($row['counter']);
-				$new->setAuthor($row['contributor']);
-				$new->setNotes($row['notes']);
-				$new->setDisplayOnIndex($row['displayonindex']);
-				$new->setMessageLanguage($row['language']);
-				$new->setAllowComments($row['allowcomments']);
-				//$row['format_type']
-				$new->setStartDate($row['ffrom']);
-				$new->setNoEndDate($row['tto']);
-				$uid = $row['approver'];
-				if (!isset($userMap[$uid])) {
-					$userMap[$uid] = $userRepository->find($uid);
-				}
-				$new->setApprover($userMap[$uid]);
-				$new->setWeight($row['weight']);
+            while ($row = $stmt->fetch()) {
+                $new = new MessageEntity();
+                $new->setWorkflowState('approved');
+                $new->setTitle($row['title']);
+                $new->setSlug($row['urltitle']);
+                $new->setStartText($row['hometext']);
+                $new->setMainText($row['bodytext']);
+                $new->setAmountOfViews($row['counter']);
+                $new->setAuthor($row['contributor']);
+                $new->setNotes($row['notes']);
+                $new->setDisplayOnIndex($row['displayonindex']);
+                $new->setMessageLanguage($row['language']);
+                $new->setAllowComments($row['allowcomments']);
+                //$row['format_type']
+                $new->setStartDate($row['ffrom']);
+                $new->setNoEndDate($row['tto']);
+                $uid = $row['approver'];
+                if (!isset($userMap[$uid])) {
+                    $userMap[$uid] = $userRepository->find($uid);
+                }
+                $new->setApprover($userMap[$uid]);
+                $new->setWeight($row['weight']);
 
-				//Standard fields
-				$uid = $row['cr_uid'];
-				if (!isset($userMap[$uid])) {
-					$userMap[$uid] = $userRepository->find($uid);
-				}
-				$new->setCreatedBy($userMap[$uid]);
-				$new->setCreatedDate(new \DateTime($row['cr_date']));
-				$uid = $row['lu_uid'];
-				if (!isset($userMap[$uid])) {
-					$userMap[$uid] = $userRepository->find($uid);
-				}
-				$new->setUpdatedBy($userMap[$uid]);
-				$new->setUpdatedDate(new \DateTime($row['lu_date']));
-					
-				$this->entityManager->persist($new);
-				$this->entityManager->flush($new);
-			}
-		}
-		return true;
-	}
+                //Standard fields
+                $uid = $row['cr_uid'];
+                if (!isset($userMap[$uid])) {
+                    $userMap[$uid] = $userRepository->find($uid);
+                }
+                $new->setCreatedBy($userMap[$uid]);
+                $new->setCreatedDate(new \DateTime($row['cr_date']));
+                $uid = $row['lu_uid'];
+                if (!isset($userMap[$uid])) {
+                    $userMap[$uid] = $userRepository->find($uid);
+                }
+                $new->setUpdatedBy($userMap[$uid]);
+                $new->setUpdatedDate(new \DateTime($row['lu_date']));
+                    
+                $this->entityManager->persist($new);
+                $this->entityManager->flush($new);
+            }
+        }
+        return true;
+    }
 
-	/**
+    /**
      * @inheritDoc
      */
     public function upgrade($oldVersion)
@@ -136,5 +136,13 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
 
         // update successful
         return true;
+    }
+
+    /**
+     * Returns the name of the default system database.
+     */
+    private function getDbName(): string
+    {
+        return $this->container->getParameter('database_name');
     }
 }
