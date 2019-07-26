@@ -258,10 +258,10 @@ class MessageController extends AbstractMessageController
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
-
-    public function importNewsArticlesAction(Request $request){
+public function importNewsArticlesAction(Request $request)
+    {
         //check permission, only admins can do this.
-        if (!$this->hasPermission( '::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException($this->__('You do not have pemission to import news items. Admin access is needed.'));
         }
 
@@ -283,19 +283,19 @@ class MessageController extends AbstractMessageController
         //and instead I am using the current ID of the person that is importing the messages who is the admin.
         $currentUserApi = $this->get('zikula_users_module.current_user');
         $author_id = $currentUserApi->get('uid');
-        $author =  $currentUserApi->get('uname');
+        $author = $currentUserApi->get('uname');
         $user = $entityManager->getRepository('Zikula\UsersModule\Entity\UserEntity')->findByUids($author_id);
         //walk the array and fill in the fields in the new data that are needed.
-        foreach($items as $item){
+        foreach ($items as $item) {
             $message = new MessageEntity();
             $cr_date = new \DateTime($item['cr_date']);
             $message->setTitle($item['title']);
             $message->setStartText($item['hometext']);
             $message->setMainText($item['bodytext']);
             $contributor = $item['contributor'];
-            if($contributor !==""){
+            if ($contributor !== '') {
                 $message->setAuthor($contributor);
-                //see if this person is still a user
+                // see if this person is still a user
             } else {
                 $message->setAuthor($author);
             }
@@ -316,7 +316,8 @@ class MessageController extends AbstractMessageController
         }
         //save back to the database.
         $entityManager->flush();
-        $this->addFlash('status', $this->__("$num_Items Messages Imported."));
+        $this->addFlash('status', $this->__f('%amountOfMessages messages imported.', ['%amountOfMessages' => $num_Items]));
+
         return $this->redirectToRoute('munewsmodule_message_adminindex');
     }
 }

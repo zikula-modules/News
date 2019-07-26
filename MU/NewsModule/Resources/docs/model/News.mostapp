@@ -20,6 +20,7 @@ application "News" targets ZK20 {
     displayActionsStyle BUTTON_GROUP
     skipFiles "
         composer.json,
+        Container/LinkContainer.php,
         Controller/MessageController.php,
         Entity/ImageEntity.php,
         Entity/Repository/MessageRepository.php,
