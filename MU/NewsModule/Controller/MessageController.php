@@ -248,4 +248,75 @@ class MessageController extends AbstractMessageController
     }
     
     // feel free to add your own controller methods here
+    /**
+     * Import news items from an old news site.
+     *
+     * @Route("/messages/importNewsArticles")
+     *
+     * @param Request $request Current request instance
+     *
+     *
+     * @throws RuntimeException Thrown if executing the workflow action fails
+     */
+
+    public function importNewsArticlesAction(Request $request){
+        //check permission, only admins can do this.
+        if (!$this->hasPermission( '::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException($this->__('You do not have pemission to import news items. Admin access is needed.'));
+        }
+
+        //you must have a news table in your database for this to work.
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        //grab the connection
+        $conn = $entityManager->getConnection();
+        //Do an old style SQL select statement
+        $sql = "SELECT * FROM news WHERE 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        $items = $stmt->fetchAll();
+        //determine the number of items for reporting back to the user.
+        $num_Items = count($items);
+        //Grab a few things that I will need for filling in the messages
+        //I am taking a shortcut here since the approver of past messages may not be on the site anymore
+        //and instead I am using the current ID of the person that is importing the messages who is the admin.
+        $currentUserApi = $this->get('zikula_users_module.current_user');
+        $author_id = $currentUserApi->get('uid');
+        $author =  $currentUserApi->get('uname');
+        $user = $entityManager->getRepository('Zikula\UsersModule\Entity\UserEntity')->findByUids($author_id);
+        //walk the array and fill in the fields in the new data that are needed.
+        foreach($items as $item){
+            $message = new MessageEntity();
+            $cr_date = new \DateTime($item['cr_date']);
+            $message->setTitle($item['title']);
+            $message->setStartText($item['hometext']);
+            $message->setMainText($item['bodytext']);
+            $contributor = $item['contributor'];
+            if($contributor !==""){
+                $message->setAuthor($contributor);
+                //see if this person is still a user
+            } else {
+                $message->setAuthor($author);
+            }
+            $message->setCreatedBy($user[0]);
+            $message->setUpdatedBy($user[0]);
+            $message->setCreatedDate($cr_date);
+            $message->setDisplayOnIndex($item['displayonindex']);
+            $message->setAllowComments($item['allowcomments']);
+            $message->setStartDate($cr_date);
+            $message->setNoEndDate(true);
+            $message->setWeight(1);
+            $message->setSlug($item['urltitle']);
+            $message->setNotes($item['notes']);
+            $message->setAmountOfViews($item['counter']);
+            $message->setMessageLanguage($item['language']);
+            $message->setWorkflowState('approved');
+            $entityManager->persist($message);
+        }
+        //save back to the database.
+        $entityManager->flush();
+        $this->addFlash('status', $this->__("$num_Items Messages Imported."));
+        return $this->redirectToRoute('munewsmodule_message_adminindex');
+    }
 }
