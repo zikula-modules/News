@@ -261,7 +261,7 @@ class MessageController extends AbstractMessageController
 public function importNewsArticlesAction(Request $request)
     {
         //check permission, only admins can do this.
-        if (!$this->hasPermission('::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('MUNewsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException($this->__('You do not have pemission to import news items. Admin access is needed.'));
         }
 
@@ -289,6 +289,7 @@ public function importNewsArticlesAction(Request $request)
         foreach ($items as $item) {
             $message = new MessageEntity();
             $cr_date = new \DateTime($item['cr_date']);
+            $lu_date = new \DateTime($item['lu_date']);
             $message->setTitle($item['title']);
             $message->setStartText($item['hometext']);
             $message->setMainText($item['bodytext']);
@@ -302,6 +303,7 @@ public function importNewsArticlesAction(Request $request)
             $message->setCreatedBy($user[0]);
             $message->setUpdatedBy($user[0]);
             $message->setCreatedDate($cr_date);
+            $message->setUpdatedDate($lu_date);
             $message->setDisplayOnIndex($item['displayonindex']);
             $message->setAllowComments($item['allowcomments']);
             $message->setStartDate($cr_date);
