@@ -25,7 +25,6 @@ use MU\NewsModule\Controller\Base\AbstractExternalController;
 class ExternalController extends AbstractExternalController
 {
     /**
-     * @inheritDoc
      * @Route("/display/{objectType}/{id}/{source}/{displayMode}",
      *        requirements = {"id" = "\d+", "source" = "block|contentType|scribite", "displayMode" = "link|embed"},
      *        defaults = {"source" = "contentType", "displayMode" = "embed"},
@@ -44,7 +43,6 @@ class ExternalController extends AbstractExternalController
     }
 
     /**
-     * @inheritDoc
      * @Route("/finder/{objectType}/{editor}/{sort}/{sortdir}/{pos}/{num}",
      *        requirements = {"editor" = "ckeditor|quill|summernote|tinymce", "sortdir" = "asc|desc", "pos" = "\d+", "num" = "\d+"},
      *        defaults = {"sort" = "dummy", "sortdir" = "asc", "pos" = 1, "num" = 0},

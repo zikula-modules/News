@@ -26,7 +26,6 @@ use MU\NewsModule\Controller\Base\AbstractConfigController;
 class ConfigController extends AbstractConfigController
 {
     /**
-     * @inheritDoc
      * @Route("/config",
      *        methods = {"GET", "POST"}
      * )

@@ -223,6 +223,7 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('imageUpload1', UploadType::class, [
             'label' => $this->__('Image upload 1') . ':',
             'attr' => [
+                'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload1')),
                 'class' => ' validate-upload',
                 'title' => $this->__('Enter the image upload 1 of the message.')
             ],
@@ -314,6 +315,7 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('imageUpload2', UploadType::class, [
             'label' => $this->__('Image upload 2') . ':',
             'attr' => [
+                'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload2')),
                 'class' => ' validate-upload',
                 'title' => $this->__('Enter the image upload 2 of the message.')
             ],
@@ -327,6 +329,7 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('imageUpload3', UploadType::class, [
             'label' => $this->__('Image upload 3') . ':',
             'attr' => [
+                'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload3')),
                 'class' => ' validate-upload',
                 'title' => $this->__('Enter the image upload 3 of the message.')
             ],
@@ -340,6 +343,7 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('imageUpload4', UploadType::class, [
             'label' => $this->__('Image upload 4') . ':',
             'attr' => [
+                'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload4')),
                 'class' => ' validate-upload',
                 'title' => $this->__('Enter the image upload 4 of the message.')
             ],

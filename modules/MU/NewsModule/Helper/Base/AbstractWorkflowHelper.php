@@ -312,8 +312,12 @@ abstract class AbstractWorkflowHelper
             } else {
                 $entityManager->persist($entity);
             }
+            // we flush two times on purpose to avoid a hen-egg problem with workflow post-processing
+            // first we flush to ensure that the entity gets an identifier
             $entityManager->flush();
+            // then we apply the workflow which causes additional actions, like notifications
             $workflow->apply($entity, $actionId);
+            // then we flush again to save the new workflow state of the entity
             $entityManager->flush();
     
             $result = true;
@@ -387,10 +391,15 @@ abstract class AbstractWorkflowHelper
     public function getAmountOfModerationItems($objectType = '', $state = '')
     {
         $repository = $this->entityFactory->getRepository($objectType);
+        $collectionFilterHelper = $repository->getCollectionFilterHelper();
+        $repository->setCollectionFilterHelper(null);
     
         $where = 'tbl.workflowState = \'' . $state . '\'';
         $parameters = ['workflowState' => $state];
     
-        return $repository->selectCount($where, false, $parameters);
+        $result = $repository->selectCount($where, false, $parameters);
+        $repository->setCollectionFilterHelper($collectionFilterHelper);
+    
+        return $result;
     }
 }

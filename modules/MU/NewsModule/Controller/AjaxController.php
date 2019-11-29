@@ -27,7 +27,6 @@ class AjaxController extends AbstractAjaxController
     
     /**
      *
-     * @inheritDoc
      * @Route("/getItemListFinder", methods = {"GET"}, options={"expose"=true})
      */
     public function getItemListFinderAction(
@@ -38,7 +37,6 @@ class AjaxController extends AbstractAjaxController
     }
     
     /**
-     * @inheritDoc
      * @Route("/checkForDuplicate", methods = {"GET"}, options={"expose"=true})
      */
     public function checkForDuplicateAction(
@@ -49,7 +47,6 @@ class AjaxController extends AbstractAjaxController
     }
     
     /**
-     * @inheritDoc
      * @Route("/toggleFlag", methods = {"POST"}, options={"expose"=true})
      */
     public function toggleFlagAction(
@@ -60,7 +57,6 @@ class AjaxController extends AbstractAjaxController
     }
     
     /**
-     * @inheritDoc
      * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
      */
     public function updateSortPositionsAction(

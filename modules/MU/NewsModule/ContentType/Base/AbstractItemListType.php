@@ -104,9 +104,8 @@ abstract class AbstractItemListType extends AbstractContentType
         }
     
         $objectType = $data['objectType'];
+        $this->categorisableObjectTypes = ['message'];
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
-            $this->categorisableObjectTypes = ['message'];
-    
             $primaryRegistry = $this->categoryHelper->getPrimaryProperty($objectType);
             if (!isset($data['categories'])) {
                 $data['categories'] = [$primaryRegistry => []];

@@ -3,7 +3,7 @@
     {% for image in items %}
         <dt>{{ image|munewsmodule_formattedTitle }}</dt>
         {% if image.caption %}
-            <dd>{{ image.caption|striptags|truncate(200, true, '&hellip;') }}</dd>
+            <dd>{{ image.caption|striptags|truncate(200, true, '…') }}</dd>
         {% endif %}
     {% else %}
         <dt>{{ __('No entries found.') }}</dt>
