@@ -37,9 +37,9 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: tar-archive
-        path: './ZikulaNewsModule_v1.2.5.tar.gz'
+        path: './MUNewsModule_v1.2.5.tar.gz'
     - name: Upload zip archive as artifact
       uses: actions/upload-artifact@master
       with:
         name: zip-archive
-        path: './ZikulaNewsModule_v1.2.5.zip'
+        path: './MUNewsModule_v1.2.5.zip'
