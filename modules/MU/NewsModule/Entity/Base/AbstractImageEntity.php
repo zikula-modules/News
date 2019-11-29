@@ -239,7 +239,7 @@ abstract class AbstractImageEntity extends EntityAccess
      *
      * @return void
      */
-    public function setId($id)
+    public function setId($id = null)
     {
         if ((int)$this->id !== (int)$id) {
             $this->id = (int)$id;

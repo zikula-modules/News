@@ -490,7 +490,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return void
      */
-    public function setId($id)
+    public function setId($id = null)
     {
         if ((int)$this->id !== (int)$id) {
             $this->id = (int)$id;

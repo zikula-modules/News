@@ -44,21 +44,20 @@ function mUNewsToggleFlag(objectType, fieldName, itemId) {
             ot: objectType,
             field: fieldName,
             id: itemId
-        },
-        success: function (data) {
-            var idSuffix;
-            var toggleLink;
-
-            idSuffix = mUNewsCapitaliseFirstLetter(fieldName) + itemId;
-            toggleLink = jQuery('#toggle' + idSuffix);
-
-            /*if (data.message) {
-                mUNewsSimpleAlert(toggleLink, Translator.__('Success'), data.message, 'toggle' + idSuffix + 'DoneAlert', 'success');
-            }*/
-
-            toggleLink.find('.fa-check').toggleClass('hidden', true !== data.state);
-            toggleLink.find('.fa-times').toggleClass('hidden', true === data.state);
         }
+    }).done(function (data) {
+        var idSuffix;
+        var toggleLink;
+
+        idSuffix = mUNewsCapitaliseFirstLetter(fieldName) + itemId;
+        toggleLink = jQuery('#toggle' + idSuffix);
+
+        /*if (data.message) {
+            mUNewsSimpleAlert(toggleLink, Translator.__('Success'), data.message, 'toggle' + idSuffix + 'DoneAlert', 'success');
+        }*/
+
+        toggleLink.find('.fa-check').toggleClass('hidden', true !== data.state);
+        toggleLink.find('.fa-times').toggleClass('hidden', true === data.state);
     });
 }
 
@@ -261,13 +260,12 @@ function mUNewsInitSortable() {
                     identifiers: jQuery(this).sortable('toArray', { attribute: 'data-item-id' }),
                     min: jQuery('#sortableTable').data('min'),
                     max: jQuery('#sortableTable').data('max')
-                },
-                success: function (data) {
-                    /*if (data.message) {
-                        mUNewsSimpleAlert(jQuery('#sortableTable'), Translator.__('Success'), data.message, 'sortingDoneAlert', 'success');
-                    }*/
-                    window.location.reload();
-            	}
+                }
+            }).done(function (data) {
+                /*if (data.message) {
+                    mUNewsSimpleAlert(jQuery('#sortableTable'), Translator.__('Success'), data.message, 'sortingDoneAlert', 'success');
+                }*/
+                window.location.reload();
             });
         }
     });

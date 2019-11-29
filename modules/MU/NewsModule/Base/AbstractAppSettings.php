@@ -2222,7 +2222,7 @@ abstract class AbstractAppSettings
      *
      * @return int
      */
-    public function getModerationGroupForMessages()
+    public function getModerationGroupForMessages()/**/
     {
         return $this->moderationGroupForMessages;
     }
@@ -2234,7 +2234,7 @@ abstract class AbstractAppSettings
      *
      * @return void
      */
-    public function setModerationGroupForMessages($moderationGroupForMessages)
+    public function setModerationGroupForMessages(/**/$moderationGroupForMessages)
     {
         if ($this->moderationGroupForMessages !== $moderationGroupForMessages) {
             $this->moderationGroupForMessages = $moderationGroupForMessages;
