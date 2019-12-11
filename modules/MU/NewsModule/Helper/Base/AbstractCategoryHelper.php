@@ -173,8 +173,11 @@ abstract class AbstractCategoryHelper
      *
      * @return QueryBuilder The enriched query builder instance
      */
-    public function buildFilterClauses(QueryBuilder $queryBuilder, $objectType = '', array $catIds = [])
-    {
+    public function buildFilterClauses(
+        QueryBuilder $queryBuilder,
+        $objectType = '',
+        array $catIds = []
+    ) {
         $qb = $queryBuilder;
     
         $properties = $this->getAllProperties($objectType);
@@ -323,7 +326,11 @@ abstract class AbstractCategoryHelper
     {
         $requireAccessForAll = $this->requireAccessForAll($entity);
     
-        return $this->categoryPermissionApi->hasCategoryAccess($entity->getCategories()->toArray(), ACCESS_OVERVIEW, $requireAccessForAll);
+        return $this->categoryPermissionApi->hasCategoryAccess(
+            $entity->getCategories()->toArray(),
+            ACCESS_OVERVIEW,
+            $requireAccessForAll
+        );
     }
     
     /**

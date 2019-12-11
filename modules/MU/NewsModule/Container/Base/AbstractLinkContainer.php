@@ -93,8 +93,9 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 $objectType = 'message';
                 if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_READ)) {
                     $routeArgs = ['own' => 1];
+                    $routeName = 'munewsmodule_' . strtolower($objectType) . '_view';
                     $links[] = [
-                        'url' => $this->router->generate('munewsmodule_' . strtolower($objectType) . '_view', $routeArgs),
+                        'url' => $this->router->generate($routeName, $routeArgs),
                         'text' => $this->__('My messages', 'munewsmodule'),
                         'icon' => 'list-alt'
                     ];
@@ -134,8 +135,10 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             }
         }
         
-        if (in_array('message', $allowedObjectTypes, true)
-            && $this->permissionHelper->hasComponentPermission('message', $permLevel)) {
+        if (
+            in_array('message', $allowedObjectTypes, true)
+            && $this->permissionHelper->hasComponentPermission('message', $permLevel)
+        ) {
             $links[] = [
                 'url' => $this->router->generate('munewsmodule_message_' . $routeArea . 'view'),
                 'text' => $this->__('Messages', 'munewsmodule'),

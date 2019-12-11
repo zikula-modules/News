@@ -153,7 +153,8 @@ abstract class AbstractMessageNeedle
             if (!$this->permissionHelper->hasComponentPermission('message', ACCESS_READ)) {
                 $cache[$needleId] = '';
             } else {
-                $cache[$needleId] = '<a href="' . $this->router->generate('munewsmodule_message_view', [], UrlGeneratorInterface::ABSOLUTE_URL) . '" title="' . $this->translator->__('View messages', 'munewsmodule') . '">' . $this->translator->__('Messages', 'munewsmodule') . '</a>';
+                $route = $this->router->generate('munewsmodule_message_view', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                $cache[$needleId] = '<a href="' . $route . '" title="' . $this->translator->__('View messages', 'munewsmodule') . '">' . $this->translator->__('Messages', 'munewsmodule') . '</a>';
             }
     
             return $cache[$needleId];
@@ -169,7 +170,12 @@ abstract class AbstractMessageNeedle
         $repository = $this->entityFactory->getRepository('message');
         $entity = $repository->selectById($entityId, false);
         if (null === $entity) {
-            $cache[$needleId] = '<em>' . $this->translator->__f('Message with id %id% could not be found', ['%id%' => $entityId], 'munewsmodule') . '</em>';
+            $notFoundMessage = $this->translator->__f(
+                'Message with id %id% could not be found',
+                ['%id%' => $entityId],
+                'munewsmodule'
+            );
+            $cache[$needleId] = '<em>' . $notFoundMessage . '</em>';
     
             return $cache[$needleId];
         }
@@ -181,7 +187,8 @@ abstract class AbstractMessageNeedle
         }
     
         $title = $this->entityDisplayHelper->getFormattedTitle($entity);
-        $cache[$needleId] = '<a href="' . $this->router->generate('munewsmodule_message_display', $entity->createUrlArgs(), UrlGeneratorInterface::ABSOLUTE_URL) . '" title="' . str_replace('"', '', $title) . '">' . $title . '</a>';
+        $route = $this->router->generate('munewsmodule_message_display', $entity->createUrlArgs(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $cache[$needleId] = '<a href="' . $route . '" title="' . str_replace('"', '', $title) . '">' . $title . '</a>';
     
         return $cache[$needleId];
     }

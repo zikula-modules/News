@@ -154,7 +154,9 @@ abstract class AbstractTranslatableHelper
     
         // get translations
         $entityManager = $this->entityFactory->getEntityManager();
-        $repository = $entityManager->getRepository('MU\NewsModule\Entity\\' . ucfirst($objectType) . 'TranslationEntity');
+        $repository = $entityManager->getRepository(
+            'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'TranslationEntity'
+        );
         $entityTranslations = $repository->findTranslations($entity);
     
         $supportedLanguages = $this->getSupportedLanguages($objectType);

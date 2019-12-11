@@ -193,7 +193,10 @@ abstract class AbstractSearchHelper implements SearchableInterface
                 $displayUrl = null;
                 if ($hasDisplayAction) {
                     $urlArgs = $entity->createUrlArgs();
-                    $urlArgs['_locale'] = null !== $languageField && !empty($entity[$languageField]) ? $entity[$languageField] : $request->getLocale();
+                    $urlArgs['_locale'] = null !== $languageField && !empty($entity[$languageField])
+                        ? $entity[$languageField]
+                        : $request->getLocale()
+                    ;
                     $displayUrl = new RouteUrl('munewsmodule_' . strtolower($objectType) . '_display', $urlArgs);
                 }
     
@@ -232,7 +235,10 @@ abstract class AbstractSearchHelper implements SearchableInterface
             ]
         ];
     
-        $allowedTypes = $this->controllerHelper->getObjectTypes('helper', ['helper' => 'search', 'action' => 'getSearchTypes']);
+        $allowedTypes = $this->controllerHelper->getObjectTypes(
+            'helper',
+            ['helper' => 'search', 'action' => 'getSearchTypes']
+        );
         $allowedSearchTypes = [];
         foreach ($searchTypes as $searchType => $typeInfo) {
             if (!in_array($typeInfo['value'], $allowedTypes, true)) {
@@ -256,14 +262,18 @@ abstract class AbstractSearchHelper implements SearchableInterface
      * Construct a QueryBuilder Where orX|andX Expr instance.
      *
      * @param QueryBuilder $qb
-     * @param string[] $words  List of words to query for
+     * @param string[] $words List of words to query for
      * @param string[] $fields List of fields to include into query
      * @param string $searchtype AND|OR|EXACT
      *
      * @return null|Composite
      */
-    protected function formatWhere(QueryBuilder $qb, array $words = [], array $fields = [], $searchtype = 'AND')
-    {
+    protected function formatWhere(
+        QueryBuilder $qb,
+        array $words = [],
+        array $fields = [],
+        $searchtype = 'AND'
+    ) {
         if (empty($words) || empty($fields)) {
             return null;
         }

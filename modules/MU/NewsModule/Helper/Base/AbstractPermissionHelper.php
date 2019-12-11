@@ -137,7 +137,12 @@ abstract class AbstractPermissionHelper
             }
         }
     
-        return $this->permissionApi->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', $instance, $permissionLevel, $userId);
+        return $this->permissionApi->hasPermission(
+            'MUNewsModule:' . ucfirst($objectType) . ':',
+            $instance,
+            $permissionLevel,
+            $userId
+        );
     }
     
     /**
@@ -171,7 +176,12 @@ abstract class AbstractPermissionHelper
      */
     public function hasComponentPermission($objectType, $permissionLevel, $userId = null)
     {
-        return $this->permissionApi->hasPermission('MUNewsModule:' . ucfirst($objectType) . ':', '::', $permissionLevel, $userId);
+        return $this->permissionApi->hasPermission(
+            'MUNewsModule:' . ucfirst($objectType) . ':',
+            '::',
+            $permissionLevel,
+            $userId
+        );
     }
     
     /**
@@ -197,7 +207,12 @@ abstract class AbstractPermissionHelper
      */
     public function hasPermission($permissionLevel, $userId = null)
     {
-        return $this->permissionApi->hasPermission('MUNewsModule::', '::', $permissionLevel, $userId);
+        return $this->permissionApi->hasPermission(
+            'MUNewsModule::',
+            '::',
+            $permissionLevel,
+            $userId
+        );
     }
     
     /**

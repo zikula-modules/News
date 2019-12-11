@@ -107,12 +107,21 @@ class AbstractMenuBuilder
         $context = $options['context'];
         $menu->setChildrenAttribute('class', 'list-inline item-actions');
 
-        $this->eventDispatcher->dispatch(NewsEvents::MENU_ITEMACTIONS_PRE_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
+        $this->eventDispatcher->dispatch(
+            NewsEvents::MENU_ITEMACTIONS_PRE_CONFIGURE,
+            new ConfigureItemActionsMenuEvent($this->factory, $menu, $options)
+        );
 
-        $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
+        $currentUserId = $this->currentUserApi->isLoggedIn()
+            ? $this->currentUserApi->get('uid')
+            : UsersConstant::USER_ID_ANONYMOUS
+        ;
         if ($entity instanceof MessageEntity) {
             $routePrefix = 'munewsmodule_message_';
-            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId === $entity->getCreatedBy()->getUid();
+            $isOwner = 0 < $currentUserId
+                && null !== $entity->getCreatedBy()
+                && $currentUserId === $entity->getCreatedBy()->getUid()
+            ;
         
             if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'munewsmodule');
@@ -123,7 +132,9 @@ class AbstractMenuBuilder
                     'routeParameters' => $previewRouteParameters
                 ]);
                 $menu[$title]->setLinkAttribute('target', '_blank');
-                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'munewsmodule'));
+                $menu[$title]->setLinkAttribute('title',
+                    $this->__('Open preview page', 'munewsmodule')
+                );
                 if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
@@ -135,7 +146,10 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
-                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $this->entityDisplayHelper->getFormattedTitle($entity)));
+                $entityTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
+                $menu[$title]->setLinkAttribute('title',
+                    str_replace('"', '', $entityTitle)
+                );
                 if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
@@ -147,7 +161,9 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs(true)
                 ]);
-                $menu[$title]->setLinkAttribute('title', $this->__('Edit this message', 'munewsmodule'));
+                $menu[$title]->setLinkAttribute('title',
+                    $this->__('Edit this message', 'munewsmodule')
+                );
                 if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
@@ -157,7 +173,9 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
                 ]);
-                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new message', 'munewsmodule'));
+                $menu[$title]->setLinkAttribute('title',
+                    $this->__('Reuse for new message', 'munewsmodule')
+                );
                 if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
                 }
@@ -169,7 +187,9 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
-                $menu[$title]->setLinkAttribute('title', $this->__('Delete this message', 'munewsmodule'));
+                $menu[$title]->setLinkAttribute('title',
+                    $this->__('Delete this message', 'munewsmodule')
+                );
                 if ('display' === $context) {
                     $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-danger');
                 }
@@ -189,11 +209,17 @@ class AbstractMenuBuilder
         }
         if ($entity instanceof ImageEntity) {
             $routePrefix = 'munewsmodule_image_';
-            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId === $entity->getCreatedBy()->getUid();
+            $isOwner = 0 < $currentUserId
+                && null !== $entity->getCreatedBy()
+                && $currentUserId === $entity->getCreatedBy()->getUid()
+            ;
         
         }
 
-        $this->eventDispatcher->dispatch(NewsEvents::MENU_ITEMACTIONS_POST_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
+        $this->eventDispatcher->dispatch(
+            NewsEvents::MENU_ITEMACTIONS_POST_CONFIGURE,
+            new ConfigureItemActionsMenuEvent($this->factory, $menu, $options)
+        );
 
         return $menu;
     }
