@@ -35,7 +35,10 @@ class ImageController extends AbstractImageController
     public function adminIndexAction(
         Request $request
     ) {
-        return $this->indexInternal($request, true);
+        return $this->indexInternal(
+            $request,
+            true
+        );
     }
     
     /**
@@ -47,7 +50,10 @@ class ImageController extends AbstractImageController
     public function indexAction(
         Request $request
     ) {
-        return $this->indexInternal($request, false);
+        return $this->indexInternal(
+            $request,
+            false
+        );
     }
     
     // feel free to add your own controller methods here

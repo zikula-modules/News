@@ -41,8 +41,7 @@ abstract class AbstractExternalController extends AbstractController
         $id,
         $source,
         $displayMode
-    )
-     {
+    ) {
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs), true)) {
@@ -107,8 +106,7 @@ abstract class AbstractExternalController extends AbstractController
         $sortdir,
         $pos = 1,
         $num = 0
-    )
-     {
+    ) {
         $listEntriesHelper = $this->get('mu_news_module.listentries_helper');
         $activatedObjectTypes = $listEntriesHelper->extractMultiList($this->getVar('enabledFinderTypes', ''));
         if (!in_array($objectType, $activatedObjectTypes, true)) {

@@ -369,9 +369,10 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     protected $attributes = null;
     
     /**
-     * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageCategoryEntity", 
-     *                mappedBy="entity", cascade={"all"}, 
-     *                orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageCategoryEntity",
+     *                mappedBy="entity", cascade={"all"},
+     *                orphanRemoval=true
+     * )
      * @var \MU\NewsModule\Entity\MessageCategoryEntity
      */
     protected $categories = null;
@@ -1477,7 +1478,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setCategories(Collection $categories)
     {
         foreach ($this->categories as $category) {
-            if (false === ($key = $this->collectionContains($categories, $category))) {
+            if (false === ($key = $this->categoryCollectionContains($categories, $category))) {
                 $this->categories->removeElement($category);
             } else {
                 $categories->remove($key);
@@ -1496,11 +1497,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      *
      * @return bool|int
      */
-    private function collectionContains(Collection $collection, \MU\NewsModule\Entity\MessageCategoryEntity $element)
+    private function categoryCollectionContains(Collection $collection, \MU\NewsModule\Entity\MessageCategoryEntity $element)
     {
         foreach ($collection as $key => $category) {
             /** @var \MU\NewsModule\Entity\MessageCategoryEntity $category */
-            if ($category->getCategoryRegistryId() === $element->getCategoryRegistryId()
+            if (
+                $category->getCategoryRegistryId() === $element->getCategoryRegistryId()
                 && $category->getCategory() === $element->getCategory()
             ) {
                 return $key;

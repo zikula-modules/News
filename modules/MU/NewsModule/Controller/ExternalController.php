@@ -38,9 +38,14 @@ class ExternalController extends AbstractExternalController
         $id,
         $source,
         $displayMode
-    )
-     {
-        return parent::displayAction($request, $objectType, $id, $source, $displayMode);
+    ) {
+        return parent::displayAction(
+            $request,
+            $objectType,
+            $id,
+            $source,
+            $displayMode
+        );
     }
 
     /**
@@ -59,9 +64,16 @@ class ExternalController extends AbstractExternalController
         $sortdir,
         $pos = 1,
         $num = 0
-    )
-     {
-        return parent::finderAction($request, $objectType, $editor, $sort, $sortdir, $pos, $num);
+    ) {
+        return parent::finderAction(
+            $request,
+            $objectType,
+            $editor,
+            $sort,
+            $sortdir,
+            $pos,
+            $num
+        );
     }
 
     // feel free to extend the external controller here

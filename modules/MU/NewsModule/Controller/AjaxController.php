@@ -32,8 +32,7 @@ class AjaxController extends AbstractAjaxController
      */
     public function getItemListFinderAction(
         Request $request
-    )
-     {
+    ) {
         return parent::getItemListFinderAction($request);
     }
     
@@ -42,8 +41,7 @@ class AjaxController extends AbstractAjaxController
      */
     public function checkForDuplicateAction(
         Request $request
-    )
-     {
+    ) {
         return parent::checkForDuplicateAction($request);
     }
     
@@ -52,8 +50,7 @@ class AjaxController extends AbstractAjaxController
      */
     public function toggleFlagAction(
         Request $request
-    )
-     {
+    ) {
         return parent::toggleFlagAction($request);
     }
     
@@ -62,8 +59,7 @@ class AjaxController extends AbstractAjaxController
      */
     public function updateSortPositionsAction(
         Request $request
-    )
-     {
+    ) {
         return parent::updateSortPositionsAction($request);
     }
 
