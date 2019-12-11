@@ -132,7 +132,8 @@ class AbstractMenuBuilder
                     'routeParameters' => $previewRouteParameters
                 ]);
                 $menu[$title]->setLinkAttribute('target', '_blank');
-                $menu[$title]->setLinkAttribute('title',
+                $menu[$title]->setLinkAttribute(
+                    'title',
                     $this->__('Open preview page', 'munewsmodule')
                 );
                 if ('display' === $context) {
@@ -147,7 +148,8 @@ class AbstractMenuBuilder
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
                 $entityTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
-                $menu[$title]->setLinkAttribute('title',
+                $menu[$title]->setLinkAttribute(
+                    'title',
                     str_replace('"', '', $entityTitle)
                 );
                 if ('display' === $context) {
@@ -161,7 +163,8 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs(true)
                 ]);
-                $menu[$title]->setLinkAttribute('title',
+                $menu[$title]->setLinkAttribute(
+                    'title',
                     $this->__('Edit this message', 'munewsmodule')
                 );
                 if ('display' === $context) {
@@ -173,7 +176,8 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
                 ]);
-                $menu[$title]->setLinkAttribute('title',
+                $menu[$title]->setLinkAttribute(
+                    'title',
                     $this->__('Reuse for new message', 'munewsmodule')
                 );
                 if ('display' === $context) {
@@ -187,7 +191,8 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
-                $menu[$title]->setLinkAttribute('title',
+                $menu[$title]->setLinkAttribute(
+                    'title',
                     $this->__('Delete this message', 'munewsmodule')
                 );
                 if ('display' === $context) {

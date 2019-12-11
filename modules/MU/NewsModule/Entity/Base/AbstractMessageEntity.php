@@ -379,7 +379,10 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Bidirectional - One message [message] has many images [images] (INVERSE SIDE).
      *
-     * @ORM\OneToMany(targetEntity="MU\NewsModule\Entity\ImageEntity", mappedBy="message", cascade={"persist", "remove", "detach"})
+     * @ORM\OneToMany(
+     *     targetEntity="MU\NewsModule\Entity\ImageEntity",
+     *     mappedBy="message", cascade={"persist", "remove", "detach"})
+     * )
      * @ORM\JoinTable(name="mu_news_messageimages")
      * @ORM\OrderBy({"sortNumber" = "ASC"})
      * @var \MU\NewsModule\Entity\ImageEntity[] $images
@@ -1282,7 +1285,10 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setStartDate($startDate = null)
     {
         if ($this->startDate !== $startDate) {
-            if (!(null === $startDate && empty($startDate)) && !(is_object($startDate) && $startDate instanceOf \DateTimeInterface)) {
+            if (
+                !(null === $startDate && empty($startDate))
+                && !(is_object($startDate) && $startDate instanceof \DateTimeInterface)
+            ) {
                 $startDate = new \DateTime($startDate);
             }
             
@@ -1336,7 +1342,10 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     public function setEndDate($endDate = null)
     {
         if ($this->endDate !== $endDate) {
-            if (!(null === $endDate && empty($endDate)) && !(is_object($endDate) && $endDate instanceOf \DateTimeInterface)) {
+            if (
+                !(null === $endDate && empty($endDate))
+                && !(is_object($endDate) && $endDate instanceof \DateTimeInterface)
+            ) {
                 $endDate = new \DateTime($endDate);
             }
             

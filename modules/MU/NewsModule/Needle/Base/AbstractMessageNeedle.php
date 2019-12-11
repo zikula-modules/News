@@ -153,8 +153,14 @@ abstract class AbstractMessageNeedle
             if (!$this->permissionHelper->hasComponentPermission('message', ACCESS_READ)) {
                 $cache[$needleId] = '';
             } else {
-                $route = $this->router->generate('munewsmodule_message_view', [], UrlGeneratorInterface::ABSOLUTE_URL);
-                $cache[$needleId] = '<a href="' . $route . '" title="' . $this->translator->__('View messages', 'munewsmodule') . '">' . $this->translator->__('Messages', 'munewsmodule') . '</a>';
+                $route = $this->router->generate(
+                    'munewsmodule_message_view',
+                    [],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+                $linkTitle = $this->translator->__('View messages', 'munewsmodule');
+                $linkText = $this->translator->__('Messages', 'munewsmodule');
+                $cache[$needleId] = '<a href="' . $route . '" title="' . $linkTitle . '">' . $linkText . '</a>';
             }
     
             return $cache[$needleId];
@@ -187,7 +193,11 @@ abstract class AbstractMessageNeedle
         }
     
         $title = $this->entityDisplayHelper->getFormattedTitle($entity);
-        $route = $this->router->generate('munewsmodule_message_display', $entity->createUrlArgs(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $route = $this->router->generate(
+            'munewsmodule_message_display',
+            $entity->createUrlArgs(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
         $cache[$needleId] = '<a href="' . $route . '" title="' . str_replace('"', '', $title) . '">' . $title . '</a>';
     
         return $cache[$needleId];

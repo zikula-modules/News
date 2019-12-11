@@ -95,6 +95,7 @@ abstract class AbstractItemListBlockType extends AbstractType
     
         $objectType = $options['object_type'];
         $hasMultiSelection = $options['category_helper']->hasMultipleSelection($objectType);
+        $entityCategoryClass = 'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity';
         $builder->add('categories', CategoriesType::class, [
             'label' => ($hasMultiSelection ? $this->__('Categories', 'munewsmodule') : $this->__('Category', 'munewsmodule')) . ':',
             'empty_data' => $hasMultiSelection ? [] : null,
@@ -107,7 +108,7 @@ abstract class AbstractItemListBlockType extends AbstractType
             'multiple' => $hasMultiSelection,
             'module' => 'MUNewsModule',
             'entity' => ucfirst($objectType) . 'Entity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity',
+            'entityCategoryClass' => $entityCategoryClass,
             'showRegistryLabels' => true
         ]);
     

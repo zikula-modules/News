@@ -14,7 +14,6 @@
 namespace MU\NewsModule\Entity;
 
 use MU\NewsModule\Entity\Base\AbstractMessageCategoryEntity as BaseEntity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**

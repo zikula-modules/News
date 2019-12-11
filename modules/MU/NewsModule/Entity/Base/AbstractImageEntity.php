@@ -131,7 +131,10 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Bidirectional - Many images [images] are linked by one message [message] (OWNING SIDE).
      *
-     * @ORM\ManyToOne(targetEntity="MU\NewsModule\Entity\MessageEntity", inversedBy="images")
+     * @ORM\ManyToOne(
+     *     targetEntity="MU\NewsModule\Entity\MessageEntity",
+     *     inversedBy="images"
+     * )
      * @ORM\JoinTable(name="mu_news_message")
      * @Assert\Type(type="MU\NewsModule\Entity\MessageEntity")
      * @var \MU\NewsModule\Entity\MessageEntity $message

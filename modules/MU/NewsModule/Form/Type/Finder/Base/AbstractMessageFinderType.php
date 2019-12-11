@@ -96,6 +96,7 @@ abstract class AbstractMessageFinderType extends AbstractType
      */
     public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
+        $entityCategoryClass = 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity';
         $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Categories') . ':',
             'empty_data' => [],
@@ -108,7 +109,7 @@ abstract class AbstractMessageFinderType extends AbstractType
             'multiple' => true,
             'module' => 'MUNewsModule',
             'entity' => ucfirst($options['object_type']) . 'Entity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity',
+            'entityCategoryClass' => $entityCategoryClass,
             'showRegistryLabels' => true
         ]);
     }

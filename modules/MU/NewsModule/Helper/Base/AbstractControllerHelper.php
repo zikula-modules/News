@@ -117,14 +117,15 @@ abstract class AbstractControllerHelper
     /**
      * Returns an array of all allowed object types in MUNewsModule.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util)
+     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, mailz)
      * @param array $args Additional arguments
      *
      * @return string[] List of allowed object types
      */
     public function getObjectTypes($context = '', array $args = [])
     {
-        if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'], true)) {
+        $allowedContexts = ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'mailz'];
+        if (!in_array($context, $allowedContexts, true)) {
             $context = 'controllerAction';
         }
     
@@ -138,14 +139,15 @@ abstract class AbstractControllerHelper
     /**
      * Returns the default object type in MUNewsModule.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util)
+     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, mailz)
      * @param array $args Additional arguments
      *
      * @return string The name of the default object type
      */
     public function getDefaultObjectType($context = '', array $args = [])
     {
-        if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'], true)) {
+        $allowedContexts = ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'mailz'];
+        if (!in_array($context, $allowedContexts, true)) {
             $context = 'controllerAction';
         }
     
@@ -186,7 +188,8 @@ abstract class AbstractControllerHelper
         $templateParameters['sortdir'] = strtolower($sortdir);
     
         $templateParameters['all'] = 'csv' === $request->getRequestFormat() ? 1 : $request->query->getInt('all');
-        $templateParameters['own'] = (bool)$request->query->getInt('own', $this->variableApi->get('MUNewsModule', 'showOnlyOwnEntries')) ? 1 : 0;
+        $showOnlyOwnEntriesSetting = (bool)$request->query->getInt('own', $this->variableApi->get('MUNewsModule', 'showOnlyOwnEntries')) ? 1 : 0;
+        $templateParameters['own'] = $showOnlyOwnEntriesSetting;
     
         $resultsPerPage = 0;
         if (1 !== $templateParameters['all']) {
@@ -199,9 +202,15 @@ abstract class AbstractControllerHelper
         $templateParameters['num'] = $resultsPerPage;
         $templateParameters['tpl'] = $request->query->getAlnum('tpl');
     
-        $templateParameters = $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
+        $templateParameters = $this->addTemplateParameters(
+            $objectType,
+            $templateParameters,
+            'controllerAction',
+            $contextArgs
+        );
     
-        $quickNavForm = $this->formFactory->create('MU\NewsModule\Form\Type\QuickNavigation\\' . ucfirst($objectType) . 'QuickNavType', $templateParameters);
+        $quickNavFormType = 'MU\NewsModule\Form\Type\QuickNavigation\\' . ucfirst($objectType) . 'QuickNavType';
+        $quickNavForm = $this->formFactory->create($quickNavFormType, $templateParameters);
         $quickNavForm->handleRequest($request);
         if ($quickNavForm->isSubmitted()) {
             $quickNavData = $quickNavForm->getData();
@@ -215,7 +224,11 @@ abstract class AbstractControllerHelper
                     $sort = $fieldValue;
                 } elseif ('sortdir' === $fieldName && !empty($fieldValue)) {
                     $sortdir = $fieldValue;
-                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions') && false === stripos($fieldName, 'featureActivationHelper') && false === stripos($fieldName, 'permissionHelper')) {
+                } elseif (
+                    false === stripos($fieldName, 'thumbRuntimeOptions')
+                    && false === stripos($fieldName, 'featureActivationHelper')
+                    && false === stripos($fieldName, 'permissionHelper')
+                ) {
                     // set filter as query argument, fetched inside repository
                     if ($fieldValue instanceof UserEntity) {
                         $fieldValue = $fieldValue->getUid();
@@ -230,7 +243,8 @@ abstract class AbstractControllerHelper
     
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
-            if (false === stripos($parameterName, 'thumbRuntimeOptions')
+            if (
+                false === stripos($parameterName, 'thumbRuntimeOptions')
                 && false === stripos($parameterName, 'featureActivationHelper')
             ) {
                 continue;
@@ -250,7 +264,13 @@ abstract class AbstractControllerHelper
             $currentPage = $request->query->getInt('pos', 1);
     
             // retrieve item list with pagination
-            list($entities, $objectCount) = $repository->selectWherePaginated($where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage, $useJoins);
+            list($entities, $objectCount) = $repository->selectWherePaginated(
+                $where,
+                $sort . ' ' . $sortdir,
+                $currentPage,
+                $resultsPerPage,
+                $useJoins
+            );
     
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [
@@ -266,7 +286,8 @@ abstract class AbstractControllerHelper
         if (true === $hasHookSubscriber) {
             // build RouteUrl instance for display hooks
             $urlParameters['_locale'] = $request->getLocale();
-            $templateParameters['currentUrlObject'] = new RouteUrl('munewsmodule_' . strtolower($objectType) . '_view', $urlParameters);
+            $routeName = 'munewsmodule_' . strtolower($objectType) . '_view';
+            $templateParameters['currentUrlObject'] = new RouteUrl($routeName, $urlParameters);
         }
     
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
@@ -327,8 +348,11 @@ abstract class AbstractControllerHelper
      *
      * @return array Enriched template parameters used for creating the response
      */
-    public function processDisplayActionParameters($objectType, array $templateParameters = [], $hasHookSubscriber = false)
-    {
+    public function processDisplayActionParameters(
+        $objectType,
+        array $templateParameters = [],
+        $hasHookSubscriber = false
+    ) {
         $contextArgs = ['controller' => $objectType, 'action' => 'display'];
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
             throw new Exception($this->__('Error! Invalid object type received.'));
@@ -339,7 +363,8 @@ abstract class AbstractControllerHelper
             $entity = $templateParameters[$objectType];
             $urlParameters = $entity->createUrlArgs();
             $urlParameters['_locale'] = $this->requestStack->getCurrentRequest()->getLocale();
-            $templateParameters['currentUrlObject'] = new RouteUrl('munewsmodule_' . strtolower($objectType) . '_display', $urlParameters);
+            $routeName = 'munewsmodule_' . strtolower($objectType) . '_display';
+            $templateParameters['currentUrlObject'] = new RouteUrl($routeName, $urlParameters);
         }
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
@@ -387,14 +412,15 @@ abstract class AbstractControllerHelper
      *
      * @param string $objectType Name of treated entity type
      * @param array $parameters Given parameters to enrich
-     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
+     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, mailz)
      * @param array $args Additional arguments
      *
      * @return array List of template variables to be assigned
      */
     public function addTemplateParameters($objectType = '', array $parameters = [], $context = '', array $args = [])
     {
-        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType', 'mailz'], true)) {
+        $allowedContexts = ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'mailz'];
+        if (!in_array($context, $allowedContexts, true)) {
             $context = 'controllerAction';
         }
     
@@ -405,7 +431,10 @@ abstract class AbstractControllerHelper
                 $args['action'] = end($routeNameParts);
             }
             if (in_array($args['action'], ['index', 'view'])) {
-                $parameters = array_merge($parameters, $this->collectionFilterHelper->getViewQuickNavParameters($objectType, $context, $args));
+                $parameters = array_merge(
+                    $parameters,
+                    $this->collectionFilterHelper->getViewQuickNavParameters($objectType, $context, $args)
+                );
             }
     
             // initialise Imagine runtime options

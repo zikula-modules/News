@@ -102,7 +102,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
     public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $objectType = 'message';
-    
+        $entityCategoryClass = 'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity';
         $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Categories'),
             'empty_data' => [],
@@ -114,7 +114,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
             'multiple' => true,
             'module' => 'MUNewsModule',
             'entity' => ucfirst($objectType) . 'Entity',
-            'entityCategoryClass' => 'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity',
+            'entityCategoryClass' => $entityCategoryClass,
             'showRegistryLabels' => true
         ]);
     }

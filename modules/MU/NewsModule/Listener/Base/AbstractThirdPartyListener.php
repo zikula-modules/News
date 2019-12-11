@@ -122,7 +122,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
             [
                 'module' => 'MUNewsModule',
                 'type' => 'javascript',
-                'path' => $this->requestStack->getCurrentRequest()->getBasePath() . '/web/modules/munews/js/MUNewsModule.Finder.js'
+                'path' => $this->getPathToModuleWebAssets() . 'js/MUNewsModule.Finder.js'
             ]
         );
     }
@@ -142,7 +142,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     {
         $event->getSubject()->add([
             'name' => 'munewsmodule',
-            'path' => $this->requestStack->getCurrentRequest()->getBasePath() . '/web/modules/munews/scribite/CKEditor/munewsmodule/',
+            'path' => $this->getPathToModuleWebAssets() . 'scribite/CKEditor/munewsmodule/',
             'file' => 'plugin.js',
             'img' => 'ed_munewsmodule.gif'
         ]);
@@ -163,7 +163,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     {
         $event->getSubject()->add([
             'name' => 'munewsmodule',
-            'path' => $this->requestStack->getCurrentRequest()->getBasePath() . '/web/modules/munews/scribite/Quill/munewsmodule/plugin.js'
+            'path' => $this->getPathToModuleWebAssets() . 'scribite/Quill/munewsmodule/plugin.js'
         ]);
     }
     
@@ -182,7 +182,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     {
         $event->getSubject()->add([
             'name' => 'munewsmodule',
-            'path' => $this->requestStack->getCurrentRequest()->getBasePath() . '/web/modules/munews/scribite/Summernote/munewsmodule/plugin.js'
+            'path' => $this->getPathToModuleWebAssets() . 'scribite/Summernote/munewsmodule/plugin.js'
         ]);
     }
     
@@ -201,7 +201,17 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     {
         $event->getSubject()->add([
             'name' => 'munewsmodule',
-            'path' => $this->requestStack->getCurrentRequest()->getBasePath() . '/web/modules/munews/scribite/TinyMce/munewsmodule/plugin.js'
+            'path' => $this->getPathToModuleWebAssets() . 'scribite/TinyMce/munewsmodule/plugin.js'
         ]);
+    }
+    
+    /**
+     * Returns base path where module assets are located.
+     *
+     * @return string
+     */
+    protected function getPathToModuleWebAssets()
+    {
+        return $this->requestStack->getCurrentRequest()->getBasePath() . '/web/modules/munews/';
     }
 }
