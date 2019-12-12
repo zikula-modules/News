@@ -133,7 +133,8 @@ abstract class AbstractImageRepository extends SortableRepository
         LoggerInterface $logger,
         CurrentUserApiInterface $currentUserApi
     ) {
-        if (0 === $userId || !is_numeric($userId)
+        if (
+            0 === $userId || !is_numeric($userId)
             || 0 === $newUserId || !is_numeric($newUserId)
         ) {
             throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
@@ -176,7 +177,8 @@ abstract class AbstractImageRepository extends SortableRepository
         LoggerInterface $logger,
         CurrentUserApiInterface $currentUserApi
     ) {
-        if (0 === $userId || !is_numeric($userId)
+        if (
+            0 === $userId || !is_numeric($userId)
             || 0 === $newUserId || !is_numeric($newUserId)
         ) {
             throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));

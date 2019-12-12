@@ -193,7 +193,10 @@ abstract class AbstractWorkflowHelper
                 $title = $this->translator->__('Submit');
                 break;
             case 'approve':
-                $title = 'initial' === $currentState ? $this->translator->__('Submit and approve') : $this->translator->__('Approve');
+                $title = 'initial' === $currentState
+                    ? $this->translator->__('Submit and approve')
+                    : $this->translator->__('Approve')
+                ;
                 break;
             case 'unpublish':
                 $title = $this->translator->__('Unpublish');
@@ -366,10 +369,18 @@ abstract class AbstractWorkflowHelper
                     'amount' => $amount,
                     'objectType' => $objectType,
                     'state' => $state,
-                    'message' => $this->translator->transChoice('One message is waiting for approval.|%count% messages are waiting for approval.', $amount, ['%count%' => $amount], 'munewsmodule')
+                    'message' => $this->translator->transChoice(
+                        'One message is waiting for approval.|%count% messages are waiting for approval.',
+                        $amount,
+                        ['%count%' => $amount],
+                        'munewsmodule'
+                    )
                 ];
         
-                $this->logger->info('{app}: There are {amount} {entities} waiting for approval.', ['app' => 'MUNewsModule', 'amount' => $amount, 'entities' => 'messages']);
+                $this->logger->info(
+                    '{app}: There are {amount} {entities} waiting for approval.',
+                    ['app' => 'MUNewsModule', 'amount' => $amount, 'entities' => 'messages']
+                );
             }
         }
     

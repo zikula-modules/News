@@ -365,8 +365,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         $sendToCreator = true;
         $sendToModerator = false;
         $sendToSuperModerator = false;
-        if ('submit' === $actionId && 'waiting' === $newState
-            || 'demote' === $actionId && 'accepted' === $newState) {
+        if (
+            'submit' === $actionId && 'waiting' === $newState
+            || 'demote' === $actionId && 'accepted' === $newState
+        ) {
             // only to moderator
             $sendToCreator = false;
             $sendToModerator = true;

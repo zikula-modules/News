@@ -385,7 +385,8 @@ abstract class AbstractEditHandler
                 }
             }
         } else {
-            $permissionLevel = in_array($this->objectType, ['message'], true) ? ACCESS_COMMENT : ACCESS_EDIT;
+            $objectTypesNeedingApproval = ['message'];
+            $permissionLevel = in_array($this->objectType, $objectTypesNeedingApproval, true) ? ACCESS_COMMENT : ACCESS_EDIT;
             if (!$this->permissionHelper->hasComponentPermission($this->objectType, $permissionLevel)) {
                 throw new AccessDeniedException();
             }
@@ -939,20 +940,32 @@ abstract class AbstractEditHandler
             : UsersConstant::USER_ID_ANONYMOUS
         ;
         $roles['is_creator'] = 'create' === $this->templateParameters['mode']
-            || (method_exists($this->entityRef, 'getCreatedBy') && $this->entityRef->getCreatedBy()->getUid() === $currentUserId);
+            || (
+                method_exists($this->entityRef, 'getCreatedBy')
+                && $this->entityRef->getCreatedBy()->getUid() === $currentUserId
+            )
+        ;
     
         $groupApplicationArgs = [
             'user' => $currentUserId,
-            'group' => $this->variableApi->get('MUNewsModule', 'moderationGroupFor' . $this->objectTypeCapital, GroupsConstant::GROUP_ID_ADMIN)
+            'group' => $this->variableApi->get(
+                'MUNewsModule',
+                'moderationGroupFor' . $this->objectTypeCapital,
+                GroupsConstant::GROUP_ID_ADMIN
+            )
         ];
-        $roles['is_moderator'] = count($this->groupApplicationRepository->findBy($groupApplicationArgs)) > 0;
+        $roles['is_moderator'] = 0 < count($this->groupApplicationRepository->findBy($groupApplicationArgs));
     
         if (true === $enterprise) {
             $groupApplicationArgs = [
                 'user' => $currentUserId,
-                'group' => $this->variableApi->get('MUNewsModule', 'superModerationGroupFor' . $this->objectTypeCapital, GroupsConstant::GROUP_ID_ADMIN)
+                'group' => $this->variableApi->get(
+                    'MUNewsModule',
+                    'superModerationGroupFor' . $this->objectTypeCapital,
+                    GroupsConstant::GROUP_ID_ADMIN
+                )
             ];
-            $roles['is_super_moderator'] = count($this->groupApplicationRepository->findBy($groupApplicationArgs)) > 0;
+            $roles['is_super_moderator'] = 0 < count($this->groupApplicationRepository->findBy($groupApplicationArgs));
         }
     
         return $roles;

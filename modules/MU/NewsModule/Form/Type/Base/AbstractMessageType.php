@@ -446,7 +446,7 @@ abstract class AbstractMessageType extends AbstractType
      */
     public function addOutgoingRelationshipFields(FormBuilderInterface $builder, array $options = [])
     {
-        $queryBuilder = function(EntityRepository $er) {
+        $queryBuilder = function (EntityRepository $er) {
             // select without joins
             return $er->getListQueryBuilder('', '', false);
         };

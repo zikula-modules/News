@@ -173,7 +173,10 @@ abstract class AbstractMessageController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        if ('approved' !== $message->getWorkflowState() && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)) {
+        if (
+            'approved' !== $message->getWorkflowState()
+            && !$permissionHelper->hasEntityPermission($message, ACCESS_EDIT)
+        ) {
             throw new AccessDeniedException();
         }
         
