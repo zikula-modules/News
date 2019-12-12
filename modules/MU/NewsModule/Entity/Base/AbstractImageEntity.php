@@ -311,7 +311,12 @@ abstract class AbstractImageEntity extends EntityAccess
         if (null === $this->theFile && null === $theFile) {
             return;
         }
-        if (null !== $this->theFile && null !== $theFile && $this->theFile instanceof File && $this->theFile->getRealPath() === $theFile->getRealPath()) {
+        if (
+            null !== $this->theFile
+            && null !== $theFile
+            && $this->theFile instanceof File
+            && $this->theFile->getRealPath() === $theFile->getRealPath()
+        ) {
             return;
         }
         $this->theFile = isset($theFile) ? $theFile : '';

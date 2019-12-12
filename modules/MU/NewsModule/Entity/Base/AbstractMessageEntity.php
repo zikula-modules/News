@@ -611,7 +611,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         if (null === $this->imageUpload1 && null === $imageUpload1) {
             return;
         }
-        if (null !== $this->imageUpload1 && null !== $imageUpload1 && $this->imageUpload1 instanceof File && $this->imageUpload1->getRealPath() === $imageUpload1->getRealPath()) {
+        if (
+            null !== $this->imageUpload1
+            && null !== $imageUpload1
+            && $this->imageUpload1 instanceof File
+            && $this->imageUpload1->getRealPath() === $imageUpload1->getRealPath()
+        ) {
             return;
         }
         $this->imageUpload1 = $imageUpload1;
@@ -928,7 +933,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         if (null === $this->imageUpload2 && null === $imageUpload2) {
             return;
         }
-        if (null !== $this->imageUpload2 && null !== $imageUpload2 && $this->imageUpload2 instanceof File && $this->imageUpload2->getRealPath() === $imageUpload2->getRealPath()) {
+        if (
+            null !== $this->imageUpload2
+            && null !== $imageUpload2
+            && $this->imageUpload2 instanceof File
+            && $this->imageUpload2->getRealPath() === $imageUpload2->getRealPath()
+        ) {
             return;
         }
         $this->imageUpload2 = $imageUpload2;
@@ -1053,7 +1063,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         if (null === $this->imageUpload3 && null === $imageUpload3) {
             return;
         }
-        if (null !== $this->imageUpload3 && null !== $imageUpload3 && $this->imageUpload3 instanceof File && $this->imageUpload3->getRealPath() === $imageUpload3->getRealPath()) {
+        if (
+            null !== $this->imageUpload3
+            && null !== $imageUpload3
+            && $this->imageUpload3 instanceof File
+            && $this->imageUpload3->getRealPath() === $imageUpload3->getRealPath()
+        ) {
             return;
         }
         $this->imageUpload3 = $imageUpload3;
@@ -1178,7 +1193,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         if (null === $this->imageUpload4 && null === $imageUpload4) {
             return;
         }
-        if (null !== $this->imageUpload4 && null !== $imageUpload4 && $this->imageUpload4 instanceof File && $this->imageUpload4->getRealPath() === $imageUpload4->getRealPath()) {
+        if (
+            null !== $this->imageUpload4
+            && null !== $imageUpload4
+            && $this->imageUpload4 instanceof File
+            && $this->imageUpload4->getRealPath() === $imageUpload4->getRealPath()
+        ) {
             return;
         }
         $this->imageUpload4 = $imageUpload4;
