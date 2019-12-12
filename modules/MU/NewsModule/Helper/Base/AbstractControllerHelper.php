@@ -213,7 +213,9 @@ abstract class AbstractControllerHelper
             $contextArgs
         );
     
-        $quickNavFormType = 'MU\NewsModule\Form\Type\QuickNavigation\\' . ucfirst($objectType) . 'QuickNavType';
+        $quickNavFormType = 'MU\NewsModule\Form\Type\QuickNavigation\\'
+            . ucfirst($objectType) . 'QuickNavType'
+        ;
         $quickNavForm = $this->formFactory->create($quickNavFormType, $templateParameters);
         $quickNavForm->handleRequest($request);
         if ($quickNavForm->isSubmitted()) {

@@ -110,7 +110,6 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 ];
             }
 
-
             return $links;
         }
 
