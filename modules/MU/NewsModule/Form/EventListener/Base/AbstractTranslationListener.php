@@ -52,7 +52,10 @@ abstract class AbstractTranslationListener implements EventSubscriberInterface
             $fieldOptions['required'] = $fieldOptions['required']
                 && in_array($fieldName, $formOptions['mandatory_fields'], true)
             ;
-            $fieldOptions['data'] = isset($formOptions['values'][$fieldName]) ? $formOptions['values'][$fieldName] : null;
+            $fieldOptions['data'] = isset($formOptions['values'][$fieldName])
+                ? $formOptions['values'][$fieldName]
+                : null
+            ;
     
             $form->add($fieldName, get_class($originalFieldConfig->getType()->getInnerType()), $fieldOptions);
         }
