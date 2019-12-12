@@ -706,6 +706,7 @@ abstract class AbstractAppSettings
         $this->load();
     }
     
+    
     /**
      * Returns the enable attribution.
      *
@@ -2313,7 +2314,6 @@ abstract class AbstractAppSettings
             $this->enabledFinderTypes = isset($enabledFinderTypes) ? $enabledFinderTypes : '';
         }
     }
-    
     
     /**
      * Loads module variables from the database.

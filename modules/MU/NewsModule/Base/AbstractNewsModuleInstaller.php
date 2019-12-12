@@ -67,7 +67,10 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->create($this->entities);
         } catch (Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
-            $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
+            $logger->error(
+                '{app}: Could not create the database tables during installation. Error details: {errorMessage}.',
+                ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]
+            );
     
             return false;
         }
@@ -189,7 +192,10 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
                     $this->schemaTool->update($this->entities);
                 } catch (Exception $exception) {
                     $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
-                    $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
+                    $logger->error(
+                        '{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.',
+                        ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]
+                    );
     
                     return false;
                 }
@@ -208,7 +214,10 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->drop($this->entities);
         } catch (Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
-            $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]);
+            $logger->error(
+                '{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.',
+                ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]
+            );
     
             return false;
         }
@@ -217,7 +226,8 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
         $this->delVars();
     
         // remove category registry entries
-        $registries = $this->container->get('zikula_categories_module.category_registry_repository')->findBy(['modname' => 'MUNewsModule']);
+        $registryRepository = $this->container->get('zikula_categories_module.category_registry_repository');
+        $registries = $registryRepository->findBy(['modname' => 'MUNewsModule']);
         foreach ($registries as $registry) {
             $this->entityManager->remove($registry);
         }
@@ -225,7 +235,13 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
     
         // remind user about upload folders not being deleted
         $uploadPath = $this->container->getParameter('datadir') . '/MUNewsModule/';
-        $this->addFlash('status', $this->__f('The upload directories at "%path%" can be removed manually.', ['%path%' => $uploadPath]));
+        $this->addFlash(
+            'status',
+            $this->__f(
+                'The upload directories at "%path%" can be removed manually.',
+                ['%path%' => $uploadPath]
+            )
+        );
     
         // uninstallation successful
         return true;

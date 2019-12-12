@@ -160,6 +160,7 @@ abstract class AbstractUploadType extends AbstractType
         ;
     }
 
+    
     /**
      * Returns the form builder.
      *
@@ -179,7 +180,6 @@ abstract class AbstractUploadType extends AbstractType
     {
         return $this->entity;
     }
-    
     public function getBlockPrefix()
     {
         return 'munewsmodule_field_upload';

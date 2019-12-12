@@ -50,7 +50,10 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['name' => 'list'];
-        if (!isset($properties['objectType']) || !in_array($properties['objectType'], $controllerHelper->getObjectTypes('block', $contextArgs), true)) {
+        if (
+            !isset($properties['objectType'])
+            || !in_array($properties['objectType'], $controllerHelper->getObjectTypes('block', $contextArgs), true)
+        ) {
             $properties['objectType'] = $controllerHelper->getDefaultObjectType('block', $contextArgs);
         }
     
@@ -58,7 +61,11 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     
         $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
         $hasCategories = in_array($objectType, $this->categorisableObjectTypes, true)
-            && $featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $properties['objectType']);
+            && $featureActivationHelper->isEnabled(
+                FeatureActivationHelper::CATEGORIES,
+                $properties['objectType']
+            )
+        ;
         if ($hasCategories) {
             $categoryProperties = $this->resolveCategoryIds($properties);
         }
@@ -107,7 +114,11 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             $templateParameters['properties'] = $categoryProperties;
         }
     
-        $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($properties['objectType'], $templateParameters, 'block');
+        $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters(
+            $properties['objectType'],
+            $templateParameters,
+            'block'
+        );
     
         return $this->renderView($template, $templateParameters);
     }
@@ -122,7 +133,11 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     protected function getDisplayTemplate(array $properties = [])
     {
         $templateFile = $properties['template'];
-        if ('custom' === $templateFile && null !== $properties['customTemplate'] && '' !== $properties['customTemplate']) {
+        if (
+            'custom' === $templateFile
+            && null !== $properties['customTemplate']
+            && '' !== $properties['customTemplate']
+        ) {
             $templateFile = $properties['customTemplate'];
         }
     

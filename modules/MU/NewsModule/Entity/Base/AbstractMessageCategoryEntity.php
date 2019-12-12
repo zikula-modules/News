@@ -31,6 +31,7 @@ abstract class AbstractMessageCategoryEntity extends AbstractCategoryAssignment
      */
     protected $entity;
     
+    
     /**
      * Returns the entity.
      *
@@ -54,5 +55,4 @@ abstract class AbstractMessageCategoryEntity extends AbstractCategoryAssignment
             $this->entity = isset($entity) ? $entity : '';
         }
     }
-    
 }

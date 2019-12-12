@@ -64,7 +64,10 @@ abstract class AbstractItemType extends AbstractContentType
         $data = parent::getData();
     
         $contextArgs = ['name' => 'detail'];
-        if (!isset($data['objectType']) || !in_array($data['objectType'], $this->controllerHelper->getObjectTypes('contentType', $contextArgs), true)) {
+        if (
+            !isset($data['objectType'])
+            || !in_array($data['objectType'], $this->controllerHelper->getObjectTypes('contentType', $contextArgs), true)
+        ) {
             $data['objectType'] = $this->controllerHelper->getDefaultObjectType('contentType', $contextArgs);
             $this->data = $data;
         }
@@ -78,7 +81,11 @@ abstract class AbstractItemType extends AbstractContentType
             return '';
         }
     
-        $controllerReference = new ControllerReference('MUNewsModule:External:display', $this->getDisplayArguments(), ['template' => $this->data['customTemplate']]);
+        $controllerReference = new ControllerReference(
+            'MUNewsModule:External:display',
+            $this->getDisplayArguments(),
+            ['template' => $this->data['customTemplate']]
+        );
     
         return $this->fragmentHandler->render($controllerReference, 'inline', []);
     }

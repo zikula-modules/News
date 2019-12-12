@@ -573,7 +573,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->startText = isset($startText) ? $startText : '';
         }
     }
-    
     /**
      * Returns the image upload 1.
      *
@@ -626,6 +625,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->setImageUpload1FileName($this->imageUpload1->getFilename());
         }
     }
+    
     
     /**
      * Returns the image upload 1 file name.
@@ -890,7 +890,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->allowComments = (bool)$allowComments;
         }
     }
-    
     /**
      * Returns the image upload 2.
      *
@@ -943,6 +942,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->setImageUpload2FileName($this->imageUpload2->getFilename());
         }
     }
+    
     
     /**
      * Returns the image upload 2 file name.
@@ -1015,7 +1015,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->imageUpload2Meta = $imageUpload2Meta;
         }
     }
-    
     /**
      * Returns the image upload 3.
      *
@@ -1068,6 +1067,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->setImageUpload3FileName($this->imageUpload3->getFilename());
         }
     }
+    
     
     /**
      * Returns the image upload 3 file name.
@@ -1140,7 +1140,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->imageUpload3Meta = $imageUpload3Meta;
         }
     }
-    
     /**
      * Returns the image upload 4.
      *
@@ -1193,6 +1192,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->setImageUpload4FileName($this->imageUpload4->getFilename());
         }
     }
+    
     
     /**
      * Returns the image upload 4 file name.
@@ -1437,7 +1437,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     {
         return $this->attributes;
     }
-    
     /**
      * Set attribute.
      *
@@ -1459,6 +1458,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
+    
     /**
      * Returns the categories.
      *
@@ -1468,7 +1468,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     {
         return $this->categories;
     }
-    
     
     /**
      * Sets the categories.
@@ -1512,6 +1511,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         return false;
     }
     
+    
     /**
      * Returns the images.
      *
@@ -1538,7 +1538,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->addImages($imageSingle);
         }
     }
-    
     /**
      * Adds an instance of \MU\NewsModule\Entity\ImageEntity to the list of images.
      *

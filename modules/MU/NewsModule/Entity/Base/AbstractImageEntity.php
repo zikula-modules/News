@@ -273,7 +273,6 @@ abstract class AbstractImageEntity extends EntityAccess
             $this->workflowState = isset($workflowState) ? $workflowState : '';
         }
     }
-    
     /**
      * Returns the the file.
      *
@@ -326,6 +325,7 @@ abstract class AbstractImageEntity extends EntityAccess
             $this->setTheFileFileName($this->theFile->getFilename());
         }
     }
+    
     
     /**
      * Returns the the file file name.
@@ -469,7 +469,6 @@ abstract class AbstractImageEntity extends EntityAccess
     {
         $this->message = $message;
     }
-    
     
     
     /**

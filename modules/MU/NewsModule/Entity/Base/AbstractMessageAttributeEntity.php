@@ -31,6 +31,7 @@ abstract class AbstractMessageAttributeEntity extends AbstractEntityAttribute
      */
     protected $entity;
     
+    
     /**
      * Returns the entity.
      *
@@ -54,5 +55,4 @@ abstract class AbstractMessageAttributeEntity extends AbstractEntityAttribute
             $this->entity = isset($entity) ? $entity : '';
         }
     }
-    
 }

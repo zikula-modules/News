@@ -82,7 +82,12 @@ abstract class AbstractAjaxController extends AbstractController
                 continue;
             }
             $itemId = $item->getKey();
-            $slimItems[] = $this->prepareSlimItem($repository, $item, $itemId, $descriptionFieldName);
+            $slimItems[] = $this->prepareSlimItem(
+                $repository,
+                $item,
+                $itemId,
+                $descriptionFieldName
+            );
         }
         
         // return response
@@ -110,9 +115,18 @@ abstract class AbstractAjaxController extends AbstractController
             $objectType => $item
         ];
         $contextArgs = ['controller' => $objectType, 'action' => 'display'];
-        $previewParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($objectType, $previewParameters, 'controllerAction', $contextArgs);
+        $previewParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters(
+            $objectType,
+            $previewParameters,
+            'controllerAction',
+            $contextArgs
+        );
     
-        $previewInfo = base64_encode($this->get('twig')->render('@MUNewsModule/External/' . ucfirst($objectType) . '/info.html.twig', $previewParameters));
+        $previewInfo = $this->get('twig')->render(
+            '@MUNewsModule/External/' . ucfirst($objectType) . '/info.html.twig',
+            $previewParameters
+        );
+        $previewInfo = base64_encode($previewInfo);
     
         $title = $this->get('mu_news_module.entity_display_helper')->getFormattedTitle($item);
         $description = $descriptionField !== '' ? $item[$descriptionField] : '';
@@ -213,7 +227,8 @@ abstract class AbstractAjaxController extends AbstractController
         $field = $request->request->getAlnum('field');
         $id = $request->request->getInt('id');
         
-        if (0 === $id
+        if (
+            0 === $id
             || ('message' !== $objectType)
         || ('message' === $objectType && !in_array($field, ['displayOnIndex', 'allowComments', 'noEndDate'], true))
         ) {
@@ -235,7 +250,13 @@ abstract class AbstractAjaxController extends AbstractController
         $entityFactory->getEntityManager()->flush();
         
         $logger = $this->get('logger');
-        $logArgs = ['app' => 'MUNewsModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'field' => $field, 'entity' => $objectType, 'id' => $id];
+        $logArgs = [
+            'app' => 'MUNewsModule',
+            'user' => $this->get('zikula_users_module.current_user')->get('uname'),
+            'field' => $field,
+            'entity' => $objectType,
+            'id' => $id
+        ];
         $logger->notice('{app}: User {user} toggled the {field} flag the {entity} with id {id}.', $logArgs);
         
         // return response

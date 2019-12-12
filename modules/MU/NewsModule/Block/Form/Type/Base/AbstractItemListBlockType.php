@@ -54,7 +54,12 @@ abstract class AbstractItemListBlockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addObjectTypeField($builder, $options);
-        if ($options['feature_activation_helper']->isEnabled(FeatureActivationHelper::CATEGORIES, $options['object_type'])) {
+        if (
+            $options['feature_activation_helper']->isEnabled(
+                FeatureActivationHelper::CATEGORIES,
+                $options['object_type']
+            )
+        ) {
             $this->addCategoriesField($builder, $options);
         }
         $this->addSortingField($builder, $options);
@@ -68,13 +73,17 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
+        $helpText = $this->__(
+            'If you change this please save the block once to reload the parameters below.',
+            'munewsmodule'
+        );
         $builder->add('objectType', ChoiceType::class, [
             'label' => $this->__('Object type', 'munewsmodule') . ':',
             'empty_data' => 'message',
             'attr' => [
-                'title' => $this->__('If you change this please save the block once to reload the parameters below.', 'munewsmodule')
+                'title' => $helpText
             ],
-            'help' => $this->__('If you change this please save the block once to reload the parameters below.', 'munewsmodule'),
+            'help' => $helpText,
             'choices' => [
                 $this->__('Messages', 'munewsmodule') => 'message',
                 $this->__('Images', 'munewsmodule') => 'image'
@@ -94,10 +103,14 @@ abstract class AbstractItemListBlockType extends AbstractType
         }
     
         $objectType = $options['object_type'];
+        $label = $hasMultiSelection
+            ? $this->__('Categories', 'munewsmodule')
+            : $this->__('Category', 'munewsmodule')
+        ;
         $hasMultiSelection = $options['category_helper']->hasMultipleSelection($objectType);
         $entityCategoryClass = 'MU\NewsModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity';
         $builder->add('categories', CategoriesType::class, [
-            'label' => ($hasMultiSelection ? $this->__('Categories', 'munewsmodule') : $this->__('Category', 'munewsmodule')) . ':',
+            'label' => $label . ':',
             'empty_data' => $hasMultiSelection ? [] : null,
             'attr' => [
                 'class' => 'category-selector',
@@ -171,13 +184,16 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
+        $helpText = $this->__('The maximum amount of items to be shown.', 'munewsmodule')
+            . ' ' . $this->__('Only digits are allowed.', 'munewsmodule')
+        ;
         $builder->add('amount', IntegerType::class, [
             'label' => $this->__('Amount', 'munewsmodule') . ':',
             'attr' => [
                 'maxlength' => 2,
-                'title' => $this->__('The maximum amount of items to be shown.', 'munewsmodule') . ' ' . $this->__('Only digits are allowed.', 'munewsmodule')
+                'title' => $helpText
             ],
-            'help' => $this->__('The maximum amount of items to be shown.', 'munewsmodule') . ' ' . $this->__('Only digits are allowed.', 'munewsmodule'),
+            'help' => $helpText,
             'empty_data' => 5,
             'scale' => 0
         ]);
@@ -188,28 +204,27 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     public function addTemplateFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('template', ChoiceType::class, [
-                'label' => $this->__('Template', 'munewsmodule') . ':',
-                'empty_data' => 'itemlist_display.html.twig',
-                'choices' => [
-                    $this->__('Only item titles', 'munewsmodule') => 'itemlist_display.html.twig',
-                    $this->__('With description', 'munewsmodule') => 'itemlist_display_description.html.twig',
-                    $this->__('Custom template', 'munewsmodule') => 'custom'
-                ],
-                'multiple' => false,
-                'expanded' => false
-            ])
-            ->add('customTemplate', TextType::class, [
-                'label' => $this->__('Custom template', 'munewsmodule') . ':',
-                'required' => false,
-                'attr' => [
-                    'maxlength' => 80,
-                    'title' => $this->__('Example', 'munewsmodule') . ': itemlist_[objectType]_display.html.twig'
-                ],
-                'help' => $this->__('Example', 'munewsmodule') . ': <em>itemlist_[objectType]_display.html.twig</em>'
-            ])
-        ;
+        $builder->add('template', ChoiceType::class, [
+            'label' => $this->__('Template', 'munewsmodule') . ':',
+            'empty_data' => 'itemlist_display.html.twig',
+            'choices' => [
+                $this->__('Only item titles', 'munewsmodule') => 'itemlist_display.html.twig',
+                $this->__('With description', 'munewsmodule') => 'itemlist_display_description.html.twig',
+                $this->__('Custom template', 'munewsmodule') => 'custom'
+            ],
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        $exampleTemplate = 'itemlist_[objectType]_display.html.twig';
+        $builder->add('customTemplate', TextType::class, [
+            'label' => $this->__('Custom template', 'munewsmodule') . ':',
+            'required' => false,
+            'attr' => [
+                'maxlength' => 80,
+                'title' => $this->__('Example', 'munewsmodule') . ': ' . $exampleTemplate
+            ],
+            'help' => $this->__('Example', 'munewsmodule') . ': <em>' . $exampleTemplate . '</em>'
+        ]);
     }
 
     /**

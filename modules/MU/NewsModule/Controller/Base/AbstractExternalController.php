@@ -74,12 +74,21 @@ abstract class AbstractExternalController extends AbstractController
         ];
         
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
-        $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
+        $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters(
+            $objectType,
+            $templateParameters,
+            'controllerAction',
+            $contextArgs
+        );
         
         $viewHelper = $this->get('mu_news_module.view_helper');
         $request->query->set('raw', true);
         
-        return $viewHelper->processTemplate('external', ucfirst($objectType) . '/' . str_replace('.html.twig', '', $template), $templateParameters);
+        return $viewHelper->processTemplate(
+            'external',
+            ucfirst($objectType) . '/' . str_replace('.html.twig', '', $template),
+            $templateParameters
+        );
     }
     
     /**
@@ -115,7 +124,10 @@ abstract class AbstractExternalController extends AbstractController
             }
         
             // redirect to first valid object type
-            $redirectUrl = $this->get('router')->generate('munewsmodule_external_finder', ['objectType' => array_shift($activatedObjectTypes), 'editor' => $editor]);
+            $redirectUrl = $this->get('router')->generate(
+                'munewsmodule_external_finder',
+                ['objectType' => array_shift($activatedObjectTypes), 'editor' => $editor]
+            );
         
             return new RedirectResponse($redirectUrl);
         }
@@ -167,7 +179,11 @@ abstract class AbstractExternalController extends AbstractController
             'object_type' => $objectType,
             'editor_name' => $editor
         ];
-        $form = $this->createForm('MU\NewsModule\Form\Type\Finder\\' . ucfirst($objectType) . 'FinderType', $templateParameters, $formOptions);
+        $form = $this->createForm(
+            'MU\NewsModule\Form\Type\Finder\\' . ucfirst($objectType) . 'FinderType',
+            $templateParameters,
+            $formOptions
+        );
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -211,7 +227,12 @@ abstract class AbstractExternalController extends AbstractController
         $templateParameters['finderForm'] = $form->createView();
         
         $contextArgs = ['controller' => 'external', 'action' => 'display'];
-        $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
+        $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters(
+            $objectType,
+            $templateParameters,
+            'controllerAction',
+            $contextArgs
+        );
         
         $templateParameters['activatedObjectTypes'] = $activatedObjectTypes;
         
