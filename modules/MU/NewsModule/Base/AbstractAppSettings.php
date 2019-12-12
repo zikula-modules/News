@@ -706,7 +706,6 @@ abstract class AbstractAppSettings
         $this->load();
     }
     
-    
     /**
      * Returns the enable attribution.
      *

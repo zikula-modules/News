@@ -173,7 +173,10 @@ abstract class AbstractTranslatableHelper
             }
             $translationData = [];
             foreach ($fields as $fieldName) {
-                $translationData[$fieldName] = isset($entityTranslations[$language][$fieldName]) ? $entityTranslations[$language][$fieldName] : '';
+                $translationData[$fieldName] = isset($entityTranslations[$language][$fieldName])
+                    ? $entityTranslations[$language][$fieldName]
+                    : ''
+                ;
             }
             // add data to collected translations
             $translations[$language] = $translationData;

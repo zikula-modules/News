@@ -523,7 +523,6 @@ abstract class AbstractEditHandler
         // to be customised in sub classes
     }
     
-    
     /**
      * Returns the template parameters.
      *

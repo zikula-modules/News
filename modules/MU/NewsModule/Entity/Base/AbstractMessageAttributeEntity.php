@@ -31,7 +31,6 @@ abstract class AbstractMessageAttributeEntity extends AbstractEntityAttribute
      */
     protected $entity;
     
-    
     /**
      * Returns the entity.
      *

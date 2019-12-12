@@ -58,7 +58,10 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
             $uploadHelper->checkAndCreateAllUploadFolders();
         } catch (Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
-            $logger->error('{app}: User {user} could not create upload folders during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'user' => $userName, 'errorMessage' => $exception->getMessage()]);
+            $logger->error(
+                '{app}: User {user} could not create upload folders during installation. Error details: {errorMessage}.',
+                ['app' => 'MUNewsModule', 'user' => $userName, 'errorMessage' => $exception->getMessage()]
+            );
         
             return false;
         }
@@ -167,8 +170,17 @@ abstract class AbstractNewsModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->persist($registry);
                 $this->entityManager->flush();
             } catch (Exception $exception) {
-                $this->addFlash('warning', $this->__f('Error! Could not create a category registry for the %entity% entity. If you want to use categorisation, register at least one registry in the Categories administration.', ['%entity%' => 'message']));
-                $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUNewsModule', 'user' => $userName, 'entities' => 'messages', 'errorMessage' => $exception->getMessage()]);
+                $this->addFlash(
+                    'warning',
+                    $this->__f(
+                        'Error! Could not create a category registry for the %entity% entity. If you want to use categorisation, register at least one registry in the Categories administration.',
+                        ['%entity%' => 'message']
+                    )
+                );
+                $logger->error(
+                    '{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.',
+                    ['app' => 'MUNewsModule', 'user' => $userName, 'entities' => 'messages', 'errorMessage' => $exception->getMessage()]
+                );
             }
             $categoryRegistryIdsPerEntity['message'] = $registry->getId();
         }

@@ -128,6 +128,7 @@ abstract class AbstractNewsEvents
      * @var string
      */
     const MESSAGE_POST_UPDATE = 'munewsmodule.message_post_update';
+    
     /**
      * The munewsmodule.image_post_load event is thrown when images
      * are loaded from the database.
