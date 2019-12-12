@@ -225,7 +225,6 @@ abstract class AbstractImageEntity extends EntityAccess
         }
     }
     
-    
     /**
      * Returns the id.
      *
@@ -447,7 +446,6 @@ abstract class AbstractImageEntity extends EntityAccess
         }
     }
     
-    
     /**
      * Returns the message.
      *
@@ -469,7 +467,6 @@ abstract class AbstractImageEntity extends EntityAccess
     {
         $this->message = $message;
     }
-    
     
     /**
      * Creates url arguments array for easy creation of display urls.

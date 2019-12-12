@@ -64,7 +64,6 @@ abstract class AbstractImageRepository extends SortableRepository
             'updatedDate',
         ];
     }
-
     
     /**
      * Returns the default sorting field.
@@ -113,7 +112,7 @@ abstract class AbstractImageRepository extends SortableRepository
             $this->collectionFilterHelper = $collectionFilterHelper;
         }
     }
-
+    
     /**
      * Updates the creator of all objects created by a certain user.
      *

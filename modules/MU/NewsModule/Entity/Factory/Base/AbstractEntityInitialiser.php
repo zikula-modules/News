@@ -67,5 +67,4 @@ abstract class AbstractEntityInitialiser
     {
         return $entity;
     }
-
 }

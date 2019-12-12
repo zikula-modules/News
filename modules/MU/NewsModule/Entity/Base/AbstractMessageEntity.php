@@ -477,7 +477,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    
     /**
      * Returns the id.
      *
@@ -1511,7 +1510,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         return false;
     }
     
-    
     /**
      * Returns the images.
      *
@@ -1538,6 +1536,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->addImages($imageSingle);
         }
     }
+    
     /**
      * Adds an instance of \MU\NewsModule\Entity\ImageEntity to the list of images.
      *
@@ -1563,7 +1562,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         $this->images->removeElement($image);
         $image->setMessage(null);
     }
-    
     
     /**
      * Checks whether the approver field contains a valid user reference.

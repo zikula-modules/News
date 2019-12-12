@@ -44,6 +44,7 @@ abstract class AbstractNewsEvents
      * @var string
      */
     const MENU_ITEMACTIONS_POST_CONFIGURE = 'munewsmodule.itemactionsmenu_post_configure';
+    
     /**
      * The munewsmodule.message_post_load event is thrown when messages
      * are loaded from the database.
