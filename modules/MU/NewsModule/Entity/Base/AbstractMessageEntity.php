@@ -1565,7 +1565,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     }
     
     
-    
     /**
      * Checks whether the approver field contains a valid user reference.
      * This method is used for validation.
