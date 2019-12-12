@@ -32,7 +32,9 @@ class ImagesInArticleType extends AbstractType
             $entity = $event->getData();
             foreach (['file'] as $uploadFieldName) {
                 $entity[$uploadFieldName] = [
-                    $uploadFieldName => $entity[$uploadFieldName] instanceof File ? $entity[$uploadFieldName]->getPathname() : null
+                    $uploadFieldName => $entity[$uploadFieldName] instanceof File
+                        ? $entity[$uploadFieldName]->getPathname()
+                        : null
                 ];
             }
         });
@@ -49,7 +51,7 @@ class ImagesInArticleType extends AbstractType
         $builder->add('file', UploadType::class, [
             'label' => 'file',
             'attr' => [
-                    'class' => ' validate-upload',
+                'class' => ' validate-upload',
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
@@ -57,7 +59,7 @@ class ImagesInArticleType extends AbstractType
             'allowed_size' => $options['allowed_size']
         ]);
         $builder->add('copyright', TextType::class, [
-            'label' => 'copyright'	
+            'label' => 'copyright'
         ]);
     }
 

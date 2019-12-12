@@ -14,7 +14,6 @@
 namespace MU\NewsModule\Controller;
 
 use MU\NewsModule\Controller\Base\AbstractMessageController;
-
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

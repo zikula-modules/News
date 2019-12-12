@@ -33,9 +33,9 @@ class ListEntriesHelper extends AbstractListEntriesHelper
             'text' => $this->__('ArticleID'),
             'title' => '',
             'image' => '',
-            'default' => false 
+            'default' => false
         ];
-        $states[] = [ 
+        $states[] = [
             'value' => 'articledatetime',
             'text' => $this->__('ArticleDateTime'),
             'title' => '',
@@ -47,14 +47,14 @@ class ListEntriesHelper extends AbstractListEntriesHelper
             'text' => $this->__('ArticleStartDate'),
             'title' => '',
             'image' => '',
-            'default' => true 
+            'default' => true
         ];
         $states[] = [
             'value' => 'articleweight',
             'text' => $this->__('ArticleWeight'),
             'title' => '',
             'image' => '',
-            'default' => false 
+            'default' => false
         ];
 
         return $states;

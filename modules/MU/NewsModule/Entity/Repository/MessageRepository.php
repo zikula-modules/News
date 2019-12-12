@@ -27,7 +27,8 @@ class MessageRepository extends AbstractMessageRepository
      *
      * @return string[] Sorting fields array
      */
-    public function getAllowedSortingFields() {
+    public function getAllowedSortingFields()
+    {
         return [
             'id',
             'workflowState',
@@ -39,7 +40,7 @@ class MessageRepository extends AbstractMessageRepository
             'updatedBy',
             'updatedDate',
             'startDate',
-            'weight' 
+            'weight'
         ];
     }
 }

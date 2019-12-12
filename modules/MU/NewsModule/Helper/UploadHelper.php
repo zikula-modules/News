@@ -13,12 +13,11 @@
 
 namespace MU\NewsModule\Helper;
 
-use MU\NewsModule\Helper\Base\AbstractUploadHelper;
-
 use Imagine\Filter\Basic\Autorotate;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
+use MU\NewsModule\Helper\Base\AbstractUploadHelper;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -75,22 +74,36 @@ class UploadHelper extends AbstractUploadHelper
             $basePath = $this->getFileBaseFolder($objectType, $fieldName);
         } catch (\Exception $exception) {
             $flashBag->add('error', $exception->getMessage());
-            $this->logger->error('{app}: User {user} could not detect upload destination path for entity {entity} and field {field}. ' . $exception->getMessage(), ['app' => 'MUNewsModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $objectType, 'field' => $fieldName]);
-    
+            $logArgs = [
+                'app' => 'MUNewsModule',
+                'user' => $this->currentUserApi->get('uname'),
+                'entity' => $objectType,
+                'field' => $fieldName
+            ];
+            $this->logger->error(
+                '{app}: User {user} could not detect upload destination path for entity {entity} and field {field}. '
+                    . $exception->getMessage(),
+                $logArgs
+            );
+
             return $result;
         }
         $fileName = $this->determineFileName($objectType, $fieldName, $basePath, $fileName, $extension);
     
         $destinationFilePath = $basePath . $fileName;
         $targetFile = $file->move($basePath, $fileName);
-    
+
         // validate image file
-        $isImage = in_array($extension, $this->imageFileTypes);
+        $isImage = in_array($extension, $this->imageFileTypes, true);
         if ($isImage) {
             $imgInfo = getimagesize($destinationFilePath);
             if (!is_array($imgInfo) || !$imgInfo[0] || !$imgInfo[1]) {
                 $flashBag->add('error', $this->__('Error! This file type seems not to be a valid image.'));
-                $this->logger->error('{app}: User {user} tried to upload a file which is seems not to be a valid image.', ['app' => 'MUNewsModule', 'user' => $this->currentUserApi->get('uname')]);
+                $logArgs = ['app' => 'MUNewsModule', 'user' => $this->currentUserApi->get('uname')];
+                $this->logger->error(
+                    '{app}: User {user} tried to upload a file which is seems not to be a valid image.',
+                    $logArgs
+                );
         
                 return false;
             }
@@ -115,7 +128,13 @@ class UploadHelper extends AbstractUploadHelper
 
             if ('byte' === $sizeType && $fileSize > $maxSize) {
                 $flashBag->add('error', $this->__('Error! This file is too big.'));
-                $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'byte');
+                $flashBag->add(
+                    'status',
+                    $this->__f(
+                        'Try another image or make the file size smaller than %amount bytes.',
+                        ['%amount' => $setMaxSize]
+                    )
+                );
 
                 return false;
             }
@@ -126,7 +145,13 @@ class UploadHelper extends AbstractUploadHelper
                 $maxSize *= 1024;
                 if ($fileSize > $maxSize) {
                     $flashBag->add('error', $this->__('Error! This file is too big.'));
-                    $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'kilobyte!');
+                    $flashBag->add(
+                        'status',
+                        $this->__f(
+                            'Try another image or make the file size smaller than %amount kilobytes.',
+                            ['%amount' => $setMaxSize]
+                        )
+                    );
 
                     return false;
                 }
@@ -138,7 +163,14 @@ class UploadHelper extends AbstractUploadHelper
                 $maxSize = $maxSize * 1024 * 1024;
                 if ($fileSize > $maxSize) {
                     $flashBag->add('error', $this->__('Error! This file is too big.'));
-                    $flashBag->add('status', $this->__('Try another image or make the file size smaller than ') . $setMaxSize . ' ' . 'megabyte!');
+                    $flashBag->add(
+                        'status',
+                        $this->__f(
+                            'Try another image or make the file size smaller than %amount megabytes.',
+                            ['%amount' => $setMaxSize]
+                        )
+                    );
+
                     return false;
                 }
             }

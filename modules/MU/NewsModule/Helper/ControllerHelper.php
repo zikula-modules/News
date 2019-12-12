@@ -32,7 +32,7 @@ class ControllerHelper extends AbstractControllerHelper
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
 
-            if($route == 'munewsmodule_message_view') {
+            if ('munewsmodule_message_view' === $route) {
                 $sorting = 'defaultMessageSorting';
             } else {
                 $sorting = 'defaultMessageSortingBackend';

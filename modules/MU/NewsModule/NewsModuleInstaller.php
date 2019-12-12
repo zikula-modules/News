@@ -47,7 +47,8 @@ class NewsModuleInstaller extends AbstractNewsModuleInstaller
                 } catch (\Exception $exception) {
                     $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
                     $logger->error(
-                        '{app}: Could not create the database tables during installation. Error details: {errorMessage}.',
+                        '{app}: Could not create the database tables during installation.'
+                            . ' Error details: {errorMessage}.',
                         ['app' => 'MUNewsModule', 'errorMessage' => $exception->getMessage()]
                     );
 

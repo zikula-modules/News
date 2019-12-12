@@ -94,7 +94,8 @@ class ImageType extends AbstractType
                 'maxlength' => 4,
                 'class' => '',
                 'min' => 1,
-                'title' => $this->__('Enter the sort number of the image.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->__('Enter the sort number of the image.')
+                    . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => true,
             'scale' => 0

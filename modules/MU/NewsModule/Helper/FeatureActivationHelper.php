@@ -13,9 +13,8 @@
 
 namespace MU\NewsModule\Helper;
 
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-
 use MU\NewsModule\Helper\Base\AbstractFeatureActivationHelper;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Helper implementation class for dynamic feature enablement methods.
