@@ -301,6 +301,7 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $this->localeApi->getSupportedLocaleNames(),
+            'choice_loader' => null,
         ]);
         
         $builder->add('allowComments', CheckboxType::class, [
