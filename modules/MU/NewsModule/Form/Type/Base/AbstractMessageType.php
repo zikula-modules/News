@@ -244,7 +244,6 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => $this->__('Enter the amount of views of the message.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => false,
-            'scale' => 0
         ]);
         
         $builder->add('author', TextType::class, [
@@ -302,6 +301,7 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $this->localeApi->getSupportedLocaleNames(),
+            'choice_loader' => null,
         ]);
         
         $builder->add('allowComments', CheckboxType::class, [
@@ -399,7 +399,6 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => $this->__('Enter the weight of the message.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => false,
-            'scale' => 0
         ]);
     }
 

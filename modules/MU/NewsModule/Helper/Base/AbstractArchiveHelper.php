@@ -165,14 +165,14 @@ abstract class AbstractArchiveHelper
     protected function archiveSingleObject($entity)
     {
         $request = $this->requestStack->getCurrentRequest();
+        $session = $request->hasSession() ? $request->getSession() : null;
         if ($entity->supportsHookSubscribers()) {
             // Let any hooks perform additional validation actions
             $validationErrors = $this->hookHelper->callValidationHooks($entity, UiHooksCategory::TYPE_VALIDATE_EDIT);
             if (0 < count($validationErrors)) {
-                if (null !== $request) {
-                    $flashBag = $request->getSession()->getFlashBag();
+                if (null !== $session) {
                     foreach ($validationErrors as $message) {
-                        $flashBag->add('error', $message);
+                        $session->getFlashBag()->add('error', $message);
                     }
                 }
     
@@ -185,9 +185,8 @@ abstract class AbstractArchiveHelper
             // execute the workflow action
             $success = $this->workflowHelper->executeAction($entity, 'archive');
         } catch (Exception $exception) {
-            if (null !== $request) {
-                $flashBag = $request->getSession()->getFlashBag();
-                $flashBag->add(
+            if (null !== $session) {
+                $session->getFlashBag()->add(
                     'error',
                     $this->translator->__f(
                         'Sorry, but an error occured during the %action% action. Please apply the changes again!',
