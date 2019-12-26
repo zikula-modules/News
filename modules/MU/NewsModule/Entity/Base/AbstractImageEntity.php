@@ -65,7 +65,7 @@ abstract class AbstractImageEntity extends EntityAccess
      * the current workflow state
      *
      * @ORM\Column(length=20)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="image", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
@@ -82,7 +82,7 @@ abstract class AbstractImageEntity extends EntityAccess
     
     /**
      * @ORM\Column(name="theFile", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\Length(min="0", max="255")
      * @var string $theFileFileName
      */
@@ -110,7 +110,7 @@ abstract class AbstractImageEntity extends EntityAccess
     
     /**
      * @ORM\Column(length=255)
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Length(min="0", max="255")
      * @var string $caption
      */
@@ -120,7 +120,7 @@ abstract class AbstractImageEntity extends EntityAccess
      * @Gedmo\SortablePosition
      * @ORM\Column(type="smallint")
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\GreaterThanOrEqual(value=1)
      * @var int $sortNumber

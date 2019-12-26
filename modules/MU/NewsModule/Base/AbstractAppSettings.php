@@ -35,14 +35,14 @@ abstract class AbstractAppSettings
     protected $groupRepository;
     
     /**
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableAttribution
      */
     protected $enableAttribution = false;
     
     /**
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableMultiLanguage
      */
@@ -51,7 +51,7 @@ abstract class AbstractAppSettings
     /**
      * This setting allows to enable the display of author informations within an article.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $showAuthor
      */
@@ -60,14 +60,14 @@ abstract class AbstractAppSettings
     /**
      * This setting allows to enable the display of date informations within an article.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $showDate
      */
     protected $showDate = false;
     
     /**
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableCategorization
      */
@@ -76,28 +76,28 @@ abstract class AbstractAppSettings
     /**
      * You can customise several display-oriented aspects of the articles.
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="defaultMessageSorting", multiple=false)
      * @var string $defaultMessageSorting
      */
     protected $defaultMessageSorting = 'articledatetime';
     
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="defaultMessageSortingBackend", multiple=false)
      * @var string $defaultMessageSortingBackend
      */
     protected $defaultMessageSortingBackend = 'articledatetime';
     
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="sortingDirection", multiple=false)
      * @var string $sortingDirection
      */
     protected $sortingDirection = 'descending';
     
     /**
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableMoreMessagesInCategory
      */
@@ -107,7 +107,7 @@ abstract class AbstractAppSettings
      * When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \'morearticlesincat\'. You need to enable \'article attributes\' yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\LessThan(value=100000000000)
      * @var int $amountOfMoreArticlesInCategory
      */
@@ -116,7 +116,7 @@ abstract class AbstractAppSettings
     /**
      * Display a PDF link for the articles in the index page
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $displayPdfLink
      */
@@ -125,7 +125,7 @@ abstract class AbstractAppSettings
     /**
      * Allow uploading article pictures
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enablePictureUpload
      */
@@ -134,7 +134,7 @@ abstract class AbstractAppSettings
     /**
      * Image float on the view page
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="imageFloatOnViewPage", multiple=false)
      * @var string $imageFloatOnViewPage
      */
@@ -143,7 +143,7 @@ abstract class AbstractAppSettings
     /**
      * Image float on the article display page
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="imageFloatOnDisplayPage", multiple=false)
      * @var string $imageFloatOnDisplayPage
      */
@@ -152,7 +152,7 @@ abstract class AbstractAppSettings
     /**
      * For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\Length(min="0", max="255")
      * @var string $maxSize
      */
@@ -162,7 +162,7 @@ abstract class AbstractAppSettings
      * The amount of messages shown per page
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $messageEntriesPerPage
@@ -172,7 +172,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to add a link to messages of the current user on his account page
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $linkOwnMessagesOnAccountPage
      */
@@ -181,7 +181,7 @@ abstract class AbstractAppSettings
     /**
      * Whether only own entries should be shown on view pages by default or not
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $showOnlyOwnEntries
      */
@@ -190,7 +190,7 @@ abstract class AbstractAppSettings
     /**
      * Whether automatically filter data in the frontend based on the current locale or not
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $filterDataByLocale
      */
@@ -199,7 +199,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableShrinkingForMessageImageUpload1
      */
@@ -209,7 +209,7 @@ abstract class AbstractAppSettings
      * The maximum image width in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkWidthMessageImageUpload1
@@ -220,7 +220,7 @@ abstract class AbstractAppSettings
      * The maximum image height in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkHeightMessageImageUpload1
@@ -230,7 +230,7 @@ abstract class AbstractAppSettings
     /**
      * Thumbnail mode (inset or outbound).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="thumbnailModeMessageImageUpload1", multiple=false)
      * @var string $thumbnailModeMessageImageUpload1
      */
@@ -240,7 +240,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload1View
@@ -251,7 +251,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload1View
@@ -262,7 +262,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload1Display
@@ -273,7 +273,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload1Display
@@ -284,7 +284,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload1Edit
@@ -295,7 +295,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload1Edit
@@ -305,7 +305,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableShrinkingForMessageImageUpload2
      */
@@ -315,7 +315,7 @@ abstract class AbstractAppSettings
      * The maximum image width in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkWidthMessageImageUpload2
@@ -326,7 +326,7 @@ abstract class AbstractAppSettings
      * The maximum image height in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkHeightMessageImageUpload2
@@ -336,7 +336,7 @@ abstract class AbstractAppSettings
     /**
      * Thumbnail mode (inset or outbound).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="thumbnailModeMessageImageUpload2", multiple=false)
      * @var string $thumbnailModeMessageImageUpload2
      */
@@ -346,7 +346,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload2View
@@ -357,7 +357,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload2View
@@ -368,7 +368,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload2Display
@@ -379,7 +379,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload2Display
@@ -390,7 +390,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload2Edit
@@ -401,7 +401,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload2Edit
@@ -411,7 +411,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableShrinkingForMessageImageUpload3
      */
@@ -421,7 +421,7 @@ abstract class AbstractAppSettings
      * The maximum image width in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkWidthMessageImageUpload3
@@ -432,7 +432,7 @@ abstract class AbstractAppSettings
      * The maximum image height in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkHeightMessageImageUpload3
@@ -442,7 +442,7 @@ abstract class AbstractAppSettings
     /**
      * Thumbnail mode (inset or outbound).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="thumbnailModeMessageImageUpload3", multiple=false)
      * @var string $thumbnailModeMessageImageUpload3
      */
@@ -452,7 +452,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload3View
@@ -463,7 +463,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload3View
@@ -474,7 +474,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload3Display
@@ -485,7 +485,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload3Display
@@ -496,7 +496,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload3Edit
@@ -507,7 +507,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload3Edit
@@ -517,7 +517,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableShrinkingForMessageImageUpload4
      */
@@ -527,7 +527,7 @@ abstract class AbstractAppSettings
      * The maximum image width in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkWidthMessageImageUpload4
@@ -538,7 +538,7 @@ abstract class AbstractAppSettings
      * The maximum image height in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkHeightMessageImageUpload4
@@ -548,7 +548,7 @@ abstract class AbstractAppSettings
     /**
      * Thumbnail mode (inset or outbound).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="thumbnailModeMessageImageUpload4", multiple=false)
      * @var string $thumbnailModeMessageImageUpload4
      */
@@ -558,7 +558,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload4View
@@ -569,7 +569,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on view pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload4View
@@ -580,7 +580,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload4Display
@@ -591,7 +591,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on display pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload4Display
@@ -602,7 +602,7 @@ abstract class AbstractAppSettings
      * Thumbnail width on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailWidthMessageImageUpload4Edit
@@ -613,7 +613,7 @@ abstract class AbstractAppSettings
      * Thumbnail height on edit pages in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $thumbnailHeightMessageImageUpload4Edit
@@ -623,7 +623,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $enableShrinkingForImageTheFile
      */
@@ -633,7 +633,7 @@ abstract class AbstractAppSettings
      * The maximum image width in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkWidthImageTheFile
@@ -644,7 +644,7 @@ abstract class AbstractAppSettings
      * The maximum image height in pixels.
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $shrinkHeightImageTheFile
@@ -654,7 +654,7 @@ abstract class AbstractAppSettings
     /**
      * Thumbnail mode (inset or outbound).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="thumbnailModeImageTheFile", multiple=false)
      * @var string $thumbnailModeImageTheFile
      */
@@ -663,7 +663,7 @@ abstract class AbstractAppSettings
     /**
      * Used to determine moderator user accounts for sending email notifications.
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @var int $moderationGroupForMessages
      */
     protected $moderationGroupForMessages = 2;
@@ -671,7 +671,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to allow moderators choosing a user which will be set as creator.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $allowModerationSpecificCreatorForMessage
      */
@@ -680,7 +680,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to allow moderators choosing a custom creation date.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $allowModerationSpecificCreationDateForMessage
      */
@@ -689,7 +689,7 @@ abstract class AbstractAppSettings
     /**
      * Which sections are supported in the Finder component (used by Scribite plug-ins).
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @NewsAssert\ListEntry(entityName="appSettings", propertyName="enabledFinderTypes", multiple=true)
      * @var string $enabledFinderTypes
      */
