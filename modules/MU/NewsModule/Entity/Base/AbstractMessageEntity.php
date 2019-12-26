@@ -70,7 +70,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * the current workflow state
      *
      * @ORM\Column(length=20)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @NewsAssert\ListEntry(entityName="message", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
@@ -79,7 +79,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @Gedmo\Translatable
      * @ORM\Column(length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\Length(min="0", max="255")
      * @var string $title
      */
@@ -88,7 +88,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @Gedmo\Translatable
      * @ORM\Column(type="text", length=10000)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\Length(min="0", max="10000")
      * @var string $startText
      */
@@ -134,7 +134,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @Gedmo\Translatable
      * @ORM\Column(type="text", length=20000)
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Length(min="0", max="20000")
      * @var string $mainText
      */
@@ -143,7 +143,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @ORM\Column(type="integer")
      * @Assert\Type(type="integer")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\LessThan(value=100000000000)
      * @var int $amountOfViews
      */
@@ -151,7 +151,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(length=100)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\Length(min="0", max="100")
      * @var string $author
      */
@@ -166,7 +166,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(type="text", length=2000)
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Length(min="0", max="2000")
      * @var string $notes
      */
@@ -174,7 +174,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $displayOnIndex
      */
@@ -182,16 +182,16 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(length=7)
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Length(min="0", max="7")
-     * @Assert\Locale()
+     * @Assert\Locale
      * @var string $messageLanguage
      */
     protected $messageLanguage = '';
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $allowComments
      */
@@ -310,14 +310,14 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\DateTime
      * @var \DateTime $startDate
      */
     protected $startDate;
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $noEndDate
      */
@@ -325,7 +325,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
+     * @Assert\DateTime
      * @Assert\Expression("!value or value > this.getStartDate()", message="The start must be before the end.")
      * @var \DateTime $endDate
      */
@@ -334,7 +334,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * @ORM\Column(type="smallint")
      * @Assert\Type(type="integer")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\LessThan(value=100)
      * @var int $weight
      */
