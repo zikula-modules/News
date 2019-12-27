@@ -123,6 +123,7 @@ abstract class AbstractImageEntity extends EntityAccess
      * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\GreaterThanOrEqual(value=1)
+     * @Assert\LessThan(value=10000)
      * @var int $sortNumber
      */
     protected $sortNumber = 1;
