@@ -194,8 +194,7 @@ abstract class AbstractItemListBlockType extends AbstractType
                 'title' => $helpText
             ],
             'help' => $helpText,
-            'empty_data' => 5,
-            'scale' => 0
+            'empty_data' => 5
         ]);
     }
 
