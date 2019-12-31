@@ -27,7 +27,6 @@ use MU\NewsModule\Helper\ArchiveHelper;
 use MU\NewsModule\Helper\CollectionFilterHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ImageHelper;
-use MU\NewsModule\Helper\ModelHelper;
 use MU\NewsModule\Helper\PermissionHelper;
 
 /**
@@ -68,11 +67,6 @@ abstract class AbstractControllerHelper
     protected $permissionHelper;
     
     /**
-     * @var ModelHelper
-     */
-    protected $modelHelper;
-    
-    /**
      * @var ImageHelper
      */
     protected $imageHelper;
@@ -91,7 +85,6 @@ abstract class AbstractControllerHelper
         EntityFactory $entityFactory,
         CollectionFilterHelper $collectionFilterHelper,
         PermissionHelper $permissionHelper,
-        ModelHelper $modelHelper,
         ImageHelper $imageHelper,
         FeatureActivationHelper $featureActivationHelper
     ) {
@@ -102,7 +95,6 @@ abstract class AbstractControllerHelper
         $this->entityFactory = $entityFactory;
         $this->collectionFilterHelper = $collectionFilterHelper;
         $this->permissionHelper = $permissionHelper;
-        $this->modelHelper = $modelHelper;
         $this->imageHelper = $imageHelper;
         $this->featureActivationHelper = $featureActivationHelper;
     
@@ -300,8 +292,6 @@ abstract class AbstractControllerHelper
     
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['quickNavForm'] = $quickNavForm->createView();
-    
-        $templateParameters['canBeCreated'] = $this->modelHelper->canBeCreated($objectType);
     
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
