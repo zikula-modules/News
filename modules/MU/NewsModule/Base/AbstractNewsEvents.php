@@ -44,6 +44,7 @@ abstract class AbstractNewsEvents
      * @var string
      */
     const MENU_ITEMACTIONS_POST_CONFIGURE = 'munewsmodule.itemactionsmenu_post_configure';
+    
     /**
      * The munewsmodule.viewactionsmenu_pre_configure event is thrown before the view actions
      * menu is built in the menu builder.
