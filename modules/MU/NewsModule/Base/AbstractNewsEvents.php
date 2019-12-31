@@ -44,6 +44,29 @@ abstract class AbstractNewsEvents
      * @var string
      */
     const MENU_ITEMACTIONS_POST_CONFIGURE = 'munewsmodule.itemactionsmenu_post_configure';
+    /**
+     * The munewsmodule.viewactionsmenu_pre_configure event is thrown before the view actions
+     * menu is built in the menu builder.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\ConfigureViewActionsMenuEvent instance.
+     *
+     * @see MenuBuilder::createViewActionsMenu()
+     * @var string
+     */
+    const MENU_VIEWACTIONS_PRE_CONFIGURE = 'munewsmodule.viewactionsmenu_pre_configure';
+    
+    /**
+     * The munewsmodule.viewactionsmenu_post_configure event is thrown after the view actions
+     * menu has been built in the menu builder.
+     *
+     * The event listener receives an
+     * MU\NewsModule\Event\ConfigureViewActionsMenuEvent instance.
+     *
+     * @see MenuBuilder::createViewActionsMenu()
+     * @var string
+     */
+    const MENU_VIEWACTIONS_POST_CONFIGURE = 'munewsmodule.viewactionsmenu_post_configure';
     
     /**
      * The munewsmodule.message_post_load event is thrown when messages

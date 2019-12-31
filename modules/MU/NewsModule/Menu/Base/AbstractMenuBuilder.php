@@ -19,14 +19,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use MU\NewsModule\Entity\MessageEntity;
 use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\NewsEvents;
 use MU\NewsModule\Event\ConfigureItemActionsMenuEvent;
 use MU\NewsModule\Helper\EntityDisplayHelper;
+use MU\NewsModule\Helper\ModelHelper;
 use MU\NewsModule\Helper\PermissionHelper;
-use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * Menu builder base class.
@@ -34,37 +36,47 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 class AbstractMenuBuilder
 {
     use TranslatorTrait;
-
+    
     /**
      * @var FactoryInterface
      */
     protected $factory;
-
+    
     /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-
+    
     /**
      * @var EntityDisplayHelper
      */
     protected $entityDisplayHelper;
-
+    
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-
+    
+    /**
+     * @var VariableApiInterface
+     */
+    protected $variableApi;
+    
+    /**
+     * @var ModelHelper
+     */
+    protected $modelHelper;
+    
     public function __construct(
         TranslatorInterface $translator,
         FactoryInterface $factory,
@@ -72,7 +84,9 @@ class AbstractMenuBuilder
         RequestStack $requestStack,
         PermissionHelper $permissionHelper,
         EntityDisplayHelper $entityDisplayHelper,
-        CurrentUserApiInterface $currentUserApi
+        CurrentUserApiInterface $currentUserApi,
+        VariableApiInterface $variableApi,
+        ModelHelper $modelHelper
     ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
@@ -81,13 +95,15 @@ class AbstractMenuBuilder
         $this->permissionHelper = $permissionHelper;
         $this->entityDisplayHelper = $entityDisplayHelper;
         $this->currentUserApi = $currentUserApi;
+        $this->variableApi = $variableApi;
+        $this->modelHelper = $modelHelper;
     }
-
+    
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
-
+    
     /**
      * Builds the item actions menu.
      *
@@ -101,17 +117,17 @@ class AbstractMenuBuilder
         if (!isset($options['entity'], $options['area'], $options['context'])) {
             return $menu;
         }
-
+    
         $entity = $options['entity'];
         $routeArea = $options['area'];
         $context = $options['context'];
         $menu->setChildrenAttribute('class', 'list-inline item-actions');
-
+    
         $this->eventDispatcher->dispatch(
             NewsEvents::MENU_ITEMACTIONS_PRE_CONFIGURE,
             new ConfigureItemActionsMenuEvent($this->factory, $menu, $options)
         );
-
+    
         $currentUserId = $this->currentUserApi->isLoggedIn()
             ? $this->currentUserApi->get('uid')
             : UsersConstant::USER_ID_ANONYMOUS
@@ -122,7 +138,7 @@ class AbstractMenuBuilder
                 && null !== $entity->getCreatedBy()
                 && $currentUserId === $entity->getCreatedBy()->getUid()
             ;
-        
+            
             if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'munewsmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
@@ -219,12 +235,98 @@ class AbstractMenuBuilder
                 && $currentUserId === $entity->getCreatedBy()->getUid()
             ;
         }
-
+    
         $this->eventDispatcher->dispatch(
             NewsEvents::MENU_ITEMACTIONS_POST_CONFIGURE,
             new ConfigureItemActionsMenuEvent($this->factory, $menu, $options)
         );
-
+    
+        return $menu;
+    }
+    /**
+     * Builds the view actions menu.
+     *
+     * @param array $options List of additional options
+     *
+     * @return ItemInterface The assembled menu
+     */
+    public function createViewActionsMenu(array $options = [])
+    {
+        $menu = $this->factory->createItem('viewActions');
+        if (!isset($options['objectType'], $options['area'])) {
+            return $menu;
+        }
+    
+        $objectType = $options['objectType'];
+        $routeArea = $options['area'];
+        $menu->setChildrenAttribute('class', 'list-inline view-actions');
+    
+        $this->eventDispatcher->dispatch(
+            NewsEvents::MENU_VIEWACTIONS_PRE_CONFIGURE,
+            new ConfigureViewActionsMenuEvent($this->factory, $menu, $options)
+        );
+    
+        $query = $this->requestStack->getMasterRequest()->query;
+        $currentTemplate = $query->getAlnum('tpl', '');
+        if ('message' === $objectType) {
+            $routePrefix = 'munewsmodule_message_';
+            if (!in_array($currentTemplate, [])) {
+                $canBeCreated = $this->modelHelper->canBeCreated($objectType);
+                if ($canBeCreated) {
+                    if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_COMMENT)) {
+                        $title = $this->__('Create message', 'munewsmodule');
+                        $menu->addChild($title, [
+                            'route' => $routePrefix . $routeArea . 'edit'
+                        ]);
+                        $menu[$title]->setLinkAttribute('title', $title);
+                        $menu[$title]->setAttribute('icon', 'fa fa-plus');
+                    }
+                }
+                $routeParameters = $query->all();
+                if (1 === $query->getInt('own')) {
+                    $routeParameters['own'] = 1;
+                } else {
+                    unset($routeParameters['own']);
+                }
+                if (1 === $query->getInt('all')) {
+                    unset($routeParameters['all']);
+                    $title = $this->__('Back to paginated view', 'munewsmodule');
+                } else {
+                    $routeParameters['all'] = 1;
+                    $title = $this->__('Show all entries', 'munewsmodule');
+                }
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'view',
+                    'routeParameters' => $routeParameters
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-table');
+                if ($this->permissionHelper.hasComponentPermission($objectType, ACCESS_COMMENT)) {
+                    $routeParameters = $query->all();
+                    if (1 === $query->getInt('own')) {
+                        unset($routeParameters['own']);
+                        $title = $this->__('Show also entries from other users', 'munewsmodule');
+                        $icon = 'users';
+                    } else {
+                        $routeParameters['own'] = 1;
+                        $title = $this->__('Show only own entries', 'munewsmodule');
+                        $icon = 'user';
+                    }
+                    $menu->addChild($title, [
+                        'route' => $routePrefix . $routeArea . 'view',
+                        'routeParameters' => $routeParameters
+                    ]);
+                    $menu[$title]->setLinkAttribute('title', $title);
+                    $menu[$title]->setAttribute('icon', 'fa fa-' . $icon);
+                }
+            }
+        }
+    
+        $this->eventDispatcher->dispatch(
+            NewsEvents::MENU_VIEWACTIONS_POST_CONFIGURE,
+            new ConfigureViewActionsMenuEvent($this->factory, $menu, $options)
+        );
+    
         return $menu;
     }
 }
