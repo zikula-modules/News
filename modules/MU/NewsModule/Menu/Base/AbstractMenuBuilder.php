@@ -26,6 +26,7 @@ use MU\NewsModule\Entity\MessageEntity;
 use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\NewsEvents;
 use MU\NewsModule\Event\ConfigureItemActionsMenuEvent;
+use MU\NewsModule\Event\ConfigureViewActionsMenuEvent;
 use MU\NewsModule\Helper\EntityDisplayHelper;
 use MU\NewsModule\Helper\ModelHelper;
 use MU\NewsModule\Helper\PermissionHelper;
@@ -243,6 +244,7 @@ class AbstractMenuBuilder
     
         return $menu;
     }
+    
     /**
      * Builds the view actions menu.
      *
@@ -301,7 +303,7 @@ class AbstractMenuBuilder
                 ]);
                 $menu[$title]->setLinkAttribute('title', $title);
                 $menu[$title]->setAttribute('icon', 'fa fa-table');
-                if ($this->permissionHelper.hasComponentPermission($objectType, ACCESS_COMMENT)) {
+                if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_COMMENT)) {
                     $routeParameters = $query->all();
                     if (1 === $query->getInt('own')) {
                         unset($routeParameters['own']);
