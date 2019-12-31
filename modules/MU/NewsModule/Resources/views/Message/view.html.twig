@@ -2,81 +2,52 @@
 {% extends 'MUNewsModule::base.html.twig' %}
 {% block title own ? __('My messages') : __('Messages list') %}
 {% block content %}
-<div class="munewsmodule-message munewsmodule-view">
+    <div class="munewsmodule-message munewsmodule-view">
+        {% set viewActions = knp_menu_get('mUNewsMenuViewActions', [], {objectType: 'message', area: routeArea}) %}
+        {{ knp_menu_render(viewActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
 
-    {{ block('page_nav_links') }}
+        {#{ include('@MUNewsModule/Message/viewQuickNav.html.twig') }}{# see template file for available options #}
+        
+        {% for message in items %}
+            <div class="col-md-12">
+                <h3>{{ message.title }}</h3>
+                <span class="message-view-categories">{{ include('@MUNewsModule/Helper/includeCategoriesDisplay2.html.twig', {obj: message}) }}</span>
+                {% set imageFloatOnView = getModVar('MUNewsModule', 'imageFloatOnViewPage') %}
+                {% if imageFloatOnView == 'left' %}
+                {% set imageFloat = 'float-left' %}
+                {% endif %}
+                {% if imageFloatOnView == 'right' %}
+                {% set imageFloat = 'float-right' %}
+                {% endif %}
+                {% if imageFloatOnView == 'none' %}
+                {% set imageFloat = 'float-none' %}
+                {% endif %}
+                {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+                <div class="{{ imageFloat }}">              
+                    <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+                        {% if message.imageUpload1Meta.isImage %}
+                            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+                            <img src="{{ message.imageUpload1.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-responsive" />
+                        {% else %}
+                            {{ __('Download') }} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
+                        {% endif %}
+                        </a>
+                                
+                </div>{% else %}&nbsp;{% endif %}
+                {{ message.startText|striptags|truncate(500) }}
+                <br /><br /><a class="btn btn-success btn-sm more-link" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {slug: message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
+            </div>
 
-    {#{ include('@MUNewsModule/Message/viewQuickNav.html.twig') }}{# see template file for available options #}
-    
-    {% for message in items %}
-        <div class="col-md-12">
-            <h3>{{ message.title }}</h3>
-            <span class="message-view-categories">{{ include('@MUNewsModule/Helper/includeCategoriesDisplay2.html.twig', {obj: message}) }}</span>
-            {% set imageFloatOnView = getModVar('MUNewsModule', 'imageFloatOnViewPage') %}
-            {% if imageFloatOnView == 'left' %}
-            {% set imageFloat = 'float-left' %}
+        {% endfor %}
+
+            {% if all != 1 and pager|default %}
+                {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'munewsmodule_message_' ~ routeArea ~ 'view'}) }}
             {% endif %}
-            {% if imageFloatOnView == 'right' %}
-            {% set imageFloat = 'float-right' %}
-            {% endif %}
-            {% if imageFloatOnView == 'none' %}
-            {% set imageFloat = 'float-none' %}
-            {% endif %}
-            {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
-            <div class="{{ imageFloat }}">              
-                <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
-                    {% if message.imageUpload1Meta.isImage %}
-                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
-                        <img src="{{ message.imageUpload1.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-responsive" />
-                    {% else %}
-                        {{ __('Download') }} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
-                    {% endif %}
-                    </a>
-                               
-            </div>{% else %}&nbsp;{% endif %}
-            {{ message.startText|striptags|truncate(500) }}
-            <br /><br /><a class="btn btn-success btn-sm more-link" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {slug: message.slug}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ ('Read more of') }} {{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
-        </div>
 
-    {% endfor %}
-
-        {% if all != 1 and pager|default %}
-            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'munewsmodule_message_' ~ routeArea ~ 'view'}) }}
-        {% endif %}
-
-    {{ block('display_hooks') }}
-</div>
-{% endblock %}
-{% block page_nav_links %}
-    <p>
-        {% if canBeCreated %}
-            {% if permissionHelper.hasComponentPermission('message', constant('ACCESS_COMMENT')) %}
-                {% set createTitle = __('Create message') %}
-                <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}"><i class="fa fa-plus"></i> {{ createTitle }}</a>
-            {% endif %}
-        {% endif %}
-        {% if all == 1 %}
-            {% set linkTitle = __('Back to paginated view') %}
-            {% set routeArgs = own ? {own: 1} : {} %}
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
-        {% else %}
-            {% set linkTitle = __('Show all entries') %}
-            {% set routeArgs = own ? {all: 1, own: 1} : {all: 1} %}
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
-        {% endif %}
-        {#% if own == 1 %}
-            {% set linkTitle = __('Show also entries from other users') %}
-            {% set routeArgs = all ? {all: 1} : {} %}
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-users"></i> {{ linkTitle }}</a>
-        {% elseif permissionHelper.hasComponentPermission('message', constant('ACCESS_COMMENT')) %}
-            {% set linkTitle = __('Show only own entries') %}
-            {% set routeArgs = all ? {all: 1, own: 1} : {own: 1} %}
-            <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-user"></i> {{ linkTitle }}</a>
-        {% endif %#}
-    </p>
+        {{ block('display_hooks') }}
+    </div>
 {% endblock %}
 {% block display_hooks %}
-    
     {# here you can activate calling display hooks for the view page if you need it #}
     {# % if routeArea != 'admin' %}
         {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', urlObject=currentUrlObject, outputAsArray=true) %}

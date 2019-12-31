@@ -22,3 +22,4 @@ services:
             - "@mu_news_module.model_helper"
         tags:
             - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: mUNewsMenuItemActions }
+            - { name: knp_menu.menu_builder, method: createViewActionsMenu, alias: mUNewsMenuViewActions }
