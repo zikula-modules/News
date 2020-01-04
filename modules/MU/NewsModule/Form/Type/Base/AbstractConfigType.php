@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use MU\NewsModule\Form\Type\Field\MultiListType;
 use MU\NewsModule\AppSettings;
 use MU\NewsModule\Helper\ListEntriesHelper;
@@ -1210,7 +1211,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => $this->__('Choose the moderation group for messages')
             ],
             'required' => true,
-            'class' => 'ZikulaGroupsModule:GroupEntity',
+            'class' => GroupEntity::class,
             'choice_label' => 'name',
             'choice_value' => 'gid'
         ]);

@@ -166,7 +166,9 @@ abstract class AbstractItemListBlockType extends AbstractType
     {
         $builder->add('sorting', ChoiceType::class, [
             'label' => $this->__('Sorting', 'munewsmodule') . ':',
-            'label_attr' => ['class' => 'radio-inline'],
+            'label_attr' => [
+                'class' => 'radio-inline'
+            ],
             'empty_data' => 'default',
             'choices' => [
                 $this->__('Random', 'munewsmodule') => 'random',
@@ -222,7 +224,7 @@ abstract class AbstractItemListBlockType extends AbstractType
                 'maxlength' => 80,
                 'title' => $this->__('Example', 'munewsmodule') . ': ' . $exampleTemplate
             ],
-            'help' => $this->__('Example', 'munewsmodule') . ': <em>' . $exampleTemplate . '</em>'
+            'help' => $this->__('Example', 'munewsmodule') . ': <code>' . $exampleTemplate . '</code>'
         ]);
     }
 

@@ -112,7 +112,7 @@ abstract class AbstractItemBlockType extends AbstractType
                     'title' => $this->__('Example', 'munewsmodule') . ': displaySpecial.html.twig'
                 ],
                 'help' => [
-                    $this->__('Example', 'munewsmodule') . ': <em>displaySpecial.html.twig</em>',
+                    $this->__('Example', 'munewsmodule') . ': <code>displaySpecial.html.twig</code>',
                     $this->__('Needs to be located in the "External/YourEntity/" directory.', 'munewsmodule')
                 ]
             ])
