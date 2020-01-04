@@ -321,7 +321,7 @@ abstract class AbstractMessageController extends AbstractController
         if ($message->supportsHookSubscribers()) {
             $hookHelper = $this->get('mu_news_module.hook_helper');
         
-            // Call form aware display hooks
+            // call form aware display hooks
             $formHook = $hookHelper->callFormDisplayHooks($form, $message, FormAwareCategory::TYPE_DELETE);
         }
         
@@ -578,7 +578,9 @@ abstract class AbstractMessageController extends AbstractController
             'commandName' => $commandName
         ];
         
-        return new PlainResponse($this->get('twig')->render('@MUNewsModule/Message/inlineRedirectHandler.html.twig', $templateParameters));
+        return new PlainResponse(
+            $this->get('twig')->render('@MUNewsModule/Message/inlineRedirectHandler.html.twig', $templateParameters)
+        );
     }
     
 }

@@ -11,8 +11,8 @@
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div class="munewsmodule-message munewsmodule-display">
         <div class="zikula-bootstrap-tab-container">
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active" role="presentation">
                     <a id="fieldsTab" href="#tabFields" title="{{ __('Fields') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
                 </li>
                 <li role="presentation">
@@ -36,7 +36,6 @@
                 </li>
             </ul>
         </div>
-        
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="tabFields" aria-labelledby="fieldsTab">
                 {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
@@ -158,21 +157,19 @@
                     
                 </dl>
             </div>
-        
-        {{ block('related_items') }}
-        {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
-            {{ include('@MUNewsModule/Helper/includeAttributesDisplay.html.twig', {obj: message, tabs: true}) }}
-        {% endif %}
-        {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
-            {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message, tabs: true}) }}
-        {% endif %}
-        {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message, tabs: true}) }}
-        
-        {{ block('display_hooks') }}
-        {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
-        <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
-            {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
-        </div>
+            {{ block('related_items') }}
+            {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                {{ include('@MUNewsModule/Helper/includeAttributesDisplay.html.twig', {obj: message, tabs: true}) }}
+            {% endif %}
+            {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message, tabs: true}) }}
+            {% endif %}
+            {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message, tabs: true}) }}
+            {{ block('display_hooks') }}
+            {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+                {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+            </div>
         </div>
     </div>
 {% endblock %}
