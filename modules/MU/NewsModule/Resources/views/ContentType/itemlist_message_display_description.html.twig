@@ -8,6 +8,6 @@
         <dd><a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
         </dd>
     {% else %}
-        <dt>{{ __('No entries found.') }}</dt>
+        <dt>{{ __('No messages found.') }}</dt>
     {% endfor %}
 </dl>
