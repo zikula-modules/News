@@ -101,8 +101,8 @@
                     <dt>{{ __('Display on index') }}</dt>
                     <dd>{% set itemId = message.getKey() %}
                     <a id="toggleDisplayOnIndex{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId|e('html_attr') }}">
-                        <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.')|e('html_attr') }}"></i>
-                        <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.')|e('html_attr') }}"></i>
+                        <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId|e('html_attr') }}" title="{{ __('This setting is enabled. Click here to disable it.')|e('html_attr') }}"></i>
+                        <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId|e('html_attr') }}" title="{{ __('This setting is disabled. Click here to enable it.')|e('html_attr') }}"></i>
                     </a>
                     <noscript><div id="noscriptDisplayOnIndex{{ itemId|e('html_attr') }}">
                         {% if message.displayOnIndex %}
