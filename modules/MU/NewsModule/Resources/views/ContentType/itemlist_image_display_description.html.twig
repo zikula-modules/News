@@ -6,6 +6,6 @@
             <dd>{{ image.caption|striptags|truncate(200, true, '…') }}</dd>
         {% endif %}
     {% else %}
-        <dt>{{ __('No entries found.') }}</dt>
+        <dt>{{ __('No images found.') }}</dt>
     {% endfor %}
 </dl>

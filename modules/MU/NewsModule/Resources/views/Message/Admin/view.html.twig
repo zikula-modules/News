@@ -41,20 +41,20 @@
                     <th id="hItemActionsStart" scope="col" class=" z-w02">{{ __('Actions') }}</th>
                     {% if routeArea == 'admin' %}
                     <th id="hWorkflowState" scope="col" class="text-left">
-                        <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
+                        <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'})|e('html_attr') }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
                     </th>
                     {% endif %}
                     <th id="hTitle" scope="col" class="text-left">
-                        <a href="{{ sort.title.url }}" title="{{ __f('Sort by %s', {'%s': 'title'}) }}" class="{{ sort.title.class }}">{{ __('Title') }}</a>
+                        <a href="{{ sort.title.url }}" title="{{ __f('Sort by %s', {'%s': 'title'})|e('html_attr') }}" class="{{ sort.title.class }}">{{ __('Title') }}</a>
                     </th>
                     <th id="hImageUpload1" scope="col" class="text-left">
-                        <a href="{{ sort.imageUpload1.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 1'}) }}" class="{{ sort.imageUpload1.class }}">{{ __('Image upload 1') }}</a>
+                        <a href="{{ sort.imageUpload1.url }}" title="{{ __f('Sort by %s', {'%s': 'image upload 1'})|e('html_attr') }}" class="{{ sort.imageUpload1.class }}">{{ __('Image upload 1') }}</a>
                     </th>
                     <th id="hAmountOfViews" scope="col" class="text-right unsorted">
                         {{ __('Amount of views') }}
                     </th>
                     <th id="hDisplayOnIndex" scope="col" class="text-center">
-                        <a href="{{ sort.displayOnIndex.url }}" title="{{ __f('Sort by %s', {'%s': 'display on index'}) }}" class="{{ sort.displayOnIndex.class }}">{{ __('Display on index') }}</a>
+                        <a href="{{ sort.displayOnIndex.url }}" title="{{ __f('Sort by %s', {'%s': 'display on index'})|e('html_attr') }}" class="{{ sort.displayOnIndex.class }}">{{ __('Display on index') }}</a>
                     </th>
                     <th id="hMessageLanguage" scope="col" class="text-left unsorted">
                         {{ __('Message language') }}
@@ -103,15 +103,15 @@
                     </td>
                     <td headers="hDisplayOnIndex" class="text-center">
                         {% set itemId = message.getKey() %}
-                        <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
-                            <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                            <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                        <a id="toggleDisplayOnIndex{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.')|e('html_attr') }}"></i>
+                            <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.')|e('html_attr') }}"></i>
                         </a>
-                        <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
+                        <noscript><div id="noscriptDisplayOnIndex{{ itemId|e('html_attr') }}">
                             {% if message.displayOnIndex %}
-                                <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                                <i class="fa fa-check text-success" title="{{ __('Yes')|e('html_attr') }}"></i>
                             {% else %}
-                                <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                                <i class="fa fa-times text-danger" title="{{ __('No')|e('html_attr') }}"></i>
                             {% endif %}
                         </div></noscript>
                     </td>
@@ -120,15 +120,15 @@
                     </td>
                     <td headers="hNoEndDate" class="text-center">
                         {% set itemId = message.getKey() %}
-                        <a id="toggleNoEndDate{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="noEndDate" data-item-id="{{ itemId }}">
-                            <i class="fa fa-check text-success{% if not message.noEndDate %} hidden{% endif %}" id="yesNoEndDate{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                            <i class="fa fa-times text-danger{% if message.noEndDate %} hidden{% endif %}" id="noNoEndDate{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                        <a id="toggleNoEndDate{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="noEndDate" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fa fa-check text-success{% if not message.noEndDate %} hidden{% endif %}" id="yesNoEndDate{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.')|e('html_attr') }}"></i>
+                            <i class="fa fa-times text-danger{% if message.noEndDate %} hidden{% endif %}" id="noNoEndDate{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.')|e('html_attr') }}"></i>
                         </a>
-                        <noscript><div id="noscriptNoEndDate{{ itemId }}">
+                        <noscript><div id="noscriptNoEndDate{{ itemId|e('html_attr') }}">
                             {% if message.noEndDate %}
-                                <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                                <i class="fa fa-check text-success" title="{{ __('Yes')|e('html_attr') }}"></i>
                             {% else %}
-                                <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                                <i class="fa fa-times text-danger" title="{{ __('No')|e('html_attr') }}"></i>
                             {% endif %}
                         </div></noscript>
                     </td>
@@ -159,16 +159,16 @@
                     <div class="col-sm-6">
                         <select id="mUNewsModuleAction" name="action" class="form-control input-sm">
                             <option value="">{{ __('Choose action') }}</option>
-                            <option value="approve" title="{{ __('Update content and approve for immediate publishing.') }}">{{ __('Approve') }}</option>
-                            <option value="unpublish" title="{{ __('Hide content temporarily.') }}">{{ __('Unpublish') }}</option>
-                            <option value="publish" title="{{ __('Make content available again.') }}">{{ __('Publish') }}</option>
-                            <option value="archive" title="{{ __('Move content into the archive.') }}">{{ __('Archive') }}</option>
-                            <option value="unarchive" title="{{ __('Move content out of the archive.') }}">{{ __('Unarchive') }}</option>
-                            <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                            <option value="approve" title="{{ __('Update content and approve for immediate publishing.')|e('html_attr') }}">{{ __('Approve') }}</option>
+                            <option value="publish" title="{{ __('Make content available again.')|e('html_attr') }}">{{ __('Publish') }}</option>
+                            <option value="unpublish" title="{{ __('Hide content temporarily.')|e('html_attr') }}">{{ __('Unpublish') }}</option>
+                            <option value="archive" title="{{ __('Move content into the archive.')|e('html_attr') }}">{{ __('Archive') }}</option>
+                            <option value="unarchive" title="{{ __('Move content out of the archive.')|e('html_attr') }}">{{ __('Unarchive') }}</option>
+                            <option value="delete" title="{{ __('Delete content permanently.')|e('html_attr') }}">{{ __('Delete') }}</option>
                         </select>
                     </div>
                     <div class="col-sm-3">
-                        <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                        <input type="submit" value="{{ __('Submit')|e('html_attr') }}" class="btn btn-default btn-sm" />
                     </div>
                 </fieldset>
             </div>

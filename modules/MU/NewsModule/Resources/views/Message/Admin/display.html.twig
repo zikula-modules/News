@@ -13,26 +13,26 @@
         <div class="zikula-bootstrap-tab-container">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active" role="presentation">
-                    <a id="fieldsTab" href="#tabFields" title="{{ __('Fields') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
+                    <a id="fieldsTab" href="#tabFields" title="{{ __('Fields')|e('html_attr') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
                 </li>
                 <li role="presentation">
-                    <a id="relationsTab" href="#tabRelations" title="{{ __('Related data') }}" role="tab" data-toggle="tab">{{ __('Related data') }}</a>
+                    <a id="relationsTab" href="#tabRelations" title="{{ __('Related data')|e('html_attr') }}" role="tab" data-toggle="tab">{{ __('Related data') }}</a>
                 </li>
                 {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
                     <li role="presentation">
-                        <a id="attributesTab" href="#tabAttributes" title="{{ __('Attributes') }}" role="tab" data-toggle="tab">{{ __('Attributes') }}</a>
+                        <a id="attributesTab" href="#tabAttributes" title="{{ __('Attributes')|e('html_attr') }}" role="tab" data-toggle="tab">{{ __('Attributes') }}</a>
                     </li>
                 {% endif %}
                 {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
                     <li role="presentation">
-                        <a id="categoriesTab" href="#tabCategories" title="{{ __('Categories') }}" role="tab" data-toggle="tab">{{ __('Categories') }}</a>
+                        <a id="categoriesTab" href="#tabCategories" title="{{ __('Categories')|e('html_attr') }}" role="tab" data-toggle="tab">{{ __('Categories') }}</a>
                     </li>
                 {% endif %}
                 <li role="presentation">
                     <a id="standardFieldsTab" href="#tabStandardFields" title="{{ __('Creation and update') }}" role="tab" data-toggle="tab">{{ __('Creation and update') }}</a>
                 </li>
                 <li role="presentation">
-                    <a id="hooksTab" href="#tabHooks" title="{{ __('Hooks') }}" role="tab" data-toggle="tab">{{ __('Hooks') }}</a>
+                    <a id="hooksTab" href="#tabHooks" title="{{ __('Hooks')|e('html_attr') }}" role="tab" data-toggle="tab">{{ __('Hooks') }}</a>
                 </li>
             </ul>
         </div>
@@ -86,7 +86,7 @@
                         <dt>{{ __('Approver') }}</dt>
                         <dd>{% if message.approver|default and message.approver.getUid() > 0 %}
                         {% if not isQuickView %}
-                            {{ message.approver.uid|profileLinkByUserId }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.uid|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}<a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', {'%userName%': message.approver.uname}) }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
+                            {{ message.approver.uid|profileLinkByUserId }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.uid|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}{% set linkTitle = __f('Send private message to %userName%', {'%userName%': message.approver.uname}) %}<a href="{{ sendMessageUrl }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-envelope-o"></i></a>{% endif %}{% endif %}
                             <span class="avatar">{{ userAvatar(message.approver.uid, {rating: 'g'}) }}</span>
                         {% else %}
                             {{ message.approver.uname }}
@@ -100,15 +100,15 @@
                     {% endif %}
                     <dt>{{ __('Display on index') }}</dt>
                     <dd>{% set itemId = message.getKey() %}
-                    <a id="toggleDisplayOnIndex{{ itemId }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId }}">
-                        <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
-                        <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                    <a id="toggleDisplayOnIndex{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle hidden" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId|e('html_attr') }}">
+                        <i class="fa fa-check text-success{% if not message.displayOnIndex %} hidden{% endif %}" id="yesDisplayOnIndex{{ itemId }}" title="{{ __('This setting is enabled. Click here to disable it.')|e('html_attr') }}"></i>
+                        <i class="fa fa-times text-danger{% if message.displayOnIndex %} hidden{% endif %}" id="noDisplayOnIndex{{ itemId }}" title="{{ __('This setting is disabled. Click here to enable it.')|e('html_attr') }}"></i>
                     </a>
-                    <noscript><div id="noscriptDisplayOnIndex{{ itemId }}">
+                    <noscript><div id="noscriptDisplayOnIndex{{ itemId|e('html_attr') }}">
                         {% if message.displayOnIndex %}
-                            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                            <i class="fa fa-check text-success" title="{{ __('Yes')|e('html_attr') }}"></i>
                         {% else %}
-                            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                            <i class="fa fa-times text-danger" title="{{ __('No')|e('html_attr') }}"></i>
                         {% endif %}
                     </div></noscript>
                     </dd>
