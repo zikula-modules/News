@@ -72,9 +72,8 @@
                     {% set tabTitle = __('General settings') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('Here you can change general News settings.')|nl2br }}</p>
-                    
+                        <p class="alert alert-info">{{ __('Here you can change general News settings.') }}</p>
+                        
                         {{ form_row(form.enableAttribution) }}
                         {{ form_row(form.enableMultiLanguage) }}
                         {{ form_row(form.showAuthor) }}
@@ -85,9 +84,8 @@
                     {% set tabTitle = __('Category settings') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('This section allows you to specify category-related options.')|nl2br }}</p>
-                    
+                        <p class="alert alert-info">{{ __('This section allows you to specify category-related options.') }}</p>
+                        
                         {{ form_row(form.enableCategorization) }}
                     </fieldset>
                 </div>
@@ -95,8 +93,6 @@
                     {% set tabTitle = __('Display setting') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                    
                         {{ form_row(form.defaultMessageSorting) }}
                         {{ form_row(form.defaultMessageSortingBackend) }}
                         {{ form_row(form.sortingDirection) }}
@@ -109,9 +105,8 @@
                     {% set tabTitle = __('Upload settings') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('Here you can customise the picture upload behaviour.')|nl2br }}</p>
-                    
+                        <p class="alert alert-info">{{ __('Here you can customise the picture upload behaviour.') }}</p>
+                        
                         {{ form_row(form.enablePictureUpload) }}
                         {{ form_row(form.imageFloatOnViewPage) }}
                         {{ form_row(form.imageFloatOnDisplayPage) }}
@@ -122,9 +117,8 @@
                     {% set tabTitle = __('List views') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
-                    
+                        <p class="alert alert-info">{{ __('Here you can configure parameters for list views.') }}</p>
+                        
                         {{ form_row(form.messageEntriesPerPage) }}
                         {{ form_row(form.linkOwnMessagesOnAccountPage) }}
                         {{ form_row(form.showOnlyOwnEntries) }}
@@ -224,9 +218,8 @@
                     {% set tabTitle = __('Moderation') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('Here you can define moderation-related settings.')|nl2br }}</p>
-                    
+                        <p class="alert alert-info">{{ __('Here you can define moderation-related settings.') }}</p>
+                        
                         {{ form_row(form.moderationGroupForMessages) }}
                         {{ form_row(form.allowModerationSpecificCreatorForMessage) }}
                         {{ form_row(form.allowModerationSpecificCreationDateForMessage) }}
@@ -236,9 +229,8 @@
                     {% set tabTitle = __('Integration') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
-                        <p class="alert alert-info">{{ __('These options allow you to configure integration aspects.')|nl2br }}</p>
-                    
+                        <p class="alert alert-info">{{ __('These options allow you to configure integration aspects.') }}</p>
+                        
                         {{ form_row(form.enabledFinderTypes) }}
                     </fieldset>
                 </div>
@@ -250,9 +242,9 @@
                         <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
                 
                         <h4>{{ __('Messages') }}</h4>
-                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_standard'}) }}" title="{{ __('Edit workflow for messages') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit messages workflow') }}</a>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_standard'}) }}" title="{{ __('Edit workflow for messages')|e('html_attr') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit messages workflow') }}</a>
                         <h4>{{ __('Images') }}</h4>
-                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_none'}) }}" title="{{ __('Edit workflow for images') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit images workflow') }}</a>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'munewsmodule_none'}) }}" title="{{ __('Edit workflow for images')|e('html_attr') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit images workflow') }}</a>
                     </fieldset>
                 </div>
             </div>

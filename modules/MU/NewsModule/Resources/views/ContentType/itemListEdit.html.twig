@@ -17,7 +17,7 @@
 <script>
     (function($) {
     	$('#mUNewsModuleTemplate').change(function() {
-    	    $('#customTemplateArea').toggleClass('hidden', $(this).val() != 'custom');
+    	    $('#customTemplateArea').toggleClass('hidden', 'custom' != $(this).val());
 	    }).trigger('change');
     })(jQuery)
 </script>
