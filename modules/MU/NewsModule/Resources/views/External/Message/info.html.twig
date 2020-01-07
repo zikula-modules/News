@@ -1,4 +1,4 @@
-{# Purpose of this template: Display item information for previewing from other modules #}
+{# purpose of this template: Display item information for previewing from other modules #}
 <dl id="message{{ message.getKey() }}">
 <dt>{{ message|munewsmodule_formattedTitle|notifyFilters('news.filter_hooks.messages.filter')|safeHtml }}</dt>
 <dd>{% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
