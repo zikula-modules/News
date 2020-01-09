@@ -358,7 +358,7 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('startDate', DateTimeType::class, [
             'label' => $this->__('Start date') . ':',
             'attr' => [
-                'class' => ' validate-daterange-message',
+                'class' => ' validate-daterange-entity-message',
                 'title' => $this->__('Enter the start date of the message.')
             ],
             'required' => false,
@@ -380,7 +380,7 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('endDate', DateTimeType::class, [
             'label' => $this->__('End date') . ':',
             'attr' => [
-                'class' => ' validate-daterange-message',
+                'class' => ' validate-daterange-entity-message',
                 'title' => $this->__('Enter the end date of the message.')
             ],
             'required' => false,

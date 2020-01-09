@@ -188,24 +188,10 @@ abstract class AbstractNotificationHelper
             return true;
         }
     
-        $request = $this->requestStack->getCurrentRequest();
-        $session = null !== $request && $request->hasSession() ? $request->getSession() : null;
-    
-        if (null === $this->kernel->getModule('ZikulaMailerModule')) {
-            if (null !== $session) {
-                $session->getFlashBag()->add(
-                    'error',
-                    $this->__(
-                        'Could not inform other persons about your amendments, because the Mailer module is not available - please contact an administrator about that!'
-                    )
-                );
-            }
-    
-            return false;
-        }
-    
         $result = $this->sendMails();
     
+        $request = $this->requestStack->getCurrentRequest();
+        $session = null !== $request && $request->hasSession() ? $request->getSession() : null;
         if (null !== $session) {
             $session->remove($this->name . 'AdditionalNotificationRemarks');
         }
