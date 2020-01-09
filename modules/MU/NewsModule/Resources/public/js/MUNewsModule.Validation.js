@@ -106,15 +106,15 @@ function mUNewsExecuteCustomValidationConstraints(objectType, currentEntityId) {
             jQuery(this).get(0).setCustomValidity('');
         }
     });
-    jQuery('.validate-daterange-message').each(function () {
+    jQuery('.validate-daterange-entity-message').each(function () {
         if ('undefined' != typeof jQuery(this).attr('id')) {
             if ('DIV' == jQuery(this).prop('tagName')) {
                 if (!mUNewsValidateDateRangeMessage()) {
-                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity(Translator.__('The start must be before the end.'));
-                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity(Translator.__('The start must be before the end.'));
+                    jQuery('#' + jQuery(this).attr('id') + '_date').get(0).setCustomValidity(Translator.__('The start must be before the end.'));
+                    jQuery('#' + jQuery(this).attr('id') + '_time').setCustomValidity(Translator.__('The start must be before the end.'));
                 } else {
-                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity('');
-                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity('');
+                    jQuery('#' + jQuery(this).attr('id') + '_date').get(0).setCustomValidity('');
+                    jQuery('#' + jQuery(this).attr('id') + '_time').setCustomValidity('');
                 }
             } else {
                 if (!mUNewsValidateDateRangeMessage()) {
