@@ -69,7 +69,7 @@ abstract class AbstractItemBlockType extends AbstractType
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('objectType', HiddenType::class, [
-            'label' => $this->__('Object type', 'munewsmodule') . ':',
+            'label' => $this->__('Object type:', 'munewsmodule'),
             'empty_data' => 'message'
         ]);
     }
@@ -94,7 +94,7 @@ abstract class AbstractItemBlockType extends AbstractType
             'expanded' => false,
             'choices' => $choices,
             'required' => true,
-            'label' => $this->__('Entry to display', 'munewsmodule') . ':'
+            'label' => $this->__('Entry to display:', 'munewsmodule')
         ]);
     }
 
@@ -105,7 +105,7 @@ abstract class AbstractItemBlockType extends AbstractType
     {
         $builder
             ->add('customTemplate', TextType::class, [
-                'label' => $this->__('Custom template', 'munewsmodule') . ':',
+                'label' => $this->__('Custom template:', 'munewsmodule'),
                 'required' => false,
                 'attr' => [
                     'maxlength' => 80,

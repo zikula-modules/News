@@ -109,7 +109,7 @@ abstract class AbstractImageFinderType extends AbstractType
     public function addPasteAsField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('pasteAs', ChoiceType::class, [
-            'label' => $this->__('Paste as') . ':',
+            'label' => $this->__('Paste as:'),
             'empty_data' => 1,
             'choices' => [
                 $this->__('ID of image') => 3,
@@ -130,7 +130,7 @@ abstract class AbstractImageFinderType extends AbstractType
     {
         $builder
             ->add('sort', ChoiceType::class, [
-                'label' => $this->__('Sort by') . ':',
+                'label' => $this->__('Sort by:'),
                 'empty_data' => '',
                 'choices' => [
                     $this->__('The file') => 'theFile',
@@ -145,7 +145,7 @@ abstract class AbstractImageFinderType extends AbstractType
                 'expanded' => false
             ])
             ->add('sortdir', ChoiceType::class, [
-                'label' => $this->__('Sort direction') . ':',
+                'label' => $this->__('Sort direction:'),
                 'empty_data' => 'asc',
                 'choices' => [
                     $this->__('Ascending') => 'asc',
@@ -163,7 +163,7 @@ abstract class AbstractImageFinderType extends AbstractType
     public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('num', ChoiceType::class, [
-            'label' => $this->__('Page size') . ':',
+            'label' => $this->__('Page size:'),
             'empty_data' => 20,
             'attr' => [
                 'class' => 'text-right'
@@ -188,7 +188,7 @@ abstract class AbstractImageFinderType extends AbstractType
     public function addSearchField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('q', SearchType::class, [
-            'label' => $this->__('Search for') . ':',
+            'label' => $this->__('Search for:'),
             'required' => false,
             'attr' => [
                 'maxlength' => 255
