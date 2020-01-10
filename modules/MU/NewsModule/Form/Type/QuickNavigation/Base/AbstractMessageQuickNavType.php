@@ -36,7 +36,6 @@ use MU\NewsModule\Helper\ListEntriesHelper;
 abstract class AbstractMessageQuickNavType extends AbstractType
 {
     use TranslatorTrait;
-
     /**
      * @var ListEntriesHelper
      */

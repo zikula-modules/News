@@ -68,7 +68,7 @@ abstract class AbstractItemType extends AbstractContentFormType
     public function addObjectTypeField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('objectType', HiddenType::class, [
-            'label' => $this->__('Object type', 'munewsmodule') . ':',
+            'label' => $this->__('Object type:', 'munewsmodule'),
             'empty_data' => 'message'
         ]);
     }
@@ -93,7 +93,7 @@ abstract class AbstractItemType extends AbstractContentFormType
             'expanded' => false,
             'choices' => $choices,
             'required' => true,
-            'label' => $this->__('Entry to display', 'munewsmodule') . ':'
+            'label' => $this->__('Entry to display:', 'munewsmodule')
         ]);
     }
 
@@ -103,7 +103,7 @@ abstract class AbstractItemType extends AbstractContentFormType
     public function addDisplayModeField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('displayMode', ChoiceType::class, [
-            'label' => $this->__('Display mode', 'munewsmodule') . ':',
+            'label' => $this->__('Display mode:', 'munewsmodule'),
             'label_attr' => [
                 'class' => 'radio-inline'
             ],
@@ -124,7 +124,7 @@ abstract class AbstractItemType extends AbstractContentFormType
     {
         $builder
             ->add('customTemplate', TextType::class, [
-                'label' => $this->__('Custom template', 'munewsmodule') . ':',
+                'label' => $this->__('Custom template:', 'munewsmodule'),
                 'required' => false,
                 'attr' => [
                     'maxlength' => 80,

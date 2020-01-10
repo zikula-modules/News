@@ -98,7 +98,7 @@ abstract class AbstractMessageFinderType extends AbstractType
     {
         $entityCategoryClass = 'MU\NewsModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity';
         $builder->add('categories', CategoriesType::class, [
-            'label' => $this->__('Categories') . ':',
+            'label' => $this->__('Categories:'),
             'empty_data' => [],
             'attr' => [
                 'class' => 'category-selector',
@@ -146,7 +146,7 @@ abstract class AbstractMessageFinderType extends AbstractType
     public function addPasteAsField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('pasteAs', ChoiceType::class, [
-            'label' => $this->__('Paste as') . ':',
+            'label' => $this->__('Paste as:'),
             'empty_data' => 1,
             'choices' => [
                 $this->__('Relative link to the message') => 1,
@@ -169,7 +169,7 @@ abstract class AbstractMessageFinderType extends AbstractType
     {
         $builder
             ->add('sort', ChoiceType::class, [
-                'label' => $this->__('Sort by') . ':',
+                'label' => $this->__('Sort by:'),
                 'empty_data' => '',
                 'choices' => [
                     $this->__('Workflow state') => 'workflowState',
@@ -185,7 +185,7 @@ abstract class AbstractMessageFinderType extends AbstractType
                 'expanded' => false
             ])
             ->add('sortdir', ChoiceType::class, [
-                'label' => $this->__('Sort direction') . ':',
+                'label' => $this->__('Sort direction:'),
                 'empty_data' => 'asc',
                 'choices' => [
                     $this->__('Ascending') => 'asc',
@@ -203,7 +203,7 @@ abstract class AbstractMessageFinderType extends AbstractType
     public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('num', ChoiceType::class, [
-            'label' => $this->__('Page size') . ':',
+            'label' => $this->__('Page size:'),
             'empty_data' => 20,
             'attr' => [
                 'class' => 'text-right'
@@ -228,7 +228,7 @@ abstract class AbstractMessageFinderType extends AbstractType
     public function addSearchField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('q', SearchType::class, [
-            'label' => $this->__('Search for') . ':',
+            'label' => $this->__('Search for:'),
             'required' => false,
             'attr' => [
                 'maxlength' => 255
