@@ -61,6 +61,11 @@ abstract class AbstractItemListType extends AbstractContentFormType
         $this->addFilterField($builder, $options);
     }
 
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Adds an object type field.
      */
