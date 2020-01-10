@@ -76,7 +76,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
             'munewsmodule'
         );
         $builder->add('objectType', ChoiceType::class, [
-            'label' => $this->__('Object type', 'munewsmodule') . ':',
+            'label' => $this->__('Object type:', 'munewsmodule'),
             'empty_data' => 'message',
             'attr' => [
                 'title' => $helpText
@@ -163,7 +163,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
     public function addSortingField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('sorting', ChoiceType::class, [
-            'label' => $this->__('Sorting', 'munewsmodule') . ':',
+            'label' => $this->__('Sorting:', 'munewsmodule'),
             'label_attr' => [
                 'class' => 'radio-inline'
             ],
@@ -188,7 +188,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
             . ' ' . $this->__('Only digits are allowed.', 'munewsmodule')
         ;
         $builder->add('amount', IntegerType::class, [
-            'label' => $this->__('Amount', 'munewsmodule') . ':',
+            'label' => $this->__('Amount:', 'munewsmodule'),
             'attr' => [
                 'maxlength' => 2,
                 'title' => $helpText
@@ -204,7 +204,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
     public function addTemplateFields(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('template', ChoiceType::class, [
-            'label' => $this->__('Template', 'munewsmodule') . ':',
+            'label' => $this->__('Template:', 'munewsmodule'),
             'empty_data' => 'itemlist_display.html.twig',
             'choices' => [
                 $this->__('Only item titles', 'munewsmodule') => 'itemlist_display.html.twig',
@@ -216,7 +216,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
         ]);
         $exampleTemplate = 'itemlist_[objectType]_display.html.twig';
         $builder->add('customTemplate', TextType::class, [
-            'label' => $this->__('Custom template', 'munewsmodule') . ':',
+            'label' => $this->__('Custom template:', 'munewsmodule'),
             'required' => false,
             'attr' => [
                 'maxlength' => 80,
@@ -232,7 +232,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
     public function addFilterField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('filter', TextType::class, [
-            'label' => $this->__('Filter (expert option)', 'munewsmodule') . ':',
+            'label' => $this->__('Filter (expert option):', 'munewsmodule'),
             'required' => false,
             'attr' => [
                 'maxlength' => 255,
