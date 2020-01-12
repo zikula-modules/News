@@ -653,12 +653,12 @@ abstract class AbstractUploadHelper
     {
         $result = true;
     
-        $result &= $this->checkAndCreateUploadFolder('message', 'imageUpload1', 'gif, jpeg, jpg, png');
-        $result &= $this->checkAndCreateUploadFolder('message', 'imageUpload2', 'gif, jpeg, jpg, png');
-        $result &= $this->checkAndCreateUploadFolder('message', 'imageUpload3', 'gif, jpeg, jpg, png');
-        $result &= $this->checkAndCreateUploadFolder('message', 'imageUpload4', 'gif, jpeg, jpg, png');
+        $result = $result && $this->checkAndCreateUploadFolder('message', 'imageUpload1', 'gif, jpeg, jpg, png');
+        $result = $result && $this->checkAndCreateUploadFolder('message', 'imageUpload2', 'gif, jpeg, jpg, png');
+        $result = $result && $this->checkAndCreateUploadFolder('message', 'imageUpload3', 'gif, jpeg, jpg, png');
+        $result = $result && $this->checkAndCreateUploadFolder('message', 'imageUpload4', 'gif, jpeg, jpg, png');
     
-        $result &= $this->checkAndCreateUploadFolder('image', 'theFile', 'gif, jpeg, jpg, png');
+        $result = $result && $this->checkAndCreateUploadFolder('image', 'theFile', 'gif, jpeg, jpg, png');
     
         return $result;
     }
@@ -694,10 +694,12 @@ abstract class AbstractUploadHelper
                         )
                     );
                 }
-                $this->logger->error(
-                    '{app}: The upload directory {directory} does not exist and could not be created.',
-                    ['app' => 'MUNewsModule', 'directory' => $uploadPath]
-                );
+                if (null !== $this->logger) {
+                    $this->logger->error(
+                        '{app}: The upload directory {directory} does not exist and could not be created.',
+                        ['app' => 'MUNewsModule', 'directory' => $uploadPath]
+                    );
+                }
     
                 return false;
             }
