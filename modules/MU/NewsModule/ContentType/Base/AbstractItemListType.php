@@ -232,9 +232,9 @@ abstract class AbstractItemListType extends AbstractContentType
         $this->modelHelper = $modelHelper;
     }
     
-    public function setModulePermissionHelper(PermissionHelper $permissionHelper)
+    public function setModulePermissionHelper(PermissionHelper $modulePermissionHelper)
     {
-        $this->modulePermissionHelper = $permissionHelper;
+        $this->modulePermissionHelper = $modulePermissionHelper;
     }
     
     public function setEntityFactory(EntityFactory $entityFactory)
