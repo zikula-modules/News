@@ -37,6 +37,7 @@ abstract class AbstractConfigType extends AbstractType
 {
     use TranslatorTrait;
 
+
     /**
      * @var ListEntriesHelper
      */
@@ -76,7 +77,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('enableAttribution', CheckboxType::class, [
-            'label' => $this->__('Enable attribution') . ':',
+            'label' => $this->__('Enable attribution:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('The enable attribution option')
@@ -85,7 +86,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('enableMultiLanguage', CheckboxType::class, [
-            'label' => $this->__('Enable multi language') . ':',
+            'label' => $this->__('Enable multi language:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('The enable multi language option')
@@ -94,7 +95,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('showAuthor', CheckboxType::class, [
-            'label' => $this->__('Show author') . ':',
+            'label' => $this->__('Show author:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('This setting allows to enable the display of author informations within an article.')
@@ -108,7 +109,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('showDate', CheckboxType::class, [
-            'label' => $this->__('Show date') . ':',
+            'label' => $this->__('Show date:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('This setting allows to enable the display of date informations within an article.')
@@ -129,7 +130,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('enableCategorization', CheckboxType::class, [
-            'label' => $this->__('Enable categorization') . ':',
+            'label' => $this->__('Enable categorization:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('The enable categorization option')
@@ -152,7 +153,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('defaultMessageSorting', ChoiceType::class, [
-            'label' => $this->__('Default message sorting') . ':',
+            'label' => $this->__('Default message sorting:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('You can customise several display-oriented aspects of the articles.')
@@ -178,7 +179,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('defaultMessageSortingBackend', ChoiceType::class, [
-            'label' => $this->__('Default message sorting backend') . ':',
+            'label' => $this->__('Default message sorting backend:'),
             'empty_data' => 'articledatetime',
             'attr' => [
                 'class' => '',
@@ -199,7 +200,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('sortingDirection', ChoiceType::class, [
-            'label' => $this->__('Sorting direction') . ':',
+            'label' => $this->__('Sorting direction:'),
             'empty_data' => 'descending',
             'attr' => [
                 'class' => '',
@@ -213,7 +214,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('enableMoreMessagesInCategory', CheckboxType::class, [
-            'label' => $this->__('Enable more messages in category') . ':',
+            'label' => $this->__('Enable more messages in category:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('The enable more messages in category option')
@@ -222,7 +223,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('amountOfMoreArticlesInCategory', IntegerType::class, [
-            'label' => $this->__('Amount of more articles in category') . ':',
+            'label' => $this->__('Amount of more articles in category:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('When displaying an article, a number of additional article titles in the same category can be shown. To show the additional article titles for every article set the value above to a number larger than 0. When the value is set to 0, the number of additional article titles can be set per article by means of the article attribute \"morearticlesincat\". You need to enable \"article attributes\" yourself. When the setting above or the article attribute is set to 0, no titles will be extracted from the database.')
@@ -232,13 +233,13 @@ abstract class AbstractConfigType extends AbstractType
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
-                'title' => $this->__('Enter the amount of more articles in category.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->__('Enter the amount of more articles in category. Only digits are allowed.')
             ],
             'required' => false,
         ]);
         
         $builder->add('displayPdfLink', CheckboxType::class, [
-            'label' => $this->__('Display pdf link') . ':',
+            'label' => $this->__('Display pdf link:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Display a PDF link for the articles in the index page')
@@ -259,7 +260,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('enablePictureUpload', CheckboxType::class, [
-            'label' => $this->__('Enable picture upload') . ':',
+            'label' => $this->__('Enable picture upload:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Allow uploading article pictures')
@@ -280,7 +281,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('imageFloatOnViewPage', ChoiceType::class, [
-            'label' => $this->__('Image float on view page') . ':',
+            'label' => $this->__('Image float on view page:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Image float on the view page')
@@ -306,7 +307,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('imageFloatOnDisplayPage', ChoiceType::class, [
-            'label' => $this->__('Image float on display page') . ':',
+            'label' => $this->__('Image float on display page:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Image float on the article display page')
@@ -325,7 +326,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('maxSize', TextType::class, [
-            'label' => $this->__('Max size') . ':',
+            'label' => $this->__('Max size:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('For example: 4000 (byte), 100k (kilobyte) and 1M (megabyte).')
@@ -348,7 +349,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('messageEntriesPerPage', IntegerType::class, [
-            'label' => $this->__('Message entries per page') . ':',
+            'label' => $this->__('Message entries per page:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The amount of messages shown per page')
@@ -358,13 +359,13 @@ abstract class AbstractConfigType extends AbstractType
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
-                'title' => $this->__('Enter the message entries per page.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->__('Enter the message entries per page. Only digits are allowed.')
             ],
             'required' => true,
         ]);
         
         $builder->add('linkOwnMessagesOnAccountPage', CheckboxType::class, [
-            'label' => $this->__('Link own messages on account page') . ':',
+            'label' => $this->__('Link own messages on account page:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to add a link to messages of the current user on his account page')
@@ -378,7 +379,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('showOnlyOwnEntries', CheckboxType::class, [
-            'label' => $this->__('Show only own entries') . ':',
+            'label' => $this->__('Show only own entries:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether only own entries should be shown on view pages by default or not')
@@ -392,7 +393,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('filterDataByLocale', CheckboxType::class, [
-            'label' => $this->__('Filter data by locale') . ':',
+            'label' => $this->__('Filter data by locale:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether automatically filter data in the frontend based on the current locale or not')
@@ -413,7 +414,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('enableShrinkingForMessageImageUpload1', CheckboxType::class, [
-            'label' => $this->__('Enable shrinking for message image upload 1') . ':',
+            'label' => $this->__('Enable shrinking for message image upload 1:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
@@ -427,7 +428,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkWidthMessageImageUpload1', IntegerType::class, [
-            'label' => $this->__('Shrink width message image upload 1') . ':',
+            'label' => $this->__('Shrink width message image upload 1:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image width in pixels.')
@@ -444,7 +445,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkHeightMessageImageUpload1', IntegerType::class, [
-            'label' => $this->__('Shrink height message image upload 1') . ':',
+            'label' => $this->__('Shrink height message image upload 1:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image height in pixels.')
@@ -468,7 +469,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('thumbnailModeMessageImageUpload1', ChoiceType::class, [
-            'label' => $this->__('Thumbnail mode message image upload 1') . ':',
+            'label' => $this->__('Thumbnail mode message image upload 1:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail mode (inset or outbound).')
@@ -487,7 +488,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload1View', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 1 view') . ':',
+            'label' => $this->__('Thumbnail width message image upload 1 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on view pages in pixels.')
@@ -504,7 +505,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload1View', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 1 view') . ':',
+            'label' => $this->__('Thumbnail height message image upload 1 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on view pages in pixels.')
@@ -521,7 +522,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload1Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 1 display') . ':',
+            'label' => $this->__('Thumbnail width message image upload 1 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on display pages in pixels.')
@@ -538,7 +539,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload1Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 1 display') . ':',
+            'label' => $this->__('Thumbnail height message image upload 1 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on display pages in pixels.')
@@ -555,7 +556,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload1Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 1 edit') . ':',
+            'label' => $this->__('Thumbnail width message image upload 1 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on edit pages in pixels.')
@@ -572,7 +573,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload1Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 1 edit') . ':',
+            'label' => $this->__('Thumbnail height message image upload 1 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on edit pages in pixels.')
@@ -589,7 +590,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('enableShrinkingForMessageImageUpload2', CheckboxType::class, [
-            'label' => $this->__('Enable shrinking for message image upload 2') . ':',
+            'label' => $this->__('Enable shrinking for message image upload 2:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
@@ -603,7 +604,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkWidthMessageImageUpload2', IntegerType::class, [
-            'label' => $this->__('Shrink width message image upload 2') . ':',
+            'label' => $this->__('Shrink width message image upload 2:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image width in pixels.')
@@ -620,7 +621,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkHeightMessageImageUpload2', IntegerType::class, [
-            'label' => $this->__('Shrink height message image upload 2') . ':',
+            'label' => $this->__('Shrink height message image upload 2:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image height in pixels.')
@@ -644,7 +645,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('thumbnailModeMessageImageUpload2', ChoiceType::class, [
-            'label' => $this->__('Thumbnail mode message image upload 2') . ':',
+            'label' => $this->__('Thumbnail mode message image upload 2:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail mode (inset or outbound).')
@@ -663,7 +664,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload2View', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 2 view') . ':',
+            'label' => $this->__('Thumbnail width message image upload 2 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on view pages in pixels.')
@@ -680,7 +681,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload2View', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 2 view') . ':',
+            'label' => $this->__('Thumbnail height message image upload 2 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on view pages in pixels.')
@@ -697,7 +698,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload2Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 2 display') . ':',
+            'label' => $this->__('Thumbnail width message image upload 2 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on display pages in pixels.')
@@ -714,7 +715,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload2Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 2 display') . ':',
+            'label' => $this->__('Thumbnail height message image upload 2 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on display pages in pixels.')
@@ -731,7 +732,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload2Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 2 edit') . ':',
+            'label' => $this->__('Thumbnail width message image upload 2 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on edit pages in pixels.')
@@ -748,7 +749,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload2Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 2 edit') . ':',
+            'label' => $this->__('Thumbnail height message image upload 2 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on edit pages in pixels.')
@@ -765,7 +766,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('enableShrinkingForMessageImageUpload3', CheckboxType::class, [
-            'label' => $this->__('Enable shrinking for message image upload 3') . ':',
+            'label' => $this->__('Enable shrinking for message image upload 3:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
@@ -779,7 +780,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkWidthMessageImageUpload3', IntegerType::class, [
-            'label' => $this->__('Shrink width message image upload 3') . ':',
+            'label' => $this->__('Shrink width message image upload 3:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image width in pixels.')
@@ -796,7 +797,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkHeightMessageImageUpload3', IntegerType::class, [
-            'label' => $this->__('Shrink height message image upload 3') . ':',
+            'label' => $this->__('Shrink height message image upload 3:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image height in pixels.')
@@ -820,7 +821,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('thumbnailModeMessageImageUpload3', ChoiceType::class, [
-            'label' => $this->__('Thumbnail mode message image upload 3') . ':',
+            'label' => $this->__('Thumbnail mode message image upload 3:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail mode (inset or outbound).')
@@ -839,7 +840,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload3View', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 3 view') . ':',
+            'label' => $this->__('Thumbnail width message image upload 3 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on view pages in pixels.')
@@ -856,7 +857,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload3View', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 3 view') . ':',
+            'label' => $this->__('Thumbnail height message image upload 3 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on view pages in pixels.')
@@ -873,7 +874,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload3Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 3 display') . ':',
+            'label' => $this->__('Thumbnail width message image upload 3 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on display pages in pixels.')
@@ -890,7 +891,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload3Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 3 display') . ':',
+            'label' => $this->__('Thumbnail height message image upload 3 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on display pages in pixels.')
@@ -907,7 +908,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload3Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 3 edit') . ':',
+            'label' => $this->__('Thumbnail width message image upload 3 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on edit pages in pixels.')
@@ -924,7 +925,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload3Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 3 edit') . ':',
+            'label' => $this->__('Thumbnail height message image upload 3 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on edit pages in pixels.')
@@ -941,7 +942,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('enableShrinkingForMessageImageUpload4', CheckboxType::class, [
-            'label' => $this->__('Enable shrinking for message image upload 4') . ':',
+            'label' => $this->__('Enable shrinking for message image upload 4:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
@@ -955,7 +956,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkWidthMessageImageUpload4', IntegerType::class, [
-            'label' => $this->__('Shrink width message image upload 4') . ':',
+            'label' => $this->__('Shrink width message image upload 4:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image width in pixels.')
@@ -972,7 +973,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkHeightMessageImageUpload4', IntegerType::class, [
-            'label' => $this->__('Shrink height message image upload 4') . ':',
+            'label' => $this->__('Shrink height message image upload 4:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image height in pixels.')
@@ -996,7 +997,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('thumbnailModeMessageImageUpload4', ChoiceType::class, [
-            'label' => $this->__('Thumbnail mode message image upload 4') . ':',
+            'label' => $this->__('Thumbnail mode message image upload 4:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail mode (inset or outbound).')
@@ -1015,7 +1016,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload4View', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 4 view') . ':',
+            'label' => $this->__('Thumbnail width message image upload 4 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on view pages in pixels.')
@@ -1032,7 +1033,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload4View', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 4 view') . ':',
+            'label' => $this->__('Thumbnail height message image upload 4 view:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on view pages in pixels.')
@@ -1049,7 +1050,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload4Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 4 display') . ':',
+            'label' => $this->__('Thumbnail width message image upload 4 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on display pages in pixels.')
@@ -1066,7 +1067,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload4Display', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 4 display') . ':',
+            'label' => $this->__('Thumbnail height message image upload 4 display:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on display pages in pixels.')
@@ -1083,7 +1084,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailWidthMessageImageUpload4Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail width message image upload 4 edit') . ':',
+            'label' => $this->__('Thumbnail width message image upload 4 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail width on edit pages in pixels.')
@@ -1100,7 +1101,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('thumbnailHeightMessageImageUpload4Edit', IntegerType::class, [
-            'label' => $this->__('Thumbnail height message image upload 4 edit') . ':',
+            'label' => $this->__('Thumbnail height message image upload 4 edit:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail height on edit pages in pixels.')
@@ -1117,7 +1118,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('enableShrinkingForImageTheFile', CheckboxType::class, [
-            'label' => $this->__('Enable shrinking for image the file') . ':',
+            'label' => $this->__('Enable shrinking for image the file:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
@@ -1131,7 +1132,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkWidthImageTheFile', IntegerType::class, [
-            'label' => $this->__('Shrink width image the file') . ':',
+            'label' => $this->__('Shrink width image the file:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image width in pixels.')
@@ -1148,7 +1149,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('shrinkHeightImageTheFile', IntegerType::class, [
-            'label' => $this->__('Shrink height image the file') . ':',
+            'label' => $this->__('Shrink height image the file:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('The maximum image height in pixels.')
@@ -1172,7 +1173,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('thumbnailModeImageTheFile', ChoiceType::class, [
-            'label' => $this->__('Thumbnail mode image the file') . ':',
+            'label' => $this->__('Thumbnail mode image the file:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Thumbnail mode (inset or outbound).')
@@ -1198,7 +1199,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('moderationGroupForMessages', EntityType::class, [
-            'label' => $this->__('Moderation group for messages') . ':',
+            'label' => $this->__('Moderation group for messages:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Used to determine moderator user accounts for sending email notifications.')
@@ -1217,7 +1218,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('allowModerationSpecificCreatorForMessage', CheckboxType::class, [
-            'label' => $this->__('Allow moderation specific creator for message') . ':',
+            'label' => $this->__('Allow moderation specific creator for message:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to allow moderators choosing a user which will be set as creator.')
@@ -1231,7 +1232,7 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         
         $builder->add('allowModerationSpecificCreationDateForMessage', CheckboxType::class, [
-            'label' => $this->__('Allow moderation specific creation date for message') . ':',
+            'label' => $this->__('Allow moderation specific creation date for message:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Whether to allow moderators choosing a custom creation date.')
@@ -1259,7 +1260,7 @@ abstract class AbstractConfigType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('enabledFinderTypes', MultiListType::class, [
-            'label' => $this->__('Enabled finder types') . ':',
+            'label' => $this->__('Enabled finder types:'),
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
@@ -1316,10 +1317,9 @@ abstract class AbstractConfigType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                // define class for underlying data
-                'data_class' => AppSettings::class,
-            ]);
+        $resolver->setDefaults([
+            // define class for underlying data
+            'data_class' => AppSettings::class,
+        ]);
     }
 }

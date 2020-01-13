@@ -54,6 +54,7 @@ use MU\NewsModule\Traits\WorkflowFormFieldsTrait;
 abstract class AbstractMessageType extends AbstractType
 {
     use TranslatorTrait;
+
     use ModerationFormFieldsTrait;
     use WorkflowFormFieldsTrait;
 
@@ -153,7 +154,7 @@ abstract class AbstractMessageType extends AbstractType
     {
         
         $builder->add('title', TextType::class, [
-            'label' => $this->__('Title') . ':',
+            'label' => $this->__('Title:'),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
@@ -164,8 +165,8 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('startText', TextareaType::class, [
-            'label' => $this->__('Start text') . ':',
-            'help' => $this->__f('Note: this value must not exceed %amount% characters.', ['%amount%' => 10000]),
+            'label' => $this->__('Start text:'),
+            'help' => $this->__f('Note: this value must not exceed %length% characters.', ['%length%' => 10000]),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 10000,
@@ -176,8 +177,8 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('mainText', TextareaType::class, [
-            'label' => $this->__('Main text') . ':',
-            'help' => $this->__f('Note: this value must not exceed %amount% characters.', ['%amount%' => 20000]),
+            'label' => $this->__('Main text:'),
+            'help' => $this->__f('Note: this value must not exceed %length% characters.', ['%length%' => 20000]),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 20000,
@@ -191,7 +192,7 @@ abstract class AbstractMessageType extends AbstractType
             $helpText = '';
         }
         $builder->add('slug', TextType::class, [
-            'label' => $this->__('Permalink') . ':',
+            'label' => $this->__('Permalink:'),
             'required' => 'create' !== $options['mode'],
             'empty_data' => '',
             'attr' => [
@@ -222,7 +223,7 @@ abstract class AbstractMessageType extends AbstractType
         }
         
         $builder->add('imageUpload1', UploadType::class, [
-            'label' => $this->__('Image upload 1') . ':',
+            'label' => $this->__('Image upload 1:'),
             'attr' => [
                 'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload1')),
                 'class' => ' validate-upload',
@@ -236,18 +237,18 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('amountOfViews', IntegerType::class, [
-            'label' => $this->__('Amount of views') . ':',
+            'label' => $this->__('Amount of views:'),
             'empty_data' => 0,
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
-                'title' => $this->__('Enter the amount of views of the message.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->__('Enter the amount of views of the message. Only digits are allowed.')
             ],
             'required' => false,
         ]);
         
         $builder->add('author', TextType::class, [
-            'label' => $this->__('Author') . ':',
+            'label' => $this->__('Author:'),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 100,
@@ -258,7 +259,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('approver', UserLiveSearchType::class, [
-            'label' => $this->__('Approver') . ':',
+            'label' => $this->__('Approver:'),
             'empty_data' => null,
             'attr' => [
                 'maxlength' => 11,
@@ -270,8 +271,8 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('notes', TextareaType::class, [
-            'label' => $this->__('Notes') . ':',
-            'help' => $this->__f('Note: this value must not exceed %amount% characters.', ['%amount%' => 2000]),
+            'label' => $this->__('Notes:'),
+            'help' => $this->__f('Note: this value must not exceed %length% characters.', ['%length%' => 2000]),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 2000,
@@ -282,7 +283,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('displayOnIndex', CheckboxType::class, [
-            'label' => $this->__('Display on index') . ':',
+            'label' => $this->__('Display on index:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('display on index ?')
@@ -291,7 +292,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('messageLanguage', LocaleType::class, [
-            'label' => $this->__('Message language') . ':',
+            'label' => $this->__('Message language:'),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 7,
@@ -305,7 +306,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('allowComments', CheckboxType::class, [
-            'label' => $this->__('Allow comments') . ':',
+            'label' => $this->__('Allow comments:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('allow comments ?')
@@ -314,7 +315,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('imageUpload2', UploadType::class, [
-            'label' => $this->__('Image upload 2') . ':',
+            'label' => $this->__('Image upload 2:'),
             'attr' => [
                 'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload2')),
                 'class' => ' validate-upload',
@@ -328,7 +329,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('imageUpload3', UploadType::class, [
-            'label' => $this->__('Image upload 3') . ':',
+            'label' => $this->__('Image upload 3:'),
             'attr' => [
                 'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload3')),
                 'class' => ' validate-upload',
@@ -342,7 +343,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('imageUpload4', UploadType::class, [
-            'label' => $this->__('Image upload 4') . ':',
+            'label' => $this->__('Image upload 4:'),
             'attr' => [
                 'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload4')),
                 'class' => ' validate-upload',
@@ -356,7 +357,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('startDate', DateTimeType::class, [
-            'label' => $this->__('Start date') . ':',
+            'label' => $this->__('Start date:'),
             'attr' => [
                 'class' => ' validate-daterange-entity-message',
                 'title' => $this->__('Enter the start date of the message.')
@@ -369,7 +370,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('noEndDate', CheckboxType::class, [
-            'label' => $this->__('No end date') . ':',
+            'label' => $this->__('No end date:'),
             'attr' => [
                 'class' => '',
                 'title' => $this->__('no end date ?')
@@ -378,7 +379,7 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('endDate', DateTimeType::class, [
-            'label' => $this->__('End date') . ':',
+            'label' => $this->__('End date:'),
             'attr' => [
                 'class' => ' validate-daterange-entity-message',
                 'title' => $this->__('Enter the end date of the message.')
@@ -391,12 +392,12 @@ abstract class AbstractMessageType extends AbstractType
         ]);
         
         $builder->add('weight', IntegerType::class, [
-            'label' => $this->__('Weight') . ':',
+            'label' => $this->__('Weight:'),
             'empty_data' => 1,
             'attr' => [
                 'maxlength' => 2,
                 'class' => '',
-                'title' => $this->__('Enter the weight of the message.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->__('Enter the weight of the message. Only digits are allowed.')
             ],
             'required' => false,
         ]);
@@ -410,7 +411,7 @@ abstract class AbstractMessageType extends AbstractType
         foreach ($options['attributes'] as $attributeName => $attributeValue) {
             $builder->add('attributes' . $attributeName, TextType::class, [
                 'mapped' => false,
-                'label' => $this->__(/** @Ignore */ $attributeName),
+                'label' => $this->__(/** @Ignore */$attributeName),
                 'attr' => [
                     'maxlength' => 255
                 ],
@@ -426,7 +427,7 @@ abstract class AbstractMessageType extends AbstractType
     public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('categories', CategoriesType::class, [
-            'label' => $this->__('Categories') . ':',
+            'label' => $this->__('Categories:'),
             'empty_data' => [],
             'attr' => [
                 'class' => 'category-selector'
