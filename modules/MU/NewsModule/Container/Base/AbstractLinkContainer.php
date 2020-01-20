@@ -22,7 +22,7 @@ use MU\NewsModule\Helper\ControllerHelper;
 use MU\NewsModule\Helper\PermissionHelper;
 
 /**
- * This is the link container service implementation class.
+ * This is the link container service base class.
  */
 abstract class AbstractLinkContainer implements LinkContainerInterface
 {
@@ -81,7 +81,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
 
         $permLevel = LinkContainerInterface::TYPE_ADMIN === $type ? ACCESS_ADMIN : ACCESS_READ;
 
-        // Create an array of links to return
+        // create an array of links to return
         $links = [];
 
         if (LinkContainerInterface::TYPE_ACCOUNT === $type) {
@@ -92,10 +92,10 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             if (true === $this->variableApi->get('MUNewsModule', 'linkOwnMessagesOnAccountPage', true)) {
                 $objectType = 'message';
                 if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_READ)) {
-                    $routeArgs = ['own' => 1];
+                    $routeParameters = ['own' => 1];
                     $routeName = 'munewsmodule_' . strtolower($objectType) . '_view';
                     $links[] = [
-                        'url' => $this->router->generate($routeName, $routeArgs),
+                        'url' => $this->router->generate($routeName, $routeParameters),
                         'text' => $this->__('My messages', 'munewsmodule'),
                         'icon' => 'list-alt'
                     ];
