@@ -211,7 +211,6 @@ class AbstractMenuBuilder
                 $menu->addChild($this->__('Messages list', 'munewsmodule'), [
                     'route' => $routePrefix . $routeArea . 'view'
                 ])
-                    ->setLinkAttribute('title', $title)
                     ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-default' : '')
                     ->setAttribute('icon', 'fa fa-reply')
                 ;
