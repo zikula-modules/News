@@ -141,92 +141,80 @@ class AbstractMenuBuilder
             ;
             
             if ('admin' === $routeArea) {
-                $title = $this->__('Preview', 'munewsmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
                 $previewRouteParameters['preview'] = 1;
-                $menu->addChild($title, [
+                $menu->addChild($this->__('Preview', 'munewsmodule'), [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $previewRouteParameters
-                ]);
-                $menu[$title]->setLinkAttribute('target', '_blank');
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->__('Open preview page', 'munewsmodule')
-                );
-                if ('display' === $context) {
-                    $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
-                }
-                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
+                ])
+                    ->setLinkAttribute('target', '_blank')
+                    ->setLinkAttribute(
+                        'title',
+                        $this->__('Open preview page', 'munewsmodule')
+                    )
+                    ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-default' : '')
+                    ->setAttribute('icon', 'fa fa-search-plus')
+                ;
             }
             if ('display' !== $context) {
-                $title = $this->__('Details', 'munewsmodule');
-                $menu->addChild($title, [
+                $entityTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
+                $menu->addChild($this->__('Details', 'munewsmodule'), [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ]);
-                $entityTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    str_replace('"', '', $entityTitle)
-                );
-                if ('display' === $context) {
-                    $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
-                }
-                $menu[$title]->setAttribute('icon', 'fa fa-eye');
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        str_replace('"', '', $entityTitle)
+                    )
+                    ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-default' : '')
+                    ->setAttribute('icon', 'fa fa-eye')
+                ;
             }
             if ($this->permissionHelper->mayEdit($entity)) {
-                $title = $this->__('Edit', 'munewsmodule');
-                $menu->addChild($title, [
+                $menu->addChild($this->__('Edit', 'munewsmodule'), [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs(true)
-                ]);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->__('Edit this message', 'munewsmodule')
-                );
-                if ('display' === $context) {
-                    $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
-                }
-                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
-                $title = $this->__('Reuse', 'munewsmodule');
-                $menu->addChild($title, [
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        $this->__('Edit this message', 'munewsmodule')
+                    )
+                    ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-default' : '')
+                    ->setAttribute('icon', 'fa fa-pencil-square-o')
+                ;
+                $menu->addChild($this->__('Reuse', 'munewsmodule'), [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
-                ]);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->__('Reuse for new message', 'munewsmodule')
-                );
-                if ('display' === $context) {
-                    $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
-                }
-                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        $this->__('Reuse for new message', 'munewsmodule')
+                    )
+                    ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-default' : '')
+                    ->setAttribute('icon', 'fa fa-files-o')
+                ;
             }
             if ($this->permissionHelper->mayDelete($entity)) {
-                $title = $this->__('Delete', 'munewsmodule');
-                $menu->addChild($title, [
+                $menu->addChild($this->__('Delete', 'munewsmodule'), [
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
-                ]);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->__('Delete this message', 'munewsmodule')
-                );
-                if ('display' === $context) {
-                    $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-danger');
-                }
-                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        $this->__('Delete this message', 'munewsmodule')
+                    )
+                    ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-danger' : '')
+                    ->setAttribute('icon', 'fa fa-trash-o')
+                ;
             }
             if ('display' === $context) {
-                $title = $this->__('Messages list', 'munewsmodule');
-                $menu->addChild($title, [
+                $menu->addChild($this->__('Messages list', 'munewsmodule'), [
                     'route' => $routePrefix . $routeArea . 'view'
-                ]);
-                $menu[$title]->setLinkAttribute('title', $title);
-                if ('display' === $context) {
-                    $menu[$title]->setLinkAttribute('class', 'btn btn-sm btn-default');
-                }
-                $menu[$title]->setAttribute('icon', 'fa fa-reply');
+                ])
+                    ->setLinkAttribute('title', $title)
+                    ->setLinkAttribute('class', 'display' === $context ? 'btn btn-sm btn-default' : '')
+                    ->setAttribute('icon', 'fa fa-reply')
+                ;
             }
         }
         if ($entity instanceof ImageEntity) {
@@ -276,12 +264,11 @@ class AbstractMenuBuilder
                 $canBeCreated = $this->modelHelper->canBeCreated($objectType);
                 if ($canBeCreated) {
                     if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_COMMENT)) {
-                        $title = $this->__('Create message', 'munewsmodule');
-                        $menu->addChild($title, [
+                        $menu->addChild($this->__('Create message', 'munewsmodule'), [
                             'route' => $routePrefix . $routeArea . 'edit'
-                        ]);
-                        $menu[$title]->setLinkAttribute('title', $title);
-                        $menu[$title]->setAttribute('icon', 'fa fa-plus');
+                        ])
+                            ->setAttribute('icon', 'fa fa-plus')
+                        ;
                     }
                 }
                 $routeParameters = $query->all();
@@ -292,34 +279,40 @@ class AbstractMenuBuilder
                 }
                 if (1 === $query->getInt('all')) {
                     unset($routeParameters['all']);
-                    $title = $this->__('Back to paginated view', 'munewsmodule');
+                    $menu->addChild($this->__('Back to paginated view', 'munewsmodule'), [
+                        'route' => $routePrefix . $routeArea . 'view',
+                        'routeParameters' => $routeParameters
+                    ])
+                        ->setAttribute('icon', 'fa fa-table')
+                    ;
                 } else {
                     $routeParameters['all'] = 1;
-                    $title = $this->__('Show all entries', 'munewsmodule');
+                    $menu->addChild($this->__('Show all entries', 'munewsmodule'), [
+                        'route' => $routePrefix . $routeArea . 'view',
+                        'routeParameters' => $routeParameters
+                    ])
+                        ->setAttribute('icon', 'fa fa-table')
+                    ;
                 }
-                $menu->addChild($title, [
-                    'route' => $routePrefix . $routeArea . 'view',
-                    'routeParameters' => $routeParameters
-                ]);
-                $menu[$title]->setLinkAttribute('title', $title);
-                $menu[$title]->setAttribute('icon', 'fa fa-table');
                 if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_COMMENT)) {
                     $routeParameters = $query->all();
                     if (1 === $query->getInt('own')) {
                         unset($routeParameters['own']);
-                        $title = $this->__('Show also entries from other users', 'munewsmodule');
-                        $icon = 'users';
+                        $menu->addChild($this->__('Show also entries from other users', 'munewsmodule'), [
+                            'route' => $routePrefix . $routeArea . 'view',
+                            'routeParameters' => $routeParameters
+                        ])
+                            ->setAttribute('icon', 'fa fa-users')
+                        ;
                     } else {
                         $routeParameters['own'] = 1;
-                        $title = $this->__('Show only own entries', 'munewsmodule');
-                        $icon = 'user';
+                        $menu->addChild($this->__('Show only own entries', 'munewsmodule'), [
+                            'route' => $routePrefix . $routeArea . 'view',
+                            'routeParameters' => $routeParameters
+                        ])
+                            ->setAttribute('icon', 'fa fa-user')
+                        ;
                     }
-                    $menu->addChild($title, [
-                        'route' => $routePrefix . $routeArea . 'view',
-                        'routeParameters' => $routeParameters
-                    ]);
-                    $menu[$title]->setLinkAttribute('title', $title);
-                    $menu[$title]->setAttribute('icon', 'fa fa-' . $icon);
                 }
             }
         }
