@@ -162,7 +162,11 @@ abstract class AbstractMessageController extends AbstractController
             $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
         }
         if (null === $message) {
-            throw new NotFoundHttpException($this->__('No such message found.'));
+            throw new NotFoundHttpException(
+                $this->__(
+                    'No such message found.'
+                )
+            );
         }
         
         $objectType = 'message';
@@ -274,7 +278,11 @@ abstract class AbstractMessageController extends AbstractController
             $message = $this->get('mu_news_module.entity_factory')->getRepository('message')->selectBySlug($slug);
         }
         if (null === $message) {
-            throw new NotFoundHttpException($this->__('No such message found.'));
+            throw new NotFoundHttpException(
+                $this->__(
+                    'No such message found.'
+                )
+            );
         }
         
         $objectType = 'message';
@@ -311,7 +319,12 @@ abstract class AbstractMessageController extends AbstractController
             break;
         }
         if (!$deleteAllowed) {
-            $this->addFlash('error', $this->__('Error! It is not allowed to delete this message.'));
+            $this->addFlash(
+                'error',
+                $this->__(
+                    'Error! It is not allowed to delete this message.'
+                )
+            );
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', $logArgs);
         
             return $this->redirectToRoute($redirectRoute);
@@ -339,7 +352,12 @@ abstract class AbstractMessageController extends AbstractController
                         // execute the workflow action
                         $success = $workflowHelper->executeAction($message, $deleteActionId);
                         if ($success) {
-                            $this->addFlash('status', $this->__('Done! Item deleted.'));
+                            $this->addFlash(
+                                'status',
+                                $this->__(
+                                    'Done! Message deleted.'
+                                )
+                            );
                             $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
                         }
                         
@@ -357,7 +375,12 @@ abstract class AbstractMessageController extends AbstractController
                     // execute the workflow action
                     $success = $workflowHelper->executeAction($message, $deleteActionId);
                     if ($success) {
-                        $this->addFlash('status', $this->__('Done! Item deleted.'));
+                        $this->addFlash(
+                            'status',
+                            $this->__(
+                                'Done! Message deleted.'
+                            )
+                        );
                         $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
                     }
                     
@@ -491,7 +514,12 @@ abstract class AbstractMessageController extends AbstractController
             }
         
             if ('delete' === $action) {
-                $this->addFlash('status', $this->__('Done! Item deleted.'));
+                $this->addFlash(
+                    'status',
+                    $this->__(
+                        'Done! Message deleted.'
+                    )
+                );
                 $logger->notice(
                     '{app}: User {user} deleted the {entity} with id {id}.',
                     [
@@ -502,7 +530,12 @@ abstract class AbstractMessageController extends AbstractController
                     ]
                 );
             } else {
-                $this->addFlash('status', $this->__('Done! Item updated.'));
+                $this->addFlash(
+                    'status',
+                    $this->__(
+                        'Done! Message updated.'
+                    )
+                );
                 $logger->notice(
                     '{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.',
                     [

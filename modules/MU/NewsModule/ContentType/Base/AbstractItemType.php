@@ -46,7 +46,7 @@ abstract class AbstractItemType extends AbstractContentType
     
     public function getDescription()
     {
-        return $this->translator->__('Display or link a single news object.', 'munewsmodule');
+        return $this->translator->__('Display or link a single news object.');
     }
     
     public function getDefaultData()
