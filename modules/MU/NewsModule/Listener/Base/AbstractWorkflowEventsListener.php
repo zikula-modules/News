@@ -104,7 +104,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         $permissionLevel = ACCESS_READ;
         $transitionName = $event->getTransition()->getName();
         
-        $hasApproval = in_array($objectType, ['message']);
+        $hasApproval = in_array($objectType, ['message'], true);
         
         switch ($transitionName) {
             case 'defer':
@@ -288,12 +288,12 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         }
         
         $workflowShortName = 'none';
-        if (in_array($entity->get_objectType(), ['message'])) {
+        if (in_array($entity->get_objectType(), ['message'], true)) {
             $workflowShortName = 'standard';
-        } elseif (in_array($entity->get_objectType(), [''])) {
+        } elseif (in_array($entity->get_objectType(), [''], true)) {
             $workflowShortName = 'enterprise';
         }
-        if ('none' != $workflowShortName) {
+        if ('none' !== $workflowShortName) {
             $this->sendNotifications($entity, $event->getTransition()->getName(), $workflowShortName);
         }
     }

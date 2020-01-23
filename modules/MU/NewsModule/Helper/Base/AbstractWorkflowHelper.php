@@ -356,7 +356,6 @@ abstract class AbstractWorkflowHelper
     {
         $amounts = [];
     
-    
         // check if objects are waiting for approval
         $state = 'waiting';
         $objectType = 'message';

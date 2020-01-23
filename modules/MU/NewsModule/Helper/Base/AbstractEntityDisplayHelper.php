@@ -80,9 +80,12 @@ abstract class AbstractEntityDisplayHelper
      */
     protected function formatMessage(MessageEntity $entity)
     {
-        return $this->translator->__f('%title%', [
-            '%title%' => $entity->getTitle()
-        ]);
+        return $this->translator->__f(
+            '%title%',
+            [
+                '%title%' => $entity->getTitle()
+            ]
+        );
     }
     
     /**
@@ -94,10 +97,13 @@ abstract class AbstractEntityDisplayHelper
      */
     protected function formatImage(ImageEntity $entity)
     {
-        return $this->translator->__f('Image %sortNumber% %caption%', [
-            '%sortNumber%' => $entity->getSortNumber(),
-            '%caption%' => $entity->getCaption()
-        ]);
+        return $this->translator->__f(
+            'Image %sortNumber% %caption%',
+            [
+                '%sortNumber%' => $entity->getSortNumber(),
+                '%caption%' => $entity->getCaption()
+            ]
+        );
     }
     
     /**

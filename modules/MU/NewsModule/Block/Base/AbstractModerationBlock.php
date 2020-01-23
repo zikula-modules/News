@@ -44,7 +44,7 @@ abstract class AbstractModerationBlock extends AbstractBlockHandler
     
         // set a block title
         if (empty($properties['title'])) {
-            $properties['title'] = $this->__('Moderation', 'munewsmodule');
+            $properties['title'] = $this->__('Moderation');
         }
     
         return $this->renderView($template, ['moderationObjects' => $amounts]);
