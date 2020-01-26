@@ -1,4 +1,4 @@
-# TRANSLATION INSTRUCTIONS
+# Translation instructions
 
 To create a new translation follow the steps below:
 
@@ -16,7 +16,7 @@ Note you can even include custom views in `app/Resources/MUNewsModule/views/` an
 
 `php -dmemory_limit=2G bin/console translation:extract en --bundle=MUNewsModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=vendor --exclude-dir=NewsletterPlugin --exclude-dir=TaggedObjectMeta --dir=./modules/MU/NewsModule --dir=./app/Resources/MUNewsModule`
 
-For questions and other remarks visit our homepage https://homepages-mit-zikula.de.
+For questions and other remarks visit our homepage <https://homepages-mit-zikula.de>.
 
 Michael Ueberschaer (info@homepages-mit-zikula.de)
-https://homepages-mit-zikula.de
+<https://homepages-mit-zikula.de>
