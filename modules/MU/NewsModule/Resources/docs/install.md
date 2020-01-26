@@ -1,4 +1,4 @@
-# INSTALLATION INSTRUCTIONS
+# Installation instructions
 
 0. If the application's root folder does not contain a `vendor/` folder yet, run `composer install --no-dev` to install dependencies.
 1. Copy MUNewsModule into your `modules` directory. Afterwards you should have a folder named `modules/MU/NewsModule/Resources`.
@@ -7,7 +7,7 @@
    Note this step is optional as the install process can create these folders, too.
 4. Make the directory `/web/uploads/MUNewsModule/` writable including all sub folders.
 
-For questions and other remarks visit our homepage https://homepages-mit-zikula.de.
+For questions and other remarks visit our homepage <https://homepages-mit-zikula.de>.
 
 Michael Ueberschaer (info@homepages-mit-zikula.de)
-https://homepages-mit-zikula.de
+<https://homepages-mit-zikula.de>
