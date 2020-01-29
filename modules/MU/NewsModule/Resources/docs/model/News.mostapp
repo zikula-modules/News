@@ -29,7 +29,6 @@ application "News" targets ZK20 {
         Helper/ControllerHelper.php,
         Helper/FeatureActivationHelper.php,
         Helper/ListEntriesHelper.php,
-        Helper/NotificationHelper.php,
         Helper/UploadHelper.php,
         NewsModuleInstaller.php,
         Resources/public/css/custom.css,

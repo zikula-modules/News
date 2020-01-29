@@ -20,20 +20,5 @@ use MU\NewsModule\Helper\Base\AbstractNotificationHelper;
  */
 class NotificationHelper extends AbstractNotificationHelper
 {
-    /**
-     * Sends a mail to either an item's creator or a group of moderators.
-     *
-     * @return boolean
-     */
-    public function process($args)
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        $zkFunc = $request->attributes->get('_zkFunc');
-
-        if ('display' !== $zkFunc) {
-            return parent::process($args);
-        }
-
-        return '';
-    }
+    // feel free to extend the notification helper here
 }
