@@ -72,7 +72,7 @@ application "News" targets ZK20 {
                     displayType DISPLAY
                     length 20000
                 },
-                integer "amountOfViews" {
+                integer "amountOfViews" counter {
                     defaultValue "0"
                     mandatory false
                     displayType VIEW_DISPLAY
