@@ -265,7 +265,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
         // check against session to see if user was already counted
         $request = $this->requestStack->getCurrentRequest();
         $doCount = true;
-        if (null !== $request && $request->hasSession && $session = $request->getSession()) {
+        if (null !== $request && $request->hasSession() && $session = $request->getSession()) {
             if ($session->has('MUNewsModuleRead' . $objectType . $entityId)) {
                 $doCount = false;
             } else {
