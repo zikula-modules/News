@@ -172,6 +172,7 @@
             </div>
         </div>
     </div>
+    {{ munewsmodule_increaseCounter(message, 'amountOfViews') }}
 {% endblock %}
 {% block related_items %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}

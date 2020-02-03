@@ -13,6 +13,7 @@
 
 namespace MU\NewsModule\Twig\Base;
 
+use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Extension;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -29,6 +30,11 @@ use MU\NewsModule\Helper\WorkflowHelper;
 abstract class AbstractTwigExtension extends Twig_Extension
 {
     use TranslatorTrait;
+    
+    /**
+     * @var Connection
+     */
+    protected $databaseConnection;
     
     /**
      * @var RequestStack
@@ -57,6 +63,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     
     public function __construct(
         TranslatorInterface $translator,
+        Connection $connection,
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
         EntityDisplayHelper $entityDisplayHelper,
@@ -64,6 +71,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
         ListEntriesHelper $listHelper
     ) {
         $this->setTranslator($translator);
+        $this->databaseConnection = $connection;
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
         $this->entityDisplayHelper = $entityDisplayHelper;
@@ -85,6 +93,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('munewsmodule_moderationObjects', [$this, 'getModerationObjects']),
+            new \Twig_SimpleFunction('munewsmodule_increaseCounter', [$this, 'increaseCounter']),
             new \Twig_SimpleFunction('munewsmodule_objectTypeSelector', [$this, 'getObjectTypeSelector']),
             new \Twig_SimpleFunction('munewsmodule_templateSelector', [$this, 'getTemplateSelector'])
         ];
@@ -239,6 +248,41 @@ abstract class AbstractTwigExtension extends Twig_Extension
     public function getModerationObjects()
     {
         return $this->workflowHelper->collectAmountOfModerationItems();
+    }
+    
+    
+    /**
+     * The munewsmodule_increaseCounter function increases a counter field of a specific entity.
+     * It uses Doctrine DBAL to avoid creating a new loggable version, sending workflow notification or executing other unwanted actions.
+     * Example:
+     *     {{ munewsmodule_increaseCounter(message, 'amountOfViews') }}
+     */
+    public function increaseCounter(EntityAccess $entity, $fieldName = '')
+    {
+        $entityId = $entity->getId();
+        $objectType = $entity->get_objectType();
+    
+        // check against session to see if user was already counted
+        $request = $this->requestStack->getCurrentRequest();
+        $doCount = true;
+        if (null !== $request && $request->hasSession && $session = $request->getSession()) {
+            if ($session->has('MUNewsModuleRead' . $objectType . $entityId)) {
+                $doCount = false;
+            } else {
+                $session->set('MUNewsModuleRead' . $objectType . $entityId, 1);
+            }
+        }
+        if (!$doCount) {
+            return;
+        }
+    
+        $counterValue = $entity[$fieldName] + 1;
+    
+        $this->databaseConnection->update(
+            'mu_news_' . mb_strtolower($objectType),
+            [$fieldName => $counterValue],
+            ['id' => $entityId]
+        );
     }
     
     

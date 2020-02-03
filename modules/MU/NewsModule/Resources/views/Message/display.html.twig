@@ -151,6 +151,7 @@
 
         {{ block('display_hooks') }}
     </div>
+    {{ munewsmodule_increaseCounter(message, 'amountOfViews') }}
 {% endblock %}
 {% block display_hooks %}
     {% if message.supportsHookSubscribers() %}
@@ -161,5 +162,4 @@
             {% endfor %}
         {% endif %}
     {% endif %}
-    {{ munewsmodule_setAmount(message, routeArea) }}
 {% endblock %}

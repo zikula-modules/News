@@ -27,7 +27,7 @@ class TwigExtension extends AbstractTwigExtension
      * @var EntityFactory
      */
     private $entityFactory;
-    
+
     /**
      * @var CategoryHelper
      */
@@ -52,7 +52,7 @@ class TwigExtension extends AbstractTwigExtension
     {
         $this->categoryHelper = $categoryHelper;
     }
-    
+
     /**
      * Returns a list of custom Twig functions.
      *
@@ -62,7 +62,6 @@ class TwigExtension extends AbstractTwigExtension
     {
         $functions = parent::getFunctions();
         $functions[] = new \Twig_SimpleFunction('munewsmodule_getRelatedArticles', [$this, 'relatedArticles']);
-        $functions[] = new \Twig_SimpleFunction('munewsmodule_setAmount', [$this, 'setAmount']);
 
         return $functions;
     }
@@ -110,21 +109,5 @@ class TwigExtension extends AbstractTwigExtension
         $query->setMaxResults($amount);
         
         return $repository->retrieveCollectionResult($query, false);
-    }
-    
-    /**
-     * Incrementsamount of views.
-     * 
-     * @param object $message entity in the template
-     * @param string $routeArea backend or not
-     */
-    public function setAmount($message, $routeArea)
-    {
-        if ('admin' === $routeArea) {
-            return;
-        }
-
-        $message->setAmountOfViews($message->getAmountOfViews() + 1);
-        $this->entityFactory->getEntityManager()->flush();
     }
 }
