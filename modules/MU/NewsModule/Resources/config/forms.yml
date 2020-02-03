@@ -72,6 +72,8 @@ services:
         class: MU\NewsModule\Form\Type\Finder\MessageFinderType
         arguments:
             - "@translator.default"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
             - "@mu_news_module.feature_activation_helper"
         tags: ['form.type']
     
