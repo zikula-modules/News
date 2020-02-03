@@ -20,9 +20,12 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 
 /**
@@ -33,15 +36,30 @@ abstract class AbstractImageFinderType extends AbstractType
     use TranslatorTrait;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * @var VariableApiInterface
+     */
+    protected $variableApi;
+
+    /**
      * @var FeatureActivationHelper
      */
     protected $featureActivationHelper;
 
     public function __construct(
-        TranslatorInterface $translator,
+        
+        TranslatorInterface $translator
+        RequestStack $requestStack,
+        VariableApiInterface $variableApi,
         FeatureActivationHelper $featureActivationHelper
     ) {
         $this->setTranslator($translator);
+        $this->requestStack = $requestStack;
+        $this->variableApi = $variableApi;
         $this->featureActivationHelper = $featureActivationHelper;
     }
 
@@ -62,6 +80,9 @@ abstract class AbstractImageFinderType extends AbstractType
             ])
         ;
 
+        if ($this->variableApi->getSystemVar('multilingual')) {
+            $this->addLanguageField($builder, $options);
+        }
         $this->addImageFields($builder, $options);
         $this->addPasteAsField($builder, $options);
         $this->addSortingFields($builder, $options);
@@ -85,6 +106,20 @@ abstract class AbstractImageFinderType extends AbstractType
                 ]
             ])
         ;
+    }
+
+    /**
+     * Adds a language field.
+     */
+    public function addLanguageField(FormBuilderInterface $builder, array $options = [])
+    {
+        $builder->add('language', LocaleType::class, [
+            'label' => $this->__('Language':'),
+            'data' => $this->requestStack->getCurrentRequest()->getLocale(),
+            'empty_data' => null,
+            'multiple' => false,
+            'expanded' => false
+        ]);
     }
 
     /**
