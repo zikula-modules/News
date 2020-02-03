@@ -114,7 +114,7 @@ abstract class AbstractImageFinderType extends AbstractType
     public function addLanguageField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('language', LocaleType::class, [
-            'label' => $this->__('Language':'),
+            'label' => $this->__('Language:'),
             'data' => $this->requestStack->getCurrentRequest()->getLocale(),
             'empty_data' => null,
             'multiple' => false,
