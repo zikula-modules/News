@@ -58,6 +58,7 @@ abstract class AbstractImageRepository extends SortableRepository
             'theFile',
             'caption',
             'sortNumber',
+            'message',
             'createdBy',
             'createdDate',
             'updatedBy',
@@ -644,6 +645,18 @@ abstract class AbstractImageRepository extends SortableRepository
             $useJoins = false;
         }
     
+        if (true !== $useJoins) {
+            $orderByField = $orderBy;
+            if (false !== mb_strpos($orderByField, ' ')) {
+                [$orderByField, $direction] = explode(' ', $orderByField, 2);
+            }
+            if (
+                in_array($orderByField, ['message'], true)
+            ) {
+                $useJoins = true;
+            }
+        }
+    
         if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
         }
@@ -691,6 +704,8 @@ abstract class AbstractImageRepository extends SortableRepository
             return $qb;
         }
     
+        $orderBy = $this->resolveOrderByForRelation($orderBy);
+    
         // add order by clause
         if (false === strpos($orderBy, '.')) {
             $orderBy = 'tbl.' . $orderBy;
@@ -711,6 +726,30 @@ abstract class AbstractImageRepository extends SortableRepository
         $qb->add('orderBy', $orderBy);
     
         return $qb;
+    }
+    
+    /**
+     * Resolves a given order by field to the corresponding relationship expression.
+     *
+     * @param string $orderBy
+     *
+     * @return string
+     */
+    protected function resolveOrderByForRelation($orderBy)
+    {
+        if (false !== mb_strpos($orderBy, ' ')) {
+            [$orderBy, $direction] = explode(' ', $orderBy, 2);
+        } else {
+            $direction = 'ASC';
+        }
+    
+        switch ($orderBy) {
+            case 'message':
+                $orderBy = 'tblMessage.title';
+                break;
+        }
+    
+        return $orderBy . ' ' . $direction;
     }
 
     /**
