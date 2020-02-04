@@ -205,7 +205,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
                 'attr' => [
                     'class' => 'input-sm'
                 ],
-                'choices' =>             [
+                'choices' => [
                     $this->__('Workflow state') => 'workflowState',
                     $this->__('Title') => 'title',
                     $this->__('Image upload 1') => 'imageUpload1',
