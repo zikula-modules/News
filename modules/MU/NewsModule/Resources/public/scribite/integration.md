@@ -1,4 +1,4 @@
-# SCRIBITE INTEGRATION
+# Scribite integration
 
 It is easy to include MUNewsModule in your [Scribite editors](https://github.com/zikula-modules/Scribite/).
 MUNewsModule contains already a popup for selecting messages and other items.
