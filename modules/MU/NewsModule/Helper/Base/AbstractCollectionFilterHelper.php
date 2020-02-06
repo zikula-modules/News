@@ -155,6 +155,7 @@ abstract class AbstractCollectionFilterHelper
     
         $parameters['catId'] = $request->query->get('catId', '');
         $parameters['catIdList'] = $this->categoryHelper->retrieveCategoriesFromRequest('message', 'GET');
+        $parameters['images'] = $request->query->get('images', 0);
         $parameters['workflowState'] = $request->query->get('workflowState', '');
         $parameters['approver'] = $request->query->getInt('approver', 0);
         $parameters['messageLanguage'] = $request->query->get('messageLanguage', '');
@@ -239,6 +240,15 @@ abstract class AbstractCollectionFilterHelper
                 } elseif ('yes' === $v || '1' === $v) {
                     $qb->andWhere('tbl.' . $k . ' = 1');
                 }
+                continue;
+            }
+            if (in_array($k, ['images']) && !empty($v)) {
+                // multi-valued target of outgoing relation (one2many or many2many)
+                $qb->andWhere(
+                    $qb->expr()->isMemberOf(':' . $k, 'tbl.' . $k)
+                )
+                    ->setParameter($k, $v)
+                ;
                 continue;
             }
     
