@@ -14,11 +14,16 @@
 namespace MU\NewsModule\Form\Type\QuickNavigation;
 
 use MU\NewsModule\Form\Type\QuickNavigation\Base\AbstractMessageQuickNavType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Message quick navigation form type implementation class.
  */
 class MessageQuickNavType extends AbstractMessageQuickNavType
 {
-    // feel free to extend the base form type class here
+    public function addOutgoingRelationshipFields(FormBuilderInterface $builder, array $options = [])
+    {
+        $builder->add('images', HiddenType::class);
+    }
 }

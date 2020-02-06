@@ -25,6 +25,7 @@ application "News" targets ZK20 {
         Entity/ImageEntity.php,
         Entity/Repository/MessageRepository.php,
         Form/Handler/Common/EditHandler.php,
+        Form/Type/QuickNavigation/MessageQuickNavType.php,
         Form/Type/MessageType.php,
         Helper/ControllerHelper.php,
         Helper/FeatureActivationHelper.php,
