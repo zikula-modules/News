@@ -5,6 +5,10 @@ services:
         class: MU\NewsModule\Form\Type\QuickNavigation\MessageQuickNavType
         arguments:
             - "@translator.default"
+            - "@request_stack"
+            - "@mu_news_module.entity_factory"
+            - "@mu_news_module.permission_helper"
+            - "@mu_news_module.entity_display_helper"
             - "@mu_news_module.listentries_helper"
             - "@zikula_settings_module.locale_api"
             - "@mu_news_module.feature_activation_helper"

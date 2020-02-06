@@ -27,6 +27,13 @@
                         <div class="col-sm-9">
                 {% endif %}
             {% endif %}
+            {% if imagesFilter is defined and imagesFilter != true %}
+                <div class="hidden">
+            {% endif %}
+                {{ form_row(quickNavForm.images) }}
+            {% if imagesFilter is defined and imagesFilter != true %}
+                </div>
+            {% endif %}
             {% if workflowStateFilter is defined and workflowStateFilter != true %}
                 <div class="hidden">
             {% endif %}
