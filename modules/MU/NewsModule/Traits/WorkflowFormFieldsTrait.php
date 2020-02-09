@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Workflow form fields trait implementation class.
+ * Workflow form fields trait.
  */
 trait WorkflowFormFieldsTrait
 {
