@@ -38,10 +38,12 @@
         </div>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="tabFields" aria-labelledby="fieldsTab">
-                {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
-                <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
-                    {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
-                </div>
+                {% if not isQuickView %}
+                    {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+                    <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+                    </div>
+                {% endif %}
                 <h3>{{ __('Fields') }}</h3>
                 <dl>
                     {% if message.workflowState is not empty and routeArea == 'admin' %}
@@ -166,10 +168,12 @@
             {% endif %}
             {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message, tabs: true}) }}
             {{ block('display_hooks') }}
-            {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
-            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
-                {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
-            </div>
+            {% if not isQuickView %}
+                {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+                <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+                    {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+                </div>
+            {% endif %}
         </div>
     </div>
     {{ munewsmodule_increaseCounter(message, 'amountOfViews') }}
