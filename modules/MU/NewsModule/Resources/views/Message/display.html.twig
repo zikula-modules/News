@@ -5,10 +5,13 @@
 {% block title %}
     {% set templateTitle = message|munewsmodule_formattedTitle|default(__('Message')) %}
     {{ templateTitle|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ message.workflowState|munewsmodule_objectState(false)|lower }})</small>{% endif %}
-    {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
-    <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
-        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
-    </div>
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    {% if not isQuickView %}
+        {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+        <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{{ __('Actions') }}">
+            {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+        </div>
+    {% endif %}
 {% endblock %}
 {% block content %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
