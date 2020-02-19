@@ -1,4 +1,16 @@
 {# purpose of this template: messages view filter form #}
+{% import _self as helper %}
+{% macro renderQuickNavEntry(quickNavForm, fieldName, isVisible) %}
+    {% if attribute(quickNavForm, fieldName) is defined and attribute(quickNavForm, fieldName) is not null %}
+        {% if not isVisible %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(attribute(quickNavForm, fieldName)) }}
+        {% if not isVisible %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
 {% if permissionHelper.mayUseQuickNav('message') %}
     {% form_theme quickNavForm with [
         'bootstrap_3_layout.html.twig'
@@ -12,7 +24,7 @@
         <fieldset>
             <h3>{{ __('Quick navigation') }}</h3>
             {% set categoriesEnabled = featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
-            {% if categoriesEnabled %}
+            {% if categoriesEnabled and quickNavForm.categories is defined and quickNavForm.categories is not null %}
                 {% if categoryFilter is defined and categoryFilter != true %}
                     <div class="hidden">
                 {% else %}
@@ -27,80 +39,30 @@
                         <div class="col-sm-9">
                 {% endif %}
             {% endif %}
-            {% if imagesFilter is defined and imagesFilter != true %}
-                <div class="hidden">
+            {{ helper.renderQuickNavEntry(quickNavForm, 'images', imagesFilter is not defined or imagesFilter == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'workflowState', workflowStateFilter is not defined or workflowStateFilter == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'approver', approverFilter is not defined or approverFilter == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'messageLanguage', messageLanguageFilter is not defined or messageLanguageFilter == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'q', searchFilter is not defined or searchFilter == true) }}
+            {% if quickNavForm.sort is defined and quickNavForm.sort is not null %}
+                {% if sorting is defined and sorting != true %}
+                    <div class="hidden">
+                {% endif %}
+                    {{ form_row(quickNavForm.sort) }}
+                    {% if quickNavForm.sortdir is defined and quickNavForm.sortdir is not null %}
+                        {{ form_row(quickNavForm.sortdir) }}
+                    {% endif %}
+                {% if sorting is defined and sorting != true %}
+                    </div>
+                {% endif %}
             {% endif %}
-                {{ form_row(quickNavForm.images) }}
-            {% if imagesFilter is defined and imagesFilter != true %}
-                </div>
-            {% endif %}
-            {% if workflowStateFilter is defined and workflowStateFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.workflowState) }}
-            {% if workflowStateFilter is defined and workflowStateFilter != true %}
-                </div>
-            {% endif %}
-            {% if approverFilter is defined and approverFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.approver) }}
-            {% if approverFilter is defined and approverFilter != true %}
-                </div>
-            {% endif %}
-            {% if messageLanguageFilter is defined and messageLanguageFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.messageLanguage) }}
-            {% if messageLanguageFilter is defined and messageLanguageFilter != true %}
-                </div>
-            {% endif %}
-            {% if searchFilter is defined and searchFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.q) }}
-            {% if searchFilter is defined and searchFilter != true %}
-                </div>
-            {% endif %}
-            {% if sorting is defined and sorting != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.sort) }}
-                {{ form_row(quickNavForm.sortdir) }}
-            {% if sorting is defined and sorting != true %}
-                </div>
-            {% endif %}
-            {% if pageSizeSelector is defined and pageSizeSelector != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.num) }}
-            {% if pageSizeSelector is defined and pageSizeSelector != true %}
-                </div>
-            {% endif %}
-            {% if displayOnIndexFilter is defined and displayOnIndexFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.displayOnIndex) }}
-            {% if displayOnIndexFilter is defined and displayOnIndexFilter != true %}
-                </div>
-            {% endif %}
-            {% if allowCommentsFilter is defined and allowCommentsFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.allowComments) }}
-            {% if allowCommentsFilter is defined and allowCommentsFilter != true %}
-                </div>
-            {% endif %}
-            {% if noEndDateFilter is defined and noEndDateFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.noEndDate) }}
-            {% if noEndDateFilter is defined and noEndDateFilter != true %}
-                </div>
-            {% endif %}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'num', pageSizeSelector is not defined or pageSizeSelector == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'displayOnIndex', displayOnIndexFilter is not defined or displayOnIndexFilter == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'allowComments', allowCommentsFilter is not defined or allowCommentsFilter == true) }}
+            {{ helper.renderQuickNavEntry(quickNavForm, 'noEndDate', noEndDateFilter is not defined or noEndDateFilter == true) }}
             {{ form_widget(quickNavForm.updateview) }}
             <a href="{{ path('munewsmodule_message_' ~ routeArea|default ~ 'view', {tpl: app.request.query.get('tpl', ''), all: app.request.query.get('all', '')}) }}" title="{{ __('Back to default view') }}" class="btn btn-default btn-sm">{{ __('Reset') }}</a>
-            {% if categoriesEnabled %}
+            {% if categoriesEnabled and quickNavForm.categories is defined and quickNavForm.categories is not null %}
                 {% if categoryFilter is defined and categoryFilter != true %}
                 {% else %}
                         </div>
