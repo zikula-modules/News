@@ -14,7 +14,6 @@ application "News" targets ZK20 {
     versionAllGeneratedFiles false
     separateAdminTemplates true
     generatePoweredByBacklinksIntoFooterTemplates false
-    generateTests false
     viewActionsStyle ICON
     displayActionsPosition BOTH
     displayActionsStyle BUTTON_GROUP
