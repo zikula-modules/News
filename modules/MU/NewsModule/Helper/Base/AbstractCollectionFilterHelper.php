@@ -156,6 +156,9 @@ abstract class AbstractCollectionFilterHelper
         $parameters['catId'] = $request->query->get('catId', '');
         $parameters['catIdList'] = $this->categoryHelper->retrieveCategoriesFromRequest('message', 'GET');
         $parameters['images'] = $request->query->get('images', 0);
+        if (is_object($parameters['images'])) {
+            $parameters['images'] = $parameters['images']->getId();
+        }
         $parameters['workflowState'] = $request->query->get('workflowState', '');
         $parameters['approver'] = $request->query->getInt('approver', 0);
         $parameters['messageLanguage'] = $request->query->get('messageLanguage', '');
@@ -184,6 +187,9 @@ abstract class AbstractCollectionFilterHelper
         }
     
         $parameters['message'] = $request->query->get('message', 0);
+        if (is_object($parameters['message'])) {
+            $parameters['message'] = $parameters['message']->getId();
+        }
         $parameters['workflowState'] = $request->query->get('workflowState', '');
         $parameters['q'] = $request->query->get('q', '');
     
@@ -258,6 +264,7 @@ abstract class AbstractCollectionFilterHelper
     
             // field filter
             if ((!is_numeric($v) && '' !== $v) || (is_numeric($v) && 0 < $v)) {
+                $v = (string)$v;
                 if ('workflowState' === $k && 0 === strpos($v, '!')) {
                     $qb->andWhere('tbl.' . $k . ' != :' . $k)
                        ->setParameter($k, substr($v, 1));
@@ -317,6 +324,7 @@ abstract class AbstractCollectionFilterHelper
     
             // field filter
             if ((!is_numeric($v) && '' !== $v) || (is_numeric($v) && 0 < $v)) {
+                $v = (string)$v;
                 if ('workflowState' === $k && 0 === strpos($v, '!')) {
                     $qb->andWhere('tbl.' . $k . ' != :' . $k)
                        ->setParameter($k, substr($v, 1));
