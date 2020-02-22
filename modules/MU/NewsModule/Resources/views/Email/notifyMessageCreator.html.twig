@@ -3,7 +3,7 @@
 
 <p>{{ __f('Your message "%entity%" has been changed.', {'%entity%': mailData.name}) }}</p>
 
-<p>{{ __f("It's new state is: %state%", {'%state%': mailData.newState}) }}</p>
+<p>{{ __f('Its new state is: %state%', {'%state%': mailData.newState}) }}</p>
 
 {% if mailData.remarks is not empty %}
     <p>{{ __('Additional remarks:') }}<br />{{ mailData.remarks|nl2br }}</p>
