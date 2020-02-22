@@ -28,15 +28,13 @@
             "class" : "MU\\NewsModule\\MUNewsModule",
             "displayname" : "News",
             "url" : "news",
-            "oldnames" : [
-                "MUNews"
-            ],
+            "oldnames" : ["MUNews"],
             "capabilities" : {
-                "user" : {
-                    "route" : "munewsmodule_message_index"
-                },
                 "admin" : {
                     "route" : "munewsmodule_message_adminindex"
+                },
+                "user" : {
+                    "route" : "munewsmodule_message_index"
                 },
                 "categorizable" : {
                     "entities" : [
