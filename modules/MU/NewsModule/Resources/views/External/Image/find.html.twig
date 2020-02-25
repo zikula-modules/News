@@ -51,7 +51,7 @@
                                             {{ image|munewsmodule_formattedTitle }}
                                         {% endif %}
                                     </a>
-                                    {% set displayParameters = {'id': image.getId()}|merge({'_locale': language|default(app.locale)}) %}
+                                    {% set displayParameters = {'id': image.getId()}|merge({'_locale': language|default(app.request.locale)}) %}
                                     <input type="hidden" id="title{{ itemId }}" value="{{ image|munewsmodule_formattedTitle|e('html_attr') }}" />
                                     <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if image.caption is not empty %}{{ image.caption }}{% endif %}
                                     {% endset %}{{ description|striptags|e('html_attr') }}" />

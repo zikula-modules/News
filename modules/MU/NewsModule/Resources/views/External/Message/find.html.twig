@@ -54,7 +54,7 @@
                                             {{ message|munewsmodule_formattedTitle }}
                                         {% endif %}
                                     </a>
-                                    {% set displayParameters = {'slug': message.slug}|merge({'_locale': language|default(app.locale)}) %}
+                                    {% set displayParameters = {'slug': message.slug}|merge({'_locale': language|default(app.request.locale)}) %}
                                     <input type="hidden" id="path{{ itemId }}" value="{{ path('munewsmodule_message_display', displayParameters) }}" />
                                     <input type="hidden" id="url{{ itemId }}" value="{{ url('munewsmodule_message_display', displayParameters) }}" />
                                     <input type="hidden" id="title{{ itemId }}" value="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" />
