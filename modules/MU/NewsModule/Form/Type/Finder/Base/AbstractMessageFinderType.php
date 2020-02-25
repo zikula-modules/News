@@ -53,7 +53,7 @@ abstract class AbstractMessageFinderType extends AbstractType
 
     public function __construct(
         
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
         FeatureActivationHelper $featureActivationHelper
