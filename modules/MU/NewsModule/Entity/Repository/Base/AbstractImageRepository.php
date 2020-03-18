@@ -648,7 +648,7 @@ abstract class AbstractImageRepository extends SortableRepository
         if (true !== $useJoins) {
             $orderByField = $orderBy;
             if (false !== mb_strpos($orderByField, ' ')) {
-                [$orderByField, $direction] = explode(' ', $orderByField, 2);
+                list($orderByField, $direction) = explode(' ', $orderByField, 2);
             }
             if (
                 in_array($orderByField, ['message'], true)
@@ -738,7 +738,7 @@ abstract class AbstractImageRepository extends SortableRepository
     protected function resolveOrderByForRelation($orderBy)
     {
         if (false !== mb_strpos($orderBy, ' ')) {
-            [$orderBy, $direction] = explode(' ', $orderBy, 2);
+            list($orderBy, $direction) = explode(' ', $orderBy, 2);
         } else {
             $direction = 'ASC';
         }
