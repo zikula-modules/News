@@ -212,7 +212,7 @@ abstract class AbstractNotificationHelper
             $modVarSuffixes = [
                 'message' => 'Messages'
             ];
-            $modVarSuffix = $modVarSuffixes[$this->entity['_objectType']];
+            $modVarSuffix = $modVarSuffixes[$this->entity->get_objectType()];
     
             $moderatorGroupId = $this->variableApi->get(
                 'MUNewsModule',
@@ -292,7 +292,7 @@ abstract class AbstractNotificationHelper
      */
     protected function sendMails()
     {
-        $objectType = $this->entity['_objectType'];
+        $objectType = $this->entity->get_objectType();
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
     
@@ -415,6 +415,7 @@ abstract class AbstractNotificationHelper
             'name' => $this->entityDisplayHelper->getFormattedTitle($this->entity),
             'newState' => $stateInfo['text'],
             'remarks' => $remarks,
+            'editor' => $this->getEditorName(),
             'displayUrl' => $displayUrl,
             'editUrl' => $editUrl
         ];
@@ -428,5 +429,19 @@ abstract class AbstractNotificationHelper
     protected function usesDesignatedEntityFields()
     {
         return 0 === strpos($this->recipientType, 'field-');
+    }
+    
+    /**
+     * Determines name of editor for the given entity.
+     *
+     * @return string
+     */
+    protected function getEditorName()
+    {
+        if (!in_array($this->entity->get_objectType(), ['message', 'image'], true)) {
+            return '';
+        }
+    
+        return $this->entity->getUpdatedBy()->getUname();
     }
 }

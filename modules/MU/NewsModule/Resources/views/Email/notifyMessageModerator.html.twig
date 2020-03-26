@@ -1,7 +1,7 @@
 {# purpose of this template: Email for notification sent to content moderator #}
 <p>{{ __f('Hello %recipient%', {'%recipient%': recipient.name}) }},</p>
 
-<p>{{ __f('A user changed his message "%entity%".', {'%entity%': mailData.name}) }}</p>
+<p>{{ __f('%editor% changed his message "%entity%".', {'%entity%': mailData.name, '%editor%': mailData.editor}) }}</p>
 
 <p>{{ __f('Its new state is: %state%', {'%state%': mailData.newState}) }}</p>
 
