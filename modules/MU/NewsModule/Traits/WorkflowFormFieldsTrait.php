@@ -44,6 +44,7 @@ trait WorkflowFormFieldsTrait
                 'title' => $helpText
             ],
             'attr' => [
+                'class' => 'noeditor',
                 'title' => 'create' == $options['mode']
                     ? $this->__('Enter any additions about your content')
                     : $this->__('Enter any additions about your changes')
