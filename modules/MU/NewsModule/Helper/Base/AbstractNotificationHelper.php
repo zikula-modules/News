@@ -143,7 +143,7 @@ abstract class AbstractNotificationHelper
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
         $this->twig = $twig;
-        $this->mailerApi = $mailerApi;
+        $this->mailer = $mailerApi;
         $this->groupRepository = $groupRepository;
         $this->userRepository = $userRepository;
         $this->entityDisplayHelper = $entityDisplayHelper;
@@ -330,7 +330,7 @@ abstract class AbstractNotificationHelper
             $message->setFrom([$adminMail => $siteName]);
             $message->setTo([$recipient['email'] => $recipient['name']]);
     
-            $totalResult = $totalResult && $this->mailerApi->sendMessage($message, $subject, $body, $altBody, $html);
+            $totalResult = $totalResult && $this->mailer->sendMessage($message, $subject, $body, $altBody, $html);
         }
     
         return $totalResult;
