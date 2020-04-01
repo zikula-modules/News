@@ -222,8 +222,8 @@ abstract class AbstractExternalController extends AbstractController
         if ('' !== $searchTerm) {
             $qb = $this->get('mu_news_module.collection_filter_helper')->addSearchFilter($objectType, $qb, $searchTerm);
         }
-        $query = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
         
+        $query = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
         list($entities, $objectCount) = $repository->retrieveCollectionResult($query, true);
         
         // filter by permissions
