@@ -41,13 +41,13 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         if (!$this->hasPermission('MUNewsModule:ItemListBlock:', $properties['title'] . '::', ACCESS_OVERVIEW)) {
             return '';
         }
-    
+        
         $this->categorisableObjectTypes = ['message'];
-    
+        
         // set default values for all params which are not properly set
         $defaults = $this->getDefaults();
         $properties = array_merge($defaults, $properties);
-    
+        
         $controllerHelper = $this->get('mu_news_module.controller_helper');
         $contextArgs = ['name' => 'list'];
         if (
@@ -56,9 +56,9 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         ) {
             $properties['objectType'] = $controllerHelper->getDefaultObjectType('block', $contextArgs);
         }
-    
+        
         $objectType = $properties['objectType'];
-    
+        
         $featureActivationHelper = $this->get('mu_news_module.feature_activation_helper');
         $hasCategories = in_array($objectType, $this->categorisableObjectTypes, true)
             && $featureActivationHelper->isEnabled(
@@ -69,13 +69,13 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         if ($hasCategories) {
             $categoryProperties = $this->resolveCategoryIds($properties);
         }
-    
+        
         $repository = $this->get('mu_news_module.entity_factory')->getRepository($objectType);
-    
+        
         // create query
         $orderBy = $this->get('mu_news_module.model_helper')->resolveSortParameter($objectType, $properties['sorting']);
         $qb = $repository->getListQueryBuilder($properties['filter'], $orderBy);
-    
+        
         if ($hasCategories) {
             $categoryHelper = $this->get('mu_news_module.category_helper');
             // apply category filters
@@ -83,7 +83,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
                 $qb = $categoryHelper->buildFilterClauses($qb, $objectType, $properties['categories']);
             }
         }
-    
+        
         // get objects from database
         $currentPage = 1;
         $resultsPerPage = $properties['amount'];
@@ -94,17 +94,17 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
             $entities = [];
             $objectCount = 0;
         }
-    
+        
         // filter by permissions
         $entities = $this->get('mu_news_module.permission_helper')->filterCollection($objectType, $entities, ACCESS_READ);
-    
+        
         // set a block title
         if (empty($properties['title'])) {
             $properties['title'] = $this->__('News list', 'munewsmodule');
         }
-    
+        
         $template = $this->getDisplayTemplate($properties);
-    
+        
         $templateParameters = [
             'vars' => $properties,
             'objectType' => $objectType,
@@ -113,13 +113,13 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         if ($hasCategories) {
             $templateParameters['properties'] = $categoryProperties;
         }
-    
+        
         $templateParameters = $this->get('mu_news_module.controller_helper')->addTemplateParameters(
             $properties['objectType'],
             $templateParameters,
             'block'
         );
-    
+        
         return $this->renderView($template, $templateParameters);
     }
     

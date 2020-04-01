@@ -279,7 +279,6 @@ abstract class AbstractControllerHelper
                 $useJoins
             );
     
-            $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [
                 'amountOfItems' => $objectCount,
                 'itemsPerPage' => $resultsPerPage

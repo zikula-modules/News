@@ -316,23 +316,23 @@ abstract class AbstractNotificationHelper
             if (!isset($recipient['email']) || !$recipient['email']) {
                 continue;
             }
-    
+        
             $body = $this->twig->render('@MUNewsModule/' . $template, [
                 'recipient' => $recipient,
                 'mailData' => $mailData
             ]);
             $altBody = '';
             $html = true;
-    
+        
             // create new message instance
             /** @var Swift_Message */
             $message = Swift_Message::newInstance();
             $message->setFrom([$adminMail => $siteName]);
             $message->setTo([$recipient['email'] => $recipient['name']]);
-    
+        
             $totalResult = $totalResult && $this->mailer->sendMessage($message, $subject, $body, $altBody, $html);
         }
-    
+        
         return $totalResult;
     }
     
