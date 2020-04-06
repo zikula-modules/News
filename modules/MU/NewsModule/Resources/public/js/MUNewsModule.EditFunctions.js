@@ -122,3 +122,40 @@ function mUNewsInitRelationHandling(objectType, alias, idPrefix, includeEditing,
     }
 }
 
+jQuery(document).ready(function () {
+    if (jQuery('.relation-editing-definition').length > 0) {
+        jQuery('.relation-editing-definition').each(function (index) {
+            var editHandler = {
+                alias: jQuery(this).data('alias'),
+                prefix: jQuery(this).data('inline-prefix'),
+                moduleName: jQuery(this).data('module-name'),
+                objectType: jQuery(this).data('object-type'),
+                inputType: jQuery(this).data('input-type'),
+                windowInstanceId: null
+            };
+            mUNewsInlineEditHandlers.push(editHandler);
+            mUNewsInitRelationHandling(
+                jQuery(this).data('object-type'),
+                jQuery(this).data('alias'),
+                jQuery(this).data('prefix'),
+                '1' == jQuery(this).data('include-editing'),
+                jQuery(this).data('input-type'),
+                jQuery(this).data('create-url')
+            );
+        });
+    }
+    if (jQuery('.field-editing-definition').length > 0) {
+        jQuery('.field-editing-definition').each(function (index) {
+            if ('user' === jQuery(this).data('field-type')) {
+                initUserLiveSearch(jQuery(this).data('field-name'));
+            } else if ('date' === jQuery(this).data('field-type')) {
+                mUNewsInitDateField(jQuery(this).data('field-name'));
+            } else if ('upload' === jQuery(this).data('field-type')) {
+                mUNewsInitUploadField(jQuery(this).data('field-name'));
+            }
+        });
+    }
+    if (jQuery('#formEditingDefinition').length > 0) {
+        mUNewsInitEditForm(jQuery('#formEditingDefinition').data('mode'), jQuery('#formEditingDefinition').data('entityid'));
+    }
+});
