@@ -14,10 +14,4 @@
 
 {{ form_row(form.filter) }}
 
-<script>
-    (function($) {
-    	$('#mUNewsModuleTemplate').change(function() {
-    	    $('#customTemplateArea').toggleClass('hidden', 'custom' != $(this).val());
-	    }).trigger('change');
-    })(jQuery)
-</script>
+{{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.ContentType.List.Edit.js')) }}

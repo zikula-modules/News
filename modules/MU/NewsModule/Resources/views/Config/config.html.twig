@@ -265,16 +265,5 @@
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Config.js')) }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
     {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
-    {% set formInitScript %}
-        <script>
-        /* <![CDATA[ */
-            ( function($) {
-                $(document).ready(function() {
-                    mUNewsInitEditForm('edit', '1');
-                });
-            })(jQuery);
-        /* ]]> */
-        </script>
-    {% endset %}
-    {{ pageAddAsset('footer', formInitScript) }}
+    <div id="formEditingDefinition" data-mode="edit" data-entityid="1"></div>
 {% endblock %}

@@ -13,13 +13,12 @@
 
 namespace MU\NewsModule\Event\Base;
 
-use Symfony\Component\EventDispatcher\Event;
 use MU\NewsModule\Entity\ImageEntity;
 
 /**
  * Event base class for filtering image processing.
  */
-class AbstractFilterImageEvent extends Event
+class AbstractFilterImageEvent
 {
     /**
      * @var ImageEntity Reference to treated entity instance.

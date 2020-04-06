@@ -26,18 +26,7 @@
             {{ polyfill(['forms', 'forms-ext']) }}
         {% endif %}
         {% if useFinder|default != true %}
-            {% set customScript %}
-                <script>
-                /* <![CDATA[ */
-                    ( function($) {
-                        $(document).ready(function() {
-                            $('.dropdown-toggle').addClass('hidden');
-                        });
-                    })(jQuery);
-                /* ]]> */
-                </script>
-            {% endset %}
-            {{ pageAddAsset('footer', customScript) }}
+            {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.RawPage.js')) }}
         {% endif %}
     {% endblock %}
 </body>

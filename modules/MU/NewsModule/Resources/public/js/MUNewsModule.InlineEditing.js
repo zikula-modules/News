@@ -1,5 +1,7 @@
 'use strict';
 
+var mUNewsInlineEditHandlers = [];
+
 /**
  * Helper function to create new modal form dialog instances.
  */
@@ -314,3 +316,14 @@ function mUNewsCloseWindowFromInside(idPrefix, itemId, formattedTitle, searchTer
     });
 }
 
+jQuery(document).ready(function () {
+    if (jQuery('#inlineRedirectParameters').length > 0) {
+        var redirectParams = jQuery('#inlineRedirectParameters');
+        mUNewsCloseWindowFromInside(
+            redirectParams.data('idprefix'),
+            redirectParams.data('itemid'),
+            redirectParams.data('title'),
+            redirectParams.data('searchterm')
+        );
+    }
+});
