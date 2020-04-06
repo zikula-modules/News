@@ -23,9 +23,7 @@ jobs:
     - name: Call standalone generator
       uses: docker://guite/generator-action:latest
       with:
-        model_name: 'News.mostapp'
-        module_name: 'MU/NewsModule'
-        verbose: true
+        args: News.mostapp MU/NewsModule "" true
 
     - name: Set output variables
       run: |
