@@ -20,7 +20,7 @@ jobs:
 
     # see https://github.com/Guite/zikula-action
     - name: Build and test
-      uses: guite/zikula-action@master
+      uses: docker://guite/zikula-action:latest
       with:
         vendor_name: MU
         module_name: News
