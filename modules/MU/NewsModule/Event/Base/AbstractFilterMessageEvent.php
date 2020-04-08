@@ -14,11 +14,12 @@
 namespace MU\NewsModule\Event\Base;
 
 use MU\NewsModule\Entity\MessageEntity;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event base class for filtering message processing.
  */
-class AbstractFilterMessageEvent
+class AbstractFilterMessageEvent extends Event
 {
     /**
      * @var MessageEntity Reference to treated entity instance.
