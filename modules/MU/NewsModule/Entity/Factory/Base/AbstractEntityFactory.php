@@ -141,20 +141,6 @@ abstract class AbstractEntityFactory
     }
     
     /**
-     * Sets the entity manager.
-     *
-     * @param EntityManagerInterface $entityManager
-     *
-     * @return void
-     */
-    public function setEntityManager(EntityManagerInterface $entityManager = null)
-    {
-        if ($this->entityManager !== $entityManager) {
-            $this->entityManager = $entityManager;
-        }
-    }
-    
-    /**
      * Returns the entity initialiser.
      *
      * @return EntityInitialiser
@@ -162,19 +148,5 @@ abstract class AbstractEntityFactory
     public function getEntityInitialiser()
     {
         return $this->entityInitialiser;
-    }
-    
-    /**
-     * Sets the entity initialiser.
-     *
-     * @param EntityInitialiser $entityInitialiser
-     *
-     * @return void
-     */
-    public function setEntityInitialiser(EntityInitialiser $entityInitialiser = null)
-    {
-        if ($this->entityInitialiser !== $entityInitialiser) {
-            $this->entityInitialiser = $entityInitialiser;
-        }
     }
 }
