@@ -52,4 +52,12 @@ class AbstractFilterImageEvent extends Event
     {
         return $this->entityChangeSet;
     }
+
+    /**
+     * @param array $changeSet Entity change set
+     */
+    public function setEntityChangeSet(array $changeSet = [])
+    {
+        $this->entityChangeSet = $changeSet;
+    }
 }
