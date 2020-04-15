@@ -595,7 +595,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         } else {
             $this->setImageUpload1FileName('');
             $this->setImageUpload1Url('');
-            $this->setImageUpload1Meta([]);
         }
     
         return $this->imageUpload1;
@@ -917,7 +916,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         } else {
             $this->setImageUpload2FileName('');
             $this->setImageUpload2Url('');
-            $this->setImageUpload2Meta([]);
         }
     
         return $this->imageUpload2;
@@ -1047,7 +1045,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         } else {
             $this->setImageUpload3FileName('');
             $this->setImageUpload3Url('');
-            $this->setImageUpload3Meta([]);
         }
     
         return $this->imageUpload3;
@@ -1177,7 +1174,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         } else {
             $this->setImageUpload4FileName('');
             $this->setImageUpload4Url('');
-            $this->setImageUpload4Meta([]);
         }
     
         return $this->imageUpload4;

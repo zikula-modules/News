@@ -296,7 +296,6 @@ abstract class AbstractImageEntity extends EntityAccess
         } else {
             $this->setTheFileFileName('');
             $this->setTheFileUrl('');
-            $this->setTheFileMeta([]);
         }
     
         return $this->theFile;
