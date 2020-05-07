@@ -76,35 +76,35 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
     public function hasCategories($objectType)
     {
         return 'message' === $objectType
-            && 1 == $this->variableApi->get('MUNewsModule', 'enableCategorization')
+            && $this->variableApi->get('MUNewsModule', 'enableCategorization', false)
         ;
     }
     
     public function hasAttributes($objectType)
     {
         return 'message' === $objectType
-            && $this->variableApi->get('MUNewsModule', 'enableAttribution') == 1
+            && $this->variableApi->get('MUNewsModule', 'enableAttribution', false)
         ;
     }
     
     public function hasTranslations($objectType)
     {
         return 'message' === $objectType
-            && $this->variableApi->get('MUNewsModule', 'enableMultiLanguage') == 1
+            && $this->variableApi->get('MUNewsModule', 'enableMultiLanguage', false)
         ;
     }
     
     public function hasCreators($objectType)
     {
         return 'message' === $objectType
-            && $this->variableApi->get('MUNewsModule', 'showAuthor') == 1
+            && $this->variableApi->get('MUNewsModule', 'showAuthor', false)
         ;
     }
     
     public function hasCreatedDates($objectType)
     {
         return 'message' === $objectType
-            && $this->variableApi->get('MUNewsModule', 'showDate') == 1
+            && $this->variableApi->get('MUNewsModule', 'showDate', false)
         ;
     }
 }
