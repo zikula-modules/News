@@ -48,31 +48,10 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
 
     public function isEnabled($feature = '', $objectType = '')
     {
-        if (self::CATEGORIES === $feature) {
-            $method = 'hasCategories';
-            if (method_exists($this, $method)) {
-                return $this->$method($objectType);
-            }
-    
-            return in_array($objectType, ['message'], true);
+        if (in_array($feature, [self::CATEGORIES, self::ATTRIBUTES, self::TRANSLATIONS], true)) {
+            return parent::isEnabled($feature, $objectType);
         }
-        if (self::ATTRIBUTES === $feature) {
-            $method = 'hasAttributes';
-            if (method_exists($this, $method)) {
-                return $this->$method($objectType);
-            }
-    
-            return in_array($objectType, ['message'], true);
-        }
-        if (self::TRANSLATIONS === $feature) {
-            $method = 'hasTranslations';
-            if (method_exists($this, $method)) {
-                return $this->$method($objectType);
-            }
-    
-            return in_array($objectType, ['message'], true);
-        }
-        
+
         if (self::CREATORS === $feature) {
             $method = 'hasCreators';
             if (method_exists($this, $method)) {
@@ -81,7 +60,7 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
         
             return in_array($objectType, ['message'], true);
         }
-        
+
         if (self::CREATEDDATES === $feature) {
             $method = 'hasCreatedDates';
             if (method_exists($this, $method)) {
@@ -90,7 +69,7 @@ class FeatureActivationHelper extends AbstractFeatureActivationHelper
         
             return in_array($objectType, ['message'], true);
         }
-    
+
         return false;
     }
     
