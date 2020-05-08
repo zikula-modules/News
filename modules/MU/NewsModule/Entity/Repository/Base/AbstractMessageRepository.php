@@ -469,7 +469,7 @@ abstract class AbstractMessageRepository extends EntityRepository
         $qb = $this->genericBaseQuery('', '', $useJoins, $slimMode);
         $qb = $this->addIdListFilter($idList, $qb);
     
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->applyDefaultFilters('message', $qb);
         }
     
@@ -512,7 +512,7 @@ abstract class AbstractMessageRepository extends EntityRepository
             $qb = $this->addExclusion($qb, [$excludeId]);
         }
     
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->applyDefaultFilters('message', $qb);
         }
     
@@ -559,7 +559,7 @@ abstract class AbstractMessageRepository extends EntityRepository
         $slimMode = false
     ) {
         $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->addCommonViewFilters('message', $qb);
         }
     
