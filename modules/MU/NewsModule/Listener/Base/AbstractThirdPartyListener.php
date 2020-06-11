@@ -42,8 +42,11 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      */
     protected $workflowHelper;
     
-    public function __construct(Filesystem $filesystem, RequestStack $requestStack, WorkflowHelper $workflowHelper)
-    {
+    public function __construct(
+        Filesystem $filesystem,
+        RequestStack $requestStack, 
+        WorkflowHelper $workflowHelper
+    ) {
         $this->filesystem = $filesystem;
         $this->requestStack = $requestStack;
         $this->workflowHelper = $workflowHelper;

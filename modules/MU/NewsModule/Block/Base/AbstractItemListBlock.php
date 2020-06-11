@@ -79,7 +79,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         if ($hasCategories) {
             $categoryHelper = $this->get('mu_news_module.category_helper');
             // apply category filters
-            if (is_array($properties['categories']) && count($properties['categories']) > 0) {
+            if (is_array($properties['categories']) && 0 < count($properties['categories'])) {
                 $qb = $categoryHelper->buildFilterClauses($qb, $objectType, $properties['categories']);
             }
         }
