@@ -46,6 +46,11 @@ abstract class AbstractImageFilterHooksSubscriber implements HookSubscriberInter
     {
         return $this->translator->__('Image filter hooks subscriber');
     }
+    
+    public function getAreaName()
+    {
+        return 'subscriber.munewsmodule.filter_hooks.images';
+    }
 
     public function getEvents()
     {

@@ -46,6 +46,11 @@ abstract class AbstractMessageFormAwareHookSubscriber implements HookSubscriberI
     {
         return $this->translator->__('Message form aware subscriber');
     }
+    
+    public function getAreaName()
+    {
+        return 'subscriber.munewsmodule.form_aware_hook.messages';
+    }
 
     public function getEvents()
     {

@@ -46,6 +46,11 @@ abstract class AbstractMessageUiHooksSubscriber implements HookSubscriberInterfa
     {
         return $this->translator->__('Message ui hooks subscriber');
     }
+    
+    public function getAreaName()
+    {
+        return 'subscriber.munewsmodule.ui_hooks.messages';
+    }
 
     public function getEvents()
     {
