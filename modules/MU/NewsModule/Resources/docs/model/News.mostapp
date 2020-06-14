@@ -59,7 +59,7 @@ application "News" targets ZK20 {
                 },                    
                 text "startText" translatable {
                     displayType DISPLAY
-                    length 10000
+                    length 20000
                 },
                 upload "imageUpload1" {
                     defaultValue ""
@@ -70,7 +70,7 @@ application "News" targets ZK20 {
                     defaultValue ""
                     mandatory false
                     displayType DISPLAY
-                    length 20000
+                    length 100000
                 },
                 integer "amountOfViews" counter {
                     defaultValue "0"
