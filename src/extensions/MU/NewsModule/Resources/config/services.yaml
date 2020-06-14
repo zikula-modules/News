@@ -1,0 +1,66 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@MU\NewsModule\MUNewsModule'
+            $twigLoader: '@twig.loader'
+
+    MU\NewsModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Base/bootstrap.php,Tests,vendor}'
+
+    MU\NewsModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    # public because EntityLifecycleListener accesses this using container
+    MU\NewsModule\Entity\Factory\EntityFactory:
+        public: true
+    
+    _instanceof:
+        Zikula\ExtensionsModule\ModuleInterface\Content\ContentTypeInterface:
+            bind:
+                $permissionHelper: '@?Zikula\ContentModule\Helper\PermissionHelper'
+    
+    
+    MU\NewsModule\Form\Handler\:
+        resource: '../../Form/Handler'
+        calls:
+            - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
+    
+    MU\NewsModule\NewsModuleInstaller:
+        arguments:
+            $dataDirectory: '%datadir%'
+    
+    # public because EntityLifecycleListener accesses this using container
+    MU\NewsModule\Helper\UploadHelper:
+        public: true
+        arguments:
+            $dataDirectory: '%datadir%'
+    
+    MU\NewsModule\Helper\ViewHelper:
+        arguments:
+            $pageVars: '@zikula_core.common.theme.pagevars'
+    
+    MU\NewsModule\Listener\EntityLifecycleListener:
+        tags: ['doctrine.event_subscriber']
+    
+    MU\NewsModule\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: mUNewsMenuItemActions }
+            - { name: knp_menu.menu_builder, method: createViewActionsMenu, alias: mUNewsMenuViewActions }
+    
+    stof_doctrine_extensions.listener.sluggable:
+        class: '%stof_doctrine_extensions.listener.sluggable.class%'
+        calls:
+            - setAnnotationReader: ['@annotation_reader']
+            - setTransliterator: [[MU\NewsModule\Helper\SlugTransliterator, 'transliterate']]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    liip_imagine.cache.signer:
+        class: MU\NewsModule\Imagine\Cache\DummySigner
+        arguments:
+            $secret: '%kernel.secret%'

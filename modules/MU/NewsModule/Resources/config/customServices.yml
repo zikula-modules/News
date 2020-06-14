@@ -1,7 +1,0 @@
-services:
-    mu_news_module.form.type.image:
-        class: MU\NewsModule\Form\Type\ImageType
-        arguments:
-            - "@translator.default"
-            - "@mu_news_module.entity_factory"
-        tags: ['form.type']

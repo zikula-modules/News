@@ -1,0 +1,18 @@
+{# purpose of this template: reusable display of entity attributes #}
+{% if obj.attributes is defined %}
+    {% if tabs|default(false) == true %}
+        <div role="tabpanel" class="tab-pane fade" id="tabAttributes" aria-labelledby="attributesTab">
+            <h3>{% trans %}Attributes{% endtrans %}</h3>
+    {% else %}
+        <h3 class="attributes">{% trans %}Attributes{% endtrans %}</h3>
+    {% endif %}
+    <dl class="propertylist">
+    {% for attributeName, attributeInfo in obj.attributes %}
+        <dt>{{ attributeName }}</dt>
+        <dd>{{ attributeInfo.value }}</dd>
+    {% endfor %}
+    </dl>
+    {% if tabs|default(false) == true %}
+        </div>
+    {% endif %}
+{% endif %}

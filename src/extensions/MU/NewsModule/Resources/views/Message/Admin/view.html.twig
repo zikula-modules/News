@@ -1,0 +1,194 @@
+{# purpose of this template: messages admin list view #}
+{% extends '@MUNewsModule/adminBase.html.twig' %}
+{% trans_default_domain 'message' %}
+{% block title own ? 'My messages'|trans : 'Messages list'|trans %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+    <div class="munewsmodule-message munewsmodule-view">
+        {% set viewActions = knp_menu_get('mUNewsMenuViewActions', [], {objectType: 'message', area: routeArea}) %}
+        {{ knp_menu_render(viewActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+        
+        {{ include('@MUNewsModule/Message/Admin/viewQuickNav.html.twig') }}{# see template file for available options #}
+
+        {% if routeArea == 'admin' %}
+        <form action="{{ path('munewsmodule_message_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="messagesViewForm">
+            <div>
+        {% endif %}
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <colgroup>
+                    {% if routeArea == 'admin' %}
+                        <col id="cSelect" />
+                    {% endif %}
+                    <col id="cItemActionsStart" />
+                    {% if routeArea == 'admin' %}
+                    <col id="cWorkflowState" />
+                    {% endif %}
+                    <col id="cTitle" />
+                    <col id="cImageUpload1" />
+                    <col id="cAmountOfViews" />
+                    <col id="cDisplayOnIndex" />
+                    <col id="cMessageLanguage" />
+                    <col id="cNoEndDate" />
+                    <col id="cEndDate" />
+                </colgroup>
+                <thead>
+                <tr>
+                    {% if routeArea == 'admin' %}
+                        <th id="hSelect" scope="col" class="text-center">
+                            <input type="checkbox" class="munews-mass-toggle" />
+                        </th>
+                    {% endif %}
+                    <th id="hItemActionsStart" scope="col" class="">{% trans from 'messages' %}Actions{% endtrans %}</th>
+                    {% if routeArea == 'admin' %}
+                    <th id="hWorkflowState" scope="col" class="text-left">
+                        <a href="{{ sort.workflowState.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'state'}, 'messages')|e('html_attr') }}" class="{{ sort.workflowState.class }}">{% trans %}State{% endtrans %}</a>
+                    </th>
+                    {% endif %}
+                    <th id="hTitle" scope="col" class="text-left">
+                        <a href="{{ sort.title.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'title'}, 'messages')|e('html_attr') }}" class="{{ sort.title.class }}">{% trans %}Title{% endtrans %}</a>
+                    </th>
+                    <th id="hImageUpload1" scope="col" class="text-left">
+                        <a href="{{ sort.imageUpload1.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'image upload 1'}, 'messages')|e('html_attr') }}" class="{{ sort.imageUpload1.class }}">{% trans %}Image upload 1{% endtrans %}</a>
+                    </th>
+                    <th id="hAmountOfViews" scope="col" class="text-right unsorted">
+                        {% trans %}Amount of views{% endtrans %}
+                    </th>
+                    <th id="hDisplayOnIndex" scope="col" class="text-center">
+                        <a href="{{ sort.displayOnIndex.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'display on index'}, 'messages')|e('html_attr') }}" class="{{ sort.displayOnIndex.class }}">{% trans %}Display on index{% endtrans %}</a>
+                    </th>
+                    <th id="hMessageLanguage" scope="col" class="text-left unsorted">
+                        {% trans %}Message language{% endtrans %}
+                    </th>
+                    <th id="hNoEndDate" scope="col" class="text-center unsorted">
+                        {% trans %}No end date{% endtrans %}
+                    </th>
+                    <th id="hEndDate" scope="col" class="text-left unsorted">
+                        {% trans %}End date{% endtrans %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+            
+            {% for message in items %}
+                <tr>
+                    {% if routeArea == 'admin' %}
+                        <td headers="hSelect" class="text-center">
+                            <input type="checkbox" name="items[]" value="{{ message.getKey() }}" class="munews-toggle-checkbox" />
+                        </td>
+                    {% endif %}
+                    <td id="itemActions{{ message.getKey() }}Start" headers="hItemActionsStart" class="actions">
+                        {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'view'}) %}
+                        {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
+                    </td>
+                    {% if routeArea == 'admin' %}<td headers="hWorkflowState" class="text-left nowrap">
+                        {{ message.workflowState|munewsmodule_objectState }}
+                    </td>
+                    {% endif %}<td headers="hTitle" class="text-left">
+                        <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {'slug': message.slug}) }}" title="{{ 'View detail page'|trans({}, 'messages')|e('html_attr') }}">{{ message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml }}</a>
+                    </td>
+                    <td headers="hImageUpload1" class="text-left">
+                        {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+                                    <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+                        {% if message.imageUpload1Meta.isImage %}
+                            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+                            <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload1.getPathname() }}{% else %}{{ message.imageUpload1.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        {% else %}
+                            {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
+                        {% endif %}
+                        </a>
+                        {% else %}&nbsp;{% endif %}
+                    </td>
+                    <td headers="hAmountOfViews" class="text-right">
+                        {{ message.amountOfViews }}
+                    </td>
+                    <td headers="hDisplayOnIndex" class="text-center">
+                        {% set itemId = message.getKey() %}
+                        <a id="toggleDisplayOnIndex{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle d-none" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not message.displayOnIndex %} d-none{% endif %}" id="yesDisplayOnIndex{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if message.displayOnIndex %} d-none{% endif %}" id="noDisplayOnIndex{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptDisplayOnIndex{{ itemId|e('html_attr') }}">
+                            {% if message.displayOnIndex %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hMessageLanguage" class="text-left">
+                        {{ message.messageLanguage|locale_name }}
+                    </td>
+                    <td headers="hNoEndDate" class="text-center">
+                        {% set itemId = message.getKey() %}
+                        <a id="toggleNoEndDate{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle d-none" data-object-type="message" data-field-name="noEndDate" data-item-id="{{ itemId|e('html_attr') }}">
+                            <i class="fas fa-check text-success{% if not message.noEndDate %} d-none{% endif %}" id="yesNoEndDate{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger{% if message.noEndDate %} d-none{% endif %}" id="noNoEndDate{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        </a>
+                        <noscript><div id="noscriptNoEndDate{{ itemId|e('html_attr') }}">
+                            {% if message.noEndDate %}
+                                <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% else %}
+                                <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                            {% endif %}
+                        </div></noscript>
+                    </td>
+                    <td headers="hEndDate" class="text-left">
+                        {% if message.endDate is not empty %}
+                            {{ message.endDate|format_datetime('medium', 'short') }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="table-info">
+                    <td colspan="{% if routeArea == 'admin' %}10{% else %}9{% endif %}" class="text-center">
+                {% trans %}No messages found.{% endtrans %}
+                  </td>
+                </tr>
+            {% endfor %}
+            
+                </tbody>
+            </table>
+            </div>
+            
+            {% if all != 1 %}
+                {{ include(paginator.template) }}
+            {% endif %}
+        {% if routeArea == 'admin' %}
+                <fieldset class="my-3 pt-3">
+                    <div class="row">
+                        <label for="mUNewsModuleAction" class="col-md-3 col-form-label">{% trans %}With selected messages{% endtrans %}</label>
+                        <div class="col-md-6">
+                            <select id="mUNewsModuleAction" name="action" class="form-control form-control-sm">
+                                <option value="">{% trans from 'messages' %}Choose action{% endtrans %}</option>
+                                <option value="approve" title="{{ 'Update content and approve for immediate publishing.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Approve{% endtrans %}</option>
+                                <option value="publish" title="{{ 'Make content available again.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Publish{% endtrans %}</option>
+                                <option value="unpublish" title="{{ 'Hide content temporarily.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Unpublish{% endtrans %}</option>
+                                <option value="archive" title="{{ 'Move content into the archive.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Archive{% endtrans %}</option>
+                                <option value="unarchive" title="{{ 'Move content out of the archive.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Unarchive{% endtrans %}</option>
+                                <option value="delete" title="{{ 'Delete content permanently.'|trans({}, 'messages')|e('html_attr') }}">{% trans from 'messages' %}Delete{% endtrans %}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" value="{{ 'Submit'|trans({}, 'messages')|e('html_attr') }}" class="btn btn-secondary btn-sm" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+        {% endif %}
+
+        {{ block('display_hooks') }}
+    </div>
+{% endblock %}
+{% block display_hooks %}
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endif % #}
+{% endblock %}

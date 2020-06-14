@@ -13,7 +13,7 @@ jobs:
 
     - name: Update dependencies
       run: |
-        cd modules/MU/NewsModule/
+        cd src/extensions/MU/NewsModule/
         composer update
 
     # see https://github.com/peter-evans/create-pull-request

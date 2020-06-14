@@ -1,0 +1,47 @@
+{# purpose of this template: messages admin delete confirmation view #}
+{% extends '@MUNewsModule/adminBase.html.twig' %}
+{% trans_default_domain 'message' %}
+{% block title 'Delete message'|trans %}
+{% block admin_page_icon 'trash-alt' %}
+{% block content %}
+    <div class="munewsmodule-message munewsmodule-delete">
+        <p class="alert alert-warning">{% trans with {'%name%': message|munewsmodule_formattedTitle} %}Do you really want to delete this message: "%name%" ?{% endtrans %}</p>
+
+        {% form_theme deleteForm with [
+            '@MUNewsModule/Form/bootstrap_4.html.twig',
+            '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+        ] only %}
+        {{ form_start(deleteForm) }}
+        {{ form_errors(deleteForm) }}
+
+        {% if message.supportsHookSubscribers() and formHookTemplates|length > 0 %}
+            <fieldset>
+                {% for hookTemplate in formHookTemplates %}
+                    {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                {% endfor %}
+            </fieldset>
+        {% endif %}
+        <fieldset>
+            <legend>{% trans from 'messages' %}Confirmation prompt{% endtrans %}</legend>
+            <div class="form-group row">
+                <div class="col-md-9 offset-md-3">
+                    {{ form_widget(deleteForm.delete) }}
+                    {{ form_widget(deleteForm.cancel) }}
+                </div>
+            </div>
+        </fieldset>
+        {{ form_end(deleteForm) }}
+
+        {{ block('display_hooks') }}
+    </div>
+{% endblock %}
+{% block display_hooks %}
+    {% if message.supportsHookSubscribers() %}
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_delete', id=message.getKey(), outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

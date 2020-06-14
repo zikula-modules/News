@@ -1,0 +1,45 @@
+{# purpose of this template: general base layout #}
+{% trans_default_domain 'messages' %}
+{% block header %}
+{% endblock %}
+
+{% block appTitle %}
+    {{ moduleHeader('user', '', '', false, true, false, true) }}
+{% endblock %}
+
+{% block titleArea %}
+    <div class="row">
+        <div id="message-display-header">
+            <div class="col-md-7">
+                <div id="message-title">
+                    <h2>{% block title %}{% endblock %}</h2>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div id="message-author-info">
+                    {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay2.html.twig', {obj: message}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{{ pageSetVar('title', block('pageTitle') is defined ? block('pageTitle') : block('title')) }}
+
+{{ include('@MUNewsModule/Helper/includeModerationPanel.html.twig') }}
+
+{{ showflashes() }}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+    {{ moduleFooter() }}
+{% endblock %}
+
+{% block assets %}
+    {{ pageAddAsset('stylesheet', zasset('@MUNewsModule:css/custom.css'), 120) }}
+    {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+    {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
+    {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js'), 90) }}
+    {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css'), 90) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.js')) }}
+{% endblock %}

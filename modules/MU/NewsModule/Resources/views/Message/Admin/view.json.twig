@@ -1,7 +1,0 @@
-{# purpose of this template: messages view json view #}
-[
-{% for message in items %}
-    {% if not loop.first %},{% endif %}
-    {{ message.toArray()|json_encode()|raw }}
-{% endfor %}
-]

@@ -1,0 +1,173 @@
+{# purpose of this template: messages user display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : 'base2' %}
+{% extends '@MUNewsModule/' ~ baseTemplate ~ '.html.twig' %}
+{% trans_default_domain 'message' %}
+{% block pageTitle %}{{ message|munewsmodule_formattedTitle|default('Message'|trans) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = message|munewsmodule_formattedTitle|default('Message'|trans) %}
+    {{ templateTitle|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ message.workflowState|munewsmodule_objectState(false)|lower }})</small>{% endif %}
+{% endblock %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="munewsmodule-message munewsmodule-display">
+        {% if not isQuickView %}
+            {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{% trans from 'messages' %}Actions{% endtrans %}">
+                {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+            </div>
+        {% endif %}
+        {% set imageFloatOnDisplay = getModVar('MUNewsModule', 'imageFloatOnDisplayPage', 'left') %}
+        {% if imageFloatOnDisplay == 'left' %}
+            {% set imageFloat = 'float-left' %}
+        {% endif %}
+        {% if imageFloatOnDisplay == 'right' %}
+            {% set imageFloat = 'float-right' %}
+        {% endif %}
+        {% if imageFloatOnDisplay == 'none' %}
+            {% set imageFloat = 'float-none' %}
+        {% endif %}
+        {% if message.startText is not empty %}
+            <div id="message-display-start">
+            {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+            <div class="{{ imageFloat }}">
+                <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+                    {% if message.imageUpload1Meta.isImage %}
+                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+                        <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload1.getPathname() }}{% else %}{{ message.imageUpload1.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                    {% else %}
+                        {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
+                    {% endif %}
+                </a>
+            </div>
+            {% else %}&nbsp;{% endif %}
+            {{ message.startText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}
+            </div>
+        {% endif %}
+        {% if message.mainText is not empty %}
+            <div id="message-display-main">
+                {{ message.mainText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}
+            </div>
+        {% endif %}
+        {% if message.imageUpload2 is not empty or message.imageUpload3 is not empty or message.imageUpload4 is not empty %}
+        <div id="message-display-pictures" class="col-sm-12">
+            <div class="col-sm-4">
+            {% if message.imageUpload2 is not empty %}
+                <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
+                            <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
+                {% if message.imageUpload2Meta.isImage %}
+                    {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload2') %}
+                    <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload2.getPathname() }}{% else %}{{ message.imageUpload2.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                {% else %}
+                    {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload2Meta.size|munewsmodule_fileSize(message.imageUpload2.getPathname(), false, false) }})
+                {% endif %}
+                </a>
+                {% else %}&nbsp;{% endif %}
+                </dd>
+            {% endif %}    
+            </div>
+            <div class="col-sm-4">
+            {% if message.imageUpload3 is not empty %}
+                <dd>{% if message.imageUpload3 is not empty and message.imageUpload3Meta|default %}
+                            <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
+                {% if message.imageUpload3Meta.isImage %}
+                    {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload3') %}
+                    <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload3.getPathname() }}{% else %}{{ message.imageUpload3.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                {% else %}
+                    {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload3Meta.size|munewsmodule_fileSize(message.imageUpload3.getPathname(), false, false) }})
+                {% endif %}
+                </a>
+                {% else %}&nbsp;{% endif %}
+                </dd>
+            {% endif %}    
+            </div>
+            <div class="col-sm-4">
+            {% if message.imageUpload4 is not empty %}
+                <dd>{% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
+                            <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
+                {% if message.imageUpload4Meta.isImage %}
+                    <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload4.getPathname() }}{% else %}{{ message.imageUpload4.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                {% else %}
+                    {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload4Meta.size|munewsmodule_fileSize(message.imageUpload4.getPathname(), false, false) }})
+                {% endif %}
+                </a>
+                {% else %}&nbsp;{% endif %}
+                </dd>
+            {% endif %}    
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+        <div class="col-sm-8">
+            {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                {% set showRelatedArticles = getModVar('MUNewsModule', 'enableMoreMessagesInCategory') %}
+                {% if showRelatedArticles == 1 and message.categories is defined and message.categories|length > 0 %}
+                    <h3>{% trans from 'messages' %}Related articles{% endtrans %}</h3>
+                    {% set amountOfRelatedArticles = getModVar('MUNewsModule', 'amountOfMoreArticlesInCategory') %}
+                    {% for catMapping in message.categories %}
+                        <h4>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</h4>
+                        {% set categoryArticles = munewsmodule_getRelatedArticles(catMapping, amountOfRelatedArticles) %}
+                        <ul class="related-articles-list">
+                        {% for relatedArticle in categoryArticles %}
+                            <li><a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {slug: relatedArticle.slug}) }}">{{ relatedArticle|munewsmodule_formattedTitle|default('Message'|trans) }}</a></li>
+                        {% else %}
+                            <li>{% trans from 'messages' %}No other articles found.{% endtrans %}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endfor %}
+                {% else %}
+                    {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message}) }}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-sm-4">
+            {% set pdfLink = getModVar('MUNewsModule', 'displayPdfLink') %}   
+            <div class="message-display-footer">
+                <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {slug: message.slug, theme: 'printer'}) }}"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>&nbsp;
+                {% if pdfLink == 1 %}        
+                    <a href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {id: message.getId(), slug: message.slug, '_format': 'pdf'}) }}"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+                {% endif %}
+            </div>
+        </div>
+        </div>
+
+        {% if message.images|length > 0 %}
+            {#% if routeArea == 'admin' %}
+                <h4>{% trans from 'image' %}Images{% endtrans %}</h4>
+            {% else %}
+                <h3>{% trans from 'image' %}Images{% endtrans %}</h3>
+            {% endif %}
+            
+            {{ include(
+                '@MUNewsModule/Image/includeDisplayItemListMany.html.twig',
+                {items: message.images}
+            ) }#}
+            <div class="additional-images">
+                {% set thumbnailOptions = {'thumbnail': {'size': [999, 630], 'mode': 'inset', 'extension': null}} %}
+                {% for image in message.images %}
+                    <a href="{{ image.theFileUrl }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" class="image-link">
+                        <img class="post-img img-thumbnail img-responsive" src="{{ image.theFile.getPathname()|imagine_filter('zkroot', thumbnailOptions) }}" alt="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" title="{{ image.caption|default(message|munewsmodule_formattedTitle)|e('html_attr') }}" />
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {{ block('display_hooks') }}
+        {% if not isQuickView %}
+            {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+            <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{% trans from 'messages' %}Actions{% endtrans %}">
+                {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+            </div>
+        {% endif %}
+    </div>
+    {{ munewsmodule_increaseCounter(message, 'amountOfViews') }}
+{% endblock %}
+{% block display_hooks %}
+    {% if message.supportsHookSubscribers() %}
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{% if area != 'provider.mucommentsmodule.ui_hooks.comments' or message.allowComments == 1 %}{{ hook|raw }}{% endif %}</div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

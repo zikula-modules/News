@@ -1,0 +1,53 @@
+{# purpose of this template: apply some general form extensions #}
+{% extends '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig' %}
+{% trans_default_domain 'messages' %}
+
+{%- block datetime_widget -%}
+    {{- parent() -}}
+    {%- if not required -%}
+        <small class="form-text text-muted">
+            <a id="{{ id }}ResetVal" href="javascript:void(0);" class="d-none">{% trans %}Reset to empty value{% endtrans %}</a>
+        </small>
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block munewsmodule_field_translation_row -%}
+    {{ block('form_widget_compound') }}
+{%- endblock -%}
+
+{% block munewsmodule_field_upload_label %}{% endblock %}
+{% block munewsmodule_field_upload_row %}
+    {% apply spaceless %}
+    {{ form_row(attribute(form, field_name)) }}
+    <div class="col-md-9 offset-md-3">
+        {% if not required %}
+            <small class="form-text text-muted">
+                <a id="{{ id }}_{{ field_name }}ResetVal" href="javascript:void(0);" class="d-none">{% trans %}Reset to empty value{% endtrans %}</a>
+            </small>
+        {% endif %}
+        <small class="form-text text-muted">
+            {% trans %}Allowed file extensions{% endtrans %}: <span id="{{ id }}_{{ field_name }}FileExtensions">{{ allowed_extensions|default('') }}</span>
+        </small>
+        {% if allowed_size|default %}
+            <small class="form-text text-muted">
+                {% trans %}Allowed file size{% endtrans %}: {{ allowed_size }}
+            </small>
+        {% endif %}
+        {% if file_path|default %}
+            <small class="form-text text-muted">
+                {% trans %}Current file{% endtrans %}:
+                <a href="{{ file_url }}" title="{{ 'Open file'|trans|e('html_attr') }}"{% if file_meta.isImage %} class="image-link"{% endif %}>
+                {% if file_meta.isImage %}
+                    <img src="{{ file_path|munewsmodule_relativePath|imagine_filter('zkroot', thumb_runtime_options) }}" alt="{{ edited_entity|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumb_runtime_options.thumbnail.size[0] }}" height="{{ thumb_runtime_options.thumbnail.size[1] }}" class="img-thumbnail" />
+                {% else %}
+                    {% trans %}Download{% endtrans %} ({{ file_meta.size|munewsmodule_fileSize(file_path, false, false) }})
+                {% endif %}
+                </a>
+            </small>
+            {% if allow_deletion and not required and form[field_name ~ 'DeleteFile'] is defined %}
+                {{ form_row(attribute(form, field_name ~ 'DeleteFile')) }}
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endapply %}
+{% endblock %}

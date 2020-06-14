@@ -1,0 +1,17 @@
+{# purpose of this template: inclusion template for display of related images #}
+<ul id="{{ idPrefix }}ReferenceList">
+{% if items is defined and items is iterable %}
+{% for item in items %}
+{% set idPrefixItem = idPrefix ~ 'Reference_' ~ item.getKey() %}
+<li id="{{ idPrefixItem }}">
+    {{ item|munewsmodule_formattedTitle }}
+    <a id="{{ idPrefixItem }}Edit" href="{{ path('munewsmodule_image_' ~ routeArea ~ 'edit', {'id': item.getId()}) }}"><i class="fas fa-edit"></i></a>
+     <a id="{{ idPrefixItem }}Remove" href="javascript:mUNewsRemoveRelatedItem('{{ idPrefix }}', '{{ item.getKey() }}');"><i class="fas fa-trash-alt"></i></a>
+    <br />
+    {% if item.theFile is not empty and item.theFileMeta.isImage %}
+        <img src="{{ item.theFile.getPathname()|imagine_filter('zkroot', relationThumbRuntimeOptions) }}" alt="{{ item|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ relationThumbRuntimeOptions.thumbnail.size[0] }}" height="{{ relationThumbRuntimeOptions.thumbnail.size[1] }}" class="img-rounded" />
+    {% endif %}
+</li>
+{% endfor %}
+{% endif %}
+</ul>

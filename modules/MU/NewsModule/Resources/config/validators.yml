@@ -1,9 +1,0 @@
-services:
-    # Custom validators
-    mu_news_module.validator.list_entry.validator:
-        class: MU\NewsModule\Validator\Constraints\ListEntryValidator
-        arguments:
-            - "@translator.default"
-            - "@mu_news_module.listentries_helper"
-        tags:
-            - { name: validator.constraint_validator, alias: mu_news_module.validator.list_entry.validator }

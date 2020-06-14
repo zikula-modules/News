@@ -1,0 +1,10 @@
+{# purpose of this template: messages admin index view #}
+{% extends '@MUNewsModule/adminBase.html.twig' %}
+{% trans_default_domain 'message' %}
+{% block title 'Messages'|trans %}
+{% block admin_page_icon 'home' %}
+{% block content %}
+    <div class="munewsmodule-message munewsmodule-index">
+        <p>{% trans %}Welcome to the message section of the News application.{% endtrans %}</p>
+    </div>
+{% endblock %}

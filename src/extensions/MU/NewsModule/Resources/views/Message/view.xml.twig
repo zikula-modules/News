@@ -1,0 +1,10 @@
+{# purpose of this template: messages view xml view #}
+{% trans_default_domain 'message' %}
+<?xml version="1.0" encoding="{{ pageGetVar('meta.charset') }}" ?>
+<messages>
+{% for message in items %}
+    {{ include('@MUNewsModule/Message/include.xml.twig') }}
+{% else %}
+    <noMessage />
+{% endfor %}
+</messages>

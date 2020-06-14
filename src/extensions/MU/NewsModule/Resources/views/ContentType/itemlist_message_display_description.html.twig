@@ -1,0 +1,14 @@
+{# purpose of this template: Display messages within an external context #}
+{% trans_default_domain 'message' %}
+<dl>
+    {% for message in items %}
+        <dt>{{ message|munewsmodule_formattedTitle }}</dt>
+        {% if message.startText %}
+            <dd>{{ message.startText|striptags|u.truncate(200, '…') }}</dd>
+        {% endif %}
+        <dd><a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ 'Read more'|trans|e('html_attr') }}">{% trans %}Read more{% endtrans %}</a>
+        </dd>
+    {% else %}
+        <dt>{% trans %}No messages found.{% endtrans %}</dt>
+    {% endfor %}
+</dl>

@@ -1,0 +1,16 @@
+{# purpose of this template: reusable editing of entity attributes #}
+{% if tabs|default(false) == true %}
+    <div role="tabpanel" class="tab-pane fade" id="tabAttributes" aria-labelledby="attributesTab">
+        <h3>{% trans %}Attributes{% endtrans %}</h3>
+{% else %}
+    <fieldset class="attributes">
+{% endif %}
+    <legend>{% trans %}Attributes{% endtrans %}</legend>
+    {% for attributeName, attributeValue in attributes %}
+        {{ form_row(attribute(form, 'attributes' ~ attributeName)) }}
+    {% endfor %}
+{% if tabs|default(false) == true %}
+    </div>
+{% else %}
+    </fieldset>
+{% endif %}

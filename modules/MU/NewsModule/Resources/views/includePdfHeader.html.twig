@@ -1,9 +1,0 @@
-{# purpose of this template: export pages to PDF #}
-<!DOCTYPE html>
-<html xml:lang="{{ app.request.locale }}" lang="{{ app.request.locale }}" dir="auto">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>{{ pageGetVar('title') }}</title>
-    {{ pageAddAsset('stylesheet', zasset('@MUNewsModule:css/pdf.css')) }}
-</head>
-<body>

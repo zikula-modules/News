@@ -1,0 +1,18 @@
+{# purpose of this template: Email for notification sent to content moderator #}
+{% trans_default_domain 'mail' %}
+<p>{% trans with {'%recipient%': recipient.name} %}Hello %recipient%{% endtrans %},</p>
+
+<p>{% trans with {'%entity%': mailData.name, '%editor%': mailData.editor} %}%editor% changed the message "%entity%".{% endtrans %}</p>
+
+<p>{% trans with {'%state%': mailData.newState} %}Its new state is: %state%{% endtrans %}</p>
+
+{% if mailData.remarks is not empty %}
+    <p>{% trans %}Additional remarks:{% endtrans %}<br />{{ mailData.remarks|nl2br }}</p>
+{% endif %}
+
+{% if mailData.newState != 'Deleted'|trans %}
+    <p>{% trans %}Link to the message:{% endtrans %} <a href="{{ mailData.displayUrl|e('html_attr') }}" title="{{ mailData.name|e('html_attr') }}">{{ mailData.displayUrl }}</a></p>
+    <p>{% trans %}Edit the message:{% endtrans %} <a href="{{ mailData.editUrl|e('html_attr') }}" title="{% trans %}Edit{% endtrans %}">{{ mailData.editUrl }}</a></p>
+{% endif %}
+
+<p>{% trans with {'%siteName%': getSystemVar('sitename')} %}This mail has been sent automatically by %siteName%.{% endtrans %}</p>

@@ -1,0 +1,212 @@
+{# purpose of this template: messages admin display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : 'adminBase' %}
+{% extends '@MUNewsModule/' ~ baseTemplate ~ '.html.twig' %}
+{% trans_default_domain 'message' %}
+{% block pageTitle %}{{ message|munewsmodule_formattedTitle|default('Message'|trans) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = message|munewsmodule_formattedTitle|default('Message'|trans) %}
+    {{ templateTitle|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}{% if routeArea == 'admin' %} <small>({{ message.workflowState|munewsmodule_objectState(false)|lower }})</small>{% endif %}
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="munewsmodule-message munewsmodule-display">
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a id="fieldsTab" href="#tabFields" title="{{ 'Fields'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link active">{% trans from 'messages' %}Fields{% endtrans %}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a id="relationsTab" href="#tabRelations" title="{{ 'Related data'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Related data{% endtrans %}</a>
+                </li>
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                    <li class="nav-item" role="presentation">
+                        <a id="attributesTab" href="#tabAttributes" title="{{ 'Attributes'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Attributes{% endtrans %}</a>
+                    </li>
+                {% endif %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                    <li class="nav-item" role="presentation">
+                        <a id="categoriesTab" href="#tabCategories" title="{{ 'Categories'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Categories{% endtrans %}</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item" role="presentation">
+                    <a id="standardFieldsTab" href="#tabStandardFields" title="{{ 'Creation and update'|trans({}, 'messages') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Creation and update{% endtrans %}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a id="hooksTab" href="#tabHooks" title="{{ 'Hooks'|trans({}, 'hooks')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'hooks' %}Hooks{% endtrans %}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade show active" id="tabFields" aria-labelledby="fieldsTab">
+                {% if not isQuickView %}
+                    {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+                    <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{% trans from 'messages' %}Actions{% endtrans %}">
+                        {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                    </div>
+                {% endif %}
+                <h3>{% trans from 'messages' %}Fields{% endtrans %}</h3>
+                <dl>
+                    {% if message.workflowState is not empty and routeArea == 'admin' %}
+                        <dt>{% trans %}State{% endtrans %}</dt>
+                        <dd>{{ message.workflowState|munewsmodule_listEntry('message', 'workflowState') }}</dd>
+                    {% endif %}
+                    {% if message.title is not empty %}
+                        <dt>{% trans %}Title{% endtrans %}</dt>
+                        <dd>{{ message.title }}</dd>
+                    {% endif %}
+                    {% if message.startText is not empty %}
+                        <dt>{% trans %}Start text{% endtrans %}</dt>
+                        <dd>{{ message.startText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}</dd>
+                    {% endif %}
+                    {% if message.imageUpload1 is not empty %}
+                        <dt>{% trans %}Image upload 1{% endtrans %}</dt>
+                        <dd>{% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+                                    <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+                        {% if message.imageUpload1Meta.isImage %}
+                            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+                            <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload1.getPathname() }}{% else %}{{ message.imageUpload1.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        {% else %}
+                            {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
+                        {% endif %}
+                        </a>
+                        {% else %}&nbsp;{% endif %}
+                        </dd>
+                    {% endif %}
+                    {% if message.mainText is not empty %}
+                        <dt>{% trans %}Main text{% endtrans %}</dt>
+                        <dd>{{ message.mainText|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}</dd>
+                    {% endif %}
+                    {% if message.amountOfViews is not empty %}
+                        <dt>{% trans %}Amount of views{% endtrans %}</dt>
+                        <dd>{{ message.amountOfViews }}</dd>
+                    {% endif %}
+                    {% if message.author is not empty %}
+                        <dt>{% trans %}Author{% endtrans %}</dt>
+                        <dd>{{ message.author }}</dd>
+                    {% endif %}
+                    {% if message.approver is not empty %}
+                        <dt>{% trans %}Approver{% endtrans %}</dt>
+                        <dd>{% if message.approver|default and message.approver.getUid() > 0 %}
+                        {% if not isQuickView %}
+                            {{ message.approver.uid|profileLinkByUserId }}{% if currentUser.loggedIn %}{% set sendMessageUrl = message.approver.uid|messageSendLink(urlOnly=true) %}{% if sendMessageUrl != '#' %}{% set linkTitle = 'Send private message to %userName%'|trans({'%userName%': message.approver.uname}, 'messages') %}<a href="{{ sendMessageUrl }}" title="{{ linkTitle|e('html_attr') }}"><i class="fas fa-envelope"></i></a>{% endif %}{% endif %}
+                            <span class="avatar">{{ userAvatar(message.approver.uid, {rating: 'g'}) }}</span>
+                        {% else %}
+                            {{ message.approver.uname }}
+                        {% endif %}
+                        {% else %}&nbsp;{% endif %}
+                        </dd>
+                    {% endif %}
+                    {% if message.notes is not empty %}
+                        <dt>{% trans %}Notes{% endtrans %}</dt>
+                        <dd>{{ message.notes|notifyFilters('munewsmodule.filter_hooks.messages.filter')|safeHtml }}</dd>
+                    {% endif %}
+                    <dt>{% trans %}Display on index{% endtrans %}</dt>
+                    <dd>{% set itemId = message.getKey() %}
+                    <a id="toggleDisplayOnIndex{{ itemId|e('html_attr') }}" href="javascript:void(0);" class="munews-ajax-toggle d-none" data-object-type="message" data-field-name="displayOnIndex" data-item-id="{{ itemId|e('html_attr') }}">
+                        <i class="fas fa-check text-success{% if not message.displayOnIndex %} d-none{% endif %}" id="yesDisplayOnIndex{{ itemId|e('html_attr') }}" title="{{ 'This setting is enabled. Click here to disable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        <i class="fas fa-times text-danger{% if message.displayOnIndex %} d-none{% endif %}" id="noDisplayOnIndex{{ itemId|e('html_attr') }}" title="{{ 'This setting is disabled. Click here to enable it.'|trans({}, 'messages')|e('html_attr') }}"></i>
+                    </a>
+                    <noscript><div id="noscriptDisplayOnIndex{{ itemId|e('html_attr') }}">
+                        {% if message.displayOnIndex %}
+                            <i class="fas fa-check text-success" title="{{ 'Yes'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        {% else %}
+                            <i class="fas fa-times text-danger" title="{{ 'No'|trans({}, 'messages')|e('html_attr') }}"></i>
+                        {% endif %}
+                    </div></noscript>
+                    </dd>
+                    {% if message.imageUpload2 is not empty %}
+                        <dt>{% trans %}Image upload 2{% endtrans %}</dt>
+                        <dd>{% if message.imageUpload2 is not empty and message.imageUpload2Meta|default %}
+                                    <a href="{{ message.imageUpload2Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload2Meta.isImage %} class="image-link"{% endif %}>
+                        {% if message.imageUpload2Meta.isImage %}
+                            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload2') %}
+                            <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload2.getPathname() }}{% else %}{{ message.imageUpload2.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        {% else %}
+                            {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload2Meta.size|munewsmodule_fileSize(message.imageUpload2.getPathname(), false, false) }})
+                        {% endif %}
+                        </a>
+                        {% else %}&nbsp;{% endif %}
+                        </dd>
+                    {% endif %}
+                    {% if message.imageUpload3 is not empty %}
+                        <dt>{% trans %}Image upload 3{% endtrans %}</dt>
+                        <dd>{% if message.imageUpload3 is not empty and message.imageUpload3Meta|default %}
+                                    <a href="{{ message.imageUpload3Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload3Meta.isImage %} class="image-link"{% endif %}>
+                        {% if message.imageUpload3Meta.isImage %}
+                            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload3') %}
+                            <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload3.getPathname() }}{% else %}{{ message.imageUpload3.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        {% else %}
+                            {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload3Meta.size|munewsmodule_fileSize(message.imageUpload3.getPathname(), false, false) }})
+                        {% endif %}
+                        </a>
+                        {% else %}&nbsp;{% endif %}
+                        </dd>
+                    {% endif %}
+                    {% if message.imageUpload4 is not empty %}
+                        <dt>{% trans %}Image upload 4{% endtrans %}</dt>
+                        <dd>{% if message.imageUpload4 is not empty and message.imageUpload4Meta|default %}
+                                    <a href="{{ message.imageUpload4Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload4Meta.isImage %} class="image-link"{% endif %}>
+                        {% if message.imageUpload4Meta.isImage %}
+                            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload4') %}
+                            <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload4.getPathname() }}{% else %}{{ message.imageUpload4.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        {% else %}
+                            {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload4Meta.size|munewsmodule_fileSize(message.imageUpload4.getPathname(), false, false) }})
+                        {% endif %}
+                        </a>
+                        {% else %}&nbsp;{% endif %}
+                        </dd>
+                    {% endif %}
+                    
+                </dl>
+            </div>
+            {{ block('related_items') }}
+            {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                {{ include('@MUNewsModule/Helper/includeAttributesDisplay.html.twig', {obj: message, tabs: true}) }}
+            {% endif %}
+            {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                {{ include('@MUNewsModule/Helper/includeCategoriesDisplay.html.twig', {obj: message, tabs: true}) }}
+            {% endif %}
+            {{ include('@MUNewsModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: message, tabs: true}) }}
+            {{ block('display_hooks') }}
+            {% if not isQuickView %}
+                {% set itemActions = knp_menu_get('mUNewsMenuItemActions', [], {entity: message, area: routeArea, context: 'display'}) %}
+                <div class="btn-group btn-group-sm item-actions" role="group" aria-label="{% trans from 'messages' %}Actions{% endtrans %}">
+                    {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {{ munewsmodule_increaseCounter(message, 'amountOfViews') }}
+{% endblock %}
+{% block related_items %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div role="tabpanel" class="tab-pane fade" id="tabRelations" aria-labelledby="relationsTab">
+        <h3>{% trans from 'messages' %}Related data{% endtrans %}</h3>
+        {% if routeArea == 'admin' %}
+            <h4>{% trans from 'image' %}Images{% endtrans %}</h4>
+        {% else %}
+            <h3>{% trans from 'image' %}Images{% endtrans %}</h3>
+        {% endif %}
+        
+        {% if message.images|default %}
+            {{ include(
+                '@MUNewsModule/Image/Admin/includeDisplayItemListMany.html.twig',
+                {items: message.images}
+            ) }}
+        {% endif %}
+    </div>
+{% endblock %}
+{% block display_hooks %}
+    {% if message.supportsHookSubscribers() %}
+        <div role="tabpanel" class="tab-pane fade" id="tabHooks" aria-labelledby="hooksTab">
+            <h3>{% trans from 'hooks' %}Hooks{% endtrans %}</h3>
+        {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.display_view', id=message.getKey(), urlObject=currentUrlObject, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

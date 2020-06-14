@@ -1,0 +1,235 @@
+{# purpose of this template: build the user form to edit an instance of message #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : 'base' %}
+{% extends 'MUNewsModule::' ~ baseTemplate ~ '.html.twig' %}
+{% trans_default_domain 'message' %}
+{% block title mode == 'create' ? 'Create message'|trans : 'Edit message'|trans %}
+{% block content %}
+    <div class="munewsmodule-message munewsmodule-edit">
+        {% form_theme form with [
+            '@MUNewsModule/Form/bootstrap_4.html.twig',
+            '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form, {attr: {id: 'messageEditForm', class: 'munews-edit-form'}}) }}
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a id="fieldsTab" href="#tabFields" title="{{ 'Fields'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link active">{% trans from 'messages' %}Fields{% endtrans %}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a id="imagesTab" href="#tabImages" title="{{ 'Images'|trans({}, 'image')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'image' %}Images{% endtrans %}</a>
+                </li>
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                    <li class="nav-item" role="presentation">
+                        <a id="attributesTab" href="#tabAttributes" title="{{ 'Attributes'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Attributes{% endtrans %}</a>
+                    </li>
+                {% endif %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                    <li class="nav-item" role="presentation">
+                        <a id="categoriesTab" href="#tabCategories" title="{{ 'Categories'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Categories{% endtrans %}</a>
+                    </li>
+                {% endif %}
+                {% if mode != 'create' %}
+                    <li class="nav-item" role="presentation">
+                        <a id="standardFieldsTab" href="#tabStandardFields" title="{{ 'Creation and update'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Creation and update{% endtrans %}</a>
+                    </li>
+                {% endif %}
+                {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
+                    <li class="nav-item" role="presentation">
+                        <a id="moderationTab" href="#tabModeration" title="{{ 'Moderation options'|trans({}, 'messages')|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{% trans from 'messages' %}Moderation{% endtrans %}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade show active" id="tabFields" aria-labelledby="fieldsTab">
+                    <h3>{% trans from 'messages' %}Fields{% endtrans %}</h3>
+                    {% if translationsEnabled == true %}
+                        <div class="zikula-bootstrap-tab-container">
+                            <ul class="{{ form.vars.id|lower }}-translation-locales nav nav-tabs" role="tablist">
+                                {% for language in supportedLanguages %}
+                                    <li class="nav-item" role="presentation">
+                                        <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}" class="nav-link{% if language == app.request.locale %} active{% endif %}">
+                                            {% if language != app.request.locale and form[language]|default and not form[language].vars.valid %}
+                                                <span class="badge badge-danger"><i class="fas fa-exclamation-triangle"></i> <span class="sr-only">{% trans from 'messages' %}Errors{% endtrans %}</span></span>
+                                            {% endif %}
+                                            {% set hasRequiredFields = language in localesWithMandatoryFields %}
+                                            {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|language_name }}{% if hasRequiredFields %}</span>{% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="{{ form.vars.id|lower }}-translation-fields tab-content">
+                                {% for language in supportedLanguages %}
+                                    <div class="{{ form.vars.id|lower }}-translations-fields-{{ language }} tab-pane fade{% if language == app.request.locale %} show active{% endif %}">
+                                        <fieldset>
+                                            <legend>{{ language|language_name }}</legend>
+                                            {% if language == app.request.locale %}
+                                                {{ form_row(form.title) }}
+                                                {{ form_row(form.startText) }}
+                                                {{ form_row(form.mainText) }}
+                                                {{ form_row(form.slug) }}
+                                            {% else %}
+                                                {{ form_row(attribute(form, 'translations' ~ language)) }}
+                                            {% endif %}
+                                        </fieldset>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        {% set language = app.request.locale %}
+                        <fieldset>
+                            <legend>{{ language|language_name }}</legend>
+                            {{ form_row(form.title) }}
+                            {{ form_row(form.startText) }}
+                            {{ form_row(form.mainText) }}
+                            {{ form_row(form.slug) }}
+                        </fieldset>
+                    {% endif %}
+                    <fieldset>
+                    {% set imageUpload = getModVar('MUNewsModule', 'enablePictureUpload') %}
+                        <legend>{% trans from 'messages' %}Further properties{% endtrans %}</legend>
+                        {% if imageUpload == 0 %}
+                        <div class="d-none">
+                        {% endif %}
+                        {{ form_row(form.imageUpload1) }}
+                        {% if imageUpload == 0 %}
+                        </div>
+                        {% endif %}
+                        <div class="d-none">
+                            {{ form_row(form.amountOfViews) }}
+                        </div>
+                        {{ form_row(form.author) }}
+                        {{ form_row(form.approver) }}
+                        {{ form_row(form.notes) }}
+                        {{ form_row(form.displayOnIndex) }}
+                        {{ form_row(form.messageLanguage) }}
+                        {{ form_row(form.allowComments) }}
+                        {% if imageUpload == 0 %}
+                        <div class="d-none">
+                        {% endif %}
+                        {{ form_row(form.imageUpload2) }}
+                        {{ form_row(form.imageUpload3) }}
+                        {{ form_row(form.imageUpload4) }}
+                        {% if imageUpload == 0 %}
+                        </div>
+                        {% endif %}
+                        {{ form_row(form.startDate) }}
+                        {{ form_row(form.noEndDate) }}
+                        <div id="endDateContainer">
+                        {{ form_row(form.endDate) }}
+                        </div>
+                        {{ form_row(form.weight) }}
+                    </fieldset>
+                </div>
+                
+                {{ include(
+                    '@MUNewsModule/Image/includeSelectEditMany.html.twig',
+                    {group: 'message', heading: 'Images'|trans({}, 'image'), alias: 'images', mandatory: false, idPrefix: 'newsMessage_Images', linkingItem: message, tabs: true, displayMode: 'choices'}
+                ) }}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::ATTRIBUTES'), 'message') %}
+                    {{ include('@MUNewsModule/Helper/includeAttributesEdit.html.twig', {obj: message, tabs: true}) }}
+                {% endif %}
+                {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                    {{ include('@MUNewsModule/Helper/includeCategoriesEdit.html.twig', {obj: message, tabs: true}) }}
+                {% endif %}
+                {% if mode != 'create' %}
+                    {{ include('@MUNewsModule/Helper/includeStandardFieldsEdit.html.twig', {obj: message, tabs: true}) }}
+                {% endif %}
+                
+                {% if supportsHookSubscribers and formHookTemplates|length > 0 %}
+                    <fieldset>
+                        {% for hookTemplate in formHookTemplates %}
+                            {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                        {% endfor %}
+                    </fieldset>
+                {% endif %}
+                
+                <fieldset>
+                    <legend>{% trans from 'messages' %}Communication{% endtrans %}</legend>
+                    {{ form_row(form.additionalNotificationRemarks) }}
+                </fieldset>
+                
+                {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
+                    <div role="tabpanel" class="tab-pane fade" id="tabModeration" aria-labelledby="moderationTab">
+                        <h3>{% trans from 'messages' %}Moderation{% endtrans %}</h3>
+                        {% if form.moderationSpecificCreator is defined %}
+                            {{ form_row(form.moderationSpecificCreator) }}
+                        {% endif %}
+                        {% if form.moderationSpecificCreationDate is defined %}
+                            {{ form_row(form.moderationSpecificCreationDate) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+        
+        {# include possible submit actions #}
+        <div class="form-group form-buttons row">
+            <div class="col-md-9 offset-md-3">
+                {% for action in actions %}
+                    {{ form_widget(attribute(form, action.id)) }}
+                    {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}
+                        {{ form_widget(attribute(form, 'submitrepeat')) }}
+                    {% endif %}
+                {% endfor %}
+                {{ form_widget(form.reset) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+        {% if supportsHookSubscribers %}
+            {% set hookId = mode != 'create' ? message.id : null %}
+            {% set hooks = notifyDisplayHooks(eventName='munewsmodule.ui_hooks.messages.form_edit', id=hookId, outputAsArray=true) %}
+            {% if hooks is iterable and hooks|length > 0 %}
+                {% for area, hook in hooks %}
+                    <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+        
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.EditFunctions.js'), 99) }}
+    {#{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.InlineEditing.js'), 99) }#}
+    <div id="formEditingDefinition" data-mode="{{ mode|e('html_attr') }}" data-entityid="{% if mode != 'create' %}{{ message.id|e('html_attr') }}{% endif %}"></div>
+    <div class="field-editing-definition" data-field-type="upload" data-field-name="munewsmodule_message_imageUpload1_imageUpload1"></div>
+    <div class="field-editing-definition" data-field-type="user" data-field-name="munewsmodule_message_approver"></div>
+    <div class="field-editing-definition" data-field-type="upload" data-field-name="munewsmodule_message_imageUpload2_imageUpload2"></div>
+    <div class="field-editing-definition" data-field-type="upload" data-field-name="munewsmodule_message_imageUpload3_imageUpload3"></div>
+    <div class="field-editing-definition" data-field-type="upload" data-field-name="munewsmodule_message_imageUpload4_imageUpload4"></div>
+    <div class="field-editing-definition" data-field-type="date" data-field-name="munewsmodule_message_startDate"></div>
+    <div class="field-editing-definition" data-field-type="date" data-field-name="munewsmodule_message_endDate"></div>
+    {% if form.moderationSpecificCreator is defined %}
+        <div class="field-editing-definition" data-field-type="user" data-field-name="munewsmodule_message_moderationSpecificCreator"></div>
+    {% endif %}
+    {#<div class="relation-editing-definition" data-object-type="image" data-alias="images" data-prefix="newsMessage_Images" data-inline-prefix="newsMessage_ImagesSelectorDoNew" data-module-name="MUNewsModule" data-include-editing="1" data-input-type="select-multi" data-create-url="{{ path('munewsmodule_image_' ~ routeArea ~ 'edit')|e('html_attr') }}"></div>#}
+    {% set customScript %}
+        <script>
+        /* <![CDATA[ */
+
+            ( function($) {
+                $(document).ready(function() {
+                    var endDate = $('#munewsmodule_message_noEndDate');
+                    $('#endDateContainer').toggleClass('d-none', endDate.prop('checked'));
+                    endDate.click(function (event) {
+                        var noEndDate;
+
+                        noEndDate = $('#munewsmodule_message_noEndDate').prop('checked');
+                        $('#endDateContainer').toggleClass('d-none', noEndDate);
+                        if (noEndDate) {
+                            $('#munewsmodule_message_endDate input').val('');
+                        }
+                    });
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', customScript) }}
+{% endblock %}

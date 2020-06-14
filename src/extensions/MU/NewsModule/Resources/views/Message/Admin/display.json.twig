@@ -1,0 +1,3 @@
+{# purpose of this template: messages display json view #}
+{% trans_default_domain 'message' %}
+{{ message.toArray()|json_encode()|raw }}

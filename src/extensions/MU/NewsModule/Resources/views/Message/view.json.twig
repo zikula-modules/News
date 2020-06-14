@@ -1,0 +1,8 @@
+{# purpose of this template: messages view json view #}
+{% trans_default_domain 'message' %}
+[
+{% for message in items %}
+    {% if not loop.first %},{% endif %}
+    {{ message.toArray()|json_encode()|raw }}
+{% endfor %}
+]

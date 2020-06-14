@@ -1,0 +1,12 @@
+{# purpose of this template: Display images within an external context #}
+{% trans_default_domain 'image' %}
+<dl>
+    {% for image in items %}
+        <dt>{{ image|munewsmodule_formattedTitle }}</dt>
+        {% if image.caption %}
+            <dd>{{ image.caption|striptags|u.truncate(200, '…') }}</dd>
+        {% endif %}
+    {% else %}
+        <dt>{% trans %}No images found.{% endtrans %}</dt>
+    {% endfor %}
+</dl>

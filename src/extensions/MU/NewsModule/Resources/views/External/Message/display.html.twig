@@ -1,0 +1,69 @@
+{# purpose of this template: Display one certain message within an external context #}
+{% trans_default_domain 'message' %}
+{{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js'), 90) }}
+{{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css'), 90) }}
+{{ pageAddAsset('javascript', zasset('@MUNewsModule:js/MUNewsModule.js')) }}
+<div id="message{{ message.getKey() }}" class="munewsmodule-external-message">
+{% if displayMode == 'link' %}
+    <p class="munewsmodule-external-link">
+    <a href="{{ path('munewsmodule_message_display', {'slug': message.slug}) }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}">
+    {{ message|munewsmodule_formattedTitle|notifyFilters('news.filter_hooks.messages.filter')|safeHtml }}
+    </a>
+    </p>
+{% endif %}
+{% if hasPermission('MUNewsModule::', '::', 'ACCESS_EDIT') %}
+    {# for normal users without edit permission show only the actual file per default #}
+    {% if displayMode == 'embed' %}
+        <p class="munewsmodule-external-title">
+            <strong>{{ message|munewsmodule_formattedTitle|notifyFilters('news.filter_hooks.messages.filter')|safeHtml }}</strong>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% if displayMode == 'link' %}
+{% elseif displayMode == 'embed' %}
+    <div class="munewsmodule-external-snippet">
+        {% if message.imageUpload1 is not empty and message.imageUpload1Meta|default %}
+                    <a href="{{ message.imageUpload1Url }}" title="{{ message|munewsmodule_formattedTitle|e('html_attr') }}"{% if message.imageUpload1Meta.isImage %} class="image-link"{% endif %}>
+        {% if message.imageUpload1Meta.isImage %}
+            {% set thumbOptions = attribute(thumbRuntimeOptions, 'messageImageUpload1') %}
+            <img src="{% if app.request.requestFormat == 'pdf' %}{{ message.imageUpload1.getPathname() }}{% else %}{{ message.imageUpload1.getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}{% endif %}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+        {% else %}
+            {% trans from 'messages' %}Download{% endtrans %} ({{ message.imageUpload1Meta.size|munewsmodule_fileSize(message.imageUpload1.getPathname(), false, false) }})
+        {% endif %}
+        </a>
+        {% else %}&nbsp;{% endif %}
+    </div>
+
+    {# you can embed the display template like this: #}
+    {#{ app.request.query.set('raw', 1) }}
+    {% set displayPage = include('@MUNewsModule/Message/display.html.twig', {message: message, routeArea: '', currentUrlObject: null}) %}
+    {% set displayPage = displayPage|split('<body>') %}
+    {% set displayPage = displayPage[1]|split('</body>') %}
+    {{ displayPage[0]|raw }#}
+
+    {# you can distinguish the context like this: #}
+    {# % if source == 'block' %}
+        ... detail block
+    {% elseif source == 'contentType' %}
+        ... detail content type
+    {% elseif source == 'scribite' %}
+        ...
+    {% endif % #}
+
+    {# you can enable more details about the item: #}
+    {#
+        <p class="munewsmodule-external-description">
+            {% if message.startText is not empty %}{{ message.startText }}<br />{% endif %}
+            {% if featureActivationHelper.isEnabled(constant('MU\\NewsModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'message') %}
+                <dl class="category-list">
+                {% for propName, catMapping in message.categories %}
+                    <dt>{{ propName }}</dt>
+                    <dd>{{ catMapping.category.displayName[app.request.locale]|default(catMapping.category.name) }}</dd>
+                {% endfor %}
+                </dl>
+            {% endif %}
+        </p>
+    #}
+{% endif %}
+</div>

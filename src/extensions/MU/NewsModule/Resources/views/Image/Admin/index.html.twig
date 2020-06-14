@@ -1,0 +1,10 @@
+{# purpose of this template: images admin index view #}
+{% extends '@MUNewsModule/adminBase.html.twig' %}
+{% trans_default_domain 'image' %}
+{% block title 'Images'|trans %}
+{% block admin_page_icon 'home' %}
+{% block content %}
+    <div class="munewsmodule-image munewsmodule-index">
+        <p>{% trans %}Welcome to the image section of the News application.{% endtrans %}</p>
+    </div>
+{% endblock %}
