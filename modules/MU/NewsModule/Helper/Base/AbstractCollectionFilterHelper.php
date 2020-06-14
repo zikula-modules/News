@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use MU\NewsModule\Helper\CategoryHelper;
 use MU\NewsModule\Helper\PermissionHelper;
 
@@ -42,6 +43,11 @@ abstract class AbstractCollectionFilterHelper
     protected $currentUserApi;
     
     /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+    
+    /**
      * @var CategoryHelper
      */
     protected $categoryHelper;
@@ -60,12 +66,14 @@ abstract class AbstractCollectionFilterHelper
         RequestStack $requestStack,
         PermissionHelper $permissionHelper,
         CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
         CategoryHelper $categoryHelper,
         VariableApiInterface $variableApi
     ) {
         $this->requestStack = $requestStack;
         $this->permissionHelper = $permissionHelper;
         $this->currentUserApi = $currentUserApi;
+        $this->userRepository = $userRepository;
         $this->categoryHelper = $categoryHelper;
         $this->showOnlyOwnEntries = (bool)$variableApi->get('MUNewsModule', 'showOnlyOwnEntries');
         $this->filterDataByLocale = (bool)$variableApi->get('MUNewsModule', 'filterDataByLocale');
@@ -153,6 +161,8 @@ abstract class AbstractCollectionFilterHelper
             return $parameters;
         }
     
+        $approver = $request->query->getInt('approver', 0);
+    
         $parameters['catId'] = $request->query->get('catId', '');
         $parameters['catIdList'] = $this->categoryHelper->retrieveCategoriesFromRequest('message', 'GET');
         $parameters['images'] = $request->query->get('images', 0);
@@ -160,7 +170,7 @@ abstract class AbstractCollectionFilterHelper
             $parameters['images'] = $parameters['images']->getId();
         }
         $parameters['workflowState'] = $request->query->get('workflowState', '');
-        $parameters['approver'] = $request->query->getInt('approver', 0);
+        $parameters['approver'] = 0 < $approver ? $this->userRepository->find($approver) : null;
         $parameters['messageLanguage'] = $request->query->get('messageLanguage', '');
         $parameters['q'] = $request->query->get('q', '');
         $parameters['displayOnIndex'] = $request->query->get('displayOnIndex', '');

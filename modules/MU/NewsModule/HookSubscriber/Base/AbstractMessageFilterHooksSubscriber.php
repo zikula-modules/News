@@ -46,6 +46,11 @@ abstract class AbstractMessageFilterHooksSubscriber implements HookSubscriberInt
     {
         return $this->translator->__('Message filter hooks subscriber');
     }
+    
+    public function getAreaName()
+    {
+        return 'subscriber.munewsmodule.filter_hooks.messages';
+    }
 
     public function getEvents()
     {
