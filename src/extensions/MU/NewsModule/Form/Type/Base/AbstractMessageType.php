@@ -234,7 +234,7 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => ' validate-upload',
                 'title' => 'Enter the image upload 1 of the message.'
             ],
-            'required' => false && $options['mode'] == 'create',
+            'required' => false && 'create' === $options['mode'],
             'entity' => $options['entity'],
             'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload1')),
@@ -333,7 +333,7 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => ' validate-upload',
                 'title' => 'Enter the image upload 2 of the message.'
             ],
-            'required' => false && $options['mode'] == 'create',
+            'required' => false && 'create' === $options['mode'],
             'entity' => $options['entity'],
             'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload2')),
@@ -347,7 +347,7 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => ' validate-upload',
                 'title' => 'Enter the image upload 3 of the message.'
             ],
-            'required' => false && $options['mode'] == 'create',
+            'required' => false && 'create' === $options['mode'],
             'entity' => $options['entity'],
             'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload3')),
@@ -361,7 +361,7 @@ abstract class AbstractMessageType extends AbstractType
                 'class' => ' validate-upload',
                 'title' => 'Enter the image upload 4 of the message.'
             ],
-            'required' => false && $options['mode'] == 'create',
+            'required' => false && 'create' === $options['mode'],
             'entity' => $options['entity'],
             'allow_deletion' => true,
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload4')),
