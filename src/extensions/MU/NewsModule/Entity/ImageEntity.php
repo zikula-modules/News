@@ -38,6 +38,6 @@ class ImageEntity extends BaseEntity
             return;
         }
 
-        return parent::setTheFile($theFile);
+        parent::setTheFile($theFile);
     }
 }

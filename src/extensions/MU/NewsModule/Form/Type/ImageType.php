@@ -22,66 +22,70 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use MU\NewsModule\Entity\Factory\EntityFactory;
 use MU\NewsModule\Entity\ImageEntity;
 use MU\NewsModule\Form\Type\Field\UploadType;
+use MU\NewsModule\Helper\UploadHelper;
 
 /**
  * Image editing form type implementation class.
  */
 class ImageType extends AbstractType
 {
-    use TranslatorTrait;
-
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
 
+    /**
+     * @var UploadHelper
+     */
+    protected $uploadHelper;
+
     public function __construct(
-        TranslatorInterface $translator,
-        EntityFactory $entityFactory
+        EntityFactory $entityFactory,
+        UploadHelper $uploadHelper
     ) {
-        $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
+        $this->uploadHelper = $uploadHelper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $imageEntity = new ImageEntity(); // TODO ??
+        $imageEntity = $this->entityFactory->createImage(); // TODO ??
         $builder->add('theFile', UploadType::class, [
-            'label' => $this->__('The file') . ':',
+            'label' => 'The file:',
             'attr' => [
+                'accept' => '.' . implode(',.', $this->uploadHelper->getAllowedFileExtensions('image', 'theFile')),
                 'class' => ' validate-upload',
-                'title' => $this->__('Enter the the file of the image.')
+                'title' => 'Enter the the file of the image.'
             ],
-            'required' => true && $options['mode'] == 'create',
+            'required' => true && 'create' === $options['mode'],
             'entity' => $imageEntity,
-            'allowed_extensions' => 'gif, jpeg, jpg, png',
+            'allow_deletion' => true,
+            'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('image', 'theFile')),
             'allowed_size' => ''
         ]);
         $builder->add('caption', TextType::class, [
-            'label' => $this->__('Caption') . ':',
+            'label' => 'Caption:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the caption of the image.')
+                'title' => 'Enter the caption of the image.'
             ],
             'required' => false,
         ]);
         $builder->add('sortNumber', IntegerType::class, [
-            'label' => $this->__('Sort number') . ':',
-            'help' => $this->__f('Note: this value must not be lower than %minValue%.', ['%minValue%' => 1]),
+            'label' => 'Sort number:',
+            'help' => 'Note: this value must not be lower than %minValue%.',
+            'help_translation_parameters' => ['%minValue%' => 1],
             'empty_data' => 1,
             'attr' => [
                 'maxlength' => 4,
                 'class' => '',
                 'min' => 1,
-                'title' => $this->__('Enter the sort number of the image.')
-                    . ' ' . $this->__('Only digits are allowed.')
+                'title' => 'Enter the sort number of the image. Only digits are allowed.'
             ],
             'required' => true,
             'scale' => 0
