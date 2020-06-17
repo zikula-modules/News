@@ -87,8 +87,7 @@ class ImageType extends AbstractType
                 'min' => 1,
                 'title' => 'Enter the sort number of the image. Only digits are allowed.'
             ],
-            'required' => true,
-            'scale' => 0
+            'required' => true
         ]);
     }
 

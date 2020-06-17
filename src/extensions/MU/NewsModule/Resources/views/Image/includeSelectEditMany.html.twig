@@ -2,10 +2,10 @@
 {% if tabs|default(false) == true %}
     <div role="tabpanel" class="tab-pane fade" id="tabImages" aria-labelledby="imagesTab">
     <fieldset class="images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
-        <h3><i class="fa fa-picture-o"></i> {{ heading|default ? heading : __('Images') }}</h3>
+        <h3><i class="fa fa-picture-o"></i> {{ heading|default ? heading : 'Images'|trans }}</h3>
 {% else %}
     <fieldset class="images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
-    <legend><i class="fa fa-picture-o"></i> {{ heading|default ? heading : __('Images') }}</legend>
+    <legend><i class="fa fa-picture-o"></i> {{ heading|default ? heading : 'Images'|trans }}</legend>
 {% endif %}
     {{ form_row(form.images) }}
     {#% for image in form.images %}
@@ -24,7 +24,7 @@
     /* <![CDATA[ */
         ( function($) {
             var imageCollectionHolder;
-            var addImageButton = $('<button type="button" id="addNewImage" class="btn btn-primary"><i class="fa fa-plus"></i> {{ __('Add an image') }}</button>');
+            var addImageButton = $('<button type="button" id="addNewImage" class="btn btn-primary"><i class="fa fa-plus"></i> {% trans %}Add an image{% endtrans %}</button>');
             var newImageContainer = $('<div class="form-group"></div>');
             newImageContainer.append(
                 $('<div class="col-sm-9 col-sm-offset-3"></div>')
@@ -33,8 +33,8 @@
 
             function addImageFormTools(imageFormSection) {
                 var buttonGroup = $('<div class="btn-group btn-group-sm" role="group"></div>');
-                var sortFormButton = $('<a href="javascript:void(0);" class="btn btn-sm btn-default sort-handle"><i class="fa fa-arrows"></i> {{ __('Reorder') }}</a>');
-                var removeFormButton = $('<button type="button" class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>');
+                var sortFormButton = $('<a href="javascript:void(0);" class="btn btn-sm btn-default sort-handle"><i class="fa fa-arrows"></i> {% trans %}Reorder{% endtrans %}</a>');
+                var removeFormButton = $('<button type="button" class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i> {% trans %}Delete{% endtrans %}</button>');
                 removeFormButton.on('click', function (event) {
                     // remove the section for the image form
                     imageFormSection.remove();
