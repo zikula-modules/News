@@ -15,12 +15,7 @@ declare(strict_types=1);
 
 namespace MU\NewsModule\Helper;
 
-use Imagine\Filter\Basic\Autorotate;
-use Imagine\Gd\Imagine;
-use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
 use MU\NewsModule\Helper\Base\AbstractUploadHelper;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -28,84 +23,20 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class UploadHelper extends AbstractUploadHelper
 {
-    public function performFileUpload(string $objectType, UploadedFile $file, string $fieldName): array
+    protected function validateFileUpload(string $objectType, UploadedFile $file, string $fieldName): bool
     {
-        if ('message' !== $objectType) {
-            return parent::performFileUpload($objectType, $file, $fieldName);
+        $result = parent::validateFileUpload($objectType, $file, $fieldName);
+        if (false === $result || 'message' !== $objectType) {
+            return $result;
         }
 
-        $result = [
-            'fileName' => '',
-            'metaData' => []
-        ];
-    
-        // check whether uploads are allowed for the given object type
-        if (!in_array($objectType, $this->allowedObjectTypes, true)) {
-            return $result;
-        }
-    
-        // perform validation
-        if (!$this->validateFileUpload($objectType, $file, $fieldName)) {
-            return $result;
-        }
-    
-        // build the file name
-        $fileName = $file->getClientOriginalName();
-        $fileNameParts = explode('.', $fileName);
-        $extension = $this->determineFileExtension($file);
-        $fileNameParts[count($fileNameParts) - 1] = $extension;
-        $fileName = implode('.', $fileNameParts);
-    
         $request = $this->requestStack->getCurrentRequest();
         $session = $request->hasSession() ? $request->getSession() : null;
         $flashBag = null !== $session ? $session->getFlashBag() : null;
-    
-        // retrieve the final file name
-        try {
-            $basePath = $this->kernel->getProjectDir() . '/' . $this->getFileBaseFolder($objectType, $fieldName);
-        } catch (\Exception $exception) {
-            if (null !== $flashBag) {
-                $flashBag->add('error', $exception->getMessage());
-            }
-            $logArgs = [
-                'app' => 'MUNewsModule',
-                'user' => $this->currentUserApi->get('uname'),
-                'entity' => $objectType,
-                'field' => $fieldName
-            ];
-            $this->logger->error(
-                '{app}: User {user} could not detect upload destination path for entity {entity} and field {field}. '
-                    . ' ' . $exception->getMessage(),
-                $logArgs
-            );
 
-            return $result;
-        }
-        $fileName = $this->determineFileName($objectType, $fieldName, $basePath, $fileName, $extension);
-    
-        $destinationFilePath = $basePath . $fileName;
-        $targetFile = $file->move($basePath, $fileName);
-
-        // validate image file
-        $isImage = in_array($extension, $this->imageFileTypes, true);
-        if ($isImage) {
-            $imgInfo = getimagesize($destinationFilePath);
-            if (!is_array($imgInfo) || !$imgInfo[0] || !$imgInfo[1]) {
-                if (null !== $flashBag) {
-                    $flashBag->add('error', $this->trans('Error! This file type seems not to be a valid image.'));
-                }
-                $this->logger->error(
-                    '{app}: User {user} tried to upload a file which is seems not to be a valid image.',
-                    ['app' => 'MUNewsModule', 'user' => $this->currentUserApi->get('uname')]
-                );
-        
-                return false;
-            }
-        }
-        
         // validate size
         // get file size of uploaded image
-        $fileSize = filesize($destinationFilePath);
+        $fileSize = $file->getSize();
 
         // get setting - mod var
         $maxSize = $this->moduleVars['maxSize'];
@@ -176,55 +107,6 @@ class UploadHelper extends AbstractUploadHelper
             }
         }
 
-        // collect data to return
-        $result['fileName'] = $fileName;
-        $result['metaData'] = $this->readMetaDataForFile($fileName, $destinationFilePath);
-
-        $isImage = in_array($extension, $this->imageFileTypes, true);
-        if ($isImage && 'gif' !== $extension) {
-            // fix wrong orientation and shrink too large image if needed
-            @ini_set('memory_limit', '1G');
-            $imagine = new Imagine();
-            $image = $imagine->open($destinationFilePath);
-            $autorotateFilter = new Autorotate();
-            $image = $autorotateFilter->apply($image);
-            $image->save($destinationFilePath);
-
-            // check if shrinking functionality is enabled
-            $fieldSuffix = ucfirst($objectType) . ucfirst($fieldName);
-            if (
-                isset($this->moduleVars['enableShrinkingFor' . $fieldSuffix])
-                && true === (bool)$this->moduleVars['enableShrinkingFor' . $fieldSuffix]
-            ) {
-                // check for maximum size
-                $maxWidth = isset($this->moduleVars['shrinkWidth' . $fieldSuffix])
-                    ? $this->moduleVars['shrinkWidth' . $fieldSuffix]
-                    : 800
-                ;
-                $maxHeight = isset($this->moduleVars['shrinkHeight' . $fieldSuffix])
-                    ? $this->moduleVars['shrinkHeight' . $fieldSuffix]
-                    : 600
-                ;
-                $thumbMode = isset($this->moduleVars['thumbnailMode' . $fieldSuffix])
-                    ? $this->moduleVars['thumbnailMode' . $fieldSuffix]
-                    : ImageInterface::THUMBNAIL_INSET
-                ;
-    
-                $imgInfo = getimagesize($destinationFilePath);
-                if ($imgInfo[0] > $maxWidth || $imgInfo[1] > $maxHeight) {
-                    // resize to allowed maximum size
-                    $imagine = new Imagine();
-                    $image = $imagine->open($destinationFilePath);
-                    $thumb = $image->thumbnail(new Box($maxWidth, $maxHeight), $thumbMode);
-                    $thumb->save($destinationFilePath);
-                }
-            }
-
-            // update meta data excluding EXIF
-            $newMetaData = $this->readMetaDataForFile($fileName, $destinationFilePath, false);
-            $result['metaData'] = array_merge($result['metaData'], $newMetaData);
-        }
-
-        return $result;
+        return true;
     }
 }

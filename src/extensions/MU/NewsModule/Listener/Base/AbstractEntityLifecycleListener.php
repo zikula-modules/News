@@ -329,9 +329,13 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             $baseUrl = $request->getSchemeAndHttpHost() . $request->getBasePath();
         
             $uploadBaseDirectory = $uploadHelper->getFileBaseFolder($entity->get_objectType());
-            $entity->set_uploadBasePathRelative($uploadBaseDirectory);
+            if ('/public' !== mb_substr($uploadBaseDirectory, -7)) {
+                $entity->set_uploadBasePathRelative(mb_substr($uploadBaseDirectory, 7));
+            } else {
+                $entity->set_uploadBasePathRelative($uploadBaseDirectory);
+            }
             $entity->set_uploadBasePathAbsolute($this->kernel->getProjectDir() . '/' . $uploadBaseDirectory);
-            $entity->set_uploadBaseUrl(str_replace('/public', '', $baseUrl));
+            $entity->set_uploadBaseUrl($baseUrl);
         
             // determine meta data if it does not exist
             foreach ($uploadFields as $fieldName) {
