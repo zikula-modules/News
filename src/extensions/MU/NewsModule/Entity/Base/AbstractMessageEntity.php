@@ -188,8 +188,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     protected $displayOnIndex = true;
     
     /**
-     * @ORM\Column(length=7)
-     * @Assert\NotNull
+     * @ORM\Column(length=7, nullable=true)
      * @Assert\Length(min="0", max="7", allowEmptyString="true")
      * @Assert\Locale
      * @var string $messageLanguage
@@ -667,15 +666,15 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    public function getMessageLanguage(): string
+    public function getMessageLanguage(): ?string
     {
         return $this->messageLanguage;
     }
     
-    public function setMessageLanguage(string $messageLanguage): void
+    public function setMessageLanguage(string $messageLanguage = null): void
     {
         if ($this->messageLanguage !== $messageLanguage) {
-            $this->messageLanguage = $messageLanguage ?? '';
+            $this->messageLanguage = $messageLanguage;
         }
     }
     

@@ -90,7 +90,7 @@ application "News" targets ZK30 {
                     defaultValue "true"
                     mandatory false
                 },
-                string "messageLanguage" {
+                string "messageLanguage" nullable {
                     mandatory false
                     displayType VIEW
                     length 7
