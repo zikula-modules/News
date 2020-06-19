@@ -504,7 +504,7 @@ abstract class AbstractUploadHelper
                 }
             } elseif (1 === $namingScheme) {
                 // md5 name
-                $fileName = md5(uniqid(mt_rand(), true)) . '.' . $extension;
+                $fileName = md5(uniqid((string)mt_rand(), true)) . '.' . $extension;
             } elseif (2 === $namingScheme) {
                 // prefix with random number
                 $fileName = $fieldName . random_int(1, 999999) . '.' . $extension;
