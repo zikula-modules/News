@@ -1,3 +1,3 @@
 # Changelog
 
-Changes in MUNewsModule 2.0.0
+Changes in MUNewsModule 2.1.0
