@@ -21,10 +21,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\BlocksModule\Collectible\PendingContentCollectible;
 use Zikula\BlocksModule\Event\PendingContentEvent;
 use Zikula\Bundle\CoreBundle\Collection\Container;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use MU\NewsModule\Helper\WorkflowHelper;
 use Zikula\ScribiteModule\Event\EditorHelperEvent;
+use Zikula\ScribiteModule\Event\LoadExternalPluginsEvent;
 
 /**
  * Event handler implementation class for special purposes and 3rd party api support.
@@ -66,12 +66,9 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PendingContentEvent::class                => ['pendingContentListener', 5],
-            EditorHelperEvent::class                  => ['getEditorHelpers', 5],
-            'moduleplugin.ckeditor.externalplugins'   => ['getCKEditorPlugins', 5],
-            'moduleplugin.quill.externalplugins'      => ['getQuillPlugins', 5],
-            'moduleplugin.summernote.externalplugins' => ['getSummernotePlugins', 5],
-            'moduleplugin.tinymce.externalplugins'    => ['getTinyMcePlugins', 5]
+            PendingContentEvent::class => ['pendingContentListener', 5],
+            EditorHelperEvent::class => ['getEditorHelpers', 5],
+            LoadExternalPluginsEvent::class => ['getEditorPlugins', 5]
         ];
     }
     
@@ -109,11 +106,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
      * This occurs when Scribite adds pagevars to the editor page.
      * MUNewsModule will use this to add a javascript helper to add custom items.
      *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Note the selected editor name can be used like this: `if ('CKEditor' === $event->getEditor())`.
      */
     public function getEditorHelpers(EditorHelperEvent $event): void
     {
@@ -152,81 +145,24 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     }
     
     /**
-     * Listener for the `moduleplugin.ckeditor.externalplugins` event.
-     *
-     * Adds external plugin to CKEditor.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Listener for the `LoadExternalPluginsEvent`.
      */
-    public function getCKEditorPlugins(GenericEvent $event): void
+    public function getEditorPlugins(LoadExternalPluginsEvent $event): void
     {
-        $event->getSubject()->add([
-            'name' => 'munewsmodule',
-            'path' => $this->getPathToModuleWebAssets() . 'scribite/CKEditor/munewsmodule/',
-            'file' => 'plugin.js',
-            'img' => 'ed_munewsmodule.gif'
-        ]);
-    }
-    
-    /**
-     * Listener for the `moduleplugin.quill.externalplugins` event.
-     *
-     * Adds external plugin to Quill.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     */
-    public function getQuillPlugins(GenericEvent $event): void
-    {
-        $event->getSubject()->add([
-            'name' => 'munewsmodule',
-            'path' => $this->getPathToModuleWebAssets() . 'scribite/Quill/munewsmodule/plugin.js'
-        ]);
-    }
-    
-    /**
-     * Listener for the `moduleplugin.summernote.externalplugins` event.
-     *
-     * Adds external plugin to Summernote.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     */
-    public function getSummernotePlugins(GenericEvent $event): void
-    {
-        $event->getSubject()->add([
-            'name' => 'munewsmodule',
-            'path' => $this->getPathToModuleWebAssets() . 'scribite/Summernote/munewsmodule/plugin.js'
-        ]);
-    }
-    
-    /**
-     * Listener for the `moduleplugin.tinymce.externalplugins` event.
-     *
-     * Adds external plugin to TinyMce.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     */
-    public function getTinyMcePlugins(GenericEvent $event): void
-    {
-        $event->getSubject()->add([
-            'name' => 'munewsmodule',
-            'path' => $this->getPathToModuleWebAssets() . 'scribite/TinyMce/munewsmodule/plugin.js'
-        ]);
+        $editorId = $event->getEditor();
+        if ('CKEditor' === $editorId) {
+            $event->getPluginCollection()->add([
+                'name' => 'munewsmodule',
+                'path' => $this->getPathToModuleWebAssets() . 'scribite/' . $editorId . '/munewsmodule/',
+                'file' => 'plugin.js',
+                'img' => 'ed_munewsmodule.gif'
+            ]);
+        } elseif (in_array($editorId, ['Quill', 'Summernote', 'TinyMce'], true)) {
+            $event->getPluginCollection()->add([
+                'name' => 'munewsmodule',
+                'path' => $this->getPathToModuleWebAssets() . 'scribite/' . $editorId . '/munewsmodule/plugin.js'
+            ]);
+        }
     }
     
     /**

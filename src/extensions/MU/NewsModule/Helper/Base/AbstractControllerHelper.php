@@ -26,8 +26,8 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use MU\NewsModule\Entity\Factory\EntityFactory;
-use MU\NewsModule\Helper\ArchiveHelper;
 use MU\NewsModule\Helper\CollectionFilterHelper;
+use MU\NewsModule\Helper\ExpiryHelper;
 use MU\NewsModule\Helper\FeatureActivationHelper;
 use MU\NewsModule\Helper\ImageHelper;
 use MU\NewsModule\Helper\PermissionHelper;
@@ -82,7 +82,7 @@ abstract class AbstractControllerHelper
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
-        ArchiveHelper $archiveHelper,
+        ExpiryHelper $expiryHelper,
         FormFactoryInterface $formFactory,
         VariableApiInterface $variableApi,
         EntityFactory $entityFactory,
@@ -101,7 +101,7 @@ abstract class AbstractControllerHelper
         $this->imageHelper = $imageHelper;
         $this->featureActivationHelper = $featureActivationHelper;
     
-        $archiveHelper->archiveObsoleteObjects(75);
+        $expiryHelper->handleObsoleteObjects(75);
     }
     
     /**
