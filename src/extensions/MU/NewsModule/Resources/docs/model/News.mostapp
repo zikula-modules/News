@@ -3,7 +3,7 @@ application "News" targets ZK30 {
     author "Michael Ueberschaer"
     email "info@homepages-mit-zikula.de"
     url "https://homepages-mit-zikula.de"
-    version "2.1.0"
+    version "2.0.0"
     prefix "news"
     generateMailzApi true
     generateNewsletterPlugin true
