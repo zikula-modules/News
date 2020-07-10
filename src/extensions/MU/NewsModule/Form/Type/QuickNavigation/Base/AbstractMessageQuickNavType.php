@@ -246,6 +246,7 @@ abstract class AbstractMessageQuickNavType extends AbstractType
             ],
             'required' => false,
             'placeholder' => 'All',
+            /** @Ignore */
             'choices' => $this->localeApi->getSupportedLocaleNames()
         ]);
     }
