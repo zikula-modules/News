@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace MU\NewsModule\Listener;
 
-use MU\NewsModule\Listener\Base\AbstractModuleDispatchListener;
+use MU\NewsModule\Listener\Base\AbstractConnectionsMenuListener;
 
 /**
  * Event handler implementation class for adding connections to extension menus.
