@@ -30,13 +30,13 @@
             {% endif %}
             {% if status == 'author' %}
             {% if obj.author == '' %}   
-                {{ __f('Created by %user', {'%user': profileLink})|raw }}      
+                {{ 'Created by %user%'|trans({'%user%': profileLink})|raw }}
             {% else %}
-                {{ __f('Created by %user', {'%user': obj.author})|raw }} 
+                {{ 'Created by %user%'|trans({'%user%': obj.author})|raw }}
             {% endif %}
             {% endif %}
             {% if status == 'date' %}
-                {{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
+                {{ 'Created on %date%'|trans({'%date%': obj.createdDate|format_datetime('medium', 'short')})|raw }}
             {% endif %}
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.createdBy.uid|messageSendLink(urlOnly=true) %}
