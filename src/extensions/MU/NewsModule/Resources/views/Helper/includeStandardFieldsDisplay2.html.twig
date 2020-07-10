@@ -13,63 +13,61 @@
         {% set status = 'author' %}  
     {% endif %}
 {% endif %}
-{% if (obj.createdBy|default and obj.createdBy.getUid() > 0) and (obj.updatedBy|default and obj.updatedBy.getUid() > 0) %}
-
+{% if (obj.createdBy|default and obj.createdBy.uid > 0) and (obj.updatedBy|default and obj.updatedBy.uid > 0) %}
     <dl class="propertylist">
-    {% if obj.createdBy|default and obj.createdBy.getUid() > 0 %}
-        {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
+    {% if obj.createdBy|default and obj.createdBy.uid > 0 %}
+        {% set profileLink = obj.createdBy.uid|profileLinkByUserId() %}
         {% if (status == 'both' or status == 'author') and obj.author == '' %}
-        <dd class="message-avatar">{{ userAvatar(obj.createdBy.getUid(), {rating: 'g'}) }}</dd>
+        <dd class="message-avatar">{{ userAvatar(obj.createdBy.uid, {rating: 'g'}) }}</dd>
         {% endif %}
         <dd>
-        {% if status == 'both' %}
-        {% if obj.author == '' %} 
-            {{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
-        {% else %}
-            {{ __f('Created by %user on %date', {'%user': obj.author, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}       
-        {% endif %}
-        {% endif %}
-        {% if status == 'author' %}
-        {% if obj.author == '' %}   
-            {{ __f('Created by %user', {'%user': profileLink})|raw }}      
-        {% else %}
-            {{ __f('Created by %user', {'%user': obj.author})|raw }} 
-        {% endif %}
-        {% endif %}
-        {% if status == 'date' %}
-            {{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
-        {% endif %}
+            {% if status == 'both' %}
+                {% if obj.author == '' %} 
+                    {{ 'Created by %user% on %date%'|trans({'%user%': profileLink, '%date%': obj.createdDate|format_datetime('medium', 'short')})|raw }}
+                {% else %}
+                    {{ 'Created by %user% on %date%'|trans({'%user%': obj.author, '%date%': obj.createdDate|format_datetime('medium', 'short')})|raw }}
+                {% endif %}
+            {% endif %}
+            {% if status == 'author' %}
+            {% if obj.author == '' %}   
+                {{ __f('Created by %user', {'%user': profileLink})|raw }}      
+            {% else %}
+                {{ __f('Created by %user', {'%user': obj.author})|raw }} 
+            {% endif %}
+            {% endif %}
+            {% if status == 'date' %}
+                {{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}
+            {% endif %}
             {% if currentUser.loggedIn %}
-                {% set sendMessageUrl = obj.createdBy.getUid()|messageSendLink(urlOnly=true) %}
+                {% set sendMessageUrl = obj.createdBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
-                    <a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', {'%userName%': obj.createdBy.getUname()}) }}"><i class="fa fa-envelope-o"></i></a>
+                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.createdBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fas fa-envelope"></i></a>
                 {% endif %}
             {% endif %}
         </dd>
     {% endif %}<br />
-    {% if obj.updatedBy|default and obj.updatedBy.getUid() > 0 and obj.updatedBy != obj.createdBy %}
-        {% set profileLink = obj.updatedBy.getUid()|profileLinkByUserId() %}
+    {% if obj.updatedBy|default and obj.updatedBy.uid > 0 and obj.updatedBy != obj.createdBy %}
+        {% set profileLink = obj.updatedBy.uid|profileLinkByUserId() %}
         {% if status == 'both' or status == 'author' %}
-        <dd class="message-avatar">{{ userAvatar(obj.updatedBy.getUid(), {rating: 'g'}) }}</dd>
+        <dd class="message-avatar">{{ userAvatar(obj.updatedBy.uid, {rating: 'g'}) }}</dd>
         {% endif %}
         <dd>
-        {% if status == 'both' %}
-            {{ __f('Updated by %user on %date', {'%user': profileLink, '%date': obj.updatedDate|localizeddate('medium', 'short')})|raw }}
-        {% endif %}
-        {% if status == 'author' %}
-            {{ __f('Updated by %user', {'%user': profileLink})|raw }}
-        {% endif %}
-        {% if status == 'date' %}
-            {{ __f('Updated on %date', {'%date': obj.updatedDate|localizeddate('medium', 'short')})|raw }}
-        {% endif %}
+            {% if status == 'both' %}
+                {{ 'Last update by %user% on %date%'|trans({'%user%': profileLink, '%date%': obj.updatedDate|format_datetime('medium', 'short')})|raw }}
+            {% endif %}
+            {% if status == 'author' %}
+                {{ 'Last update by %user%'|trans({'%user%': profileLink})|raw }}
+            {% endif %}
+            {% if status == 'date' %}
+                    {{ 'Last update on %date%'|trans({'%date%': obj.updatedDate|format_datetime('medium', 'short')})|raw }}
+            {% endif %}
             {% if currentUser.loggedIn %}
-                {% set sendMessageUrl = obj.updatedBy.getUid()|messageSendLink(urlOnly=true) %}
+                {% set sendMessageUrl = obj.updatedBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
-                    <a href="{{ sendMessageUrl }}" title="{{ __f('Send private message to %userName%', {'%userName%': obj.updatedBy.getUname()}) }}"><i class="fa fa-envelope-o"></i></a>
+                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.updatedBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fas fa-envelope"></i></a>
                 {% endif %}
             {% endif %}
         </dd>
     {% endif %}
     </dl>
-
 {% endif %}
