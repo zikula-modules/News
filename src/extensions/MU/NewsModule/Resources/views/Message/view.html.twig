@@ -5,7 +5,7 @@
 {% block content %}
     <div class="munewsmodule-message munewsmodule-view">
         {% set viewActions = knp_menu_get('mUNewsMenuViewActions', [], {objectType: 'message', area: routeArea}) %}
-        {{ knp_menu_render(viewActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
+        {{ knp_menu_render(viewActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
 
         {#{ include('@MUNewsModule/Message/viewQuickNav.html.twig') }}{# see template file for available options #}
 
@@ -26,7 +26,7 @@
                         {% endif %}
                     </a>
                 </div>{% else %}&nbsp;{% endif %}
-                {{ message.startText|striptags|u.truncate(500, '…') }}
+                {{ message.startText|striptags|u.truncate(500, '...') }}
                 <br /><br /><a class="btn btn-success btn-sm more-link" href="{{ path('munewsmodule_message_' ~ routeArea ~ 'display', {slug: message.slug}) }}" title="{{ 'View detail page'|trans({}, 'messages')|e('html_attr') }}">{{ 'Read more of %title%'|trans({'%title%': message.title|notifyFilters('munewsmodule.filterhook.messages')|safeHtml}, 'messages') }}</a>
             </div>
         {% endfor %}
