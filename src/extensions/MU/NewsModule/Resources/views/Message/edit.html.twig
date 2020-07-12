@@ -1,6 +1,6 @@
 {# purpose of this template: build the user form to edit an instance of message #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : 'base' %}
-{% extends 'MUNewsModule::' ~ baseTemplate ~ '.html.twig' %}
+{% extends '@MUNewsModule/' ~ baseTemplate ~ '.html.twig' %}
 {% trans_default_domain 'message' %}
 {% block title mode == 'create' ? 'Create message'|trans : 'Edit message'|trans %}
 {% block content %}
