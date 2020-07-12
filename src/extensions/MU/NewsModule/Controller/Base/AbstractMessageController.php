@@ -238,8 +238,6 @@ abstract class AbstractMessageController extends AbstractController
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
         
-        $templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
-        
         // delegate form processing to the form handler
         $result = $formHandler->processForm($templateParameters);
         if ($result instanceof RedirectResponse) {
@@ -247,6 +245,12 @@ abstract class AbstractMessageController extends AbstractController
         }
         
         $templateParameters = $formHandler->getTemplateParameters();
+        
+        $templateParameters = $controllerHelper->processEditActionParameters(
+            $objectType,
+            $templateParameters,
+            $templateParameters['message']->supportsHookSubscribers()
+        );
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'edit', $templateParameters);
@@ -273,9 +277,7 @@ abstract class AbstractMessageController extends AbstractController
         string $slug,
         bool $isAdmin = false
     ): Response {
-        if (null === $message) {
-            $message = $entityFactory->getRepository('message')->selectBySlug($slug);
-        }
+        $message = $entityFactory->getRepository('message')->selectBySlug($slug);
         if (null === $message) {
             throw new NotFoundHttpException(
                 $this->trans(
@@ -412,7 +414,11 @@ abstract class AbstractMessageController extends AbstractController
             $templateParameters['formHookTemplates'] = $formHook->getTemplates();
         }
         
-        $templateParameters = $controllerHelper->processDeleteActionParameters($objectType, $templateParameters, true);
+        $templateParameters = $controllerHelper->processDeleteActionParameters(
+            $objectType,
+            $templateParameters,
+            $message->supportsHookSubscribers()
+        );
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'delete', $templateParameters);
