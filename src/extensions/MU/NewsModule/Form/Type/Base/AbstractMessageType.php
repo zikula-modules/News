@@ -197,7 +197,6 @@ abstract class AbstractMessageType extends AbstractType
         $builder->add('slug', TextType::class, [
             'label' => 'Permalink:',
             'required' => 'create' !== $options['mode'],
-            'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => 'validate-unique',
