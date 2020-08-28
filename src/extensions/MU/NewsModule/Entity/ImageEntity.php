@@ -35,7 +35,7 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class ImageEntity extends BaseEntity
 {
-    public function setTheFile(File $theFile = null): void
+    public function setTheFile(?File $theFile = null): void
     {
         if (null === $theFile || '' === $theFile) {
             return;
