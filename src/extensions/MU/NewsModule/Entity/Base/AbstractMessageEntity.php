@@ -400,7 +400,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     protected $locale;
     
     /**
-     * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageAttributeEntity", 
+     * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageAttributeEntity",
      *                mappedBy="entity", cascade={"all"}, 
      *                orphanRemoval=true, indexBy="name")
      *
@@ -1295,7 +1295,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         $collection = $this->images;
         $this->images = new ArrayCollection();
         foreach ($collection as $rel) {
-            $this->addImages( clone $rel);
+            $this->addImages(clone $rel);
         }
     
         // clone categories

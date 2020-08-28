@@ -67,7 +67,7 @@ abstract class AbstractItemType extends AbstractContentFormType
     {
         $builder->add('objectType', HiddenType::class, [
             'label' => 'Object type:',
-            'empty_data' => 'message'
+            'empty_data' => 'message',
         ]);
     }
 

@@ -224,7 +224,6 @@ class MessageController extends AbstractMessageController
             false
         );
     }
-    
     /**
      * @Route("/message/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
      *        requirements = {"id" = "\d+"},
@@ -247,6 +246,5 @@ class MessageController extends AbstractMessageController
             $id
         );
     }
-    
     // feel free to add your own controller methods here
 }

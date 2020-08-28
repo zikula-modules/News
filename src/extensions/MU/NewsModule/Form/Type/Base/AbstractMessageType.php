@@ -463,7 +463,7 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
             'label' => 'Images',
             'attr' => [
-                'title' => 'Choose the images.'
+                'title' => 'Choose the images.',
             ]
         ]);
     }
