@@ -209,10 +209,10 @@ abstract class AbstractItemListType extends AbstractContentFormType
             'choices' => [
                 'Only item titles' => 'itemlist_display.html.twig',
                 'With description' => 'itemlist_display_description.html.twig',
-                'Custom template' => 'custom'
+                'Custom template' => 'custom',
             ],
             'multiple' => false,
-            'expanded' => false
+            'expanded' => false,
         ]);
         $exampleTemplate = 'itemlist_[objectType]_display.html.twig';
         $builder->add('customTemplate', TextType::class, [
@@ -260,7 +260,7 @@ abstract class AbstractItemListType extends AbstractContentFormType
                 'object_type' => 'message',
                 'is_categorisable' => false,
                 'category_helper' => null,
-                'feature_activation_helper' => null
+                'feature_activation_helper' => null,
             ])
             ->setRequired(['object_type'])
             ->setDefined(['is_categorisable', 'category_helper', 'feature_activation_helper'])

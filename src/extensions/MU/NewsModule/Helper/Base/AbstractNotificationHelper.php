@@ -109,7 +109,7 @@ abstract class AbstractNotificationHelper
     /**
      * List of notification recipients.
      *
-     * @var array $recipients
+     * @var array
      */
     protected $recipients = [];
     
@@ -259,7 +259,7 @@ abstract class AbstractNotificationHelper
     /**
      * Collects data for building the recipients array.
      */
-    protected function addRecipient(UserEntity $user = null): void
+    protected function addRecipient(?UserEntity $user = null): void
     {
         if ($this->usesDesignatedEntityFields()) {
             $recipientTypeParts = explode('-', $this->recipientType);
@@ -334,19 +334,19 @@ abstract class AbstractNotificationHelper
                     ->to(new Address($recipient['email'], $recipient['name']))
                     ->subject($subject)
                     ->html($body)
-                ;    
+                ;
         
                 $this->mailer->send($email);
         
                 if ($this->mailLoggingEnabled) {
                     $this->mailLogger->info(sprintf('Email sent to %s', $recipient['email']), [
-                        'in' => __METHOD__
+                        'in' => __METHOD__,
                     ]);
                 }
             }
         } catch (TransportExceptionInterface $exception) {
             $this->mailLogger->error($exception->getMessage(), [
-                'in' => __METHOD__
+                'in' => __METHOD__,
             ]);
         
             return false;
@@ -411,7 +411,7 @@ abstract class AbstractNotificationHelper
         $hasDisplayAction = in_array($objectType, ['message'], true);
         $hasEditAction = in_array($objectType, ['message'], true);
         $routeArea = in_array($this->recipientType, ['moderator', 'superModerator'], true) ? 'admin' : '';
-        $routePrefix = 'munewsmodule_' . strtolower($objectType) . '_' . $routeArea;
+        $routePrefix = 'munewsmodule_' . mb_strtolower($objectType) . '_' . $routeArea;
     
         $urlArgs = $this->entity->createUrlArgs();
         $displayUrl = $hasDisplayAction

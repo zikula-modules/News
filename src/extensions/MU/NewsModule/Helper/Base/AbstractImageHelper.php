@@ -117,7 +117,7 @@ abstract class AbstractImageHelper
                     'thumbnailMode' . ucfirst($objectType) . ucfirst($fieldName),
                     ImageInterface::THUMBNAIL_INSET
                 ),
-                'extension' => null // file extension for thumbnails (jpg, png, gif; null for original file type)
+                'extension' => null, // file extension for thumbnails (jpg, png, gif; null for original file type)
             ]
         ];
     
@@ -130,7 +130,7 @@ abstract class AbstractImageHelper
                 $defaultHeight = 'view' === $args['action'] ? 24 : 180;
                 $options['thumbnail']['size'] = [
                     $this->variableApi->get('MUNewsModule', 'thumbnailWidth' . $fieldSuffix, $defaultWidth),
-                    $this->variableApi->get('MUNewsModule', 'thumbnailHeight' . $fieldSuffix, $defaultHeight)
+                    $this->variableApi->get('MUNewsModule', 'thumbnailHeight' . $fieldSuffix, $defaultHeight),
                 ];
             }
         }

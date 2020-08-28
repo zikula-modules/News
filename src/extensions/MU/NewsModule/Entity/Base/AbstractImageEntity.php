@@ -154,7 +154,8 @@ abstract class AbstractImageEntity extends EntityAccess
      * )
      * @ORM\JoinTable(name="mu_news_message")
      * @Assert\Type(type="MU\NewsModule\Entity\MessageEntity")
-     * @var \MU\NewsModule\Entity\MessageEntity $message
+     *
+     * @var \MU\NewsModule\Entity\MessageEntity
      */
     protected $message;
     
@@ -251,7 +252,7 @@ abstract class AbstractImageEntity extends EntityAccess
     
         $fileName = $this->theFileFileName;
         if (!empty($fileName) && !$this->_uploadBasePathRelative) {
-            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getTheFile().');
+            throw new RuntimeException('Invalid upload base path in ' . static::class . '#getTheFile().');
         }
     
         $filePath = $this->_uploadBasePathAbsolute . 'thefile/' . $fileName;
@@ -269,7 +270,7 @@ abstract class AbstractImageEntity extends EntityAccess
     /**
      * Sets the the file.
      */
-    public function setTheFile(File $theFile = null): void
+    public function setTheFile(?File $theFile = null): void
     {
         if (null === $this->theFile && null === $theFile) {
             return;

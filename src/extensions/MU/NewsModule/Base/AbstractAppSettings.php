@@ -1806,7 +1806,7 @@ abstract class AbstractAppSettings
     {
         // normalise group selector values
         $group = $this->getModerationGroupForMessages();
-        $group = is_object($group) ? $group->getGid() : intval($group);
+        $group = is_object($group) ? $group->getGid() : (int) $group;
         $this->setModerationGroupForMessages($group);
     
         $this->variableApi->set('MUNewsModule', 'enableAttribution', $this->getEnableAttribution());

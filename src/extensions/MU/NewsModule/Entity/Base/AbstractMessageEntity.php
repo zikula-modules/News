@@ -427,7 +427,8 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
      * )
      * @ORM\JoinTable(name="mu_news_messageimages")
      * @ORM\OrderBy({"sortNumber" = "ASC"})
-     * @var \MU\NewsModule\Entity\ImageEntity[] $images
+     *
+     * @var \MU\NewsModule\Entity\ImageEntity[]
      */
     protected $images = null;
     
@@ -551,7 +552,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload1FileName;
         if (!empty($fileName) && !$this->_uploadBasePathRelative) {
-            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload1().');
+            throw new RuntimeException('Invalid upload base path in ' . static::class . '#getImageUpload1().');
         }
     
         $filePath = $this->_uploadBasePathAbsolute . 'imageupload1/' . $fileName;
@@ -569,7 +570,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 1.
      */
-    public function setImageUpload1(File $imageUpload1 = null): void
+    public function setImageUpload1(?File $imageUpload1 = null): void
     {
         if (null === $this->imageUpload1 && null === $imageUpload1) {
             return;
@@ -736,7 +737,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload2FileName;
         if (!empty($fileName) && !$this->_uploadBasePathRelative) {
-            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload2().');
+            throw new RuntimeException('Invalid upload base path in ' . static::class . '#getImageUpload2().');
         }
     
         $filePath = $this->_uploadBasePathAbsolute . 'imageupload2/' . $fileName;
@@ -754,7 +755,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 2.
      */
-    public function setImageUpload2(File $imageUpload2 = null): void
+    public function setImageUpload2(?File $imageUpload2 = null): void
     {
         if (null === $this->imageUpload2 && null === $imageUpload2) {
             return;
@@ -825,7 +826,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload3FileName;
         if (!empty($fileName) && !$this->_uploadBasePathRelative) {
-            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload3().');
+            throw new RuntimeException('Invalid upload base path in ' . static::class . '#getImageUpload3().');
         }
     
         $filePath = $this->_uploadBasePathAbsolute . 'imageupload3/' . $fileName;
@@ -843,7 +844,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 3.
      */
-    public function setImageUpload3(File $imageUpload3 = null): void
+    public function setImageUpload3(?File $imageUpload3 = null): void
     {
         if (null === $this->imageUpload3 && null === $imageUpload3) {
             return;
@@ -914,7 +915,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
         $fileName = $this->imageUpload4FileName;
         if (!empty($fileName) && !$this->_uploadBasePathRelative) {
-            throw new RuntimeException('Invalid upload base path in ' . get_class($this) . '#getImageUpload4().');
+            throw new RuntimeException('Invalid upload base path in ' . static::class . '#getImageUpload4().');
         }
     
         $filePath = $this->_uploadBasePathAbsolute . 'imageupload4/' . $fileName;
@@ -932,7 +933,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     /**
      * Sets the image upload 4.
      */
-    public function setImageUpload4(File $imageUpload4 = null): void
+    public function setImageUpload4(?File $imageUpload4 = null): void
     {
         if (null === $this->imageUpload4 && null === $imageUpload4) {
             return;

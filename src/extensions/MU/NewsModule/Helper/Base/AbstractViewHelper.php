@@ -124,7 +124,7 @@ abstract class AbstractViewHelper
     ): Response {
         $templateExtension = $this->determineExtension($type, $func);
         if (empty($template)) {
-            $isAdmin = isset($templateParameters['routeArea']) && $templateParameters['routeArea'] == 'admin';
+            $isAdmin = isset($templateParameters['routeArea']) && 'admin' === $templateParameters['routeArea'];
             $template = $this->getViewTemplate($type, $func, $isAdmin);
         }
     

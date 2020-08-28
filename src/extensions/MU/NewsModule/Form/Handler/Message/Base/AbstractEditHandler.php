@@ -103,7 +103,7 @@ abstract class AbstractEditHandler extends EditHandler
                 false
             ),
             'filter_by_ownership' => !$this->permissionHelper->hasEntityPermission($this->entityRef, ACCESS_ADD),
-            'inline_usage' => $this->templateParameters['inlineUsage']
+            'inline_usage' => $this->templateParameters['inlineUsage'],
         ];
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::ATTRIBUTES, $this->objectType)) {
             $options['attributes'] = $this->templateParameters['attributes'];
@@ -287,11 +287,11 @@ abstract class AbstractEditHandler extends EditHandler
     protected function getRedirectUrl(array $args = []): string
     {
         if (isset($this->templateParameters['inlineUsage']) && true === $this->templateParameters['inlineUsage']) {
-            $commandName = 'submit' === substr($args['commandName'], 0, 6) ? 'create' : $args['commandName'];
+            $commandName = 'submit' === mb_substr($args['commandName'], 0, 6) ? 'create' : $args['commandName'];
             $urlArgs = [
                 'idPrefix' => $this->idPrefix,
                 'commandName' => $commandName,
-                'id' => $this->idValue
+                'id' => $this->idValue,
             ];
     
             // inline usage, return to special function for closing the modal window instance

@@ -155,7 +155,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
     }
     
     /**
-     * Display a given file size in a readable format
+     * Display a given file size in a readable format.
      */
     private function getReadableFileSize(int $size, bool $nodesc = false, bool $onlydesc = false): string
     {
@@ -267,7 +267,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
     {
         $result = preg_replace('/<a href="(.*)">.*<\/a>/i', '$1', $string);
         $result = str_replace('€', 'Euro', $result);
-        $result = ereg_replace("(\r\n|\n|\r)", '=0D=0A', $result);
+        $result = preg_replace("/(\r\n|\n|\r)/D", '=0D=0A', $result);
     
         return ';LANGUAGE=' . $this->requestStack->getCurrentRequest()->getLocale() . ';ENCODING=QUOTED-PRINTABLE:' . $result . "\r\n";
     }
@@ -279,7 +279,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
     /**
      * The munewsmodule__relativePath filter returns the relative web path to a file.
      * Example:
-     *     {{ myPerson.image.getPathname()|munewsmodule_relativePath }}
+     *     {{ myPerson.image.getPathname()|munewsmodule_relativePath }}.
      */
     public function getRelativePath(string $absolutePath): string
     {

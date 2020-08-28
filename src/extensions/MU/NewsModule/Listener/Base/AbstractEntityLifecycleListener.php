@@ -57,12 +57,12 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
     protected $logger;
 
     public function __construct(
-    ZikulaHttpKernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         ContainerInterface $container,
         EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     ) {
-    $this->kernel = $kernel;
+        $this->kernel = $kernel;
         $this->setContainer($container);
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
