@@ -226,7 +226,6 @@ class MessageController extends AbstractMessageController
     }
     
     /**
-     *
      * @Route("/message/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
      *        requirements = {"id" = "\d+"},
      *        defaults = {"commandName" = "", "id" = 0},

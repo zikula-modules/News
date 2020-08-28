@@ -293,7 +293,7 @@ abstract class AbstractAjaxController extends AbstractController
         
         $repository = $entityFactory->getRepository($objectType);
         $sortableFieldMap = [
-            'image' => 'sortNumber'
+            'image' => 'sortNumber',
         ];
         
         $sortFieldSetter = 'set' . ucfirst($sortableFieldMap[$objectType]);
@@ -306,7 +306,7 @@ abstract class AbstractAjaxController extends AbstractController
             }
             $entity = $repository->selectById($itemId);
             $entity->$sortFieldSetter($sortCounter);
-            $sortCounter++;
+            ++$sortCounter;
         }
         
         // save entities back to database
@@ -314,7 +314,7 @@ abstract class AbstractAjaxController extends AbstractController
         
         // return response
         return $this->json([
-            'message' => $this->trans('The setting has been successfully changed.')
+            'message' => $this->trans('The setting has been successfully changed.'),
         ]);
     }
 }

@@ -75,7 +75,7 @@ abstract class AbstractUploadFileTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms a result array back to the File object
+     * Transforms a result array back to the File object.
      */
     public function reverseTransform($data)
     {

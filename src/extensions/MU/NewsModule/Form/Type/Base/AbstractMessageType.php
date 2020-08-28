@@ -412,10 +412,10 @@ abstract class AbstractMessageType extends AbstractType
                 /** @Ignore */
                 'label' => $attributeName,
                 'attr' => [
-                    'maxlength' => 255
+                    'maxlength' => 255,
                 ],
                 'data' => $attributeValue,
-                'required' => false
+                'required' => false,
             ]);
         }
     }
@@ -543,7 +543,7 @@ abstract class AbstractMessageType extends AbstractType
                 'allow_moderation_specific_creation_date' => false,
                 'translations' => [],
                 'filter_by_ownership' => true,
-                'inline_usage' => false
+                'inline_usage' => false,
             ])
             ->setRequired(['entity', 'mode', 'actions'])
             ->setAllowedTypes('mode', 'string')

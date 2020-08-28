@@ -397,7 +397,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
             $notifyArgs = [
                 'recipientType' => $recipientType,
                 'action' => $actionId,
-                'entity' => $entity
+                'entity' => $entity,
             ];
             $result = $this->notificationHelper->process($notifyArgs);
         }

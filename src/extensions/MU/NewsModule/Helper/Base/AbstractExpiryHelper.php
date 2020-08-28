@@ -126,14 +126,11 @@ abstract class AbstractExpiryHelper
      * Returns the list of expired entities.
      *
      * @param mixed $endDate Datetime or date string for the threshold date
-     *
-     * @return array List of affected entities
      */
-    protected function getExpiredObjects(string $objectType = '', string $endField = '', $endDate = '')
+    protected function getExpiredObjects(string $objectType = '', string $endField = '', $endDate = ''): array
     {
         $repository = $this->entityFactory->getRepository($objectType);
         $qb = $repository->genericBaseQuery('', '', false);
-    
         
         $qb->andWhere('tbl.workflowState = :approvedState')
            ->setParameter('approvedState', 'approved');
@@ -215,7 +212,7 @@ abstract class AbstractExpiryHelper
                 if (null !== $request) {
                     $urlArgs['_locale'] = $request->getLocale();
                 }
-                $url = new RouteUrl('munewsmodule_' . strtolower($objectType) . '_display', $urlArgs);
+                $url = new RouteUrl('munewsmodule_' . mb_strtolower($objectType) . '_display', $urlArgs);
             }
             $hookType = 'delete' === $action
                 ? UiHooksCategory::TYPE_PROCESS_DELETE

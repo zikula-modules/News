@@ -59,7 +59,7 @@ abstract class AbstractItemType extends AbstractContentType
             'objectType' => 'message',
             'id' => null,
             'displayMode' => 'embed',
-            'customTemplate' => null
+            'customTemplate' => null,
         ];
     }
     
@@ -113,7 +113,7 @@ abstract class AbstractItemType extends AbstractContentType
             'objectType' => $this->data['objectType'],
             'id' => $this->data['id'],
             'source' => 'contentType',
-            'displayMode' => $this->data['displayMode']
+            'displayMode' => $this->data['displayMode'],
         ];
     }
     

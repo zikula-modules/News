@@ -91,7 +91,7 @@ abstract class AbstractItemListType extends AbstractContentType
             'amount' => 1,
             'template' => 'itemlist_display.html.twig',
             'customTemplate' => null,
-            'filter' => ''
+            'filter' => '',
         ];
     }
     
@@ -189,7 +189,7 @@ abstract class AbstractItemListType extends AbstractContentType
         $templateOptions = [
             'ContentType/' . $templateForObjectType,
             'ContentType/' . $templateFile,
-            'ContentType/itemlist_display.html.twig'
+            'ContentType/itemlist_display.html.twig',
         ];
     
         $template = '';

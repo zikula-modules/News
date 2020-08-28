@@ -644,7 +644,7 @@ abstract class AbstractEditHandler
     protected function getAttributeFieldNames(): array
     {
         return [
-            'field1', 'field2', 'field3'
+            'field1', 'field2', 'field3',
         ];
     }
 

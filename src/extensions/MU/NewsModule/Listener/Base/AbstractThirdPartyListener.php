@@ -87,9 +87,9 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
                 $aggregateType = $amountInfo['aggregateType'];
                 $description = $amountInfo['description'];
                 $amount = $amountInfo['amount'];
-                $route = 'munewsmodule_' . strtolower($amountInfo['objectType']) . '_adminview';
+                $route = 'munewsmodule_' . mb_strtolower($amountInfo['objectType']) . '_adminview';
                 $routeArgs = [
-                    'workflowState' => $amountInfo['state']
+                    'workflowState' => $amountInfo['state'],
                 ];
                 $item = new PendingContentCollectible($aggregateType, $description, $amount, $route, $routeArgs);
                 $collection->add($item);
