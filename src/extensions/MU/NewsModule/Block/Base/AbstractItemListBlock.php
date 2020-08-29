@@ -88,10 +88,6 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         
         $this->categorisableObjectTypes = ['message'];
         
-        // set default values for all params which are not properly set
-        $defaults = $this->getDefaults();
-        $properties = array_merge($defaults, $properties);
-        
         $contextArgs = ['name' => 'list'];
         $allowedObjectTypes = $this->controllerHelper->getObjectTypes('block', $contextArgs);
         if (
@@ -230,10 +226,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         return '@MUNewsModule/Block/itemlist_modify.html.twig';
     }
     
-    /**
-     * Returns default settings for this block.
-     */
-    protected function getDefaults(): array
+    public function getPropertyDefaults(): array
     {
         return [
             'objectType' => 'message',
