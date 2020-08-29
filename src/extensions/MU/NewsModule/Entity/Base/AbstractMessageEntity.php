@@ -1095,9 +1095,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         return $this->categories;
     }
     
-    /**
-     * Sets the categories.
-     */
     public function setCategories(Collection $categories): void
     {
         foreach ($this->categories as $category) {
