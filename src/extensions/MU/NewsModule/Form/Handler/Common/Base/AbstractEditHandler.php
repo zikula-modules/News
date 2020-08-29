@@ -778,7 +778,6 @@ abstract class AbstractEditHandler
             $value = $this->form['attributes' . $fieldName]->getData();
             $entity->setAttribute($fieldName, $value);
         }
-        
     }
     
     /**

@@ -56,7 +56,7 @@ abstract class AbstractThirdPartyListener implements EventSubscriberInterface
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         Filesystem $filesystem,
-        RequestStack $requestStack, 
+        RequestStack $requestStack,
         WorkflowHelper $workflowHelper
     ) {
         $this->kernel = $kernel;

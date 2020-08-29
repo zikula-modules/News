@@ -70,7 +70,7 @@ abstract class AbstractUploadFileTransformer implements DataTransformerInterface
     {
         return [
             $this->fieldName => $file,
-            $this->fieldName . 'DeleteFile' => false
+            $this->fieldName . 'DeleteFile' => false,
         ];
     }
 

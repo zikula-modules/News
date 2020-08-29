@@ -180,7 +180,6 @@ abstract class AbstractUploadType extends AbstractType
             ->setAllowedTypes('allowed_size', 'string')
         ;
     }
-
     
     public function getFormBuilder(): FormBuilderInterface
     {
