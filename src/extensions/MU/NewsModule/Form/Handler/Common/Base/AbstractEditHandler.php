@@ -430,7 +430,6 @@ abstract class AbstractEditHandler
         if (true === $this->hasTranslatableFields) {
             $this->initTranslationsForEditing();
         }
-    
         
         $this->initRelationPresets();
     
