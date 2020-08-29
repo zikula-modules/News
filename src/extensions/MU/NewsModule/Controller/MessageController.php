@@ -41,6 +41,7 @@ use MU\NewsModule\Helper\WorkflowHelper;
  */
 class MessageController extends AbstractMessageController
 {
+    
     /**
      * @Route("/messages",
      *        methods = {"GET"}
@@ -56,6 +57,7 @@ class MessageController extends AbstractMessageController
             false
         );
     }
+
     /**
      * @Route("/messages/view/{sort}/{sortdir}/{page}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "page" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|xml|json|pdf"},
@@ -87,6 +89,7 @@ class MessageController extends AbstractMessageController
             false
         );
     }
+
     /**
      * @Route("/message/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -110,6 +113,7 @@ class MessageController extends AbstractMessageController
             false
         );
     }
+
     /**
      * @Route("/message/delete/{slug}.{_format}",
      *        requirements = {"slug" = "[^/.]+", "_format" = "html"},
@@ -143,6 +147,7 @@ class MessageController extends AbstractMessageController
             false
         );
     }
+
     /**
      * @Route("/message/{slug}.{_format}",
      *        requirements = {"slug" = "[^/.]+", "_format" = "html|xml|json|ics|pdf"},
@@ -172,6 +177,8 @@ class MessageController extends AbstractMessageController
             false
         );
     }
+
+    
     /**
      * Process status changes for multiple items.
      *
@@ -224,6 +231,7 @@ class MessageController extends AbstractMessageController
             false
         );
     }
+    
     /**
      * @Route("/message/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
      *        requirements = {"id" = "\d+"},
@@ -246,5 +254,6 @@ class MessageController extends AbstractMessageController
             $id
         );
     }
+
     // feel free to add your own controller methods here
 }

@@ -241,9 +241,7 @@ abstract class AbstractImageEntity extends EntityAccess
             $this->workflowState = $workflowState ?? '';
         }
     }
-    /**
-     * Returns the the file.
-     */
+    
     public function getTheFile(): ?File
     {
         if (null !== $this->theFile) {
@@ -293,7 +291,6 @@ abstract class AbstractImageEntity extends EntityAccess
             $this->setTheFileFileName($this->theFile->getFilename());
         }
     }
-    
     
     public function getTheFileFileName(): ?string
     {

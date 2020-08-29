@@ -54,4 +54,5 @@ abstract class AbstractImageController extends AbstractController
         // return index template
         return $this->render('@MUNewsModule/Image/' . ($isAdmin ? 'Admin/' : '') . 'index.html.twig', $templateParameters);
     }
+
 }

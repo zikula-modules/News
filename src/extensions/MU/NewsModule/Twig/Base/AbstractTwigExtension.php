@@ -133,7 +133,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
         return $result;
     }
     
-    
     /**
      * The munewsmodule_fileSize filter displays the size of a given file in a readable way.
      * Example:
@@ -192,7 +191,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
         return $onlydesc ? $sizeDesc : $size;
     }
     
-    
     /**
      * The munewsmodule_listEntry filter displays the name
      * or names for a given list item.
@@ -212,7 +210,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
         return $this->listHelper->resolve($value, $objectType, $fieldName, $delimiter);
     }
     
-    
     /**
      * The munewsmodule_moderationObjects function determines the amount of unapproved objects.
      * It uses the same logic as the moderation block and the pending content listener.
@@ -221,7 +218,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
     {
         return $this->workflowHelper->collectAmountOfModerationItems();
     }
-    
     
     /**
      * The munewsmodule_increaseCounter function increases a counter field of a specific entity.
@@ -257,7 +253,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
         );
     }
     
-    
     /**
      * The munewsmodule_icalText filter outputs a given text for the ics output format.
      * Example:
@@ -271,7 +266,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
     
         return ';LANGUAGE=' . $this->requestStack->getCurrentRequest()->getLocale() . ';ENCODING=QUOTED-PRINTABLE:' . $result . "\r\n";
     }
-    
     
     
     

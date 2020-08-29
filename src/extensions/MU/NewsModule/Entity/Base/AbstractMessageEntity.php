@@ -401,7 +401,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
     
     /**
      * @ORM\OneToMany(targetEntity="\MU\NewsModule\Entity\MessageAttributeEntity",
-     *                mappedBy="entity", cascade={"all"}, 
+     *                mappedBy="entity", cascade={"all"},
      *                orphanRemoval=true, indexBy="name")
      *
      * @var \MU\NewsModule\Entity\MessageAttributeEntity
@@ -541,9 +541,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->startText = $startText ?? '';
         }
     }
-    /**
-     * Returns the image upload 1.
-     */
+    
     public function getImageUpload1(): ?File
     {
         if (null !== $this->imageUpload1) {
@@ -593,7 +591,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->setImageUpload1FileName($this->imageUpload1->getFilename());
         }
     }
-    
     
     public function getImageUpload1FileName(): ?string
     {
@@ -726,9 +723,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->allowComments = $allowComments;
         }
     }
-    /**
-     * Returns the image upload 2.
-     */
+    
     public function getImageUpload2(): ?File
     {
         if (null !== $this->imageUpload2) {
@@ -779,7 +774,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    
     public function getImageUpload2FileName(): ?string
     {
         return $this->imageUpload2FileName;
@@ -815,9 +809,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->imageUpload2Meta = $imageUpload2Meta;
         }
     }
-    /**
-     * Returns the image upload 3.
-     */
+    
     public function getImageUpload3(): ?File
     {
         if (null !== $this->imageUpload3) {
@@ -868,7 +860,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    
     public function getImageUpload3FileName(): ?string
     {
         return $this->imageUpload3FileName;
@@ -904,9 +895,7 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->imageUpload3Meta = $imageUpload3Meta;
         }
     }
-    /**
-     * Returns the image upload 4.
-     */
+    
     public function getImageUpload4(): ?File
     {
         if (null !== $this->imageUpload4) {
@@ -956,7 +945,6 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
             $this->setImageUpload4FileName($this->imageUpload4->getFilename());
         }
     }
-    
     
     public function getImageUpload4FileName(): ?string
     {
