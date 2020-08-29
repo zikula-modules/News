@@ -519,7 +519,6 @@ abstract class AbstractEditHandler
         return [];
     }
     
-    
     /**
      * Initialises relationship presets.
      */

@@ -30,6 +30,7 @@ use MU\NewsModule\Helper\PermissionHelper;
  */
 class ImageController extends AbstractImageController
 {
+    
     /**
      * @Route("/images",
      *        methods = {"GET"}
@@ -45,5 +46,7 @@ class ImageController extends AbstractImageController
             false
         );
     }
+
+
     // feel free to add your own controller methods here
 }

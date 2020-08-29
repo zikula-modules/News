@@ -74,6 +74,7 @@ abstract class AbstractMessageController extends AbstractController
         
         return $this->redirectToRoute('munewsmodule_message_' . $templateParameters['routeArea'] . 'view');
     }
+
     
     /**
      * This action provides an item list overview.
@@ -139,6 +140,7 @@ abstract class AbstractMessageController extends AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
+
     
     /**
      * This action provides a item detail view.
@@ -210,6 +212,7 @@ abstract class AbstractMessageController extends AbstractController
         
         return $response;
     }
+
     
     /**
      * This action provides a handling of edit requests.
@@ -254,6 +257,7 @@ abstract class AbstractMessageController extends AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'edit', $templateParameters);
     }
+
     
     /**
      * This action provides a handling of simple delete requests.
@@ -423,6 +427,7 @@ abstract class AbstractMessageController extends AbstractController
     }
 
     
+    
     /**
      * Process status changes for multiple items.
      *
@@ -572,7 +577,7 @@ abstract class AbstractMessageController extends AbstractController
         
         return $this->redirectToRoute('munewsmodule_message_' . ($isAdmin ? 'admin' : '') . 'index');
     }
-
+    
     /**
      * This method cares for a redirect within an inline frame.
      */
