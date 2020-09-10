@@ -616,12 +616,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    public function getImageUpload1Meta(): ?array
+    public function getImageUpload1Meta(): array
     {
         return $this->imageUpload1Meta;
     }
     
-    public function setImageUpload1Meta(?array $imageUpload1Meta = []): void
+    public function setImageUpload1Meta(array $imageUpload1Meta = []): void
     {
         if ($this->imageUpload1Meta !== $imageUpload1Meta) {
             $this->imageUpload1Meta = $imageUpload1Meta;
@@ -798,12 +798,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    public function getImageUpload2Meta(): ?array
+    public function getImageUpload2Meta(): array
     {
         return $this->imageUpload2Meta;
     }
     
-    public function setImageUpload2Meta(?array $imageUpload2Meta = []): void
+    public function setImageUpload2Meta(array $imageUpload2Meta = []): void
     {
         if ($this->imageUpload2Meta !== $imageUpload2Meta) {
             $this->imageUpload2Meta = $imageUpload2Meta;
@@ -884,12 +884,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    public function getImageUpload3Meta(): ?array
+    public function getImageUpload3Meta(): array
     {
         return $this->imageUpload3Meta;
     }
     
-    public function setImageUpload3Meta(?array $imageUpload3Meta = []): void
+    public function setImageUpload3Meta(array $imageUpload3Meta = []): void
     {
         if ($this->imageUpload3Meta !== $imageUpload3Meta) {
             $this->imageUpload3Meta = $imageUpload3Meta;
@@ -970,12 +970,12 @@ abstract class AbstractMessageEntity extends EntityAccess implements Translatabl
         }
     }
     
-    public function getImageUpload4Meta(): ?array
+    public function getImageUpload4Meta(): array
     {
         return $this->imageUpload4Meta;
     }
     
-    public function setImageUpload4Meta(?array $imageUpload4Meta = []): void
+    public function setImageUpload4Meta(array $imageUpload4Meta = []): void
     {
         if ($this->imageUpload4Meta !== $imageUpload4Meta) {
             $this->imageUpload4Meta = $imageUpload4Meta;
