@@ -316,12 +316,12 @@ abstract class AbstractImageEntity extends EntityAccess
         }
     }
     
-    public function getTheFileMeta(): ?array
+    public function getTheFileMeta(): array
     {
         return $this->theFileMeta;
     }
     
-    public function setTheFileMeta(?array $theFileMeta = []): void
+    public function setTheFileMeta(array $theFileMeta = []): void
     {
         if ($this->theFileMeta !== $theFileMeta) {
             $this->theFileMeta = $theFileMeta ?? '';
