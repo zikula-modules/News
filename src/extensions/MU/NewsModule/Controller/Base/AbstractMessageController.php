@@ -50,7 +50,6 @@ use MU\NewsModule\Helper\WorkflowHelper;
  */
 abstract class AbstractMessageController extends AbstractController
 {
-    
     /**
      * This is the default action handling the index area called without defining arguments.
      *
@@ -75,7 +74,6 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToRoute('munewsmodule_message_' . $templateParameters['routeArea'] . 'view');
     }
 
-    
     /**
      * This action provides an item list overview.
      *
@@ -141,7 +139,6 @@ abstract class AbstractMessageController extends AbstractController
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
 
-    
     /**
      * This action provides a item detail view.
      *
@@ -213,7 +210,6 @@ abstract class AbstractMessageController extends AbstractController
         return $response;
     }
 
-    
     /**
      * This action provides a handling of edit requests.
      *
@@ -258,7 +254,6 @@ abstract class AbstractMessageController extends AbstractController
         return $viewHelper->processTemplate($objectType, 'edit', $templateParameters);
     }
 
-    
     /**
      * This action provides a handling of simple delete requests.
      *

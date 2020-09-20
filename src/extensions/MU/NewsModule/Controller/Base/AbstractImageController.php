@@ -29,7 +29,6 @@ use MU\NewsModule\Helper\PermissionHelper;
  */
 abstract class AbstractImageController extends AbstractController
 {
-    
     /**
      * This is the default action handling the index area called without defining arguments.
      *

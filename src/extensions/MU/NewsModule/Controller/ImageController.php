@@ -32,6 +32,23 @@ class ImageController extends AbstractImageController
 {
     
     /**
+     * @Route("/admin/images",
+     *        methods = {"GET"}
+     * )
+     * @Theme("admin")
+     */
+    public function adminIndexAction(
+        Request $request,
+        PermissionHelper $permissionHelper
+    ): Response {
+        return $this->indexInternal(
+            $request,
+            $permissionHelper,
+            true
+        );
+    }
+    
+    /**
      * @Route("/images",
      *        methods = {"GET"}
      * )
