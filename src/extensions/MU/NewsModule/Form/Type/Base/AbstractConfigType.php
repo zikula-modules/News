@@ -29,6 +29,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use MU\NewsModule\Form\Type\Field\MultiListType;
 use MU\NewsModule\AppSettings;
@@ -69,7 +70,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addGeneralSettingsFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('enableAttribution', CheckboxType::class, [
+        $builder->add($builder->create('enableAttribution', CheckboxType::class, [
             'label' => 'Enable attribution:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -79,8 +80,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable attribution option',
             ],
             'required' => false,
-        ]);
-        $builder->add('enableMultiLanguage', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('enableMultiLanguage', CheckboxType::class, [
             'label' => 'Enable multi language:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -90,8 +91,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable multi language option',
             ],
             'required' => false,
-        ]);
-        $builder->add('showAuthor', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('showAuthor', CheckboxType::class, [
             'label' => 'Show author:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -103,8 +104,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The show author option',
             ],
             'required' => false,
-        ]);
-        $builder->add('showDate', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('showDate', CheckboxType::class, [
             'label' => 'Show date:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -116,7 +117,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The show date option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -124,7 +125,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addCategorySettingsFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('enableCategorization', CheckboxType::class, [
+        $builder->add($builder->create('enableCategorization', CheckboxType::class, [
             'label' => 'Enable categorization:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -134,7 +135,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable categorization option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -207,7 +208,7 @@ abstract class AbstractConfigType extends AbstractType
             'multiple' => false,
             'expanded' => false,
         ]);
-        $builder->add('enableMoreMessagesInCategory', CheckboxType::class, [
+        $builder->add($builder->create('enableMoreMessagesInCategory', CheckboxType::class, [
             'label' => 'Enable more messages in category:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -217,8 +218,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable more messages in category option',
             ],
             'required' => false,
-        ]);
-        $builder->add('amountOfMoreArticlesInCategory', IntegerType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('amountOfMoreArticlesInCategory', IntegerType::class, [
             'label' => 'Amount of more articles in category:',
             'label_attr' => [
                 'class' => 'tooltips',
@@ -232,8 +233,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'Enter the amount of more articles in category. Only digits are allowed.',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayPdfLink', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayPdfLink', CheckboxType::class, [
             'label' => 'Display pdf link:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -245,7 +246,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The display pdf link option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -253,7 +254,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addUploadSettingsFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('enablePictureUpload', CheckboxType::class, [
+        $builder->add($builder->create('enablePictureUpload', CheckboxType::class, [
             'label' => 'Enable picture upload:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -265,7 +266,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable picture upload option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $listEntries = $this->listHelper->getEntries('appSettings', 'imageFloatOnViewPage');
         $choices = [];
         $choiceAttributes = [];
@@ -353,7 +354,7 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
         ]);
-        $builder->add('linkOwnMessagesOnAccountPage', CheckboxType::class, [
+        $builder->add($builder->create('linkOwnMessagesOnAccountPage', CheckboxType::class, [
             'label' => 'Link own messages on account page:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -365,8 +366,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The link own messages on account page option',
             ],
             'required' => false,
-        ]);
-        $builder->add('showOnlyOwnEntries', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('showOnlyOwnEntries', CheckboxType::class, [
             'label' => 'Show only own entries:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -378,8 +379,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The show only own entries option',
             ],
             'required' => false,
-        ]);
-        $builder->add('filterDataByLocale', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('filterDataByLocale', CheckboxType::class, [
             'label' => 'Filter data by locale:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -391,7 +392,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The filter data by locale option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -399,7 +400,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addImagesFields(FormBuilderInterface $builder, array $options = []): void
     {
-        $builder->add('enableShrinkingForMessageImageUpload1', CheckboxType::class, [
+        $builder->add($builder->create('enableShrinkingForMessageImageUpload1', CheckboxType::class, [
             'label' => 'Enable shrinking:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -411,7 +412,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable shrinking option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('shrinkWidthMessageImageUpload1', IntegerType::class, [
             'label' => 'Shrink width:',
             'label_attr' => [
@@ -565,7 +566,7 @@ abstract class AbstractConfigType extends AbstractType
             'required' => true,
             'input_group' => ['right' => /** @Translate */'pixels'],
         ]);
-        $builder->add('enableShrinkingForMessageImageUpload2', CheckboxType::class, [
+        $builder->add($builder->create('enableShrinkingForMessageImageUpload2', CheckboxType::class, [
             'label' => 'Enable shrinking:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -577,7 +578,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable shrinking option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('shrinkWidthMessageImageUpload2', IntegerType::class, [
             'label' => 'Shrink width:',
             'label_attr' => [
@@ -731,7 +732,7 @@ abstract class AbstractConfigType extends AbstractType
             'required' => true,
             'input_group' => ['right' => /** @Translate */'pixels'],
         ]);
-        $builder->add('enableShrinkingForMessageImageUpload3', CheckboxType::class, [
+        $builder->add($builder->create('enableShrinkingForMessageImageUpload3', CheckboxType::class, [
             'label' => 'Enable shrinking:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -743,7 +744,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable shrinking option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('shrinkWidthMessageImageUpload3', IntegerType::class, [
             'label' => 'Shrink width:',
             'label_attr' => [
@@ -897,7 +898,7 @@ abstract class AbstractConfigType extends AbstractType
             'required' => true,
             'input_group' => ['right' => /** @Translate */'pixels'],
         ]);
-        $builder->add('enableShrinkingForMessageImageUpload4', CheckboxType::class, [
+        $builder->add($builder->create('enableShrinkingForMessageImageUpload4', CheckboxType::class, [
             'label' => 'Enable shrinking:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -909,7 +910,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable shrinking option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('shrinkWidthMessageImageUpload4', IntegerType::class, [
             'label' => 'Shrink width:',
             'label_attr' => [
@@ -1063,7 +1064,7 @@ abstract class AbstractConfigType extends AbstractType
             'required' => true,
             'input_group' => ['right' => /** @Translate */'pixels'],
         ]);
-        $builder->add('enableShrinkingForImageTheFile', CheckboxType::class, [
+        $builder->add($builder->create('enableShrinkingForImageTheFile', CheckboxType::class, [
             'label' => 'Enable shrinking:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -1075,7 +1076,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The enable shrinking option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('shrinkWidthImageTheFile', IntegerType::class, [
             'label' => 'Shrink width:',
             'label_attr' => [
@@ -1158,7 +1159,7 @@ abstract class AbstractConfigType extends AbstractType
             'choice_label' => 'name',
             'choice_value' => 'gid',
         ]);
-        $builder->add('allowModerationSpecificCreatorForMessage', CheckboxType::class, [
+        $builder->add($builder->create('allowModerationSpecificCreatorForMessage', CheckboxType::class, [
             'label' => 'Allow moderation specific creator for message:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -1170,8 +1171,8 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The allow moderation specific creator for message option',
             ],
             'required' => false,
-        ]);
-        $builder->add('allowModerationSpecificCreationDateForMessage', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('allowModerationSpecificCreationDateForMessage', CheckboxType::class, [
             'label' => 'Allow moderation specific creation date for message:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
@@ -1183,7 +1184,7 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => 'The allow moderation specific creation date for message option',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -1198,7 +1199,7 @@ abstract class AbstractConfigType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('enabledFinderTypes', MultiListType::class, [
+        $builder->add($builder->create('enabledFinderTypes', MultiListType::class, [
             'label' => 'Enabled finder types:',
             'label_attr' => [
                 'class' => 'tooltips',
@@ -1216,7 +1217,7 @@ abstract class AbstractConfigType extends AbstractType
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**

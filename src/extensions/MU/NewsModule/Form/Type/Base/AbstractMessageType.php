@@ -34,6 +34,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -177,7 +178,7 @@ abstract class AbstractMessageType extends AbstractType
             ],
             'required' => true,
         ]);
-        $builder->add('mainText', TextareaType::class, [
+        $builder->add($builder->create('mainText', TextareaType::class, [
             'label' => 'Main text:',
             'help' => 'Note: this value must not exceed %length% characters.',
             'help_translation_parameters' => ['%length%' => 100000],
@@ -188,7 +189,7 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'Enter the main text of the message.',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $helpText = /** @Translate */'You can input a custom permalink for the message or let this field free to create one automatically.';
         if ('create' !== $options['mode']) {
             $helpText = '';
@@ -237,7 +238,7 @@ abstract class AbstractMessageType extends AbstractType
             'allowed_extensions' => implode(', ', $this->uploadHelper->getAllowedFileExtensions('message', 'imageUpload1')),
             'allowed_size' => '200k',
         ]);
-        $builder->add('amountOfViews', IntegerType::class, [
+        $builder->add($builder->create('amountOfViews', IntegerType::class, [
             'label' => 'Amount of views:',
             'empty_data' => 0,
             'attr' => [
@@ -246,7 +247,7 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'Enter the amount of views of the message. Only digits are allowed.',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('author', TextType::class, [
             'label' => 'Author:',
             'empty_data' => '',
@@ -268,7 +269,7 @@ abstract class AbstractMessageType extends AbstractType
             'required' => false,
             'inline_usage' => $options['inline_usage'],
         ]);
-        $builder->add('notes', TextareaType::class, [
+        $builder->add($builder->create('notes', TextareaType::class, [
             'label' => 'Notes:',
             'help' => 'Note: this value must not exceed %length% characters.',
             'help_translation_parameters' => ['%length%' => 2000],
@@ -279,8 +280,8 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'Enter the notes of the message.',
             ],
             'required' => false,
-        ]);
-        $builder->add('displayOnIndex', CheckboxType::class, [
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('displayOnIndex', CheckboxType::class, [
             'label' => 'Display on index:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -290,7 +291,7 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'display on index ?',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('messageLanguage', LocaleType::class, [
             'label' => 'Message language:',
             'empty_data' => '',
@@ -304,7 +305,7 @@ abstract class AbstractMessageType extends AbstractType
             'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(),
             'choice_loader' => null,
         ]);
-        $builder->add('allowComments', CheckboxType::class, [
+        $builder->add($builder->create('allowComments', CheckboxType::class, [
             'label' => 'Allow comments:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -314,7 +315,7 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'allow comments ?',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('imageUpload2', UploadType::class, [
             'label' => 'Image upload 2:',
             'attr' => [
@@ -366,7 +367,7 @@ abstract class AbstractMessageType extends AbstractType
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
         ]);
-        $builder->add('noEndDate', CheckboxType::class, [
+        $builder->add($builder->create('noEndDate', CheckboxType::class, [
             'label' => 'No end date:',
             'label_attr' => [
                 'class' => 'switch-custom',
@@ -376,7 +377,7 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'no end date ?',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
         $builder->add('endDate', DateTimeType::class, [
             'label' => 'End date:',
             'attr' => [
@@ -389,7 +390,7 @@ abstract class AbstractMessageType extends AbstractType
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
         ]);
-        $builder->add('weight', IntegerType::class, [
+        $builder->add($builder->create('weight', IntegerType::class, [
             'label' => 'Weight:',
             'empty_data' => 1,
             'attr' => [
@@ -398,7 +399,7 @@ abstract class AbstractMessageType extends AbstractType
                 'title' => 'Enter the weight of the message. Only digits are allowed.',
             ],
             'required' => false,
-        ]);
+        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
