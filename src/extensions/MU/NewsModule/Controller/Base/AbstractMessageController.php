@@ -431,7 +431,7 @@ abstract class AbstractMessageController extends AbstractController
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
-    protected function handleSelectedEntriesActionInternal(
+    protected function handleSelectedEntriesInternal(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -576,7 +576,7 @@ abstract class AbstractMessageController extends AbstractController
     /**
      * This method cares for a redirect within an inline frame.
      */
-    public function handleInlineRedirectAction(
+    public function handleInlineRedirect(
         EntityFactory $entityFactory,
         EntityDisplayHelper $entityDisplayHelper,
         string $idPrefix,

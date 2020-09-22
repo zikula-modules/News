@@ -39,14 +39,14 @@ class AjaxController extends AbstractAjaxController
     /**
      * @Route("/getItemListFinder", methods = {"GET"}, options={"expose"=true})
      */
-    public function getItemListFinderAction(
+    public function getItemListFinder(
         Request $request,
         ControllerHelper $controllerHelper,
         PermissionHelper $permissionHelper,
         EntityFactory $entityFactory,
         EntityDisplayHelper $entityDisplayHelper
     ): JsonResponse {
-        return parent::getItemListFinderAction(
+        return parent::getItemListFinder(
             $request,
             $controllerHelper,
             $permissionHelper,
@@ -58,12 +58,12 @@ class AjaxController extends AbstractAjaxController
     /**
      * @Route("/checkForDuplicate", methods = {"GET"}, options={"expose"=true})
      */
-    public function checkForDuplicateAction(
+    public function checkForDuplicate(
         Request $request,
         ControllerHelper $controllerHelper,
         EntityFactory $entityFactory
     ): JsonResponse {
-        return parent::checkForDuplicateAction(
+        return parent::checkForDuplicate(
             $request,
             $controllerHelper,
             $entityFactory
@@ -73,13 +73,13 @@ class AjaxController extends AbstractAjaxController
     /**
      * @Route("/toggleFlag", methods = {"POST"}, options={"expose"=true})
      */
-    public function toggleFlagAction(
+    public function toggleFlag(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
         CurrentUserApiInterface $currentUserApi
     ): JsonResponse {
-        return parent::toggleFlagAction(
+        return parent::toggleFlag(
             $request,
             $logger,
             $entityFactory,
@@ -90,11 +90,11 @@ class AjaxController extends AbstractAjaxController
     /**
      * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
      */
-    public function updateSortPositionsAction(
+    public function updateSortPositions(
         Request $request,
         EntityFactory $entityFactory
     ): JsonResponse {
-        return parent::updateSortPositionsAction(
+        return parent::updateSortPositions(
             $request,
             $entityFactory
         );

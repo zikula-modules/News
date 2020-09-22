@@ -37,7 +37,7 @@ class ImageController extends AbstractImageController
      * )
      * @Theme("admin")
      */
-    public function adminIndexAction(
+    public function adminIndex(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -53,7 +53,7 @@ class ImageController extends AbstractImageController
      *        methods = {"GET"}
      * )
      */
-    public function indexAction(
+    public function index(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
