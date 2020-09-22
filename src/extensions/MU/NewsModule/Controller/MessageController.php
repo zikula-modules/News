@@ -48,7 +48,7 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminIndexAction(
+    public function adminIndex(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -64,7 +64,7 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      */
-    public function indexAction(
+    public function index(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -83,7 +83,7 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminViewAction(
+    public function adminView(
         Request $request,
         RouterInterface $router,
         PermissionHelper $permissionHelper,
@@ -115,7 +115,7 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      */
-    public function viewAction(
+    public function view(
         Request $request,
         RouterInterface $router,
         PermissionHelper $permissionHelper,
@@ -148,7 +148,7 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminEditAction(
+    public function adminEdit(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -172,7 +172,7 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET", "POST"}
      * )
      */
-    public function editAction(
+    public function edit(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -197,7 +197,7 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminDeleteAction(
+    public function adminDelete(
         Request $request,
         LoggerInterface $logger,
         PermissionHelper $permissionHelper,
@@ -231,7 +231,7 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET", "POST"}
      * )
      */
-    public function deleteAction(
+    public function delete(
         Request $request,
         LoggerInterface $logger,
         PermissionHelper $permissionHelper,
@@ -266,7 +266,7 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminDisplayAction(
+    public function adminDisplay(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -296,7 +296,7 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      */
-    public function displayAction(
+    public function display(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -328,7 +328,7 @@ class MessageController extends AbstractMessageController
      * )
      * @Theme("admin")
      */
-    public function adminHandleSelectedEntriesAction(
+    public function adminHandleSelectedEntries(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -336,7 +336,7 @@ class MessageController extends AbstractMessageController
         HookHelper $hookHelper,
         CurrentUserApiInterface $currentUserApi
     ): RedirectResponse {
-        return $this->handleSelectedEntriesActionInternal(
+        return $this->handleSelectedEntriesInternal(
             $request,
             $logger,
             $entityFactory,
@@ -354,7 +354,7 @@ class MessageController extends AbstractMessageController
      *        methods = {"POST"}
      * )
      */
-    public function handleSelectedEntriesAction(
+    public function handleSelectedEntries(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -362,7 +362,7 @@ class MessageController extends AbstractMessageController
         HookHelper $hookHelper,
         CurrentUserApiInterface $currentUserApi
     ): RedirectResponse {
-        return $this->handleSelectedEntriesActionInternal(
+        return $this->handleSelectedEntriesInternal(
             $request,
             $logger,
             $entityFactory,
@@ -380,14 +380,14 @@ class MessageController extends AbstractMessageController
      *        methods = {"GET"}
      * )
      */
-    public function handleInlineRedirectAction(
+    public function handleInlineRedirect(
         EntityFactory $entityFactory,
         EntityDisplayHelper $entityDisplayHelper,
         string $idPrefix,
         string $commandName,
         int $id = 0
     ): Response {
-        return parent::handleInlineRedirectAction(
+        return parent::handleInlineRedirect(
             $entityFactory,
             $entityDisplayHelper,
             $idPrefix,

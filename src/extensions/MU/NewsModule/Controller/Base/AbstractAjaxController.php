@@ -38,7 +38,7 @@ abstract class AbstractAjaxController extends AbstractController
     /**
      * Retrieve item list for finder selections, for example used in Scribite editor plug-ins.
      */
-    public function getItemListFinderAction(
+    public function getItemListFinder(
         Request $request,
         ControllerHelper $controllerHelper,
         PermissionHelper $permissionHelper,
@@ -148,7 +148,7 @@ abstract class AbstractAjaxController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function checkForDuplicateAction(
+    public function checkForDuplicate(
         Request $request,
         ControllerHelper $controllerHelper,
         EntityFactory $entityFactory
@@ -209,7 +209,7 @@ abstract class AbstractAjaxController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function toggleFlagAction(
+    public function toggleFlag(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -270,7 +270,7 @@ abstract class AbstractAjaxController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function updateSortPositionsAction(
+    public function updateSortPositions(
         Request $request,
         EntityFactory $entityFactory
     ): JsonResponse {
