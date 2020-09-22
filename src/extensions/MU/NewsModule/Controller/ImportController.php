@@ -36,7 +36,7 @@ class ImportController extends AbstractController
      *
      * @Route("/import/oldNewsArticles")
      */
-    public function oldNewsArticlesAction(
+    public function migrateOldNewsArticles(
         Request $request,
         EntityFactory $entityFactory,
         CurrentUserApiInterface $currentUserApi,
