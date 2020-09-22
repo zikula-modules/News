@@ -87,9 +87,11 @@ abstract class AbstractItemType extends AbstractContentType
         }
     
         $controllerReference = new ControllerReference(
-            'MU\NewsModule\Controller\ExternalController::displayAction',
+            'MU\NewsModule\Controller\ExternalController::display',
             $this->getDisplayArguments(),
-            ['template' => $this->data['customTemplate']]
+            [
+                'template' => $this->data['customTemplate']
+            ]
         );
     
         return $this->fragmentHandler->render($controllerReference, 'inline', []);
