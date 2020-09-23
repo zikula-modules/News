@@ -494,7 +494,7 @@ abstract class AbstractMessageRepository extends EntityRepository
         int $currentPage = 1,
         int $resultsPerPage = 25,
         bool $useJoins = true
-    ): array {
+    ): \Traversable {
         $qb = $this->getListQueryBuilder('', $orderBy, $useJoins);
         if (0 < count($exclude)) {
             $qb = $this->addExclusion($qb, $exclude);
@@ -504,7 +504,9 @@ abstract class AbstractMessageRepository extends EntityRepository
             $qb = $this->collectionFilterHelper->addSearchFilter('message', $qb, $fragment);
         }
     
-        return $this->retrieveCollectionResult($qb, true, $currentPage, $resultsPerPage);
+        $paginator = $this->retrieveCollectionResult($qb, true, $currentPage, $resultsPerPage);
+    
+        return $paginator->getResults();
     }
 
     /**
