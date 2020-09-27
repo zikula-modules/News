@@ -456,10 +456,6 @@ abstract class AbstractCollectionFilterHelper
             $parameters['searchImageUpload3'] = $fragment;
             $filters[] = 'tbl.imageUpload4FileName = :searchImageUpload4';
             $parameters['searchImageUpload4'] = $fragment;
-            $filters[] = 'tbl.startDate = :searchStartDate';
-            $parameters['searchStartDate'] = $fragment;
-            $filters[] = 'tbl.endDate = :searchEndDate';
-            $parameters['searchEndDate'] = $fragment;
             if (is_numeric($fragment)) {
                 $filters[] = 'tbl.weight = :searchWeight';
                 $parameters['searchWeight'] = $fragment;
