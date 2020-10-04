@@ -50,7 +50,7 @@
                                     <a href="#" data-itemid="{{ itemId }}">
                                         {% if onlyImages %}
                                             {% set thumbOptions = attribute(thumbRuntimeOptions, 'message' ~ imageField[:1]|upper ~ imageField[1:]) %}
-                                            <img src="{{ attribute(message, imageField).getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-rounded" />
+                                            <img src="{{ attribute(message, imageField).getPathname()|munewsmodule_relativePath|imagine_filter('zkroot', thumbOptions) }}" alt="{{ message|munewsmodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-rounded" />
                                         {% else %}
                                             {{ message|munewsmodule_formattedTitle }}
                                         {% endif %}
