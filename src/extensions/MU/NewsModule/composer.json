@@ -16,7 +16,7 @@
         "psr-4": { "MU\\NewsModule\\": "" }
     },
     "require": {
-        "dompdf/dompdf": "^0",
+        "dompdf/dompdf": "^1",
         "php": ">=7.2.5"
     },
     "require-dev": {
